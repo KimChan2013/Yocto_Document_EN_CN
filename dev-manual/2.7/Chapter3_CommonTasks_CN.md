@@ -1,6 +1,5 @@
-# Chapter 3. Common Tasks <!-- omit in toc -->
-
-- [3.1 Understanding and Creating Layers](#31-understanding-and-creating-layers)
+# Chapter 3. 常见任务 <!-- omit in toc -->
+- [3.1 理解并创建Layer](#31-理解并创建layer)
   - [3.1.1 Creating Your Own Layer](#311-creating-your-own-layer)
   - [3.1.2 Following Best Practices When Creating Layers](#312-following-best-practices-when-creating-layers)
   - [3.1.3 Making Sure Your Layer is Compatible With Yocto Project](#313-making-sure-your-layer-is-compatible-with-yocto-project)
@@ -230,9 +229,9 @@
     - [3.34.1.2. Installing](#33412-installing)
   - [3.34.2. Running Weston](#3342-running-weston)
 
-This chapter describes fundamental procedures such as creating layers, adding new software packages, extending or customizing images, porting work to new hardware (adding a new machine), and so forth. You will find that the procedures documented here occur often in the development cycle using the Yocto Project.
+本章将介绍例如创建layer，新加软件包，扩展/定制化镜像，移植到新硬件等基础功能。使用Yocto Project时，你会发现你会经常处理这些任务。
 
-## 3.1 Understanding and Creating Layers
+## 3.1 理解并创建Layer
 The OpenEmbedded build system supports organizing Metadata into multiple layers. Layers allow you to isolate different types of customizations from each other. For introductory information on the Yocto Project Layer Model, see the "The Yocto Project Layer Model" section in the Yocto Project Overview and Concepts Manual.
 
 ### 3.1.1 Creating Your Own Layer
