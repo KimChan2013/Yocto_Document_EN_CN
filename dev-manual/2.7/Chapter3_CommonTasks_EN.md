@@ -75,42 +75,42 @@
     - [3.16.7 Examples](#3167-examples)
       - [3.16.7.1 Generate an Image using an Existing Kickstart File](#31671-generate-an-image-using-an-existing-kickstart-file)
     - [3.16.7.2 Using a Modified Kickstart File](#31672-using-a-modified-kickstart-file)
-      - [3.16.7.3 Using a Modified Kickstart File and Running in Raw Mode¶](#31673-using-a-modified-kickstart-file-and-running-in-raw-mode%c2%b6)
+      - [3.16.7.3 Using a Modified Kickstart File and Running in Raw Mode](#31673-using-a-modified-kickstart-file-and-running-in-raw-mode)
       - [3.16.7.4. Using Wic to Manipulate an Image](#31674-using-wic-to-manipulate-an-image)
   - [3.17 Flashing Images Using `bmaptool`](#317-flashing-images-using-bmaptool)
   - [3.18 Making Images More Secure](#318-making-images-more-secure)
     - [3.18.1 General Considerations](#3181-general-considerations)
     - [3.18.2. Security Flags](#3182-security-flags)
-    - [3.18.3. Considerations Specific to the OpenEmbedded Build System¶](#3183-considerations-specific-to-the-openembedded-build-system%c2%b6)
-    - [3.18.4. Tools for Hardening Your Image¶](#3184-tools-for-hardening-your-image%c2%b6)
-  - [3.19. Creating Your Own Distribution¶](#319-creating-your-own-distribution%c2%b6)
-  - [3.20. Creating a Custom Template Configuration Directory¶](#320-creating-a-custom-template-configuration-directory%c2%b6)
+    - [3.18.3. Considerations Specific to the OpenEmbedded Build System](#3183-considerations-specific-to-the-openembedded-build-system)
+    - [3.18.4. Tools for Hardening Your Image](#3184-tools-for-hardening-your-image)
+  - [3.19. Creating Your Own Distribution](#319-creating-your-own-distribution)
+  - [3.20. Creating a Custom Template Configuration Directory](#320-creating-a-custom-template-configuration-directory)
   - [3.21. Conserving Disk Space During Builds](#321-conserving-disk-space-during-builds)
   - [3.22. Working with Packages](#322-working-with-packages)
     - [3.22.1. Excluding Packages from an Image](#3221-excluding-packages-from-an-image)
-    - [3.22.2. Incrementing a Package Version¶](#3222-incrementing-a-package-version%c2%b6)
-      - [3.22.2.1. Working With a PR Service¶](#32221-working-with-a-pr-service%c2%b6)
+    - [3.22.2. Incrementing a Package Version](#3222-incrementing-a-package-version)
+      - [3.22.2.1. Working With a PR Service](#32221-working-with-a-pr-service)
       - [3.22.2.2. Manually Bumping PR](#32222-manually-bumping-pr)
-      - [3.22.2.3. Automatically Incrementing a Package Version Number¶](#32223-automatically-incrementing-a-package-version-number%c2%b6)
-    - [3.22.3. Handling Optional Module Packaging¶](#3223-handling-optional-module-packaging%c2%b6)
-      - [3.22.3.1. Making Sure the Packaging is Done¶](#32231-making-sure-the-packaging-is-done%c2%b6)
+      - [3.22.2.3. Automatically Incrementing a Package Version Number](#32223-automatically-incrementing-a-package-version-number)
+    - [3.22.3. Handling Optional Module Packaging](#3223-handling-optional-module-packaging)
+      - [3.22.3.1. Making Sure the Packaging is Done](#32231-making-sure-the-packaging-is-done)
       - [3.22.3.2. Satisfying Dependencies](#32232-satisfying-dependencies)
     - [3.22.4. Using Runtime Package Management](#3224-using-runtime-package-management)
       - [3.22.4.1. Build Considerations](#32241-build-considerations)
-      - [3.22.4.2. Host or Server Machine Setup¶](#32242-host-or-server-machine-setup%c2%b6)
+      - [3.22.4.2. Host or Server Machine Setup](#32242-host-or-server-machine-setup)
       - [3.22.4.3. Target Setup](#32243-target-setup)
         - [3.22.4.3.1. Using RPM](#322431-using-rpm)
         - [3.22.4.3.2. Using IPK](#322432-using-ipk)
         - [3.22.4.3.3. Using DEB](#322433-using-deb)
     - [3.22.5. Generating and Using Signed Packages](#3225-generating-and-using-signed-packages)
-      - [3.22.5.1. Signing RPM Packages¶](#32251-signing-rpm-packages%c2%b6)
+      - [3.22.5.1. Signing RPM Packages](#32251-signing-rpm-packages)
       - [3.22.5.2. Processing Package Feeds](#32252-processing-package-feeds)
     - [3.22.6. Testing Packages With ptest](#3226-testing-packages-with-ptest)
       - [3.22.6.1. Adding ptest to Your Build](#32261-adding-ptest-to-your-build)
       - [3.22.6.2. Running ptest](#32262-running-ptest)
       - [3.22.6.3. Getting Your Package Ready](#32263-getting-your-package-ready)
     - [3.22.7. Creating Node Package Manager (NPM) Packages](#3227-creating-node-package-manager-npm-packages)
-      - [3.22.7.1. Requirements and Caveats¶](#32271-requirements-and-caveats%c2%b6)
+      - [3.22.7.1. Requirements and Caveats](#32271-requirements-and-caveats)
       - [3.22.7.2. Using the Registry Modules Method](#32272-using-the-registry-modules-method)
       - [3.22.7.3. Using the NPM Projects Code Method](#32273-using-the-npm-projects-code-method)
   - [3.23. Efficiently Fetching Source Files During a Build](#323-efficiently-fetching-source-files-during-a-build)
@@ -125,15 +125,15 @@
   - [3.26. Using an External SCM](#326-using-an-external-scm)
   - [3.27. Creating a Read-Only Root Filesystem](#327-creating-a-read-only-root-filesystem)
     - [3.27.1. Creating the Root Filesystem](#3271-creating-the-root-filesystem)
-    - [3.27.2. Post-Installation Scripts¶](#3272-post-installation-scripts%c2%b6)
+    - [3.27.2. Post-Installation Scripts](#3272-post-installation-scripts)
     - [3.27.3. Areas With Write Access](#3273-areas-with-write-access)
   - [3.28. Maintaining Build Output Quality](#328-maintaining-build-output-quality)
-    - [3.28.1. Enabling and Disabling Build History¶](#3281-enabling-and-disabling-build-history%c2%b6)
-    - [3.28.2. Understanding What the Build History Contains¶](#3282-understanding-what-the-build-history-contains%c2%b6)
-      - [3.28.2.1. Build History Package Information¶](#32821-build-history-package-information%c2%b6)
+    - [3.28.1. Enabling and Disabling Build History](#3281-enabling-and-disabling-build-history)
+    - [3.28.2. Understanding What the Build History Contains](#3282-understanding-what-the-build-history-contains)
+      - [3.28.2.1. Build History Package Information](#32821-build-history-package-information)
       - [3.28.2.2. Build History Image Information](#32822-build-history-image-information)
       - [3.28.2.3. Using Build History to Gather Image Information Only](#32823-using-build-history-to-gather-image-information-only)
-      - [3.28.2.4. Build History SDK Information¶](#32824-build-history-sdk-information%c2%b6)
+      - [3.28.2.4. Build History SDK Information](#32824-build-history-sdk-information)
       - [3.28.2.5. Examining Build History Information](#32825-examining-build-history-information)
   - [3.29. Performing Automated Runtime Testing](#329-performing-automated-runtime-testing)
     - [3.29.1. Enabling Tests](#3291-enabling-tests)
@@ -143,60 +143,60 @@
       - [3.29.1.4. Power Control](#32914-power-control)
       - [3.29.1.5. Serial Console Connection](#32915-serial-console-connection)
     - [3.29.2. Running Tests](#3292-running-tests)
-    - [3.29.3. Exporting Tests¶](#3293-exporting-tests%c2%b6)
-    - [3.29.4. Writing New Tests¶](#3294-writing-new-tests%c2%b6)
-      - [3.29.4.1. Class Methods¶](#32941-class-methods%c2%b6)
-      - [3.29.4.2. Class Attributes¶](#32942-class-attributes%c2%b6)
-      - [3.29.4.3. Instance Attributes¶](#32943-instance-attributes%c2%b6)
-    - [3.29.5. Installing Packages in the DUT Without the Package Manager¶](#3295-installing-packages-in-the-dut-without-the-package-manager%c2%b6)
-  - [3.30. Debugging Tools and Techniques¶](#330-debugging-tools-and-techniques%c2%b6)
-    - [3.30.1. Viewing Logs from Failed Tasks¶](#3301-viewing-logs-from-failed-tasks%c2%b6)
-    - [3.30.2. Viewing Variable Values¶](#3302-viewing-variable-values%c2%b6)
-    - [3.30.3. Viewing Package Information with oe-pkgdata-util¶](#3303-viewing-package-information-with-oe-pkgdata-util%c2%b6)
-    - [3.30.4. Viewing Dependencies Between Recipes and Tasks¶](#3304-viewing-dependencies-between-recipes-and-tasks%c2%b6)
-    - [3.30.5. Viewing Task Variable Dependencies¶](#3305-viewing-task-variable-dependencies%c2%b6)
-    - [3.30.6. Viewing Metadata Used to Create the Input Signature of a Shared State Task¶](#3306-viewing-metadata-used-to-create-the-input-signature-of-a-shared-state-task%c2%b6)
-    - [3.30.7. Invalidating Shared State to Force a Task to Run¶](#3307-invalidating-shared-state-to-force-a-task-to-run%c2%b6)
-    - [3.30.8. Running Specific Tasks¶](#3308-running-specific-tasks%c2%b6)
-    - [3.30.9. General BitBake Problems¶](#3309-general-bitbake-problems%c2%b6)
-    - [3.30.10. Building with No Dependencies¶](#33010-building-with-no-dependencies%c2%b6)
-    - [3.30.11. Recipe Logging Mechanisms¶](#33011-recipe-logging-mechanisms%c2%b6)
-      - [3.30.11.1. Logging With Python¶](#330111-logging-with-python%c2%b6)
-      - [3.30.11.2. Logging With Bash¶](#330112-logging-with-bash%c2%b6)
-    - [3.30.12. Debugging Parallel Make Races¶](#33012-debugging-parallel-make-races%c2%b6)
-      - [3.30.12.1. The Failure¶](#330121-the-failure%c2%b6)
-      - [3.30.12.2. Reproducing the Error¶](#330122-reproducing-the-error%c2%b6)
-      - [3.30.12.3. Creating a Patch for the Fix¶](#330123-creating-a-patch-for-the-fix%c2%b6)
-      - [3.30.12.4. Testing the Build¶](#330124-testing-the-build%c2%b6)
-    - [3.30.13. Debugging With the GNU Project Debugger (GDB) Remotely¶](#33013-debugging-with-the-gnu-project-debugger-gdb-remotely%c2%b6)
-    - [3.30.14. Debugging with the GNU Project Debugger (GDB) on the Target¶](#33014-debugging-with-the-gnu-project-debugger-gdb-on-the-target%c2%b6)
-    - [3.30.15. Other Debugging Tips¶](#33015-other-debugging-tips%c2%b6)
-  - [3.31. Making Changes to the Yocto Project¶](#331-making-changes-to-the-yocto-project%c2%b6)
-    - [3.31.1. Submitting a Defect Against the Yocto Project¶](#3311-submitting-a-defect-against-the-yocto-project%c2%b6)
-    - [3.31.2. Submitting a Change to the Yocto Project¶](#3312-submitting-a-change-to-the-yocto-project%c2%b6)
-      - [3.31.2.1. Using Scripts to Push a Change Upstream and Request a Pull¶](#33121-using-scripts-to-push-a-change-upstream-and-request-a-pull%c2%b6)
-      - [3.31.2.2. Using Email to Submit a Patch¶](#33122-using-email-to-submit-a-patch%c2%b6)
-  - [3.32. Working With Licenses¶](#332-working-with-licenses%c2%b6)
-    - [3.32.1. Tracking License Changes¶](#3321-tracking-license-changes%c2%b6)
-      - [3.32.1.1. Specifying the LIC_FILES_CHKSUM Variable¶](#33211-specifying-the-licfileschksum-variable%c2%b6)
-      - [3.32.1.2. Explanation of Syntax¶](#33212-explanation-of-syntax%c2%b6)
-    - [3.32.2. Enabling Commercially Licensed Recipes¶](#3322-enabling-commercially-licensed-recipes%c2%b6)
-      - [3.32.2.1. License Flag Matching¶](#33221-license-flag-matching%c2%b6)
-      - [3.32.2.2. Other Variables Related to Commercial Licenses¶](#33222-other-variables-related-to-commercial-licenses%c2%b6)
-    - [3.32.3. Maintaining Open Source License Compliance During Your Product's Lifecycle¶](#3323-maintaining-open-source-license-compliance-during-your-products-lifecycle%c2%b6)
-      - [3.32.3.1. Providing the Source Code¶](#33231-providing-the-source-code%c2%b6)
-      - [3.32.3.2. Providing License Text¶](#33232-providing-license-text%c2%b6)
-      - [3.32.3.3. Providing Compilation Scripts and Source Code Modifications¶](#33233-providing-compilation-scripts-and-source-code-modifications%c2%b6)
-    - [3.32.4. Copying Licenses that Do Not Exist¶](#3324-copying-licenses-that-do-not-exist%c2%b6)
-  - [3.33. Using the Error Reporting Tool¶](#333-using-the-error-reporting-tool%c2%b6)
-    - [3.33.1. Enabling and Using the Tool¶](#3331-enabling-and-using-the-tool%c2%b6)
-    - [3.33.2. Disabling the Tool¶](#3332-disabling-the-tool%c2%b6)
-    - [3.33.3. Setting Up Your Own Error Reporting Server¶](#3333-setting-up-your-own-error-reporting-server%c2%b6)
-  - [3.34. Using Wayland and Weston¶](#334-using-wayland-and-weston%c2%b6)
-    - [3.34.1. Enabling Wayland in an Image¶](#3341-enabling-wayland-in-an-image%c2%b6)
-      - [3.34.1.1. Building¶](#33411-building%c2%b6)
-      - [3.34.1.2. Installing¶](#33412-installing%c2%b6)
-    - [3.34.2. Running Weston¶](#3342-running-weston%c2%b6)
+    - [3.29.3. Exporting Tests](#3293-exporting-tests)
+    - [3.29.4. Writing New Tests](#3294-writing-new-tests)
+      - [3.29.4.1. Class Methods](#32941-class-methods)
+      - [3.29.4.2. Class Attributes](#32942-class-attributes)
+      - [3.29.4.3. Instance Attributes](#32943-instance-attributes)
+    - [3.29.5. Installing Packages in the DUT Without the Package Manager](#3295-installing-packages-in-the-dut-without-the-package-manager)
+  - [3.30. Debugging Tools and Techniques](#330-debugging-tools-and-techniques)
+    - [3.30.1. Viewing Logs from Failed Tasks](#3301-viewing-logs-from-failed-tasks)
+    - [3.30.2. Viewing Variable Values](#3302-viewing-variable-values)
+    - [3.30.3. Viewing Package Information with oe-pkgdata-util](#3303-viewing-package-information-with-oe-pkgdata-util)
+    - [3.30.4. Viewing Dependencies Between Recipes and Tasks](#3304-viewing-dependencies-between-recipes-and-tasks)
+    - [3.30.5. Viewing Task Variable Dependencies](#3305-viewing-task-variable-dependencies)
+    - [3.30.6. Viewing Metadata Used to Create the Input Signature of a Shared State Task](#3306-viewing-metadata-used-to-create-the-input-signature-of-a-shared-state-task)
+    - [3.30.7. Invalidating Shared State to Force a Task to Run](#3307-invalidating-shared-state-to-force-a-task-to-run)
+    - [3.30.8. Running Specific Tasks](#3308-running-specific-tasks)
+    - [3.30.9. General BitBake Problems](#3309-general-bitbake-problems)
+    - [3.30.10. Building with No Dependencies](#33010-building-with-no-dependencies)
+    - [3.30.11. Recipe Logging Mechanisms](#33011-recipe-logging-mechanisms)
+      - [3.30.11.1. Logging With Python](#330111-logging-with-python)
+      - [3.30.11.2. Logging With Bash](#330112-logging-with-bash)
+    - [3.30.12. Debugging Parallel Make Races](#33012-debugging-parallel-make-races)
+      - [3.30.12.1. The Failure](#330121-the-failure)
+      - [3.30.12.2. Reproducing the Error](#330122-reproducing-the-error)
+      - [3.30.12.3. Creating a Patch for the Fix](#330123-creating-a-patch-for-the-fix)
+      - [3.30.12.4. Testing the Build](#330124-testing-the-build)
+    - [3.30.13. Debugging With the GNU Project Debugger (GDB) Remotely](#33013-debugging-with-the-gnu-project-debugger-gdb-remotely)
+    - [3.30.14. Debugging with the GNU Project Debugger (GDB) on the Target](#33014-debugging-with-the-gnu-project-debugger-gdb-on-the-target)
+    - [3.30.15. Other Debugging Tips](#33015-other-debugging-tips)
+  - [3.31. Making Changes to the Yocto Project](#331-making-changes-to-the-yocto-project)
+    - [3.31.1. Submitting a Defect Against the Yocto Project](#3311-submitting-a-defect-against-the-yocto-project)
+    - [3.31.2. Submitting a Change to the Yocto Project](#3312-submitting-a-change-to-the-yocto-project)
+      - [3.31.2.1. Using Scripts to Push a Change Upstream and Request a Pull](#33121-using-scripts-to-push-a-change-upstream-and-request-a-pull)
+      - [3.31.2.2. Using Email to Submit a Patch](#33122-using-email-to-submit-a-patch)
+  - [3.32. Working With Licenses](#332-working-with-licenses)
+    - [3.32.1. Tracking License Changes](#3321-tracking-license-changes)
+      - [3.32.1.1. Specifying the `LIC_FILES_CHKSUM` Variable](#33211-specifying-the-licfileschksum-variable)
+      - [3.32.1.2. Explanation of Syntax](#33212-explanation-of-syntax)
+    - [3.32.2. Enabling Commercially Licensed Recipes](#3322-enabling-commercially-licensed-recipes)
+      - [3.32.2.1. License Flag Matching](#33221-license-flag-matching)
+      - [3.32.2.2. Other Variables Related to Commercial Licenses](#33222-other-variables-related-to-commercial-licenses)
+    - [3.32.3. Maintaining Open Source License Compliance During Your Product's Lifecycle](#3323-maintaining-open-source-license-compliance-during-your-products-lifecycle)
+      - [3.32.3.1. Providing the Source Code](#33231-providing-the-source-code)
+      - [3.32.3.2. Providing License Text](#33232-providing-license-text)
+      - [3.32.3.3. Providing Compilation Scripts and Source Code Modifications](#33233-providing-compilation-scripts-and-source-code-modifications)
+    - [3.32.4. Copying Licenses that Do Not Exist](#3324-copying-licenses-that-do-not-exist)
+  - [3.33. Using the Error Reporting Tool](#333-using-the-error-reporting-tool)
+    - [3.33.1. Enabling and Using the Tool](#3331-enabling-and-using-the-tool)
+    - [3.33.2. Disabling the Tool](#3332-disabling-the-tool)
+    - [3.33.3. Setting Up Your Own Error Reporting Server](#3333-setting-up-your-own-error-reporting-server)
+  - [3.34. Using Wayland and Weston](#334-using-wayland-and-weston)
+    - [3.34.1. Enabling Wayland in an Image](#3341-enabling-wayland-in-an-image)
+      - [3.34.1.1. Building](#33411-building)
+      - [3.34.1.2. Installing](#33412-installing)
+    - [3.34.2. Running Weston](#3342-running-weston)
 
 This chapter describes fundamental procedures such as creating layers, adding new software packages, extending or customizing images, porting work to new hardware (adding a new machine), and so forth. You will find that the procedures documented here occur often in the development cycle using the Yocto Project.
 
@@ -2959,7 +2959,7 @@ Continuing with the example, you can now directly `dd` the image to a USB stick,
      $ sudo eject /dev/sdb
 ```                    
 
-#### 3.16.7.3 Using a Modified Kickstart File and Running in Raw Mode¶
+#### 3.16.7.3 Using a Modified Kickstart File and Running in Raw Mode
 This next example manually specifies each build artifact (runs in Raw Mode) and uses a modified kickstart file. The example also uses the `-o` option to cause Wic to create the output somewhere other than the default output directory, which is the current directory:
 ```
      $ wic create /home/stephano/my_yocto/test.wks -o /home/stephano/testwic \
@@ -3135,7 +3135,7 @@ Use the following line in your ``local.conf`` file or in your custom distributio
 ```
      require conf/distro/include/security_flags.inc
 ```
-### 3.18.3. Considerations Specific to the OpenEmbedded Build System¶
+### 3.18.3. Considerations Specific to the OpenEmbedded Build System
 You can take some steps that are specific to the OpenEmbedded build system to make your images more secure:
 
 + Ensure "debug-tweaks" is not one of your selected `IMAGE_FEATURES`. When creating a new project, the default is to provide you with an initial ``local.conf`` file that enables this feature using the `EXTRA_IMAGE_FEATURES` variable with the line:
@@ -3153,10 +3153,10 @@ You can take some steps that are specific to the OpenEmbedded build system to ma
 
 + Consider enabling a Mandatory Access Control (MAC) framework such as SMACK or SELinux and tuning it appropriately for your device's usage. You can find more information in the `meta-selinux` layer.
 
-### 3.18.4. Tools for Hardening Your Image¶
+### 3.18.4. Tools for Hardening Your Image
 The Yocto Project provides tools for making your image more secure. You can find these tools in the `meta-security` layer of the Yocto Project Source Repositories.
 
-## 3.19. Creating Your Own Distribution¶
+## 3.19. Creating Your Own Distribution
 When you build an image using the Yocto Project and do not alter any distribution Metadata, you are creating a Poky distribution. If you wish to gain more control over package alternative selections, compile-time options, and other low-level configurations, you can create your own distribution.
 
 To create your own distribution, the basic steps consist of creating your own distribution layer, creating your own distribution configuration file, and then adding any needed code and Metadata to the layer. The following steps provide some more detail:
@@ -3200,7 +3200,7 @@ To create your own distribution, the basic steps consist of creating your own di
 
      + Add any other append files to make custom changes that are specific to individual recipes.
 
-## 3.20. Creating a Custom Template Configuration Directory¶
+## 3.20. Creating a Custom Template Configuration Directory
 If you are producing your own customized version of the build system for use by other users, you might want to customize the message shown by the setup script or you might want to change the template configuration files (i.e. `local.conf` and `bblayers.conf`) that are created in a new build directory.
 
 The OpenEmbedded build system uses the environment variable TEMPLATECONF to locate the directory from which it gathers configuration information that ultimately ends up in the Build Directory conf directory. By default, TEMPLATECONF is set as follows in the poky repository:
@@ -3264,7 +3264,7 @@ The following list introduces variables you can use to prevent packages from bei
 
 + PACKAGE_EXCLUDE: Use this variable to prevent specific packages from being installed regardless of whether they are "recommended-only" or not. You need to realize that the build process could fail with an error when you prevent the installation of a package whose presence is required by an installed package.
 
-### 3.22.2. Incrementing a Package Version¶
+### 3.22.2. Incrementing a Package Version
 This section provides some background on how binary package versioning is accomplished and presents some of the services, variables, and terminology involved.
 
 In order to understand binary package versioning, you need to consider the following:
@@ -3296,7 +3296,7 @@ Given a primary challenge of any build system and its users is how to maintain a
 
 The following three sections provide related information on the PR Service, the manual method for "bumping" PR and/or PV, and on how to ensure binary package revisioning remains linear.
 
-#### 3.22.2.1. Working With a PR Service¶
+#### 3.22.2.1. Working With a PR Service
 As mentioned, attempting to maintain revision numbers in the Metadata is error prone, inaccurate, and causes problems for people submitting recipes. Conversely, the PR Service automatically generates increasing numbers, particularly the revision field, which removes the human element.
 
 > Note  
@@ -3349,7 +3349,7 @@ Usually, version increases occur only to binary packages. However, if for some r
 
 Binary package version numbering strives to follow the Debian Version Field Policy Guidelines. These guidelines define how versions are compared and what "increasing" a version means.
 
-#### 3.22.2.3. Automatically Incrementing a Package Version Number¶
+#### 3.22.2.3. Automatically Incrementing a Package Version Number
 When fetching a repository, BitBake uses the SRCREV variable to determine the specific source code revision from which to build. You set the SRCREV variable to AUTOREV to cause the OpenEmbedded build system to automatically use the latest revision of the software:
 ```
      SRCREV = "${AUTOREV}"
@@ -3376,7 +3376,7 @@ If PR Service is not enabled, the build system replaces the AUTOINC placeholder 
 ```                            
 In summary, the OpenEmbedded build system does not track the history of binary package versions for this purpose. AUTOINC, in this case, is comparable to PR. If PR server is not enabled, AUTOINC in the package version is simply replaced by "0". If PR server is enabled, the build system keeps track of the package versions and bumps the number when the package revision changes.
 
-### 3.22.3. Handling Optional Module Packaging¶
+### 3.22.3. Handling Optional Module Packaging
 Many pieces of software split functionality into optional modules (or plug-ins) and the plug-ins that are built might depend on configuration options. To avoid having to duplicate the logic that determines what modules are available in your recipe or to avoid having to package each module by hand, the OpenEmbedded build system provides functionality to handle module packaging dynamically.
 
 To handle optional module packaging, you need to do two things:
@@ -3385,7 +3385,7 @@ To handle optional module packaging, you need to do two things:
 
 + Ensure that any dependencies on optional modules from other recipes are satisfied by your recipe.
 
-#### 3.22.3.1. Making Sure the Packaging is Done¶
+#### 3.22.3.1. Making Sure the Packaging is Done
 To ensure the module packaging actually gets done, you use the do_split_packages function within the populate_packages Python function in your recipe. The do_split_packages function searches for a pattern of files or directories under a specified path and creates a package for each one it finds by appending to the PACKAGES variable and setting the appropriate values for FILES_packagename, RDEPENDS_packagename, DESCRIPTION_packagename, and so forth. Here is an example from the lighttpd recipe:
 ```
      python populate_packages_prepend () {
@@ -3550,7 +3550,7 @@ You can use the `PACKAGE_FEED_ARCHS`, `PACKAGE_FEED_BASE_PATHS`, and `PACKAGE_FE
 
 When your build is complete, your packages reside in the `${TMPDIR}/deploy/packageformat` directory. For example, if `${TMPDIR}` is tmp and your selected package type is RPM, then your RPM packages are available in `tmp/deploy/rpm`.
 
-#### 3.22.4.2. Host or Server Machine Setup¶
+#### 3.22.4.2. Host or Server Machine Setup
 Although other protocols are possible, a server using HTTP typically serves packages. If you want to use HTTP, then set up and configure a web server such as Apache 2, lighttpd, or SimpleHTTPServer on the machine serving the packages.
 
 To keep things simple, this section describes how to set up a SimpleHTTPServer web server to share package feeds from the developer's machine. Although this server might not be the best for a production environment, the setup is simple and straight forward. Should you want to use a different server more suited for production (e.g. Apache 2, Lighttpd, or Nginx), take the appropriate steps to do so.
@@ -3638,7 +3638,7 @@ In order to add security to RPM packages used during a build, you can take steps
 
 This section describes how to sign RPM packages during a build and how to use signed package feeds (repositories) when doing a build.
 
-#### 3.22.5.1. Signing RPM Packages¶
+#### 3.22.5.1. Signing RPM Packages
 To enable signing RPM packages, you must set up the following configurations in either your `local.config` or `distro.config` file:
 ```
      # Inherit sign_rpm.bbclass to enable signing functionality
@@ -3742,7 +3742,7 @@ Two workflows exist that allow you to create NPM packages using `devtool`: the N
 
 Additionally, some requirements and caveats exist.
 
-#### 3.22.7.1. Requirements and Caveats¶
+#### 3.22.7.1. Requirements and Caveats
 You need to be aware of the following before using `devtool` to create NPM packages:
 
 + Of the two methods that you can use `devtool` to create NPM packages, the registry approach is slightly simpler. However, you might consider the project approach because you do not have to publish your module in the NPM registry (`npm-registry`), which is NPM's public registry.
@@ -4012,7 +4012,7 @@ or
 ```                
 For more information on how to use these variables, see the "Customizing Images Using Custom IMAGE_FEATURES and EXTRA_IMAGE_FEATURES" section. For information on the variables, see IMAGE_FEATURES and EXTRA_IMAGE_FEATURES.
 
-### 3.27.2. Post-Installation Scripts¶
+### 3.27.2. Post-Installation Scripts
 It is very important that you make sure all post-Installation (`pkg_postinst`) scripts for packages that are installed into the image can be run at the time when the root filesystem is created during the build on the host system. These scripts cannot attempt to run during first-boot on the target device. With the "read-only-rootfs" feature enabled, the build system checks during root filesystem creation to make sure all post-installation scripts succeed. If any of these scripts still need to be run after the root filesystem is created, the build immediately fails. These build-time checks ensure that the build fails rather than the target device fails later during its initial boot operation.
 
 Most of the common post-installation scripts generated by the build system for the out-of-the-box Yocto Project are engineered so that they can run during root filesystem creation (e.g. post-installation scripts for caching fonts). However, if you create and add custom scripts, you need to be sure they can be run during this file system creation.
@@ -4041,7 +4041,7 @@ The remainder of this section describes the following:
 
 + How to examine the build history from both a command-line and web interface
 
-### 3.28.1. Enabling and Disabling Build History¶
+### 3.28.1. Enabling and Disabling Build History
 Build history is disabled by default. To enable it, add the following INHERIT statement and set the BUILDHISTORY_COMMIT variable to "1" at the end of your `conf/local.conf` file found in the Build Directory:
 ```
      INHERIT += "buildhistory"
@@ -4054,14 +4054,14 @@ Enabling build history as previously described causes the OpenEmbedded build sys
 
 You can disable build history by removing the previous statements from your conf/`local.conf` file.
 
-### 3.28.2. Understanding What the Build History Contains¶
+### 3.28.2. Understanding What the Build History Contains
 Build history information is kept in `${TOPDIR}/buildhistory` in the Build Directory as defined by the `BUILDHISTORY_DIR` variable. The following is an example abbreviated listing:
 
 ![abbreviate list](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/buildhistory.png)
 
 At the top level, a metadata-revs file exists that lists the revisions of the repositories for the enabled layers when the build was produced. The rest of the data splits into separate `packages`, `images` and `sdk` directories, the contents of which are described as follows.
 
-#### 3.28.2.1. Build History Package Information¶
+#### 3.28.2.1. Build History Package Information
 The history for each package contains a text file that has name-value pairs with information about the package. For example, `buildhistory/packages/i586-poky-linux/busybox/busybox/latest` contains the following:
 ```
      PV = 1.22.1
@@ -4182,7 +4182,7 @@ As you can see, build history produces image information, including dependency g
 ```                    
 Here, you set the BUILDHISTORY_FEATURES variable to use the image feature only.
 
-#### 3.28.2.4. Build History SDK Information¶
+#### 3.28.2.4. Build History SDK Information
 Build history collects similar information on the contents of SDKs (e.g. `bitbake -c populate_sdk imagename`) as compared to information it collects for images. Furthermore, this information differs depending on whether an extensible or standard SDK is being produced.
 
 The following list shows the files produced for SDKs:
@@ -4416,11 +4416,11 @@ If you have no hardware to automatically perform power control but still wish to
 #### 3.29.1.5. Serial Console Connection
 For test target classes requiring a serial console to interact with the bootloader (e.g. BeagleBoneTarget, EdgeRouterTarget, and GrubTarget), you need to specify a command to use to connect to the serial console of the target machine by using the TEST_SERIALCONTROL_CMD variable and optionally the TEST_SERIALCONTROL_EXTRA_ARGS variable.
 
-These cases could be a serial terminal program if the machine is connected to a local serial port, or a telnet or ssh command connecting to a remote console server. Regardless of the case, the command simply needs to connect to the serial console and forward that connection to standard input and output as any normal terminal program does. For example, to use the picocom terminal program on serial device `/dev/ttyUSB0` at 115200bps, you would set the variable as follows:
+These cases could be a serial terminal program if the machine is connected to a local serial port, or a `telnet` or `ssh` command connecting to a remote console server. Regardless of the case, the command simply needs to connect to the serial console and forward that connection to standard input and output as any normal terminal program does. For example, to use the picocom terminal program on serial device `/dev/ttyUSB0` at 115200bps, you would set the variable as follows:
 ```
      TEST_SERIALCONTROL_CMD = "picocom /dev/ttyUSB0 -b 115200"
 ```                    
-For local devices where the serial port device disappears when the device reboots, an additional "serdevtry" wrapper script is provided. To use this wrapper, simply prefix the terminal command with ${COREBASE}/scripts/contrib/serdevtry:
+For local devices where the serial port device disappears when the device reboots, an additional "serdevtry" wrapper script is provided. To use this wrapper, simply prefix the terminal command with `${COREBASE}/scripts/contrib/serdevtry`:
 ```
      TEST_SERIALCONTROL_CMD = "${COREBASE}/scripts/contrib/serdevtry picocom -b
 115200 /dev/ttyUSB0"
@@ -4428,152 +4428,156 @@ For local devices where the serial port device disappears when the device reboot
 ### 3.29.2. Running Tests
 You can start the tests automatically or manually:
 
-Automatically running tests: To run the tests automatically after the OpenEmbedded build system successfully creates an image, first set the TESTIMAGE_AUTO variable to "1" in your `local.conf` file in the Build Directory:
-
++ ***Automatically running tests***: To run the tests automatically after the OpenEmbedded build system successfully creates an image, first set the TESTIMAGE_AUTO variable to "1" in your `local.conf` file in the Build Directory:
+     ```
      TESTIMAGE_AUTO = "1"
-                        
-Next, build your image. If the image successfully builds, the tests run:
-
+     ```                   
+     Next, build your image. If the image successfully builds, the tests run:
+     ```
      bitbake core-image-sato
-                        
-Manually running tests: To manually run the tests, first globally inherit the testimage class by editing your `local.conf` file:
-
+     ```                   
++ ***Manually running tests***: To manually run the tests, first globally inherit the testimage class by editing your `local.conf` file:
+     ```
     INHERIT += "testimage"
-                        
-Next, use BitBake to run the tests:
-
+     ```                   
+     Next, use BitBake to run the tests:
+     ```
      bitbake -c testimage image
-                        
-All test files reside in meta/lib/oeqa/runtime in the Source Directory. A test name maps directly to a Python module. Each test module may contain a number of individual tests. Tests are usually grouped together by the area tested (e.g tests for systemd reside in meta/lib/oeqa/runtime/systemd.py).
+     ```                   
+All test files reside in `meta/lib/oeqa/runtime` in the Source Directory. A test name maps directly to a Python module. Each test module may contain a number of individual tests. Tests are usually grouped together by the area tested (e.g tests for systemd reside in `meta/lib/oeqa/runtime/systemd.py`).
 
-You can add tests to any layer provided you place them in the proper area and you extend BBPATH in the `local.conf` file as normal. Be sure that tests reside in layer/lib/oeqa/runtime.
+You can add tests to any layer provided you place them in the proper area and you extend BBPATH in the `local.conf` file as normal. Be sure that tests reside in `layer/lib/oeqa/runtime`.
 
-Note
-Be sure that module names do not collide with module names used in the default set of test modules in meta/lib/oeqa/runtime.
-You can change the set of tests run by appending or overriding TEST_SUITES variable in `local.conf`. Each name in TEST_SUITES represents a required test for the image. Test modules named within TEST_SUITES cannot be skipped even if a test is not suitable for an image (e.g. running the RPM tests on an image without rpm). Appending "auto" to TEST_SUITES causes the build system to try to run all tests that are suitable for the image (i.e. each test module may elect to skip itself).
+> Note  
+> Be sure that module names do not collide with module names used in the default set of test modules in `meta/lib/oeqa/runtime`.
 
-The order you list tests in TEST_SUITES is important and influences test dependencies. Consequently, tests that depend on other tests should be added after the test on which they depend. For example, since the ssh test depends on the ping test, "ssh" needs to come after "ping" in the list. The test class provides no re-ordering or dependency handling.
+You can change the set of tests run by appending or overriding TEST_SUITES variable in `local.conf`. Each name in TEST_SUITES represents a required test for the image. Test modules named within TEST_SUITES cannot be skipped even if a test is not suitable for an image (e.g. running the RPM tests on an image without `rpm`). Appending "auto" to TEST_SUITES causes the build system to try to run all tests that are suitable for the image (i.e. each test module may elect to skip itself).
 
-Note
-Each module can have multiple classes with multiple test methods. And, Python unittest rules apply.
+The order you list tests in TEST_SUITES is important and influences test dependencies. Consequently, tests that depend on other tests should be added after the test on which they depend. For example, since the `ssh` test depends on the `ping` test, "ssh" needs to come after "ping" in the list. The test class provides no re-ordering or dependency handling.
+
+> Note  
+> Each module can have multiple classes with multiple test methods. And, Python unittest rules apply.
+
 Here are some things to keep in mind when running tests:
 
-The default tests for the image are defined as:
-
++ The default tests for the image are defined as:
+```
      DEFAULT_TEST_SUITES_pn-image = "ping ssh df connman syslog xorg scp vnc date rpm dnf dmesg"
-                        
-Add your own test to the list of the by using the following:
-
+```                        
++ Add your own test to the list of the by using the following:
+```
      TEST_SUITES_append = " mytest"
-                        
-Run a specific list of tests as follows:
-
+```                        
++ Run a specific list of tests as follows:
+```
      TEST_SUITES = "test1 test2 test3"
-                        
+```                        
 Remember, order is important. Be sure to place a test that is dependent on another test later in the order.
 
-### 3.29.3. Exporting Tests¶
+### 3.29.3. Exporting Tests
 You can export tests so that they can run independently of the build system. Exporting tests is required if you want to be able to hand the test execution off to a scheduler. You can only export tests that are defined in TEST_SUITES.
 
 If your image is already built, make sure the following are set in your `local.conf` file:
-
+```
      INHERIT +="testexport"
      TEST_TARGET_IP = "IP-address-for-the-test-target"
      TEST_SERVER_IP = "IP-address-for-the-test-server"
-                
+```                
 You can then export the tests with the following BitBake command form:
-
+```
      $ bitbake image -c testexport
-                
+```                
 Exporting the tests places them in the Build Directory in tmp/testexport/image, which is controlled by the TEST_EXPORT_DIR variable.
 
 You can now run the tests outside of the build environment:
-
+```
      $ cd tmp/testexport/image
      $ ./runexported.py testdata.json
-                
+```                
 Here is a complete example that shows IP addresses and uses the core-image-sato image:
-
+```
      INHERIT +="testexport"
      TEST_TARGET_IP = "192.168.7.2"
      TEST_SERVER_IP = "192.168.7.1"
-                
+```                
 Use BitBake to export the tests:
-
+```
      $ bitbake core-image-sato -c testexport
-                
+```                
 Run the tests outside of the build environment using the following:
-
+```
      $ cd tmp/testexport/core-image-sato
      $ ./runexported.py testdata.json
-
-### 3.29.4. Writing New Tests¶
+```
+### 3.29.4. Writing New Tests
 As mentioned previously, all new test files need to be in the proper place for the build system to find them. New tests for additional functionality outside of the core should be added to the layer that adds the functionality, in layer/lib/oeqa/runtime (as long as BBPATH is extended in the layer's `layer.conf` file as normal). Just remember the following:
 
-Filenames need to map directly to test (module) names.
++ Filenames need to map directly to test (module) names.
 
-Do not use module names that collide with existing core tests.
++ Do not use module names that collide with existing core tests.
 
-Minimally, an empty __init__.py file must exist in the runtime directory.
++ Minimally, an empty `__init__.py` file must exist in the runtime directory.
 
-To create a new test, start by copying an existing module (e.g. syslog.py or gcc.py are good ones to use). Test modules can use code from meta/lib/oeqa/utils, which are helper classes.
+To create a new test, start by copying an existing module (e.g. `syslog.py` or `gcc.py` are good ones to use). Test modules can use code from `meta/lib/oeqa/utils`, which are helper classes.
 
-Note
-Structure shell commands such that you rely on them and they return a single code for success. Be aware that sometimes you will need to parse the output. See the df.py and date.py modules for examples.
-You will notice that all test classes inherit oeRuntimeTest, which is found in meta/lib/oetest.py. This base class offers some helper attributes, which are described in the following sections:
+> Note  
+> Structure shell commands such that you rely on them and they return a single code for success. Be aware that sometimes you will need to parse the output. See the `df.py` and `date.py` modules for examples.
 
-#### 3.29.4.1. Class Methods¶
+You will notice that all test classes inherit `oeRuntimeTest`, which is found in `meta/lib/oetest.py`. This base class offers some helper attributes, which are described in the following sections:
+
+#### 3.29.4.1. Class Methods
 Class methods are as follows:
 
-hasPackage(pkg): Returns "True" if pkg is in the installed package list of the image, which is based on the manifest file that is generated during the do_rootfs task.
++ ***hasPackage(pkg)***: Returns "True" if `pkg` is in the installed package list of the image, which is based on the manifest file that is generated during the `do_rootfs` task.
 
-hasFeature(feature): Returns "True" if the feature is in IMAGE_FEATURES or DISTRO_FEATURES.
++ ***hasFeature(feature)***: Returns "True" if the feature is in IMAGE_FEATURES or DISTRO_FEATURES.
 
-#### 3.29.4.2. Class Attributes¶
+#### 3.29.4.2. Class Attributes
 Class attributes are as follows:
 
-pscmd: Equals "ps -ef" if procps is installed in the image. Otherwise, pscmd equals "ps" (busybox).
++ pscmd: Equals "ps -ef" if procps is installed in the image. Otherwise, pscmd equals "ps" (busybox).
 
-tc: The called test context, which gives access to the following attributes:
++ tc: The called test context, which gives access to the following attributes:
 
-d: The BitBake datastore, which allows you to use stuff such as oeRuntimeTest.tc.d.getVar("VIRTUAL-RUNTIME_init_manager").
+     + d: The BitBake datastore, which allows you to use stuff such as oeRuntimeTest.tc.d.getVar("VIRTUAL-RUNTIME_init_manager").
 
-testslist and testsrequired: Used internally. The tests do not need these.
+     + testslist and testsrequired: Used internally. The tests do not need these.
 
-filesdir: The absolute path to meta/lib/oeqa/runtime/files, which contains helper files for tests meant for copying on the target such as small files written in C for compilation.
+     + filesdir: The absolute path to `meta/lib/oeqa/runtime/files`, which contains helper files for tests meant for copying on the target such as small files written in C for compilation.
 
-target: The target controller object used to deploy and start an image on a particular target (e.g. QemuTarget, SimpleRemote, and SystemdbootTarget). Tests usually use the following:
+     + target: The target controller object used to deploy and start an image on a particular target (e.g. QemuTarget, SimpleRemote, and SystemdbootTarget). Tests usually use the following:
 
-ip: The target's IP address.
+          + ip: The target's IP address.
 
-server_ip: The host's IP address, which is usually used by the DNF test suite.
+          + server_ip: The host's IP address, which is usually used by the DNF test suite.
 
-run(cmd, timeout=None): The single, most used method. This command is a wrapper for: ssh root@host "cmd". The command returns a tuple: (status, output), which are what their names imply - the return code of "cmd" and whatever output it produces. The optional timeout argument represents the number of seconds the test should wait for "cmd" to return. If the argument is "None", the test uses the default instance's timeout period, which is 300 seconds. If the argument is "0", the test runs until the command returns.
+          + run(cmd, timeout=None): The single, most used method. This command is a wrapper for: ssh root@host "cmd". The command returns a tuple: (status, output), which are what their names imply - the return code of "cmd" and whatever output it produces. The optional timeout argument represents the number of seconds the test should wait for "cmd" to return. If the argument is "None", the test uses the default instance's timeout period, which is 300 seconds. If the argument is "0", the test runs until the command returns.
 
-copy_to(localpath, remotepath): scp localpath root@ip:remotepath.
+          + copy_to(localpath, remotepath): `scp localpath root@ip:remotepath`.
 
-copy_from(remotepath, localpath): scp root@host:remotepath localpath.
+          + copy_from(remotepath, localpath): `scp root@host:remotepath localpath`.
 
-#### 3.29.4.3. Instance Attributes¶
-A single instance attribute exists, which is target. The target instance attribute is identical to the class attribute of the same name, which is described in the previous section. This attribute exists as both an instance and class attribute so tests can use self.target.run(cmd) in instance methods instead of oeRuntimeTest.tc.target.run(cmd).
+#### 3.29.4.3. Instance Attributes
+A single instance attribute exists, which is target. The target instance attribute is identical to the class attribute of the same name, which is described in the previous section. This attribute exists as both an instance and class attribute so tests can use self.target.run(cmd) in instance methods instead of `oeRuntimeTest.tc.target.run(cmd)`.
 
-### 3.29.5. Installing Packages in the DUT Without the Package Manager¶
+### 3.29.5. Installing Packages in the DUT Without the Package Manager
 When a test requires a package built by BitBake, it is possible to install that package. Installing the package does not require a package manager be installed in the device under test (DUT). It does, however, require an SSH connection and the target must be using the sshcontrol class.
 
-Note
-This method uses scp to copy files from the host to the target, which causes permissions and special attributes to be lost.
+> Note  
+> This method uses `scp` to copy files from the host to the target, which causes permissions and special attributes to be lost.
+
 A JSON file is used to define the packages needed by a test. This file must be in the same path as the file used to define the tests. Furthermore, the filename must map directly to the test module name with a .json extension.
 
 The JSON file must include an object with the test name as keys of an object or an array. This object (or array of objects) uses the following data:
 
-"pkg" - A mandatory string that is the name of the package to be installed.
++ "pkg" - A mandatory string that is the name of the package to be installed.
 
-"rm" - An optional boolean, which defaults to "false", that specifies to remove the package after the test.
++ "rm" - An optional boolean, which defaults to "false", that specifies to remove the package after the test.
 
-"extract" - An optional boolean, which defaults to "false", that specifies if the package must be extracted from the package format. When set to "true", the package is not automatically installed into the DUT.
++ "extract" - An optional boolean, which defaults to "false", that specifies if the package must be extracted from the package format. When set to "true", the package is not automatically installed into the DUT.
 
 Following is an example JSON file that handles test "foo" installing package "bar" and test "foobar" installing packages "foo" and "bar". Once the test is complete, the packages are removed from the DUT.
-
+```json
      {
          "foo": {
              "pkg": "bar"
@@ -4589,159 +4593,162 @@ Following is an example JSON file that handles test "foo" installing package "ba
              }
          ]
      }
-                
-## 3.30. Debugging Tools and Techniques¶
+```                
+## 3.30. Debugging Tools and Techniques
 The exact method for debugging build failures depends on the nature of the problem and on the system's area from which the bug originates. Standard debugging practices such as comparison against the last known working version with examination of the changes and the re-application of steps to identify the one causing the problem are valid for the Yocto Project just as they are for any other system. Even though it is impossible to detail every possible potential failure, this section provides some general tips to aid in debugging given a variety of situations.
 
-Tip
-A useful feature for debugging is the error reporting tool. Configuring the Yocto Project to use this tool causes the OpenEmbedded build system to produce error reporting commands as part of the console output. You can enter the commands after the build completes to log error information into a common database, that can help you figure out what might be going wrong. For information on how to enable and use this feature, see the "Using the Error Reporting Tool" section.
+> Tip  
+> A useful feature for debugging is the error reporting tool. Configuring the Yocto Project to use this tool causes the OpenEmbedded build system to produce error reporting commands as part of the console output. You can enter the commands after the build completes to log error information into a common database, that can help you figure out what might be going wrong. For information on how to enable and use this feature, see the "Using the Error Reporting Tool" section.
+
 The following list shows the debugging topics in the remainder of this section:
 
-"Viewing Logs from Failed Tasks" describes how to find and view logs from tasks that failed during the build process.
++ "Viewing Logs from Failed Tasks" describes how to find and view logs from tasks that failed during the build process.
 
-"Viewing Variable Values" describes how to use the BitBake -e option to examine variable values after a recipe has been parsed.
++ "Viewing Variable Values" describes how to use the BitBake -e option to examine variable values after a recipe has been parsed.
 
-"Viewing Package Information with oe-pkgdata-util" describes how to use the oe-pkgdata-util utility to query PKGDATA_DIR and display package-related information for built packages.
++ "Viewing Package Information with oe-pkgdata-util" describes how to use the oe-pkgdata-util utility to query PKGDATA_DIR and display package-related information for built packages.
 
-"Viewing Dependencies Between Recipes and Tasks" describes how to use the BitBake -g option to display recipe dependency information used during the build.
++ "Viewing Dependencies Between Recipes and Tasks" describes how to use the BitBake -g option to display recipe dependency information used during the build.
 
-"Viewing Task Variable Dependencies" describes how to use the bitbake-dumpsig command in conjunction with key subdirectories in the Build Directory to determine variable dependencies.
++ "Viewing Task Variable Dependencies" describes how to use the bitbake-dumpsig command in conjunction with key subdirectories in the Build Directory to determine variable dependencies.
 
-"Running Specific Tasks" describes how to use several BitBake options (e.g. -c, -C, and -f) to run specific tasks in the build chain. It can be useful to run tasks "out-of-order" when trying isolate build issues.
++ "Running Specific Tasks" describes how to use several BitBake options (e.g. -c, -C, and -f) to run specific tasks in the build chain. It can be useful to run tasks "out-of-order" when trying isolate build issues.
 
-"General BitBake Problems" describes how to use BitBake's -D debug output option to reveal more about what BitBake is doing during the build.
++ "General BitBake Problems" describes how to use BitBake's -D debug output option to reveal more about what BitBake is doing during the build.
 
-"Building with No Dependencies" describes how to use the BitBake -b option to build a recipe while ignoring dependencies.
++ "Building with No Dependencies" describes how to use the BitBake -b option to build a recipe while ignoring dependencies.
 
-"Recipe Logging Mechanisms" describes how to use the many recipe logging functions to produce debugging output and report errors and warnings.
++ "Recipe Logging Mechanisms" describes how to use the many recipe logging functions to produce debugging output and report errors and warnings.
 
-"Debugging Parallel Make Races" describes how to debug situations where the build consists of several parts that are run simultaneously and when the output or result of one part is not ready for use with a different part of the build that depends on that output.
++ "Debugging Parallel Make Races" describes how to debug situations where the build consists of several parts that are run simultaneously and when the output or result of one part is not ready for use with a different part of the build that depends on that output.
 
-"Debugging With the GNU Project Debugger (GDB) Remotely" describes how to use GDB to allow you to examine running programs, which can help you fix problems.
++ "Debugging With the GNU Project Debugger (GDB) Remotely" describes how to use GDB to allow you to examine running programs, which can help you fix problems.
 
-"Debugging with the GNU Project Debugger (GDB) on the Target" describes how to use GDB directly on target hardware for debugging.
++ "Debugging with the GNU Project Debugger (GDB) on the Target" describes how to use GDB directly on target hardware for debugging.
 
-"Other Debugging Tips" describes miscellaneous debugging tips that can be useful.
++ "Other Debugging Tips" describes miscellaneous debugging tips that can be useful.
 
-### 3.30.1. Viewing Logs from Failed Tasks¶
-You can find the log for a task in the file ${WORKDIR}/temp/log.do_taskname. For example, the log for the do_compile task of the QEMU minimal image for the x86 machine (qemux86) might be in tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/temp/log.do_compile. To see the commands BitBake ran to generate a log, look at the corresponding run.do_taskname file in the same directory.
+### 3.30.1. Viewing Logs from Failed Tasks
+You can find the log for a task in the file `${WORKDIR}/temp/log.do_taskname`. For example, the log for the `do_compile` task of the QEMU minimal image for the x86 machine (qemux86) might be in `tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/temp/log.do_compile`. To see the commands BitBake ran to generate a log, look at the corresponding `run.do_taskname` file in the same directory.
 
-log.do_taskname and run.do_taskname are actually symbolic links to log.do_taskname.pid and log.run_taskname.pid, where pid is the PID the task had when it ran. The symlinks always point to the files corresponding to the most recent run.
+`log.do_taskname` and `run.do_taskname` are actually symbolic links to log.`do_taskname.pid` and `log.run_taskname.pid`, where pid is the PID the task had when it ran. The symlinks always point to the files corresponding to the most recent run.
 
-### 3.30.2. Viewing Variable Values¶
+### 3.30.2. Viewing Variable Values
 Sometimes you need to know the value of a variable as a result of BitBake's parsing step. This could be because some unexpected behavior occurred in your project. Perhaps an attempt to modify a variable did not work out as expected.
 
 BitBake's -e option is used to display variable values after parsing. The following command displays the variable values after the configuration files (i.e. `local.conf`, `bblayers.conf`, bitbake.conf and so forth) have been parsed:
-
+```
      $ bitbake -e
-                
+```                
 The following command displays variable values after a specific recipe has been parsed. The variables include those from the configuration as well:
-
+```
      $ bitbake -e recipename
-                
-Note
-Each recipe has its own private set of variables (datastore). Internally, after parsing the configuration, a copy of the resulting datastore is made prior to parsing each recipe. This copying implies that variables set in one recipe will not be visible to other recipes.
+```                
+> Note  
+> Each recipe has its own private set of variables (datastore). Internally, after parsing the configuration, a copy of the resulting datastore is made prior to parsing each recipe. This copying implies that variables set in one recipe will not be visible to other recipes.
 
 Likewise, each task within a recipe gets a private datastore based on the recipe datastore, which means that variables set within one task will not be visible to other tasks.
 
 In the output of bitbake -e, each variable is preceded by a description of how the variable got its value, including temporary values that were later overriden. This description also includes variable flags (varflags) set on the variable. The output can be very helpful during debugging.
 
 Variables that are exported to the environment are preceded by export in the output of bitbake -e. See the following example:
-
+```
      export CC="i586-poky-linux-gcc -m32 -march=i586 --sysroot=/home/ulf/poky/build/tmp/sysroots/qemux86"
-                
+```                
 In addition to variable values, the output of the bitbake -e and bitbake -e recipe commands includes the following information:
 
-The output starts with a tree listing all configuration files and classes included globally, recursively listing the files they include or inherit in turn. Much of the behavior of the OpenEmbedded build system (including the behavior of the normal recipe build tasks) is implemented in the base class and the classes it inherits, rather than being built into BitBake itself.
++ The output starts with a tree listing all configuration files and classes included globally, recursively listing the files they include or inherit in turn. Much of the behavior of the OpenEmbedded build system (including the behavior of the normal recipe build tasks) is implemented in the base class and the classes it inherits, rather than being built into BitBake itself.
 
-After the variable values, all functions appear in the output. For shell functions, variables referenced within the function body are expanded. If a function has been modified using overrides or using override-style operators like _append and _prepend, then the final assembled function body appears in the output.
++ After the variable values, all functions appear in the output. For shell functions, variables referenced within the function body are expanded. If a function has been modified using overrides or using override-style operators like _append and _prepend, then the final assembled function body appears in the output.
 
-### 3.30.3. Viewing Package Information with oe-pkgdata-util¶
-You can use the oe-pkgdata-util command-line utility to query PKGDATA_DIR and display various package-related information. When you use the utility, you must use it to view information on packages that have already been built.
+### 3.30.3. Viewing Package Information with oe-pkgdata-util
+You can use the `oe-pkgdata-util` command-line utility to query PKGDATA_DIR and display various package-related information. When you use the utility, you must use it to view information on packages that have already been built.
 
-Following are a few of the available oe-pkgdata-util subcommands.
+Following are a few of the available `oe-pkgdata-util` subcommands.
 
-Note
-You can use the standard * and ? globbing wildcards as part of package names and paths.
-oe-pkgdata-util list-pkgs [pattern]: Lists all packages that have been built, optionally limiting the match to packages that match pattern.
+> Note  
+> You can use the standard * and ? globbing wildcards as part of package names and paths.
 
-oe-pkgdata-util list-pkg-files package ...: Lists the files and directories contained in the given packages.
++ oe-pkgdata-util list-pkgs [pattern]: Lists all packages that have been built, optionally limiting the match to packages that match pattern.
 
-Note
-A different way to view the contents of a package is to look at the ${WORKDIR}/packages-split directory of the recipe that generates the package. This directory is created by the do_package task and has one subdirectory for each package the recipe generates, which contains the files stored in that package.
++ oe-pkgdata-util list-pkg-files package ...: Lists the files and directories contained in the given packages.
 
-If you want to inspect the ${WORKDIR}/packages-split directory, make sure that rm_work is not enabled when you build the recipe.
+     > Note  
+     > A different way to view the contents of a package is to look at the ${WORKDIR}/packages-split directory of the recipe that generates the package. This directory is created by the do_package task and has one subdirectory for each package the recipe generates, which contains the files stored in that package.
+     > 
+     > If you want to inspect the ${WORKDIR}/packages-split directory, make sure that rm_work is not enabled when you build the recipe.
 
-oe-pkgdata-util find-path path ...: Lists the names of the packages that contain the given paths. For example, the following tells us that /usr/share/man/man1/make.1 is contained in the make-doc package:
-
++ oe-pkgdata-util find-path path ...: Lists the names of the packages that contain the given paths. For example, the following tells us that /usr/share/man/man1/make.1 is contained in the make-doc package:
+```
      $ oe-pkgdata-util find-path /usr/share/man/man1/make.1
      make-doc: /usr/share/man/man1/make.1
-                        
-oe-pkgdata-util lookup-recipe package ...: Lists the name of the recipes that produce the given packages.
+```                        
++ oe-pkgdata-util lookup-recipe package ...: Lists the name of the recipes that produce the given packages.
 
 For more information on the oe-pkgdata-util command, use the help facility:
-
+```
      $ oe-pkgdata-util ‐‐help
      $ oe-pkgdata-util subcommand --help
-
-### 3.30.4. Viewing Dependencies Between Recipes and Tasks¶
+```
+### 3.30.4. Viewing Dependencies Between Recipes and Tasks
 Sometimes it can be hard to see why BitBake wants to build other recipes before the one you have specified. Dependency information can help you understand why a recipe is built.
 
 To generate dependency information for a recipe, run the following command:
-
+```
      $ bitbake -g recipename
-                
+```                
 This command writes the following files in the current directory:
 
-pn-buildlist: A list of recipes/targets involved in building recipename. "Involved" here means that at least one task from the recipe needs to run when building recipename from scratch. Targets that are in ASSUME_PROVIDED are not listed.
++ pn-buildlist: A list of recipes/targets involved in building recipename. "Involved" here means that at least one task from the recipe needs to run when building recipename from scratch. Targets that are in ASSUME_PROVIDED are not listed.
 
-task-depends.dot: A graph showing dependencies between tasks.
++ task-depends.dot: A graph showing dependencies between tasks.
 
-The graphs are in DOT format and can be converted to images (e.g. using the dot tool from Graphviz).
+     The graphs are in DOT format and can be converted to images (e.g. using the dot tool from Graphviz).
 
-Notes
-DOT files use a plain text format. The graphs generated using the bitbake -g command are often so large as to be difficult to read without special pruning (e.g. with Bitbake's -I option) and processing. Despite the form and size of the graphs, the corresponding .dot files can still be possible to read and provide useful information.
+     > Notes  
+     > + DOT files use a plain text format. The graphs generated using the bitbake -g command are often so large as to be difficult to read without special pruning (e.g. with Bitbake's -I option) and processing. Despite the form and size of the graphs, the corresponding .dot files can still be possible to read and provide useful information.
+     > 
+     > As an example, the task-depends.dot file contains lines such as the following:
+     > ```
+     >      "libxslt.do_configure" -> "libxml2.do_populate_sysroot"
+     > ```                           
+     > The above example line reveals that the do_configure task in libxslt depends on the do_populate_sysroot task in libxml2, which is a normal DEPENDS dependency between the two recipes.
+     > 
+     > For an example of how .dot files can be processed, see the scripts/contrib/graph-tool Python script, which finds and displays paths between graph nodes.
+     > 
+     > You can use a different method to view dependency information by using the following command:
+     > ```
+     >      $ bitbake -g -u taskexp recipename
+     > ```                
+This command displays a GUI window from which you can view build-time and runtime dependencies for the recipes involved in building `recipename`.
 
-As an example, the task-depends.dot file contains lines such as the following:
-
-     "libxslt.do_configure" -> "libxml2.do_populate_sysroot"
-                            
-The above example line reveals that the do_configure task in libxslt depends on the do_populate_sysroot task in libxml2, which is a normal DEPENDS dependency between the two recipes.
-
-For an example of how .dot files can be processed, see the scripts/contrib/graph-tool Python script, which finds and displays paths between graph nodes.
-
-You can use a different method to view dependency information by using the following command:
-
-     $ bitbake -g -u taskexp recipename
-                
-This command displays a GUI window from which you can view build-time and runtime dependencies for the recipes involved in building recipename.
-
-### 3.30.5. Viewing Task Variable Dependencies¶
+### 3.30.5. Viewing Task Variable Dependencies
 As mentioned in the "Checksums (Signatures)" section of the BitBake User Manual, BitBake tries to automatically determine what variables a task depends on so that it can rerun the task if any values of the variables change. This determination is usually reliable. However, if you do things like construct variable names at runtime, then you might have to manually declare dependencies on those variables using vardeps as described in the "Variable Flags" section of the BitBake User Manual.
 
 If you are unsure whether a variable dependency is being picked up automatically for a given task, you can list the variable dependencies BitBake has determined by doing the following:
 
-Build the recipe containing the task:
-
+1. Build the recipe containing the task:
+```
      $ bitbake recipename
-                        
-Inside the STAMPS_DIR directory, find the signature data (sigdata) file that corresponds to the task. The sigdata files contain a pickled Python database of all the metadata that went into creating the input checksum for the task. As an example, for the do_fetch task of the db recipe, the sigdata file might be found in the following location:
-
+```                        
+2. Inside the STAMPS_DIR directory, find the signature data (sigdata) file that corresponds to the task. The sigdata files contain a pickled Python database of all the metadata that went into creating the input checksum for the task. As an example, for the do_fetch task of the db recipe, the sigdata file might be found in the following location:
+     ```
      ${BUILDDIR}/tmp/stamps/i586-poky-linux/db/6.0.30-r1.do_fetch.sigdata.7c048c18222b16ff0bcee2000ef648b1
-                        
-For tasks that are accelerated through the shared state (sstate) cache, an additional siginfo file is written into SSTATE_DIR along with the cached task output. The siginfo files contain exactly the same information as sigdata files.
+     ```                   
+     For tasks that are accelerated through the shared state (sstate) cache, an additional siginfo file is written into SSTATE_DIR along with the cached task output. The siginfo files contain exactly the same information as sigdata files.
 
-Run bitbake-dumpsig on the sigdata or siginfo file. Here is an example:
-
+3. Run bitbake-dumpsig on the sigdata or siginfo file. Here is an example:
+     ```
      $ bitbake-dumpsig ${BUILDDIR}/tmp/stamps/i586-poky-linux/db/6.0.30-r1.do_fetch.sigdata.7c048c18222b16ff0bcee2000ef648b1
-                        
-In the output of the above command, you will find a line like the following, which lists all the (inferred) variable dependencies for the task. This list also includes indirect dependencies from variables depending on other variables, recursively.
-
+     ```                   
+     In the output of the above command, you will find a line like the following, which lists all the (inferred) variable dependencies for the task. This list also includes indirect dependencies from variables depending on other variables, recursively.
+     ```
      Task dependencies: ['PV', 'SRCREV', 'SRC_URI', 'SRC_URI[`md5`sum]', 'SRC_URI[`sha256`sum]', 'base_do_fetch']
-                        
-Note
-Functions (e.g. base_do_fetch) also count as variable dependencies. These functions in turn depend on the variables they reference.
-The output of bitbake-dumpsig also includes the value each variable had, a list of dependencies for each variable, and BB_HASHBASE_WHITELIST information.
+     ```                   
+     > Note  
+     > Functions (e.g. base_do_fetch) also count as variable dependencies. These functions in turn depend on the variables they reference.
+     
+     The output of bitbake-dumpsig also includes the value each variable had, a list of dependencies for each variable, and BB_HASHBASE_WHITELIST information.
 
 There is also a bitbake-diffsigs command for comparing two siginfo or sigdata files. This command can be helpful when trying to figure out what changed between two versions of a task. If you call bitbake-diffsigs with just one file, the command behaves like bitbake-dumpsig.
 
@@ -4750,16 +4757,17 @@ You can also use BitBake to dump out the signature construction information with
      ‐‐dump-signatures=SIGNATURE_HANDLER
      -S SIGNATURE_HANDLER
                 
-Note
-Two common values for SIGNATURE_HANDLER are "none" and "printdiff", which dump only the signature or compare the dumped signature with the cached one, respectively.
+> Note  
+> Two common values for SIGNATURE_HANDLER are "none" and "printdiff", which dump only the signature or compare the dumped signature with the cached one, respectively.
+
 Using BitBake with either of these options causes BitBake to dump out sigdata files in the stamps directory for every task it would have executed instead of building the specified target package.
 
-### 3.30.6. Viewing Metadata Used to Create the Input Signature of a Shared State Task¶
+### 3.30.6. Viewing Metadata Used to Create the Input Signature of a Shared State Task
 Seeing what metadata went into creating the input signature of a shared state (sstate) task can be a useful debugging aid. This information is available in signature information (siginfo) files in SSTATE_DIR. For information on how to view and interpret information in siginfo files, see the "Viewing Task Variable Dependencies" section.
 
 For conceptual information on shared state, see the "Shared State" section in the Yocto Project Overview and Concepts Manual.
 
-### 3.30.7. Invalidating Shared State to Force a Task to Run¶
+### 3.30.7. Invalidating Shared State to Force a Task to Run
 The OpenEmbedded build system uses checksums and shared state cache to avoid unnecessarily rebuilding tasks. Collectively, this scheme is known as "shared state code."
 
 As with all schemes, this one has some drawbacks. It is possible that you could make implicit changes to your code that the checksum calculations do not take into account. These implicit changes affect a task's output but do not trigger the shared state code into rebuilding a recipe. Consider an example during which a tool changes its output. Assume that the output of rpmdeps changes. The result of the change should be that all the package and package_write_rpm shared state cache items become invalid. However, because the change to the output is external to the code and therefore implicit, the associated shared state cache items do not become invalidated. In this case, the build process uses the cached items rather than running the task again. Obviously, these types of implicit changes can cause problems.
@@ -4768,22 +4776,23 @@ To avoid these problems during the build, you need to understand the effects of 
 
 When you identify an implicit change, you can easily take steps to invalidate the cache and force the tasks to run. The steps you can take are as simple as changing a function's comments in the source code. For example, to invalidate package shared state files, change the comment statements of do_package or the comments of one of the functions it calls. Even though the change is purely cosmetic, it causes the checksum to be recalculated and forces the build system to run the task again.
 
-Note
-For an example of a commit that makes a cosmetic change to invalidate shared state, see this commit.
+> Note  
+> For an example of a commit that makes a cosmetic change to invalidate shared state, see this commit.
 
-### 3.30.8. Running Specific Tasks¶
+### 3.30.8. Running Specific Tasks
 Any given recipe consists of a set of tasks. The standard BitBake behavior in most cases is: do_fetch, do_unpack, do_patch, do_configure, do_compile, do_install, do_package, do_package_write_*, and do_build. The default task is do_build and any tasks on which it depends build first. Some tasks, such as do_devshell, are not part of the default build chain. If you wish to run a task that is not part of the default build chain, you can use the -c option in BitBake. Here is an example:
-
+```
      $ bitbake matchbox-desktop -c devshell
-                
+```                
 The -c option respects task dependencies, which means that all other tasks (including tasks from other recipes) that the specified task depends on will be run before the task. Even when you manually specify a task to run with -c, BitBake will only run the task if it considers it "out of date". See the "Stamp Files and the Rerunning of Tasks" section in the Yocto Project Overview and Concepts Manual for how BitBake determines whether a task is "out of date".
 
 If you want to force an up-to-date task to be rerun (e.g. because you made manual modifications to the recipe's WORKDIR that you want to try out), then you can use the -f option.
 
-Note
-The reason -f is never required when running the do_devshell task is because the [nostamp] variable flag is already set for the task.
-The following example shows one way you can use the -f option:
+> Note  
+> The reason -f is never required when running the do_devshell task is because the [nostamp] variable flag is already set for the task.
 
+The following example shows one way you can use the -f option:
+```
      $ bitbake matchbox-desktop
                .
                .
@@ -4792,74 +4801,80 @@ The following example shows one way you can use the -f option:
                .
      $ bitbake matchbox-desktop -c compile -f
      $ bitbake matchbox-desktop
-                
+```                
 This sequence first builds and then recompiles matchbox-desktop. The last command reruns all tasks (basically the packaging tasks) after the compile. BitBake recognizes that the do_compile task was rerun and therefore understands that the other tasks also need to be run again.
 
 Another, shorter way to rerun a task and all normal recipe build tasks that depend on it is to use the -C option.
 
-Note
-This option is upper-cased and is separate from the -c option, which is lower-cased.
+> Note  
+> This option is upper-cased and is separate from the -c option, which is lower-cased.
+
 Using this option invalidates the given task and then runs the do_build task, which is the default task if no task is given, and the tasks on which it depends. You could replace the final two commands in the previous example with the following single command:
 
      $ bitbake matchbox-desktop -C compile
                 
 Internally, the -f and -C options work by tainting (modifying) the input checksum of the specified task. This tainting indirectly causes the task and its dependent tasks to be rerun through the normal task dependency mechanisms.
 
-Note
-BitBake explicitly keeps track of which tasks have been tainted in this fashion, and will print warnings such as the following for builds involving such tasks:
-     WARNING: /home/ulf/poky/meta/recipes-sato/matchbox-desktop/matchbox-desktop_2.1.bb.do_compile is tainted from a forced run
-                    
-The purpose of the warning is to let you know that the work directory and build output might not be in the clean state they would be in for a "normal" build, depending on what actions you took. To get rid of such warnings, you can remove the work directory and rebuild the recipe, as follows:
-     $ bitbake matchbox-desktop -c clean
-     $ bitbake matchbox-desktop
+> Note  
+> BitBake explicitly keeps track of which tasks have been tainted in this fashion, and will print warnings such as the following for builds involving such tasks:
+> ```
+>      WARNING: /home/ulf/poky/meta/recipes-sato/matchbox-desktop/matchbox-desktop_2.1.bb.do_compile is tainted from a forced run
+> ```                    
+> The purpose of the warning is to let you know that the work directory and build output might not be in the clean state they would be in for a "normal" build, depending on what actions you took. To get rid of such warnings, you can remove the work directory and rebuild the recipe, as follows:
+> ```
+>      $ bitbake matchbox-desktop -c clean
+>      $ bitbake matchbox-desktop
+> ```
                     
 You can view a list of tasks in a given package by running the do_listtasks task as follows:
-
+```
      $ bitbake matchbox-desktop -c listtasks
-                
-The results appear as output to the console and are also in the file ${WORKDIR}/temp/log.do_listtasks.
+```                
+The results appear as output to the console and are also in the file `${WORKDIR}/temp/log.do_listtasks`.
 
-### 3.30.9. General BitBake Problems¶
+### 3.30.9. General BitBake Problems
 You can see debug output from BitBake by using the -D option. The debug output gives more information about what BitBake is doing and the reason behind it. Each -D option you use increases the logging level. The most common usage is -DDD.
 
 The output from bitbake -DDD -v targetname can reveal why BitBake chose a certain version of a package or why BitBake picked a certain provider. This command could also help you in a situation where you think BitBake did something unexpected.
 
-### 3.30.10. Building with No Dependencies¶
+### 3.30.10. Building with No Dependencies
 To build a specific recipe (.bb file), you can use the following command form:
 
      $ bitbake -b somepath/somerecipe.bb
                 
 This command form does not check for dependencies. Consequently, you should use it only when you know existing dependencies have been met.
 
-Note
-You can also specify fragments of the filename. In this case, BitBake checks for a unique match.
+> Note  
+> You can also specify fragments of the filename. In this case, BitBake checks for a unique match.
 
-### 3.30.11. Recipe Logging Mechanisms¶
+### 3.30.11. Recipe Logging Mechanisms
 The Yocto Project provides several logging functions for producing debugging output and reporting errors and warnings. For Python functions, the following logging functions exist. All of these functions log to ${T}/log.do_task, and can also log to standard output (stdout) with the right settings:
 
-bb.plain(msg): Writes msg as is to the log while also logging to stdout.
++ bb.plain(msg): Writes msg as is to the log while also logging to stdout.
 
-bb.note(msg): Writes "NOTE: msg" to the log. Also logs to stdout if BitBake is called with "-v".
++ bb.note(msg): Writes "NOTE: msg" to the log. Also logs to stdout if BitBake is called with "-v".
 
-bb.debug(level, msg): Writes "DEBUG: msg" to the log. Also logs to stdout if the log level is greater than or equal to level. See the "-D" option in the BitBake User Manual for more information.
++ bb.debug(level, msg): Writes "DEBUG: msg" to the log. Also logs to stdout if the log level is greater than or equal to level. See the "-D" option in the BitBake User Manual for more information.
 
-bb.warn(msg): Writes "WARNING: msg" to the log while also logging to stdout.
++ bb.warn(msg): Writes "WARNING: msg" to the log while also logging to stdout.
 
-bb.error(msg): Writes "ERROR: msg" to the log while also logging to standard out (stdout).
++ bb.error(msg): Writes "ERROR: msg" to the log while also logging to standard out (stdout).
 
-Note
-Calling this function does not cause the task to fail.
-bb.fatal(msg): This logging function is similar to bb.error(msg) but also causes the calling task to fail.
+     > Note  
+     > Calling this function does not cause the task to fail.
 
-Note
-bb.fatal() raises an exception, which means you do not need to put a "return" statement after the function.
++ bb.fatal(msg): This logging function is similar to bb.error(msg) but also causes the calling task to fail.
+
+     > Note  
+     > bb.fatal() raises an exception, which means you do not need to put a "return" statement after the function.
+
 The same logging functions are also available in shell functions, under the names bbplain, bbnote, bbdebug, bbwarn, bberror, and bbfatal. The logging class implements these functions. See that class in the meta/classes folder of the Source Directory for information.
 
-#### 3.30.11.1. Logging With Python¶
+#### 3.30.11.1. Logging With Python
 When creating recipes using Python and inserting code that handles build logs, keep in mind the goal is to have informative logs while keeping the console as "silent" as possible. Also, if you want status messages in the log, use the "debug" loglevel.
 
 Following is an example written in Python. The code handles logging for a function that determines the number of tasks needed to be run. See the "do_listtasks" section for additional information:
-
+```python
      python do_listtasks() {
          bb.debug(2, "Starting to figure out the task list")
          if noteworthy_condition:
@@ -4874,12 +4889,12 @@ Following is an example written in Python. The code handles logging for a functi
          bb.plain("The tasks present are abc")
          bb.debug(2, "Finished figuring out the tasklist")
      }
-                    
-#### 3.30.11.2. Logging With Bash¶
+```                    
+#### 3.30.11.2. Logging With Bash
 When creating recipes using Bash and inserting code that handles build logs, you have the same goals - informative with minimal console output. The syntax you use for recipes written in Bash is similar to that of recipes written in Python described in the previous section.
 
 Following is an example written in Bash. The code logs the progress of the do_my_function function.
-
+```python
      do_my_function() {
          bbdebug 2 "Running do_my_function"
          if [ exceptional_condition ]; then
@@ -4897,20 +4912,21 @@ Following is an example written in Bash. The code logs the progress of the do_my
          fi
          bbdebug 2 "Completed do_my_function"
      }
-
-### 3.30.12. Debugging Parallel Make Races¶
+```
+### 3.30.12. Debugging Parallel Make Races
 A parallel make race occurs when the build consists of several parts that are run simultaneously and a situation occurs when the output or result of one part is not ready for use with a different part of the build that depends on that output. Parallel make races are annoying and can sometimes be difficult to reproduce and fix. However, some simple tips and tricks exist that can help you debug and fix them. This section presents a real-world example of an error encountered on the Yocto Project autobuilder and the process used to fix it.
 
-Note
-If you cannot properly fix a make race condition, you can work around it by clearing either the PARALLEL_MAKE or PARALLEL_MAKEINST variables.
+> Note  
+> If you cannot properly fix a make race condition, you can work around it by clearing either the PARALLEL_MAKE or PARALLEL_MAKEINST variables.
 
-#### 3.30.12.1. The Failure¶
+#### 3.30.12.1. The Failure
 For this example, assume that you are building an image that depends on the "neard" package. And, during the build, BitBake runs into problems and creates the following output.
 
-Note
-This example log file has longer lines artificially broken to make the listing easier to read.
-If you examine the output or the log file, you see the failure during make:
+> Note  
+> This example log file has longer lines artificially broken to make the listing easier to read.
 
+If you examine the output or the log file, you see the failure during make:
+```
      | DEBUG: SITE files ['endian-little', 'bit-32', 'ix86-common', 'common-linux', 'common-glibc', 'i586-linux', 'common']
      | DEBUG: Executing shell function do_compile
      | NOTE: make -j 16
@@ -4975,27 +4991,27 @@ If you examine the output or the log file, you see the failure during make:
      | make[1]: *** Waiting for unfinished jobs....
      | make: *** [all] Error 2
      | ERROR: oe_runmake failed
-                    
-#### 3.30.12.2. Reproducing the Error¶
+```                    
+#### 3.30.12.2. Reproducing the Error
 Because race conditions are intermittent, they do not manifest themselves every time you do the build. In fact, most times the build will complete without problems even though the potential race condition exists. Thus, once the error surfaces, you need a way to reproduce it.
 
 In this example, compiling the "neard" package is causing the problem. So the first thing to do is build "neard" locally. Before you start the build, set the PARALLEL_MAKE variable in your `local.conf` file to a high number (e.g. "-j 20"). Using a high value for PARALLEL_MAKE increases the chances of the race condition showing up:
-
+```
      $ bitbake neard
-                    
+```                    
 Once the local build for "neard" completes, start a devshell build:
-
+```
      $ bitbake neard -c devshell
-                    
+```                    
 For information on how to use a devshell, see the "Using a Development Shell" section.
 
 In the devshell, do the following:
-
+```
      $ make clean
      $ make tools/snep-send.o
-                    
+```                    
 The devshell commands cause the failure to clearly be visible. In this case, a missing dependency exists for the "neard" Makefile target. Here is some abbreviated, sample output with the missing dependency clearly visible at the end:
-
+```
      i586-poky-linux-gcc  -m32 -march=i586 --sysroot=/home/scott-lenovo/......
         .
         .
@@ -5008,64 +5024,65 @@ The devshell commands cause the failure to clearly be visible. In this case, a m
      compilation terminated.
      make: *** [tools/snep-send.o] Error 1
      $
-                    
-#### 3.30.12.3. Creating a Patch for the Fix¶
+```                    
+#### 3.30.12.3. Creating a Patch for the Fix
 Because there is a missing dependency for the Makefile target, you need to patch the Makefile.am file, which is generated from Makefile.in. You can use Quilt to create the patch:
-
+```
      $ quilt new parallelmake.patch
      Patch patches/parallelmake.patch is now on top
      $ quilt add Makefile.am
      File Makefile.am added to patch patches/parallelmake.patch
-                    
+```                    
 For more information on using Quilt, see the "Using Quilt in Your Workflow" section.
 
 At this point you need to make the edits to Makefile.am to add the missing dependency. For our example, you have to add the following line to the file:
-
+```
      tools/snep-send.$(OBJEXT): include/near/dbus.h
-                    
+```                    
 Once you have edited the file, use the refresh command to create the patch:
-
+```
      $ quilt refresh
      Refreshed patch patches/parallelmake.patch
-                    
+```                    
 Once the patch file exists, you need to add it back to the originating recipe folder. Here is an example assuming a top-level Source Directory named poky:
-
+```
      $ cp patches/parallelmake.patch poky/meta/recipes-connectivity/neard/neard
-                    
+```                    
 The final thing you need to do to implement the fix in the build is to update the "neard" recipe (i.e. neard-0.14.bb) so that the SRC_URI statement includes the patch file. The recipe file is in the folder above the patch. Here is what the edited SRC_URI statement would look like:
-
+```
      SRC_URI = "${KERNELORG_MIRROR}/linux/network/nfc/${BPN}-${PV}.tar.xz \
                 file://neard.in \
                 file://neard.service.in \
                 file://parallelmake.patch \
                "
-                    
+```                    
 With the patch complete and moved to the correct folder and the SRC_URI statement updated, you can exit the devshell:
-
+```
      $ exit
-
-#### 3.30.12.4. Testing the Build¶
+```
+#### 3.30.12.4. Testing the Build
 With everything in place, you can get back to trying the build again locally:
-
+```
      $ bitbake neard
-                    
+```                    
 This build should succeed.
 
 Now you can open up a devshell again and repeat the clean and make operations as follows:
-
+```
      $ bitbake neard -c devshell
      $ make clean
      $ make tools/snep-send.o
-                    
+```                    
 The build should work without issue.
 
 As with all solved problems, if they originated upstream, you need to submit the fix for the recipe in OE-Core and upstream so that the problem is taken care of at its source. See the "Submitting a Change to the Yocto Project" section for more information.
 
-### 3.30.13. Debugging With the GNU Project Debugger (GDB) Remotely¶
+### 3.30.13. Debugging With the GNU Project Debugger (GDB) Remotely
 GDB allows you to examine running programs, which in turn helps you to understand and fix problems. It also allows you to perform post-mortem style analysis of program crashes. GDB is available as a package within the Yocto Project and is installed in SDK images by default. See the "Images" chapter in the Yocto Project Reference Manual for a description of these images. You can find information on GDB at http://sourceware.org/gdb/.
 
-Tip
-For best results, install debug (-dbg) packages for the applications you are going to debug. Doing so makes extra debug symbols available that give you more meaningful output.
+> Tip  
+> For best results, install debug (-dbg) packages for the applications you are going to debug. Doing so makes extra debug symbols available that give you more meaningful output.
+
 Sometimes, due to memory or disk space constraints, it is not possible to use GDB directly on the remote target to debug applications. These constraints arise because GDB needs to load the debugging information and the binaries of the process being debugged. Additionally, GDB needs to perform many computations to locate information such as function names, variable names and values, stack traces and so forth - even before starting the debugging process. These extra computations place more load on the target system and can alter the characteristics of the program being debugged.
 
 To help get past the previously mentioned constraints, you can use gdbserver, which runs on the remote target and does not load any debugging information from the debugged process. Instead, a GDB instance processes the debugging information that is run on a remote computer - the host GDB. The host GDB then sends control commands to gdbserver to make it stop or start the debugged program, as well as read or write memory regions of that debugged program. All the debugging information loaded and processed as well as all the heavy debugging is done by the host GDB. Offloading these processes gives the gdbserver running on the target a chance to remain small and fast.
@@ -5076,145 +5093,148 @@ To remain consistent with GDB documentation and terminology, the binary being de
 
 The following steps show you how to debug using the GNU project debugger.
 
-Configure your build system to construct the companion debug filesystem:
+1. Configure your build system to construct the companion debug filesystem:
 
-In your `local.conf` file, set the following:
+     In your `local.conf` file, set the following:
 
      IMAGE_GEN_DEBUGFS = "1"
      IMAGE_FSTYPES_DEBUGFS = "tar.bz2"
                         
-These options cause the OpenEmbedded build system to generate a special companion filesystem fragment, which contains the matching source and debug symbols to your deployable filesystem. The build system does this by looking at what is in the deployed filesystem, and pulling the corresponding -dbg packages.
+     These options cause the OpenEmbedded build system to generate a special companion filesystem fragment, which contains the matching source and debug symbols to your deployable filesystem. The build system does this by looking at what is in the deployed filesystem, and pulling the corresponding -dbg packages.
 
-The companion debug filesystem is not a complete filesystem, but only contains the debug fragments. This filesystem must be combined with the full filesystem for debugging. Subsequent steps in this procedure show how to combine the partial filesystem with the full filesystem.
+     The companion debug filesystem is not a complete filesystem, but only contains the debug fragments. This filesystem must be combined with the full filesystem for debugging. Subsequent steps in this procedure show how to combine the partial filesystem with the full filesystem.
 
-Configure the system to include gdbserver in the target filesystem:
+2. Configure the system to include gdbserver in the target filesystem:
 
-Make the following addition in either your `local.conf` file or in an image recipe:
+     Make the following addition in either your `local.conf` file or in an image recipe:
 
      IMAGE_INSTALL_append = “ gdbserver"
                         
-The change makes sure the gdbserver package is included.
+     The change makes sure the gdbserver package is included.
 
-Build the environment:
+3. Build the environment:
 
-Use the following command to construct the image and the companion Debug Filesystem:
-
+     Use the following command to construct the image and the companion Debug Filesystem:
+     ```
      $ bitbake image
-                        
-Build the cross GDB component and make it available for debugging. Build the SDK that matches the image. Building the SDK is best for a production build that can be used later for debugging, especially during long term maintenance:
-
+     ```                   
+     Build the cross GDB component and make it available for debugging. Build the SDK that matches the image. Building the SDK is best for a production build that can be used later for debugging, especially during long term maintenance:
+     ```
      $ bitbake -c populate_sdk image
-                        
-Alternatively, you can build the minimal toolchain components that match the target. Doing so creates a smaller than typical SDK and only contains a minimal set of components with which to build simple test applications, as well as run the debugger:
-
+     ```                   
+     Alternatively, you can build the minimal toolchain components that match the target. Doing so creates a smaller than typical SDK and only contains a minimal set of components with which to build simple test applications, as well as run the debugger:
+     ```
      $ bitbake meta-toolchain
-                        
-A final method is to build Gdb itself within the build system:
-
+     ```                   
+     A final method is to build Gdb itself within the build system:
+     ```
      $ bitbake gdb-cross-architecture
-                        
-Doing so produces a temporary copy of cross-gdb you can use for debugging during development. While this is the quickest approach, the two previous methods in this step are better when considering long-term maintenance strategies.
+     ```                   
+     Doing so produces a temporary copy of cross-gdb you can use for debugging during development. While this is the quickest approach, the two previous methods in this step are better when considering long-term maintenance strategies.
 
-Note
-If you run bitbake gdb-cross, the OpenEmbedded build system suggests the actual image (e.g. gdb-cross-i586). The suggestion is usually the actual name you want to use.
-Set up the debugfs
+     > Note  
+     > If you run bitbake gdb-cross, the OpenEmbedded build system suggests the actual image (e.g. gdb-cross-i586). The suggestion is usually the actual name you want to use.
 
-Run the following commands to set up the debugfs:
+4. Set up the debugfs
 
+     Run the following commands to set up the debugfs:
+     ```
      $ mkdir debugfs
      $ cd debugfs
      $ tar xvfj build-dir/tmp-glibc/deploy/images/machine/image.rootfs.tar.bz2
      $ tar xvfj build-dir/tmp-glibc/deploy/images/machine/image-dbg.rootfs.tar.bz2
-                        
-Set up GDB
+     ```                   
+5. Set up GDB
 
-Install the SDK (if you built one) and then source the correct environment file. Sourcing the environment file puts the SDK in your PATH environment variable.
+     Install the SDK (if you built one) and then source the correct environment file. Sourcing the environment file puts the SDK in your PATH environment variable.
 
-If you are using the build system, Gdb is located in build-dir/tmp/sysroots/host/usr/bin/architecture/architecture-gdb
+     If you are using the build system, Gdb is located in build-dir/tmp/sysroots/host/usr/bin/architecture/architecture-gdb
 
-Boot the target:
+6. Boot the target:
 
-For information on how to run QEMU, see the QEMU Documentation.
+     For information on how to run QEMU, see the QEMU Documentation.
 
-Note
-Be sure to verify that your host can access the target via TCP.
-Debug a program:
+     > Note  
+     > Be sure to verify that your host can access the target via TCP.
+7. Debug a program:
 
-Debugging a program involves running gdbserver on the target and then running Gdb on the host. The example in this step debugs gzip:
-
+     Debugging a program involves running gdbserver on the target and then running Gdb on the host. The example in this step debugs gzip:
+     ```
      root@qemux86:~# gdbserver localhost:1234 /bin/gzip —help
-                        
-For additional gdbserver options, see the GDB Server Documentation.
+     ```                   
+     For additional gdbserver options, see the GDB Server Documentation.
 
-After running gdbserver on the target, you need to run Gdb on the host and configure it and connect to the target. Use these commands:
-
+     After running gdbserver on the target, you need to run Gdb on the host and configure it and connect to the target. Use these commands:
+     ```
      $ cd directory-holding-the-debugfs-directory
      $ arch-gdb
 
      (gdb) set sysroot debugfs
      (gdb) set substitute-path /usr/src/debug debugfs/usr/src/debug
      (gdb) target remote IP-of-target:1234
-                        
-At this point, everything should automatically load (i.e. matching binaries, symbols and headers).
+     ```                   
+     At this point, everything should automatically load (i.e. matching binaries, symbols and headers).
 
-Note
-The Gdb set commands in the previous example can be placed into the users ~/.gdbinit file. Upon starting, Gdb automatically runs whatever commands are in that file.
-Deploying without a full image rebuild:
+     > Note  
+     > The Gdb set commands in the previous example can be placed into the users ~/.gdbinit file. Upon starting, Gdb automatically runs whatever commands are in that file.
+8. Deploying without a full image rebuild:
 
-In many cases, during development you want a quick method to deploy a new binary to the target and debug it, without waiting for a full image build.
+     In many cases, during development you want a quick method to deploy a new binary to the target and debug it, without waiting for a full image build.
 
-One approach to solving this situation is to just build the component you want to debug. Once you have built the component, copy the executable directly to both the target and the host debugfs.
+     One approach to solving this situation is to just build the component you want to debug. Once you have built the component, copy the executable directly to both the target and the host debugfs.
 
-If the binary is processed through the debug splitting in OpenEmbedded, you should also copy the debug items (i.e. .debug contents and corresponding /usr/src/debug files) from the work directory. Here is an example:
-
+     If the binary is processed through the debug splitting in OpenEmbedded, you should also copy the debug items (i.e. .debug contents and corresponding /usr/src/debug files) from the work directory. Here is an example:
+     ```
      $ bitbake bash
      $ bitbake -c devshell bash
      $ cd ..
      $ scp packages-split/bash/bin/bash target:/bin/bash
      $ cp -a packages-split/bash-dbg/* path/debugfs
-
-### 3.30.14. Debugging with the GNU Project Debugger (GDB) on the Target¶
+     ```
+### 3.30.14. Debugging with the GNU Project Debugger (GDB) on the Target
 The previous section addressed using GDB remotely for debugging purposes, which is the most usual case due to the inherent hardware limitations on many embedded devices. However, debugging in the target hardware itself is also possible with more powerful devices. This section describes what you need to do in order to support using GDB to debug on the target hardware.
 
 To support this kind of debugging, you need do the following:
 
-Ensure that GDB is on the target. You can do this by adding "gdb" to IMAGE_INSTALL:
++ Ensure that GDB is on the target. You can do this by adding "gdb" to IMAGE_INSTALL:
 
      IMAGE_INSTALL_append = " gdb"
                         
-Alternatively, you can add "tools-debug" to IMAGE_FEATURES:
+     Alternatively, you can add "tools-debug" to IMAGE_FEATURES:
 
      IMAGE_FEATURES_append = " tools-debug"
                         
-Ensure that debug symbols are present. You can make sure these symbols are present by installing -dbg:
++ Ensure that debug symbols are present. You can make sure these symbols are present by installing -dbg:
 
      IMAGE_INSTALL_append = " packagename-dbg"
                         
-Alternatively, you can do the following to include all the debug symbols:
+     Alternatively, you can do the following to include all the debug symbols:
 
      IMAGE_FEATURES_append = " dbg-pkgs"
                         
-Note
-To improve the debug information accuracy, you can reduce the level of optimization used by the compiler. For example, when adding the following line to your `local.conf` file, you will reduce optimization from FULL_OPTIMIZATION of "-O2" to DEBUG_OPTIMIZATION of "-O -fno-omit-frame-pointer":
-     DEBUG_BUILD = "1"
-                    
-Consider that this will reduce the application's performance and is recommended only for debugging purposes.
+     > Note  
+     > To improve the debug information accuracy, you can reduce the level of optimization used by the compiler. For example, when adding the following line to your `local.conf` file, you will reduce optimization from FULL_OPTIMIZATION of "-O2" to DEBUG_OPTIMIZATION of "-O -fno-omit-frame-pointer":  
+     > ```     
+     >     DEBUG_BUILD = "1"
+     > ```                    
+     > Consider that this will reduce the application's performance and is recommended only for debugging purposes.
 
-### 3.30.15. Other Debugging Tips¶
+### 3.30.15. Other Debugging Tips
 Here are some other tips that you might find useful:
 
-When adding new packages, it is worth watching for undesirable items making their way into compiler command lines. For example, you do not want references to local system files like /usr/lib/ or /usr/include/.
++ When adding new packages, it is worth watching for undesirable items making their way into compiler command lines. For example, you do not want references to local system files like /usr/lib/ or /usr/include/.
 
-If you want to remove the psplash boot splashscreen, add psplash=false to the kernel command line. Doing so prevents psplash from loading and thus allows you to see the console. It is also possible to switch out of the splashscreen by switching the virtual console (e.g. Fn+Left or Fn+Right on a Zaurus).
++ If you want to remove the psplash boot splashscreen, add psplash=false to the kernel command line. Doing so prevents psplash from loading and thus allows you to see the console. It is also possible to switch out of the splashscreen by switching the virtual console (e.g. Fn+Left or Fn+Right on a Zaurus).
 
-Removing TMPDIR (usually tmp/, within the Build Directory) can often fix temporary build issues. Removing TMPDIR is usually a relatively cheap operation, because task output will be cached in SSTATE_DIR (usually sstate-cache/, which is also in the Build Directory).
++ Removing TMPDIR (usually tmp/, within the Build Directory) can often fix temporary build issues. Removing TMPDIR is usually a relatively cheap operation, because task output will be cached in SSTATE_DIR (usually sstate-cache/, which is also in the Build Directory).
 
-Note
-Removing TMPDIR might be a workaround rather than a fix. Consequently, trying to determine the underlying cause of an issue before removing the directory is a good idea.
-Understanding how a feature is used in practice within existing recipes can be very helpful. It is recommended that you configure some method that allows you to quickly search through files.
+     > Note  
+     > Removing TMPDIR might be a workaround rather than a fix. Consequently, trying to determine the underlying cause of an issue before removing the directory is a good idea.
+
++ Understanding how a feature is used in practice within existing recipes can be very helpful. It is recommended that you configure some method that allows you to quickly search through files.
 
 Using GNU Grep, you can use the following shell function to recursively search through common recipe-related files, skipping binary files, .git directories, and the Build Directory (assuming its name starts with "build"):
-
+```
      g() {
          grep -Ir \
               --exclude-dir=.git \
@@ -5225,51 +5245,51 @@ Using GNU Grep, you can use the following shell function to recursively search t
               --include='*.py*' \
               "$@"
      }
-                        
+```                        
 Following are some usage examples:
-
+```
      $ g FOO    # Search recursively for "FOO"
      $ g -i foo # Search recursively for "foo", ignoring case
      $ g -w FOO # Search recursively for "FOO" as a word, ignoring e.g. "FOOBAR"
-                        
+```                        
 If figuring out how some feature works requires a lot of searching, it might indicate that the documentation should be extended or improved. In such cases, consider filing a documentation bug using the Yocto Project implementation of Bugzilla. For information on how to submit a bug against the Yocto Project, see the Yocto Project Bugzilla wiki page and the "Submitting a Defect Against the Yocto Project" section.
 
-Note
-The manuals might not be the right place to document variables that are purely internal and have a limited scope (e.g. internal variables used to implement a single .bbclass file).
+> Note  
+> The manuals might not be the right place to document variables that are purely internal and have a limited scope (e.g. internal variables used to implement a single .bbclass file).
 
-## 3.31. Making Changes to the Yocto Project¶
+## 3.31. Making Changes to the Yocto Project
 Because the Yocto Project is an open-source, community-based project, you can effect changes to the project. This section presents procedures that show you how to submit a defect against the project and how to submit a change.
 
-### 3.31.1. Submitting a Defect Against the Yocto Project¶
+### 3.31.1. Submitting a Defect Against the Yocto Project
 Use the Yocto Project implementation of Bugzilla to submit a defect (bug) against the Yocto Project. For additional information on this implementation of Bugzilla see the "Yocto Project Bugzilla" section in the Yocto Project Reference Manual. For more detail on any of the following steps, see the Yocto Project Bugzilla wiki page.
 
 Use the following general steps to submit a bug"
 
-Open the Yocto Project implementation of Bugzilla.
+1. Open the Yocto Project implementation of Bugzilla.
 
-Click "File a Bug" to enter a new bug.
+2. Click "File a Bug" to enter a new bug.
 
-Choose the appropriate "Classification", "Product", and "Component" for which the bug was found. Bugs for the Yocto Project fall into one of several classifications, which in turn break down into several products and components. For example, for a bug against the meta-intel layer, you would choose "Build System, Metadata & Runtime", "BSPs", and "bsps-meta-intel", respectively.
+3. Choose the appropriate "Classification", "Product", and "Component" for which the bug was found. Bugs for the Yocto Project fall into one of several classifications, which in turn break down into several products and components. For example, for a bug against the meta-intel layer, you would choose "Build System, Metadata & Runtime", "BSPs", and "bsps-meta-intel", respectively.
 
-Choose the "Version" of the Yocto Project for which you found the bug (e.g. 2.7).
+4. Choose the "Version" of the Yocto Project for which you found the bug (e.g. 2.7).
 
-Determine and select the "Severity" of the bug. The severity indicates how the bug impacted your work.
+5. Determine and select the "Severity" of the bug. The severity indicates how the bug impacted your work.
 
-Choose the "Hardware" that the bug impacts.
+6. Choose the "Hardware" that the bug impacts.
 
-Choose the "Architecture" that the bug impacts.
+7. Choose the "Architecture" that the bug impacts.
 
-Choose a "Documentation change" item for the bug. Fixing a bug might or might not affect the Yocto Project documentation. If you are unsure of the impact to the documentation, select "Don't Know".
+8. Choose a "Documentation change" item for the bug. Fixing a bug might or might not affect the Yocto Project documentation. If you are unsure of the impact to the documentation, select "Don't Know".
 
-Provide a brief "Summary" of the bug. Try to limit your summary to just a line or two and be sure to capture the essence of the bug.
+9. Provide a brief "Summary" of the bug. Try to limit your summary to just a line or two and be sure to capture the essence of the bug.
 
-Provide a detailed "Description" of the bug. You should provide as much detail as you can about the context, behavior, output, and so forth that surrounds the bug. You can even attach supporting files for output from logs by using the "Add an attachment" button.
+10. Provide a detailed "Description" of the bug. You should provide as much detail as you can about the context, behavior, output, and so forth that surrounds the bug. You can even attach supporting files for output from logs by using the "Add an attachment" button.
 
-Click the "Submit Bug" button submit the bug. A new Bugzilla number is assigned to the bug and the defect is logged in the bug tracking system.
+11. Click the "Submit Bug" button submit the bug. A new Bugzilla number is assigned to the bug and the defect is logged in the bug tracking system.
 
 Once you file a bug, the bug is processed by the Yocto Project Bug Triage Team and further details concerning the bug are assigned (e.g. priority and owner). You are the "Submitter" of the bug and any further categorization, progress, or comments on the bug result in Bugzilla sending you an automated email concerning the particular change or progress to the bug.
 
-### 3.31.2. Submitting a Change to the Yocto Project¶
+### 3.31.2. Submitting a Change to the Yocto Project
 Contributions to the Yocto Project and OpenEmbedded are very welcome. Because the system is extremely configurable and flexible, we recognize that developers will want to extend, configure or optimize it for their specific uses.
 
 The Yocto Project uses a mailing list and a patch-based workflow that is similar to the Linux kernel but contains important differences. In general, a mailing list exists through which you can submit patches. You should send patches to the appropriate mailing list so that they can be reviewed and merged by the appropriate maintainer. The specific mailing list you need to use depends on the location of the code you are changing. Each component (e.g. layer) should have a README file that indicates where to send the changes and which process to follow.
@@ -5278,45 +5298,48 @@ You can send the patch to the mailing list using whichever approach you feel com
 
 The "poky" repository, which is the Yocto Project's reference build environment, is a hybrid repository that contains several individual pieces (e.g. BitBake, Metadata, documentation, and so forth) built using the combo-layer tool. The upstream location used for submitting changes varies by component:
 
-Core Metadata: Send your patch to the openembedded-core mailing list. For example, a change to anything under the meta or scripts directories should be sent to this mailing list.
++ ***Core Metadata***: Send your patch to the openembedded-core mailing list. For example, a change to anything under the meta or scripts directories should be sent to this mailing list.
 
-BitBake: For changes to BitBake (i.e. anything under the bitbake directory), send your patch to the bitbake-devel mailing list.
++ ***BitBake***: For changes to BitBake (i.e. anything under the bitbake directory), send your patch to the bitbake-devel mailing list.
 
-"meta-*" trees: These trees contain Metadata. Use the poky mailing list.
++ ***"meta-*" trees***: These trees contain Metadata. Use the poky mailing list.
 
-For changes to other layers hosted in the Yocto Project source repositories (i.e. yoctoproject.org), tools, and the Yocto Project documentation, use the Yocto Project general mailing list.
+     For changes to other layers hosted in the Yocto Project source repositories (i.e. yoctoproject.org), tools, and the Yocto Project documentation, use the Yocto Project general mailing list.
 
-Note
-Sometimes a layer's documentation specifies to use a particular mailing list. If so, use that list.
-For additional recipes that do not fit into the core Metadata, you should determine which layer the recipe should go into and submit the change in the manner recommended by the documentation (e.g. the README file) supplied with the layer. If in doubt, please ask on the Yocto general mailing list or on the openembedded-devel mailing list.
+     > Note  
+     > Sometimes a layer's documentation specifies to use a particular mailing list. If so, use that list.
 
-You can also push a change upstream and request a maintainer to pull the change into the component's upstream repository. You do this by pushing to a contribution repository that is upstream. See the "Git Workflows and the Yocto Project" section in the Yocto Project Overview and Concepts Manual for additional concepts on working in the Yocto Project development environment.
+     For additional recipes that do not fit into the core Metadata, you should determine which layer the recipe should go into and submit the change in the manner recommended by the documentation (e.g. the README file) supplied with the layer. If in doubt, please ask on the Yocto general mailing list or on the openembedded-devel mailing list.
 
-Two commonly used testing repositories exist for OpenEmbedded-Core:
+     You can also push a change upstream and request a maintainer to pull the change into the component's upstream repository. You do this by pushing to a contribution repository that is upstream. See the "Git Workflows and the Yocto Project" section in the Yocto Project Overview and Concepts Manual for additional concepts on working in the Yocto Project development environment.
 
-"ross/mut" branch: The "mut" (master-under-test) tree exists in the poky-contrib repository in the Yocto Project source repositories.
+     Two commonly used testing repositories exist for OpenEmbedded-Core:
 
-"master-next" branch: This branch is part of the main "poky" repository in the Yocto Project source repositories.
++ ***"ross/mut" branch***: The "mut" (master-under-test) tree exists in the poky-contrib repository in the Yocto Project source repositories.
+
++ ***"master-next" branch***: This branch is part of the main "poky" repository in the Yocto Project source repositories.
 
 Maintainers use these branches to test submissions prior to merging patches. Thus, you can get an idea of the status of a patch based on whether the patch has been merged into one of these branches.
 
-Note
-This system is imperfect and changes can sometimes get lost in the flow. Asking about the status of a patch or change is reasonable if the change has been idle for a while with no feedback. The Yocto Project does have plans to use Patchwork to track the status of patches and also to automatically preview patches.
+> Note  
+> This system is imperfect and changes can sometimes get lost in the flow. Asking about the status of a patch or change is reasonable if the change has been idle for a while with no feedback. The Yocto Project does have plans to use Patchwork to track the status of patches and also to automatically preview patches.
+
 The following sections provide procedures for submitting a change.
 
-#### 3.31.2.1. Using Scripts to Push a Change Upstream and Request a Pull¶
+#### 3.31.2.1. Using Scripts to Push a Change Upstream and Request a Pull
 Follow this procedure to push a change to an upstream "contrib" Git repository:
 
-Note
-You can find general Git information on how to push a change upstream in the Git Community Book.
-Make Your Changes Locally: Make your changes in your local Git repository. You should make small, controlled, isolated changes. Keeping changes small and isolated aids review, makes merging/rebasing easier and keeps the change history clean should anyone need to refer to it in future.
+> Note  
+> You can find general Git information on how to push a change upstream in the Git Community Book.
 
-Stage Your Changes: Stage your changes by using the git add command on each file you changed.
+1. Make Your Changes Locally: Make your changes in your local Git repository. You should make small, controlled, isolated changes. Keeping changes small and isolated aids review, makes merging/rebasing easier and keeps the change history clean should anyone need to refer to it in future.
 
-Commit Your Changes: Commit the change by using the git commit command. Make sure your commit information follows standards by following these accepted conventions:
+2. Stage Your Changes: Stage your changes by using the git add command on each file you changed.
 
-Be sure to include a "Signed-off-by:" line in the same style as required by the Linux kernel. Adding this line signifies that you, the submitter, have agreed to the Developer's Certificate of Origin 1.1 as follows:
+3. Commit Your Changes: Commit the change by using the git commit command. Make sure your commit information follows standards by following these accepted conventions:
 
+     + Be sure to include a "Signed-off-by:" line in the same style as required by the Linux kernel. Adding this line signifies that you, the submitter, have agreed to the Developer's Certificate of Origin 1.1 as follows:
+          ```
      Developer's Certificate of Origin 1.1
 
      By making a contribution to this project, I certify that:
@@ -5342,166 +5365,173 @@ Be sure to include a "Signed-off-by:" line in the same style as required by the 
          personal information I submit with it, including my sign-off) is
          maintained indefinitely and may be redistributed consistent with
          this project or the open source license(s) involved.
-                                    
-Provide a single-line summary of the change. and, if more explanation is needed, provide more detail in the body of the commit. This summary is typically viewable in the "shortlist" of changes. Thus, providing something short and descriptive that gives the reader a summary of the change is useful when viewing a list of many commits. You should prefix this short description with the recipe name (if changing a recipe), or else with the short form path to the file being changed.
+          ```                               
 
-For the body of the commit message, provide detailed information that describes what you changed, why you made the change, and the approach you used. It might also be helpful if you mention how you tested the change. Provide as much detail as you can in the body of the commit message.
+     + Provide a single-line summary of the change. and, if more explanation is needed, provide more detail in the body of the commit. This summary is typically viewable in the "shortlist" of changes. Thus, providing something short and descriptive that gives the reader a summary of the change is useful when viewing a list of many commits. You should prefix this short description with the recipe name (if changing a recipe), or else with the short form path to the file being changed.
 
-Note
-You do not need to provide a more detailed explanation of a change if the change is minor to the point of the single line summary providing all the information.
-If the change addresses a specific bug or issue that is associated with a bug-tracking ID, include a reference to that ID in your detailed description. For example, the Yocto Project uses a specific convention for bug references - any commit that addresses a specific bug should use the following form for the detailed description. Be sure to use the actual bug-tracking ID from Bugzilla for bug-id:
+     + For the body of the commit message, provide detailed information that describes what you changed, why you made the change, and the approach you used. It might also be helpful if you mention how you tested the change. Provide as much detail as you can in the body of the commit message.
 
+     > Note  
+     > You do not need to provide a more detailed explanation of a change if the change is minor to the point of the single line summary providing all the information.
+
+     > If the change addresses a specific bug or issue that is associated with a bug-tracking ID, include a reference to that ID in your detailed description. For example, the Yocto Project uses a specific convention for bug references - any commit that addresses a specific bug should use the following form for the detailed description. Be sure to use the actual bug-tracking ID from Bugzilla for bug-id:
+     ```
      Fixes [YOCTO #bug-id]
 
      detailed description of change
-                                    
-Push Your Commits to a "Contrib" Upstream: If you have arranged for permissions to push to an upstream contrib repository, push the change to that repository:
+     ```                                    
 
+     + Push Your Commits to a "Contrib" Upstream: If you have arranged for permissions to push to an upstream contrib repository, push the change to that repository:
+     ```
      $ git push upstream_remote_repo local_branch_name
-                            
-For example, suppose you have permissions to push into the upstream meta-intel-contrib repository and you are working in a local branch named your_name/README. The following command pushes your local commits to the meta-intel-contrib upstream repository and puts the commit in a branch named your_name/README:
-
+     ```                            
+     For example, suppose you have permissions to push into the upstream meta-intel-contrib repository and you are working in a local branch named your_name/README. The following command pushes your local commits to the meta-intel-contrib upstream repository and puts the commit in a branch named your_name/README:
+     ```
      $ git push meta-intel-contrib your_name/README
-                            
-Determine Who to Notify: Determine the maintainer or the mailing list that you need to notify for the change.
+     ```                            
+     + Determine Who to Notify: Determine the maintainer or the mailing list that you need to notify for the change.
 
-Before submitting any change, you need to be sure who the maintainer is or what mailing list that you need to notify. Use either these methods to find out:
+          Before submitting any change, you need to be sure who the maintainer is or what mailing list that you need to notify. Use either these methods to find out:
 
-Maintenance File: Examine the maintainers.inc file, which is located in the Source Directory at meta/conf/distro/include, to see who is responsible for code.
+          + Maintenance File: Examine the maintainers.inc file, which is located in the Source Directory at meta/conf/distro/include, to see who is responsible for code.
 
-Search by File: Using Git, you can enter the following command to bring up a short list of all commits against a specific file:
+          + Search by File: Using Git, you can enter the following command to bring up a short list of all commits against a specific file:
+          ```
+          git shortlog -- filename
+          ```                                    
+          Just provide the name of the file for which you are interested. The information returned is not ordered by history but does include a list of everyone who has committed grouped by name. From the list, you can see who is responsible for the bulk of the changes against the file.
 
-     git shortlog -- filename
-                                    
-Just provide the name of the file for which you are interested. The information returned is not ordered by history but does include a list of everyone who has committed grouped by name. From the list, you can see who is responsible for the bulk of the changes against the file.
+          + Examine the List of Mailing Lists: For a list of the Yocto Project and related mailing lists, see the "Mailing lists" section in the Yocto Project Reference Manual.
 
-Examine the List of Mailing Lists: For a list of the Yocto Project and related mailing lists, see the "Mailing lists" section in the Yocto Project Reference Manual.
+     + Make a Pull Request: Notify the maintainer or the mailing list that you have pushed a change by making a pull request.
 
-Make a Pull Request: Notify the maintainer or the mailing list that you have pushed a change by making a pull request.
+     The Yocto Project provides two scripts that conveniently let you generate and send pull requests to the Yocto Project. These scripts are create-pull-request and send-pull-request. You can find these scripts in the scripts directory within the Source Directory (e.g. ~/poky/scripts).
 
-The Yocto Project provides two scripts that conveniently let you generate and send pull requests to the Yocto Project. These scripts are create-pull-request and send-pull-request. You can find these scripts in the scripts directory within the Source Directory (e.g. ~/poky/scripts).
+     Using these scripts correctly formats the requests without introducing any whitespace or HTML formatting. The maintainer that receives your patches either directly or through the mailing list needs to be able to save and apply them directly from your emails. Using these scripts is the preferred method for sending patches.
 
-Using these scripts correctly formats the requests without introducing any whitespace or HTML formatting. The maintainer that receives your patches either directly or through the mailing list needs to be able to save and apply them directly from your emails. Using these scripts is the preferred method for sending patches.
-
-First, create the pull request. For example, the following command runs the script, specifies the upstream repository in the contrib directory into which you pushed the change, and provides a subject line in the created patch files:
-
+     First, create the pull request. For example, the following command runs the script, specifies the upstream repository in the contrib directory into which you pushed the change, and provides a subject line in the created patch files:
+     ```
      $ ~/poky/scripts/create-pull-request -u meta-intel-contrib -s "Updated Manual Section Reference in README"
-                            
-Running this script forms *.patch files in a folder named pull-PID in the current directory. One of the patch files is a cover letter.
+     ```                       
+     Running this script forms *.patch files in a folder named pull-PID in the current directory. One of the patch files is a cover letter.
 
-Before running the send-pull-request script, you must edit the cover letter patch to insert information about your change. After editing the cover letter, send the pull request. For example, the following command runs the script and specifies the patch directory and email address. In this example, the email address is a mailing list:
-
+     Before running the send-pull-request script, you must edit the cover letter patch to insert information about your change. After editing the cover letter, send the pull request. For example, the following command runs the script and specifies the patch directory and email address. In this example, the email address is a mailing list:
+     ```
      $ ~/poky/scripts/send-pull-request -p ~/meta-intel/pull-10565 -t meta-intel@yoctoproject.org
-                            
-You need to follow the prompts as the script is interactive.
+     ```                            
+     You need to follow the prompts as the script is interactive.
 
-Note
-For help on using these scripts, simply provide the -h argument as follows:
-     $ poky/scripts/create-pull-request -h
-     $ poky/scripts/send-pull-request -h
+     > Note  
+     > For help on using these scripts, simply provide the -h argument as follows:
+     > ```
+     >      $ poky/scripts/create-pull-request -h
+     >      $ poky/scripts/send-pull-request -h
+     > ```
                                 
-#### 3.31.2.2. Using Email to Submit a Patch¶
+#### 3.31.2.2. Using Email to Submit a Patch
 You can submit patches without using the create-pull-request and send-pull-request scripts described in the previous section. However, keep in mind, the preferred method is to use the scripts.
 
 Depending on the components changed, you need to submit the email to a specific mailing list. For some guidance on which mailing list to use, see the list at the beginning of this section. For a description of all the available mailing lists, see the "Mailing Lists" section in the Yocto Project Reference Manual.
 
 Here is the general procedure on how to submit a patch through email without using the scripts:
 
-Make Your Changes Locally: Make your changes in your local Git repository. You should make small, controlled, isolated changes. Keeping changes small and isolated aids review, makes merging/rebasing easier and keeps the change history clean should anyone need to refer to it in future.
+1. Make Your Changes Locally: Make your changes in your local Git repository. You should make small, controlled, isolated changes. Keeping changes small and isolated aids review, makes merging/rebasing easier and keeps the change history clean should anyone need to refer to it in future.
 
-Stage Your Changes: Stage your changes by using the git add command on each file you changed.
+2. Stage Your Changes: Stage your changes by using the git add command on each file you changed.
 
-Commit Your Changes: Commit the change by using the git commit --signoff command. Using the --signoff option identifies you as the person making the change and also satisfies the Developer's Certificate of Origin (DCO) shown earlier.
+3. Commit Your Changes: Commit the change by using the git commit --signoff command. Using the --signoff option identifies you as the person making the change and also satisfies the Developer's Certificate of Origin (DCO) shown earlier.
 
-When you form a commit, you must follow certain standards established by the Yocto Project development team. See Step 3 in the previous section for information on how to provide commit information that meets Yocto Project commit message standards.
+     When you form a commit, you must follow certain standards established by the Yocto Project development team. See Step 3 in the previous section for information on how to provide commit information that meets Yocto Project commit message standards.
 
-Format the Commit: Format the commit into an email message. To format commits, use the git format-patch command. When you provide the command, you must include a revision list or a number of patches as part of the command. For example, either of these two commands takes your most recent single commit and formats it as an email message in the current directory:
-
+4. Format the Commit: Format the commit into an email message. To format commits, use the git format-patch command. When you provide the command, you must include a revision list or a number of patches as part of the command. For example, either of these two commands takes your most recent single commit and formats it as an email message in the current directory:
+     ```
      $ git format-patch -1
-                            
-or
-
+     ```                       
+     or
+     ```
      $ git format-patch HEAD~
-                            
-After the command is run, the current directory contains a numbered .patch file for the commit.
+     ```                       
+     After the command is run, the current directory contains a numbered .patch file for the commit.
 
-If you provide several commits as part of the command, the git format-patch command produces a series of numbered files in the current directory – one for each commit. If you have more than one patch, you should also use the --cover option with the command, which generates a cover letter as the first "patch" in the series. You can then edit the cover letter to provide a description for the series of patches. For information on the git format-patch command, see GIT_FORMAT_PATCH(1) displayed using the man git-format-patch command.
+     If you provide several commits as part of the command, the git format-patch command produces a series of numbered files in the current directory – one for each commit. If you have more than one patch, you should also use the --cover option with the command, which generates a cover letter as the first "patch" in the series. You can then edit the cover letter to provide a description for the series of patches. For information on the git format-patch command, see GIT_FORMAT_PATCH(1) displayed using the man git-format-patch command.
 
-Note
-If you are or will be a frequent contributor to the Yocto Project or to OpenEmbedded, you might consider requesting a contrib area and the necessary associated rights.
-Import the Files Into Your Mail Client: Import the files into your mail client by using the git send-email command.
+     > Note  
+     > If you are or will be a frequent contributor to the Yocto Project or to OpenEmbedded, you might consider requesting a contrib area and the necessary associated rights.
 
-Note
-In order to use git send-email, you must have the proper Git packages installed on your host. For Ubuntu, Debian, and Fedora the package is git-email.
-The git send-email command sends email by using a local or remote Mail Transport Agent (MTA) such as msmtp, sendmail, or through a direct smtp configuration in your Git ~/.gitconfig file. If you are submitting patches through email only, it is very important that you submit them without any whitespace or HTML formatting that either you or your mailer introduces. The maintainer that receives your patches needs to be able to save and apply them directly from your emails. A good way to verify that what you are sending will be applicable by the maintainer is to do a dry run and send them to yourself and then save and apply them as the maintainer would.
+5. Import the Files Into Your Mail Client: Import the files into your mail client by using the git send-email command.
 
-The git send-email command is the preferred method for sending your patches using email since there is no risk of compromising whitespace in the body of the message, which can occur when you use your own mail client. The command also has several options that let you specify recipients and perform further editing of the email message. For information on how to use the git send-email command, see GIT-SEND-EMAIL(1) displayed using the man git-send-email command.
+     > Note  
+     > In order to use git send-email, you must have the proper Git packages installed on your host. For Ubuntu, Debian, and Fedora the package is git-email.
 
-## 3.32. Working With Licenses¶
+     The git send-email command sends email by using a local or remote Mail Transport Agent (MTA) such as msmtp, sendmail, or through a direct smtp configuration in your Git ~/.gitconfig file. If you are submitting patches through email only, it is very important that you submit them without any whitespace or HTML formatting that either you or your mailer introduces. The maintainer that receives your patches needs to be able to save and apply them directly from your emails. A good way to verify that what you are sending will be applicable by the maintainer is to do a dry run and send them to yourself and then save and apply them as the maintainer would.
+
+     The git send-email command is the preferred method for sending your patches using email since there is no risk of compromising whitespace in the body of the message, which can occur when you use your own mail client. The command also has several options that let you specify recipients and perform further editing of the email message. For information on how to use the git send-email command, see GIT-SEND-EMAIL(1) displayed using the man git-send-email command.
+
+## 3.32. Working With Licenses
 As mentioned in the "Licensing" section in the Yocto Project Overview and Concepts Manual, open source projects are open to the public and they consequently have different licensing structures in place. This section describes the mechanism by which the OpenEmbedded build system tracks changes to licensing text and covers how to maintain open source license compliance during your project's lifecycle. The section also describes how to enable commercially licensed recipes, which by default are disabled.
 
-### 3.32.1. Tracking License Changes¶
+### 3.32.1. Tracking License Changes
 The license of an upstream project might change in the future. In order to prevent these changes going unnoticed, the LIC_FILES_CHKSUM variable tracks changes to the license text. The checksums are validated at the end of the configure step, and if the checksums do not match, the build will fail.
 
-#### 3.32.1.1. Specifying the LIC_FILES_CHKSUM Variable¶
+#### 3.32.1.1. Specifying the `LIC_FILES_CHKSUM` Variable
 The LIC_FILES_CHKSUM variable contains checksums of the license text in the source code for the recipe. Following is an example of how to specify LIC_FILES_CHKSUM:
-
+```
      LIC_FILES_CHKSUM = "file://COPYING;`md5`=xxxx \
                          file://licfile1.txt;beginline=5;endline=29;`md5`=yyyy \
                          file://licfile2.txt;endline=50;`md5`=zzzz \
                          ..."
-                    
-Notes
-When using "beginline" and "endline", realize that line numbering begins with one and not zero. Also, the included lines are inclusive (i.e. lines five through and including 29 in the previous example for licfile1.txt).
-
-When a license check fails, the selected license text is included as part of the QA message. Using this output, you can determine the exact start and finish for the needed license text.
+```                    
+> Notes  
+> + When using "beginline" and "endline", realize that line numbering begins with one and not zero. Also, the included lines are inclusive (i.e. lines five through and including 29 in the previous example for licfile1.txt).
+> 
+> + When a license check fails, the selected license text is included as part of the QA message. Using this output, you can determine the exact start and finish for the needed license text.
 
 The build system uses the S variable as the default directory when searching files listed in LIC_FILES_CHKSUM. The previous example employs the default directory.
 
 Consider this next example:
-
+```
      LIC_FILES_CHKSUM = "file://src/ls.c;beginline=5;endline=16;\
                                          `md5`=bb14ed3c4cda583abc85401304b5cd4e"
      LIC_FILES_CHKSUM = "file://${WORKDIR}/license.html;`md5`=5c94767cedb5d6987c902ac850ded2c6"
-                    
-The first line locates a file in ${S}/src/ls.c and isolates lines five through 16 as license text. The second line refers to a file in WORKDIR.
+```                    
+The first line locates a file in `${S}/src/ls.c` and isolates lines five through 16 as license text. The second line refers to a file in WORKDIR.
 
 Note that LIC_FILES_CHKSUM variable is mandatory for all recipes, unless the LICENSE variable is set to "CLOSED".
 
-#### 3.32.1.2. Explanation of Syntax¶
+#### 3.32.1.2. Explanation of Syntax
 As mentioned in the previous section, the LIC_FILES_CHKSUM variable lists all the important files that contain the license text for the source code. It is possible to specify a checksum for an entire file, or a specific section of a file (specified by beginning and ending line numbers with the "beginline" and "endline" parameters, respectively). The latter is useful for source files with a license notice header, README documents, and so forth. If you do not use the "beginline" parameter, then it is assumed that the text begins on the first line of the file. Similarly, if you do not use the "endline" parameter, it is assumed that the license text ends with the last line of the file.
 
 The "`md5`" parameter stores the `md5` checksum of the license text. If the license text changes in any way as compared to this parameter then a mismatch occurs. This mismatch triggers a build failure and notifies the developer. Notification allows the developer to review and address the license text changes. Also note that if a mismatch occurs during the build, the correct `md5` checksum is placed in the build log and can be easily copied to the recipe.
 
 There is no limit to how many files you can specify using the LIC_FILES_CHKSUM variable. Generally, however, every project requires a few specifications for license tracking. Many projects have a "COPYING" file that stores the license information for all the source code files. This practice allows you to just track the "COPYING" file as long as it is kept up to date.
 
-Tips
-If you specify an empty or invalid "`md5`" parameter, BitBake returns an `md5` mis-match error and displays the correct "`md5`" parameter value during the build. The correct parameter is also captured in the build log.
+> Tips  
+> + If you specify an empty or invalid "`md5`" parameter, BitBake returns an `md5` mis-match error and displays the correct "`md5`" parameter value during the build. The correct parameter is also captured in the build log.
+> 
+> + If the whole file contains only license text, you do not need to use the "beginline" and "endline" parameters.
 
-If the whole file contains only license text, you do not need to use the "beginline" and "endline" parameters.
-
-### 3.32.2. Enabling Commercially Licensed Recipes¶
+### 3.32.2. Enabling Commercially Licensed Recipes
 By default, the OpenEmbedded build system disables components that have commercial or other special licensing requirements. Such requirements are defined on a recipe-by-recipe basis through the LICENSE_FLAGS variable definition in the affected recipe. For instance, the poky/meta/recipes-multimedia/gstreamer/gst-plugins-ugly recipe contains the following statement:
-
+```
      LICENSE_FLAGS = "commercial"
-                
+```                
 Here is a slightly more complicated example that contains both an explicit recipe name and version (after variable expansion):
-
+```
      LICENSE_FLAGS = "license_`${PN}`_${PV}"
-                
+```                
 In order for a component restricted by a LICENSE_FLAGS definition to be enabled and included in an image, it needs to have a matching entry in the global LICENSE_FLAGS_WHITELIST variable, which is a variable typically defined in your `local.conf` file. For example, to enable the poky/meta/recipes-multimedia/gstreamer/gst-plugins-ugly package, you could add either the string "commercial_gst-plugins-ugly" or the more general string "commercial" to LICENSE_FLAGS_WHITELIST. See the "License Flag Matching" section for a full explanation of how LICENSE_FLAGS matching works. Here is the example:
-
+```
      LICENSE_FLAGS_WHITELIST = "commercial_gst-plugins-ugly"
-                
+```                
 Likewise, to additionally enable the package built from the recipe containing LICENSE_FLAGS = "license_`${PN}`_${PV}", and assuming that the actual recipe name was emgd_1.10.bb, the following string would enable that package as well as the original gst-plugins-ugly package:
-
+```
      LICENSE_FLAGS_WHITELIST = "commercial_gst-plugins-ugly license_emgd_1.10"
-                
+```                
 As a convenience, you do not need to specify the complete license string in the whitelist for every package. You can use an abbreviated form, which consists of just the first portion or portions of the license string before the initial underscore character or characters. A partial string will match any license that contains the given string as the first portion of its license. For example, the following whitelist string will also match both of the packages previously mentioned as well as any other packages that have licenses starting with "commercial" or "license".
-
+```
      LICENSE_FLAGS_WHITELIST = "commercial license"
-
-#### 3.32.2.1. License Flag Matching¶
+```
+#### 3.32.2.1. License Flag Matching
 License flag matching allows you to control what recipes the OpenEmbedded build system includes in the build. Fundamentally, the build system attempts to match LICENSE_FLAGS strings found in recipes against LICENSE_FLAGS_WHITELIST strings found in the whitelist. A match causes the build system to include a recipe in the build, while failure to find a match causes the build system to exclude a recipe.
 
 In general, license flag matching is simple. However, understanding some concepts will help you correctly and effectively use matching.
@@ -5510,63 +5540,64 @@ Before a flag defined by a particular recipe is tested against the contents of t
 
 Judicious use of the LICENSE_FLAGS strings and the contents of the LICENSE_FLAGS_WHITELIST variable allows you a lot of flexibility for including or excluding recipes based on licensing. For example, you can broaden the matching capabilities by using license flags string subsets in the whitelist.
 
-Note
-When using a string subset, be sure to use the part of the expanded string that precedes the appended underscore character (e.g. usethispart_1.3, usethispart_1.4, and so forth).
-For example, simply specifying the string "commercial" in the whitelist matches any expanded LICENSE_FLAGS definition that starts with the string "commercial" such as "commercial_foo" and "commercial_bar", which are the strings the build system automatically generates for hypothetical recipes named "foo" and "bar" assuming those recipes simply specify the following:
+> Note  
+> When using a string subset, be sure to use the part of the expanded string that precedes the appended underscore character (e.g. usethispart_1.3, usethispart_1.4, and so forth).
 
+For example, simply specifying the string "commercial" in the whitelist matches any expanded LICENSE_FLAGS definition that starts with the string "commercial" such as "commercial_foo" and "commercial_bar", which are the strings the build system automatically generates for hypothetical recipes named "foo" and "bar" assuming those recipes simply specify the following:
+```
      LICENSE_FLAGS = "commercial"
-                    
+```                    
 Thus, you can choose to exhaustively enumerate each license flag in the whitelist and allow only specific recipes into the image, or you can use a string subset that causes a broader range of matches to allow a range of recipes into the image.
 
 This scheme works even if the LICENSE_FLAGS string already has _`${PN}` appended. For example, the build system turns the license flag "commercial_1.2_foo" into "commercial_1.2_foo_foo" and would match both the general "commercial" and the specific "commercial_1.2_foo" strings found in the whitelist, as expected.
 
 Here are some other scenarios:
 
-You can specify a versioned string in the recipe such as "commercial_foo_1.2" in a "foo" recipe. The build system expands this string to "commercial_foo_1.2_foo". Combine this license flag with a whitelist that has the string "commercial" and you match the flag along with any other flag that starts with the string "commercial".
++ You can specify a versioned string in the recipe such as "commercial_foo_1.2" in a "foo" recipe. The build system expands this string to "commercial_foo_1.2_foo". Combine this license flag with a whitelist that has the string "commercial" and you match the flag along with any other flag that starts with the string "commercial".
 
-Under the same circumstances, you can use "commercial_foo" in the whitelist and the build system not only matches "commercial_foo_1.2" but also matches any license flag with the string "commercial_foo", regardless of the version.
++ Under the same circumstances, you can use "commercial_foo" in the whitelist and the build system not only matches "commercial_foo_1.2" but also matches any license flag with the string "commercial_foo", regardless of the version.
 
-You can be very specific and use both the package and version parts in the whitelist (e.g. "commercial_foo_1.2") to specifically match a versioned recipe.
++ You can be very specific and use both the package and version parts in the whitelist (e.g. "commercial_foo_1.2") to specifically match a versioned recipe.
 
-#### 3.32.2.2. Other Variables Related to Commercial Licenses¶
+#### 3.32.2.2. Other Variables Related to Commercial Licenses
 Other helpful variables related to commercial license handling exist and are defined in the poky/meta/conf/distro/include/default-distrovars.inc file:
-
+```
      COMMERCIAL_AUDIO_PLUGINS ?= ""
      COMMERCIAL_VIDEO_PLUGINS ?= ""
-                    
+```                    
 If you want to enable these components, you can do so by making sure you have statements similar to the following in your `local.conf` configuration file:
-
+```
      COMMERCIAL_AUDIO_PLUGINS = "gst-plugins-ugly-mad \
         gst-plugins-ugly-mpegaudioparse"
      COMMERCIAL_VIDEO_PLUGINS = "gst-plugins-ugly-mpeg2dec \
         gst-plugins-ugly-mpegstream gst-plugins-bad-mpegvideoparse"
      LICENSE_FLAGS_WHITELIST = "commercial_gst-plugins-ugly commercial_gst-plugins-bad commercial_qmmp"
-                    
+```                    
 Of course, you could also create a matching whitelist for those components using the more general "commercial" in the whitelist, but that would also enable all the other packages with LICENSE_FLAGS containing "commercial", which you may or may not want:
-
+```
      LICENSE_FLAGS_WHITELIST = "commercial"
-                    
+```                    
 Specifying audio and video plug-ins as part of the COMMERCIAL_AUDIO_PLUGINS and COMMERCIAL_VIDEO_PLUGINS statements (along with the enabling LICENSE_FLAGS_WHITELIST) includes the plug-ins or components into built images, thus adding support for media formats or components.
 
-### 3.32.3. Maintaining Open Source License Compliance During Your Product's Lifecycle¶
+### 3.32.3. Maintaining Open Source License Compliance During Your Product's Lifecycle
 One of the concerns for a development organization using open source software is how to maintain compliance with various open source licensing during the lifecycle of the product. While this section does not provide legal advice or comprehensively cover all scenarios, it does present methods that you can use to assist you in meeting the compliance requirements during a software release.
 
 With hundreds of different open source licenses that the Yocto Project tracks, it is difficult to know the requirements of each and every license. However, the requirements of the major FLOSS licenses can begin to be covered by assuming that three main areas of concern exist:
 
-Source code must be provided.
++ Source code must be provided.
 
-License text for the software must be provided.
++ License text for the software must be provided.
 
-Compilation scripts and modifications to the source code must be provided.
++ Compilation scripts and modifications to the source code must be provided.
 
 There are other requirements beyond the scope of these three and the methods described in this section (e.g. the mechanism through which source code is distributed).
 
 As different organizations have different methods of complying with open source licensing, this section is not meant to imply that there is only one single way to meet your compliance obligations, but rather to describe one method of achieving compliance. The remainder of this section describes methods supported to meet the previously mentioned three requirements. Once you take steps to meet these requirements, and prior to releasing images, sources, and the build system, you should audit all artifacts to ensure completeness.
 
-Note
-The Yocto Project generates a license manifest during image creation that is located in ${DEPLOY_DIR}/licenses/image_name-datestamp to assist with any audits.
+> Note  
+> The Yocto Project generates a license manifest during image creation that is located in ${DEPLOY_DIR}/licenses/image_name-datestamp to assist with any audits.
 
-#### 3.32.3.1. Providing the Source Code¶
+#### 3.32.3.1. Providing the Source Code
 Compliance activities should begin before you generate the final image. The first thing you should look at is the requirement that tops the list for most compliance groups - providing the source. The Yocto Project has a few ways of meeting this requirement.
 
 One of the easiest ways to meet this requirement is to provide the entire DL_DIR used by the build. This method, however, has a few issues. The most obvious is the size of the directory since it includes all sources used in the build and not just the source used in the released image. It will include toolchain source, and other artifacts, which you would not generally release. However, the more serious issue for most companies is accidental release of proprietary software. The Yocto Project provides an archiver class to help avoid some of these concerns.
@@ -5574,14 +5605,14 @@ One of the easiest ways to meet this requirement is to provide the entire DL_DIR
 Before you employ DL_DIR or the archiver class, you need to decide how you choose to provide source. The source archiver class can generate tarballs and SRPMs and can create them with various levels of compliance in mind.
 
 One way of doing this (but certainly not the only way) is to release just the source as a tarball. You can do this by adding the following to the `local.conf` file found in the Build Directory:
-
+```
      INHERIT += "archiver"
      ARCHIVER_MODE[src] = "original"
-                    
+```                    
 During the creation of your image, the source from all recipes that deploy packages to the image is placed within subdirectories of DEPLOY_DIR/sources based on the LICENSE for each recipe. Releasing the entire directory enables you to comply with requirements concerning providing the unmodified source. It is important to note that the size of the directory can get large.
 
 A way to help mitigate the size issue is to only release tarballs for licenses that require the release of source. Let us assume you are only concerned with GPL code as identified by running the following script:
-
+```
      # Script to archive a subset of packages matching specific license(s)
      # Source and license files are copied into sub folders of package folder
      # Must be run from build folder
@@ -5605,32 +5636,32 @@ A way to help mitigate the size issue is to only release tarballs for licenses t
            fi
         done
      done
-                    
+```                    
 At this point, you could create a tarball from the gpl_source_release directory and provide that to the end user. This method would be a step toward achieving compliance with section 3a of GPLv2 and with section 6 of GPLv3.
 
-#### 3.32.3.2. Providing License Text¶
+#### 3.32.3.2. Providing License Text
 One requirement that is often overlooked is inclusion of license text. This requirement also needs to be dealt with prior to generating the final image. Some licenses require the license text to accompany the binary. You can achieve this by adding the following to your `local.conf` file:
-
+```
      COPY_LIC_MANIFEST = "1"
      COPY_LIC_DIRS = "1"
      LICENSE_CREATE_PACKAGE = "1"
-                    
+```                    
 Adding these statements to the configuration file ensures that the licenses collected during package generation are included on your image.
 
-Note
-Setting all three variables to "1" results in the image having two copies of the same license file. One copy resides in /usr/share/common-licenses and the other resides in /usr/share/license.
-
-The reason for this behavior is because COPY_LIC_DIRS and COPY_LIC_MANIFEST add a copy of the license when the image is built but do not offer a path for adding licenses for newly installed packages to an image. LICENSE_CREATE_PACKAGE adds a separate package and an upgrade path for adding licenses to an image.
+> Note  
+> Setting all three variables to "1" results in the image having two copies of the same license file. One copy resides in `/usr/share/common-licenses` and the other resides in `/usr/share/license`.
+> 
+> The reason for this behavior is because COPY_LIC_DIRS and COPY_LIC_MANIFEST add a copy of the license when the image is built but do not offer a path for adding licenses for newly installed packages to an image. LICENSE_CREATE_PACKAGE adds a separate package and an upgrade path for adding licenses to an image.
 
 As the source archiver class has already archived the original unmodified source that contains the license files, you would have already met the requirements for inclusion of the license information with source as defined by the GPL and other open source licenses.
 
-#### 3.32.3.3. Providing Compilation Scripts and Source Code Modifications¶
+#### 3.32.3.3. Providing Compilation Scripts and Source Code Modifications
 At this point, we have addressed all we need to prior to generating the image. The next two requirements are addressed during the final packaging of the release.
 
 By releasing the version of the OpenEmbedded build system and the layers used during the build, you will be providing both compilation scripts and the source code modifications in one step.
 
 If the deployment team has a BSP layer and a distro layer, and those those layers are used to patch, compile, package, or modify (in any way) any open source software included in your released images, you might be required to release those layers under section 3 of GPLv2 or section 1 of GPLv3. One way of doing that is with a clean checkout of the version of the Yocto Project and layers used during your build. Here is an example:
-
+```
      # We built using the warrior branch of the poky repo
      $ git clone -b warrior git://git.yoctoproject.org/poky
      $ cd poky
@@ -5639,9 +5670,9 @@ If the deployment team has a BSP layer and a distro layer, and those those layer
      $ git clone -b release_branch git://git.mycompany.com/meta-my-software-layer
      # clean up the .git repos
      $ find . -name ".git" -type d -exec rm -rf {} \;
-                    
+```                    
 One thing a development organization might want to consider for end-user convenience is to modify meta-poky/conf/`bblayers.conf`.sample to ensure that when the end user utilizes the released build system to build an image, the development organization's layers are included in the `bblayers.conf` file automatically:
-
+```
      # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/`bblayers.conf`
      # changes incompatibly
      POKY_BBLAYERS_CONF_VERSION = "2"
@@ -5655,95 +5686,96 @@ One thing a development organization might want to consider for end-user conveni
        ##OEROOT##/meta-yocto-bsp \
        ##OEROOT##/meta-mylayer \
        "
-                    
+```                    
 Creating and providing an archive of the Metadata layers (recipes, configuration files, and so forth) enables you to meet your requirements to include the scripts to control compilation as well as any modifications to the original source.
 
-### 3.32.4. Copying Licenses that Do Not Exist¶
+### 3.32.4. Copying Licenses that Do Not Exist
 Some packages, such as the linux-firmware package, have many licenses that are not in any way common. You can avoid adding a lot of these types of common license files, which are only applicable to a specific package, by using the NO_GENERIC_LICENSE variable. Using this variable also avoids QA errors when you use a non-common, non-CLOSED license in a recipe.
 
 The following is an example that uses the LICENSE.Abilis.txt file as the license from the fetched source:
-
+```
      NO_GENERIC_LICENSE[Firmware-Abilis] = "LICENSE.Abilis.txt"
-
-## 3.33. Using the Error Reporting Tool¶
+```
+## 3.33. Using the Error Reporting Tool
 The error reporting tool allows you to submit errors encountered during builds to a central database. Outside of the build environment, you can use a web interface to browse errors, view statistics, and query for errors. The tool works using a client-server system where the client portion is integrated with the installed Yocto Project Source Directory (e.g. poky). The server receives the information collected and saves it in a database.
 
 A live instance of the error reporting server exists at http://errors.yoctoproject.org. This server exists so that when you want to get help with build failures, you can submit all of the information on the failure easily and then point to the URL in your bug report or send an email to the mailing list.
 
-Note
-If you send error reports to this server, the reports become publicly visible.
+> Note  
+> If you send error reports to this server, the reports become publicly visible.
 
-### 3.33.1. Enabling and Using the Tool¶
+### 3.33.1. Enabling and Using the Tool
 By default, the error reporting tool is disabled. You can enable it by inheriting the report-error class by adding the following statement to the end of your `local.conf` file in your Build Directory.
-
+```
      INHERIT += "report-error"
-                
+```                
 By default, the error reporting feature stores information in ${LOG_DIR}/error-report. However, you can specify a directory to use by adding the following to your `local.conf` file:
-
+```
      ERR_REPORT_DIR = "path"
-                
+```                
 Enabling error reporting causes the build process to collect the errors and store them in a file as previously described. When the build system encounters an error, it includes a command as part of the console output. You can run the command to send the error file to the server. For example, the following command sends the errors to an upstream server:
-
+```
      $ send-error-report /home/brandusa/project/poky/build/tmp/log/error-report/error_report_201403141617.txt
-                
+```                
 In the previous example, the errors are sent to a public database available at http://errors.yoctoproject.org, which is used by the entire community. If you specify a particular server, you can send the errors to a different database. Use the following command for more information on available options:
-
+```
      $ send-error-report --help
-                
+```                
 When sending the error file, you are prompted to review the data being sent as well as to provide a name and optional email address. Once you satisfy these prompts, the command returns a link from the server that corresponds to your entry in the database. For example, here is a typical link:
-
+```
      http://errors.yoctoproject.org/Errors/Details/9522/
-                
+```                
 Following the link takes you to a web interface where you can browse, query the errors, and view statistics.
 
-### 3.33.2. Disabling the Tool¶
+### 3.33.2. Disabling the Tool
 To disable the error reporting feature, simply remove or comment out the following statement from the end of your `local.conf` file in your Build Directory.
-
+```
      INHERIT += "report-error"
-
-### 3.33.3. Setting Up Your Own Error Reporting Server¶
+```
+### 3.33.3. Setting Up Your Own Error Reporting Server
 If you want to set up your own error reporting server, you can obtain the code from the Git repository at http://git.yoctoproject.org/cgit/cgit.cgi/error-report-web/. Instructions on how to set it up are in the README document.
 
-## 3.34. Using Wayland and Weston¶
+## 3.34. Using Wayland and Weston
 Wayland is a computer display server protocol that provides a method for compositing window managers to communicate directly with applications and video hardware and expects them to communicate with input hardware using other libraries. Using Wayland with supporting targets can result in better control over graphics frame rendering than an application might otherwise achieve.
 
 The Yocto Project provides the Wayland protocol libraries and the reference Weston compositor as part of its release. You can find the integrated packages in the meta layer of the Source Directory. Specifically, you can find the recipes that build both Wayland and Weston at meta/recipes-graphics/wayland.
 
 You can build both the Wayland and Weston packages for use only with targets that accept the Mesa 3D and Direct Rendering Infrastructure, which is also known as Mesa DRI. This implies that you cannot build and use the packages if your target uses, for example, the Intel® Embedded Media and Graphics Driver (Intel® EMGD) that overrides Mesa DRI.
 
-Note
-Due to lack of EGL support, Weston 1.0.3 will not run directly on the emulated QEMU hardware. However, this version of Weston will run under X emulation without issues.
+> Note  
+> Due to lack of EGL support, Weston 1.0.3 will not run directly on the emulated QEMU hardware. However, this version of Weston will run under X emulation without issues.
+
 This section describes what you need to do to implement Wayland and use the Weston compositor when building an image for a supporting target.
 
-### 3.34.1. Enabling Wayland in an Image¶
+### 3.34.1. Enabling Wayland in an Image
 To enable Wayland, you need to enable it to be built and enable it to be included (installed) in the image.
 
-#### 3.34.1.1. Building¶
+#### 3.34.1.1. Building
 To cause Mesa to build the wayland-egl platform and Weston to build Wayland with Kernel Mode Setting (KMS) support, include the "wayland" flag in the DISTRO_FEATURES statement in your `local.conf` file:
-
+```
      DISTRO_FEATURES_append = " wayland"
-                    
-Note
-If X11 has been enabled elsewhere, Weston will build Wayland with X11 support
+```                    
+> Note  
+> If X11 has been enabled elsewhere, Weston will build Wayland with X11 support
 
-#### 3.34.1.2. Installing¶
+#### 3.34.1.2. Installing
 To install the Wayland feature into an image, you must include the following CORE_IMAGE_EXTRA_INSTALL statement in your `local.conf` file:
-
+```
      CORE_IMAGE_EXTRA_INSTALL += "wayland weston"
-
-### 3.34.2. Running Weston¶
+```
+### 3.34.2. Running Weston
 To run Weston inside X11, enabling it as described earlier and building a Sato image is sufficient. If you are running your image under Sato, a Weston Launcher appears in the "Utility" category.
 
 Alternatively, you can run Weston through the command-line interpretor (CLI), which is better suited for development work. To run Weston under the CLI, you need to do the following after your image is built:
 
 Run these commands to export XDG_RUNTIME_DIR:
-
+```
      mkdir -p /tmp/$USER-weston
      chmod 0700 /tmp/$USER-weston
      export XDG_RUNTIME_DIR=/tmp/$USER-weston
-                        
+```                        
 Launch Weston in the shell:
-
+```
      weston
-
+```
 
