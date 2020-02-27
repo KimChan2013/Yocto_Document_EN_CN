@@ -87,62 +87,62 @@
   - [3.20. Creating a Custom Template Configuration Directory¶](#320-creating-a-custom-template-configuration-directory%c2%b6)
   - [3.21. Conserving Disk Space During Builds](#321-conserving-disk-space-during-builds)
   - [3.22. Working with Packages](#322-working-with-packages)
-    - [3.22.1. Excluding Packages from an Image¶](#3221-excluding-packages-from-an-image%c2%b6)
+    - [3.22.1. Excluding Packages from an Image](#3221-excluding-packages-from-an-image)
     - [3.22.2. Incrementing a Package Version¶](#3222-incrementing-a-package-version%c2%b6)
       - [3.22.2.1. Working With a PR Service¶](#32221-working-with-a-pr-service%c2%b6)
-      - [3.22.2.2. Manually Bumping PR¶](#32222-manually-bumping-pr%c2%b6)
+      - [3.22.2.2. Manually Bumping PR](#32222-manually-bumping-pr)
       - [3.22.2.3. Automatically Incrementing a Package Version Number¶](#32223-automatically-incrementing-a-package-version-number%c2%b6)
     - [3.22.3. Handling Optional Module Packaging¶](#3223-handling-optional-module-packaging%c2%b6)
       - [3.22.3.1. Making Sure the Packaging is Done¶](#32231-making-sure-the-packaging-is-done%c2%b6)
-      - [3.22.3.2. Satisfying Dependencies¶](#32232-satisfying-dependencies%c2%b6)
-    - [3.22.4. Using Runtime Package Management¶](#3224-using-runtime-package-management%c2%b6)
-      - [3.22.4.1. Build Considerations¶](#32241-build-considerations%c2%b6)
+      - [3.22.3.2. Satisfying Dependencies](#32232-satisfying-dependencies)
+    - [3.22.4. Using Runtime Package Management](#3224-using-runtime-package-management)
+      - [3.22.4.1. Build Considerations](#32241-build-considerations)
       - [3.22.4.2. Host or Server Machine Setup¶](#32242-host-or-server-machine-setup%c2%b6)
-      - [3.22.4.3. Target Setup¶](#32243-target-setup%c2%b6)
-        - [3.22.4.3.1. Using RPM¶](#322431-using-rpm%c2%b6)
-        - [3.22.4.3.2. Using IPK¶](#322432-using-ipk%c2%b6)
-        - [3.22.4.3.3. Using DEB¶](#322433-using-deb%c2%b6)
-    - [3.22.5. Generating and Using Signed Packages¶](#3225-generating-and-using-signed-packages%c2%b6)
+      - [3.22.4.3. Target Setup](#32243-target-setup)
+        - [3.22.4.3.1. Using RPM](#322431-using-rpm)
+        - [3.22.4.3.2. Using IPK](#322432-using-ipk)
+        - [3.22.4.3.3. Using DEB](#322433-using-deb)
+    - [3.22.5. Generating and Using Signed Packages](#3225-generating-and-using-signed-packages)
       - [3.22.5.1. Signing RPM Packages¶](#32251-signing-rpm-packages%c2%b6)
-      - [3.22.5.2. Processing Package Feeds¶](#32252-processing-package-feeds%c2%b6)
-    - [3.22.6. Testing Packages With ptest¶](#3226-testing-packages-with-ptest%c2%b6)
-      - [3.22.6.1. Adding ptest to Your Build¶](#32261-adding-ptest-to-your-build%c2%b6)
-      - [3.22.6.2. Running ptest¶](#32262-running-ptest%c2%b6)
-      - [3.22.6.3. Getting Your Package Ready¶](#32263-getting-your-package-ready%c2%b6)
-    - [3.22.7. Creating Node Package Manager (NPM) Packages¶](#3227-creating-node-package-manager-npm-packages%c2%b6)
+      - [3.22.5.2. Processing Package Feeds](#32252-processing-package-feeds)
+    - [3.22.6. Testing Packages With ptest](#3226-testing-packages-with-ptest)
+      - [3.22.6.1. Adding ptest to Your Build](#32261-adding-ptest-to-your-build)
+      - [3.22.6.2. Running ptest](#32262-running-ptest)
+      - [3.22.6.3. Getting Your Package Ready](#32263-getting-your-package-ready)
+    - [3.22.7. Creating Node Package Manager (NPM) Packages](#3227-creating-node-package-manager-npm-packages)
       - [3.22.7.1. Requirements and Caveats¶](#32271-requirements-and-caveats%c2%b6)
-      - [3.22.7.2. Using the Registry Modules Method¶](#32272-using-the-registry-modules-method%c2%b6)
-      - [3.22.7.3. Using the NPM Projects Code Method¶](#32273-using-the-npm-projects-code-method%c2%b6)
-  - [3.23. Efficiently Fetching Source Files During a Build¶](#323-efficiently-fetching-source-files-during-a-build%c2%b6)
-    - [3.23.1. Setting up Effective Mirrors¶](#3231-setting-up-effective-mirrors%c2%b6)
-    - [3.23.2. Getting Source Files and Suppressing the Build¶](#3232-getting-source-files-and-suppressing-the-build%c2%b6)
-  - [3.24. Selecting an Initialization Manager¶](#324-selecting-an-initialization-manager%c2%b6)
-    - [3.24.1. Using systemd Exclusively¶](#3241-using-systemd-exclusively%c2%b6)
-    - [3.24.2. Using systemd for the Main Image and Using SysVinit for the Rescue Image¶](#3242-using-systemd-for-the-main-image-and-using-sysvinit-for-the-rescue-image%c2%b6)
-  - [3.25. Selecting a Device Manager¶](#325-selecting-a-device-manager%c2%b6)
-    - [3.25.1. Using Persistent and Pre-Populated/dev¶](#3251-using-persistent-and-pre-populateddev%c2%b6)
-    - [3.25.2. Using devtmpfs and a Device Manager¶](#3252-using-devtmpfs-and-a-device-manager%c2%b6)
-  - [3.26. Using an External SCM¶](#326-using-an-external-scm%c2%b6)
-  - [3.27. Creating a Read-Only Root Filesystem¶](#327-creating-a-read-only-root-filesystem%c2%b6)
-    - [3.27.1. Creating the Root Filesystem¶](#3271-creating-the-root-filesystem%c2%b6)
+      - [3.22.7.2. Using the Registry Modules Method](#32272-using-the-registry-modules-method)
+      - [3.22.7.3. Using the NPM Projects Code Method](#32273-using-the-npm-projects-code-method)
+  - [3.23. Efficiently Fetching Source Files During a Build](#323-efficiently-fetching-source-files-during-a-build)
+    - [3.23.1. Setting up Effective Mirrors](#3231-setting-up-effective-mirrors)
+    - [3.23.2. Getting Source Files and Suppressing the Build](#3232-getting-source-files-and-suppressing-the-build)
+  - [3.24. Selecting an Initialization Manager](#324-selecting-an-initialization-manager)
+    - [3.24.1. Using systemd Exclusively](#3241-using-systemd-exclusively)
+    - [3.24.2. Using systemd for the Main Image and Using SysVinit for the Rescue Image](#3242-using-systemd-for-the-main-image-and-using-sysvinit-for-the-rescue-image)
+  - [3.25. Selecting a Device Manager](#325-selecting-a-device-manager)
+    - [3.25.1. Using Persistent and Pre-Populated`/dev`](#3251-using-persistent-and-pre-populateddev)
+    - [3.25.2. Using devtmpfs and a Device Manager](#3252-using-devtmpfs-and-a-device-manager)
+  - [3.26. Using an External SCM](#326-using-an-external-scm)
+  - [3.27. Creating a Read-Only Root Filesystem](#327-creating-a-read-only-root-filesystem)
+    - [3.27.1. Creating the Root Filesystem](#3271-creating-the-root-filesystem)
     - [3.27.2. Post-Installation Scripts¶](#3272-post-installation-scripts%c2%b6)
-    - [3.27.3. Areas With Write Access¶](#3273-areas-with-write-access%c2%b6)
-  - [3.28. Maintaining Build Output Quality¶](#328-maintaining-build-output-quality%c2%b6)
+    - [3.27.3. Areas With Write Access](#3273-areas-with-write-access)
+  - [3.28. Maintaining Build Output Quality](#328-maintaining-build-output-quality)
     - [3.28.1. Enabling and Disabling Build History¶](#3281-enabling-and-disabling-build-history%c2%b6)
     - [3.28.2. Understanding What the Build History Contains¶](#3282-understanding-what-the-build-history-contains%c2%b6)
       - [3.28.2.1. Build History Package Information¶](#32821-build-history-package-information%c2%b6)
-      - [3.28.2.2. Build History Image Information¶](#32822-build-history-image-information%c2%b6)
-      - [3.28.2.3. Using Build History to Gather Image Information Only¶](#32823-using-build-history-to-gather-image-information-only%c2%b6)
+      - [3.28.2.2. Build History Image Information](#32822-build-history-image-information)
+      - [3.28.2.3. Using Build History to Gather Image Information Only](#32823-using-build-history-to-gather-image-information-only)
       - [3.28.2.4. Build History SDK Information¶](#32824-build-history-sdk-information%c2%b6)
-      - [3.28.2.5. Examining Build History Information¶](#32825-examining-build-history-information%c2%b6)
-  - [3.29. Performing Automated Runtime Testing¶](#329-performing-automated-runtime-testing%c2%b6)
-    - [3.29.1. Enabling Tests¶](#3291-enabling-tests%c2%b6)
-      - [3.29.1.1. Enabling Runtime Tests on QEMU¶](#32911-enabling-runtime-tests-on-qemu%c2%b6)
-      - [3.29.1.2. Enabling Runtime Tests on Hardware¶](#32912-enabling-runtime-tests-on-hardware%c2%b6)
-      - [3.29.1.3. Selecting SystemdbootTarget¶](#32913-selecting-systemdboottarget%c2%b6)
-      - [3.29.1.4. Power Control¶](#32914-power-control%c2%b6)
-      - [3.29.1.5. Serial Console Connection¶](#32915-serial-console-connection%c2%b6)
-    - [3.29.2. Running Tests¶](#3292-running-tests%c2%b6)
+      - [3.28.2.5. Examining Build History Information](#32825-examining-build-history-information)
+  - [3.29. Performing Automated Runtime Testing](#329-performing-automated-runtime-testing)
+    - [3.29.1. Enabling Tests](#3291-enabling-tests)
+      - [3.29.1.1. Enabling Runtime Tests on QEMU](#32911-enabling-runtime-tests-on-qemu)
+      - [3.29.1.2. Enabling Runtime Tests on Hardware](#32912-enabling-runtime-tests-on-hardware)
+      - [3.29.1.3. Selecting SystemdbootTarget](#32913-selecting-systemdboottarget)
+      - [3.29.1.4. Power Control](#32914-power-control)
+      - [3.29.1.5. Serial Console Connection](#32915-serial-console-connection)
+    - [3.29.2. Running Tests](#3292-running-tests)
     - [3.29.3. Exporting Tests¶](#3293-exporting-tests%c2%b6)
     - [3.29.4. Writing New Tests¶](#3294-writing-new-tests%c2%b6)
       - [3.29.4.1. Class Methods¶](#32941-class-methods%c2%b6)
@@ -3253,43 +3253,44 @@ This section describes a few tasks that involve packages:
 
 + [Creating node package manager (NPM) packages](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#creating-node-package-manager-npm-packages)
 
-### 3.22.1. Excluding Packages from an Image¶
+### 3.22.1. Excluding Packages from an Image
 You might find it necessary to prevent specific packages from being installed into an image. If so, you can use several variables to direct the build system to essentially ignore installing recommended packages or to not install a package at all.
 
 The following list introduces variables you can use to prevent packages from being installed into your image. Each of these variables only works with IPK and RPM package types. Support for Debian packages does not exist. Also, you can use these variables from your `local.conf` file or attach them to a specific image recipe by using a recipe name override. For more detail on the variables, see the descriptions in the Yocto Project Reference Manual's glossary chapter.
 
-BAD_RECOMMENDATIONS: Use this variable to specify "recommended-only" packages that you do not want installed.
++ BAD_RECOMMENDATIONS: Use this variable to specify "recommended-only" packages that you do not want installed.
 
-NO_RECOMMENDATIONS: Use this variable to prevent all "recommended-only" packages from being installed.
++ NO_RECOMMENDATIONS: Use this variable to prevent all "recommended-only" packages from being installed.
 
-PACKAGE_EXCLUDE: Use this variable to prevent specific packages from being installed regardless of whether they are "recommended-only" or not. You need to realize that the build process could fail with an error when you prevent the installation of a package whose presence is required by an installed package.
++ PACKAGE_EXCLUDE: Use this variable to prevent specific packages from being installed regardless of whether they are "recommended-only" or not. You need to realize that the build process could fail with an error when you prevent the installation of a package whose presence is required by an installed package.
 
 ### 3.22.2. Incrementing a Package Version¶
 This section provides some background on how binary package versioning is accomplished and presents some of the services, variables, and terminology involved.
 
 In order to understand binary package versioning, you need to consider the following:
 
-Binary Package: The binary package that is eventually built and installed into an image.
++ Binary Package: The binary package that is eventually built and installed into an image.
 
-Binary Package Version: The binary package version is composed of two components - a version and a revision.
++ Binary Package Version: The binary package version is composed of two components - a version and a revision.
 
-Note
-Technically, a third component, the "epoch" (i.e. PE) is involved but this discussion for the most part ignores PE.
-The version and revision are taken from the PV and PR variables, respectively.
+     > Note  
+     > Technically, a third component, the "epoch" (i.e. PE) is involved but this discussion for the most part ignores PE.
 
-PV: The recipe version. PV represents the version of the software being packaged. Do not confuse PV with the binary package version.
+     The version and revision are taken from the PV and PR variables, respectively.
 
-PR: The recipe revision.
++ `PV`: The recipe version. PV represents the version of the software being packaged. Do not confuse PV with the binary package version.
 
-SRCPV: The OpenEmbedded build system uses this string to help define the value of PV when the source code revision needs to be included in it.
++ `PR`: The recipe revision.
 
-PR Service: A network-based service that helps automate keeping package feeds compatible with existing package manager applications such as RPM, APT, and OPKG.
++ `SRCPV`: The OpenEmbedded build system uses this string to help define the value of PV when the source code revision needs to be included in it.
+
++ PR Service: A network-based service that helps automate keeping package feeds compatible with existing package manager applications such as RPM, APT, and OPKG.
 
 Whenever the binary package content changes, the binary package version must change. Changing the binary package version is accomplished by changing or "bumping" the PR and/or PV values. Increasing these values occurs one of two ways:
 
-Automatically using a Package Revision Service (PR Service).
++ Automatically using a Package Revision Service (PR Service).
 
-Manually incrementing the PR and/or PV variables.
++ Manually incrementing the `PR` and/or `PV` variables.
 
 Given a primary challenge of any build system and its users is how to maintain a package feed that is compatible with existing package manager applications such as RPM, APT, and OPKG, using an automated system is much preferred over a manual system. In either system, the main requirement is that binary package version numbering increases in a linear fashion and that a number of version components exist that support that linear progression. For information on how to ensure package revisioning remains linear, see the "Automatically Incrementing a Binary Package Revision Number" section.
 
@@ -3298,44 +3299,44 @@ The following three sections provide related information on the PR Service, the 
 #### 3.22.2.1. Working With a PR Service¶
 As mentioned, attempting to maintain revision numbers in the Metadata is error prone, inaccurate, and causes problems for people submitting recipes. Conversely, the PR Service automatically generates increasing numbers, particularly the revision field, which removes the human element.
 
-Note
-For additional information on using a PR Service, you can see the PR Service wiki page.
+> Note  
+> For additional information on using a PR Service, you can see the PR Service wiki page.
+
 The Yocto Project uses variables in order of decreasing priority to facilitate revision numbering (i.e. PE, PV, and PR for epoch, version, and revision, respectively). The values are highly dependent on the policies and procedures of a given distribution and package feed.
 
 Because the OpenEmbedded build system uses "signatures", which are unique to a given build, the build system knows when to rebuild packages. All the inputs into a given task are represented by a signature, which can trigger a rebuild when different. Thus, the build system itself does not rely on the PR, PV, and PE numbers to trigger a rebuild. The signatures, however, can be used to generate these values.
 
-The PR Service works with both OEBasic and OEBasicHash generators. The value of PR bumps when the checksum changes and the different generator mechanisms change signatures under different circumstances.
+The PR Service works with both `OEBasic` and `OEBasicHash` generators. The value of `PR` bumps when the checksum changes and the different generator mechanisms change signatures under different circumstances.
 
-As implemented, the build system includes values from the PR Service into the PR field as an addition using the form ".x" so r0 becomes r0.1, r0.2 and so forth. This scheme allows existing PR values to be used for whatever reasons, which include manual PR bumps, should it be necessary.
+As implemented, the build system includes values from the `PR` Service into the PR field as an addition using the form "`.x`" so r0 becomes `r0.1`, `r0.2` and so forth. This scheme allows existing `PR` values to be used for whatever reasons, which include manual `PR` bumps, should it be necessary.
 
 By default, the PR Service is not enabled or running. Thus, the packages generated are just "self consistent". The build system adds and removes packages and there are no guarantees about upgrade paths but images will be consistent and correct with the latest changes.
 
 The simplest form for a PR Service is for it to exist for a single host development system that builds the package feed (building system). For this scenario, you can enable a local PR Service by setting PRSERV_HOST in your `local.conf` file in the Build Directory:
-
+```
      PRSERV_HOST = "localhost:0"
-                    
+```                    
 Once the service is started, packages will automatically get increasing PR values and BitBake takes care of starting and stopping the server.
 
-If you have a more complex setup where multiple host development systems work against a common, shared package feed, you have a single PR Service running and it is connected to each building system. For this scenario, you need to start the PR Service using the bitbake-prserv command:
-
+If you have a more complex setup where multiple host development systems work against a common, shared package feed, you have a single PR Service running and it is connected to each building system. For this scenario, you need to start the PR Service using the `bitbake-prserv` command:
+```
      bitbake-prserv --host ip --port port --start
-                    
+```                    
 In addition to hand-starting the service, you need to update the `local.conf` file of each building system as described earlier so each system points to the server and port.
 
 It is also recommended you use build history, which adds some sanity checks to binary package versions, in conjunction with the server that is running the PR Service. To enable build history, add the following to each building system's `local.conf` file:
-
+```
      # It is recommended to activate "buildhistory" for testing the PR service
      INHERIT += "buildhistory"
      BUILDHISTORY_COMMIT = "1"
-                    
+```                    
 For information on build history, see the "Maintaining Build Output Quality" section.
 
-Note
-The OpenEmbedded build system does not maintain PR information as part of the shared state (sstate) packages. If you maintain an sstate feed, its expected that either all your building systems that contribute to the sstate feed use a shared PR Service, or you do not run a PR Service on any of your building systems. Having some systems use a PR Service while others do not leads to obvious problems.
+> Note  
+> The OpenEmbedded build system does not maintain PR information as part of the shared state (sstate) packages. If you maintain an sstate feed, its expected that either all your building systems that contribute to the sstate feed use a shared PR Service, or you do not run a PR Service on any of your building systems. Having some systems use a PR Service while others do not leads to obvious problems.  
+> For more information on shared state, see the "Shared State Cache" section in the Yocto Project Overview and Concepts Manual.
 
-For more information on shared state, see the "Shared State Cache" section in the Yocto Project Overview and Concepts Manual.
-
-#### 3.22.2.2. Manually Bumping PR¶
+#### 3.22.2.2. Manually Bumping PR
 The alternative to setting up a PR Service is to manually "bump" the PR variable.
 
 If a committed change results in changing the package output, then the value of the PR variable needs to be increased (or "bumped") as part of that commit. For new recipes you should add the PR variable and set its initial value equal to "r0", which is the default. Even though the default value is "r0", the practice of adding it to a new recipe makes it harder to forget to bump the variable when you make changes to the recipe in future.
@@ -3350,29 +3351,29 @@ Binary package version numbering strives to follow the Debian Version Field Poli
 
 #### 3.22.2.3. Automatically Incrementing a Package Version Number¶
 When fetching a repository, BitBake uses the SRCREV variable to determine the specific source code revision from which to build. You set the SRCREV variable to AUTOREV to cause the OpenEmbedded build system to automatically use the latest revision of the software:
-
+```
      SRCREV = "${AUTOREV}"
-                    
+```                    
 Furthermore, you need to reference SRCPV in PV in order to automatically update the version whenever the revision of the source code changes. Here is an example:
-
+```
      PV = "1.0+git${SRCPV}"
-                    
+```                    
 The OpenEmbedded build system substitutes SRCPV with the following:
-
+```
      AUTOINC+source_code_revision
-                    
+```                    
 The build system replaces the AUTOINC with a number. The number used depends on the state of the PR Service:
 
 If PR Service is enabled, the build system increments the number, which is similar to the behavior of PR. This behavior results in linearly increasing package versions, which is desirable. Here is an example:
-
+```
      hello-world-git_0.0+git0+b6558dd387-r0.0_armv7a-neon.ipk
      hello-world-git_0.0+git1+dd2f5c3565-r0.0_armv7a-neon.ipk
-                            
+```                            
 If PR Service is not enabled, the build system replaces the AUTOINC placeholder with zero (i.e. "0"). This results in changing the package version since the source revision is included. However, package versions are not increased linearly. Here is an example:
-
+```
      hello-world-git_0.0+git0+b6558dd387-r0.0_armv7a-neon.ipk
      hello-world-git_0.0+git0+dd2f5c3565-r0.0_armv7a-neon.ipk
-                            
+```                            
 In summary, the OpenEmbedded build system does not track the history of binary package versions for this purpose. AUTOINC, in this case, is comparable to PR. If PR server is not enabled, AUTOINC in the package version is simply replaced by "0". If PR server is enabled, the build system keeps track of the package versions and bumps the number when the package revision changes.
 
 ### 3.22.3. Handling Optional Module Packaging¶
@@ -3380,38 +3381,38 @@ Many pieces of software split functionality into optional modules (or plug-ins) 
 
 To handle optional module packaging, you need to do two things:
 
-Ensure the module packaging is actually done.
++ Ensure the module packaging is actually done.
 
-Ensure that any dependencies on optional modules from other recipes are satisfied by your recipe.
++ Ensure that any dependencies on optional modules from other recipes are satisfied by your recipe.
 
 #### 3.22.3.1. Making Sure the Packaging is Done¶
 To ensure the module packaging actually gets done, you use the do_split_packages function within the populate_packages Python function in your recipe. The do_split_packages function searches for a pattern of files or directories under a specified path and creates a package for each one it finds by appending to the PACKAGES variable and setting the appropriate values for FILES_packagename, RDEPENDS_packagename, DESCRIPTION_packagename, and so forth. Here is an example from the lighttpd recipe:
-
+```
      python populate_packages_prepend () {
          lighttpd_libdir = d.expand('${libdir}')
          do_split_packages(d, lighttpd_libdir, '^mod_(.*)\.so$',
                           'lighttpd-module-%s', 'Lighttpd module for %s',
                            extra_depends='')
      }
-                    
+```                    
 The previous example specifies a number of things in the call to do_split_packages.
 
-A directory within the files installed by your recipe through do_install in which to search.
++ A directory within the files installed by your recipe through do_install in which to search.
 
-A regular expression used to match module files in that directory. In the example, note the parentheses () that mark the part of the expression from which the module name should be derived.
++ A regular expression used to match module files in that directory. In the example, note the parentheses () that mark the part of the expression from which the module name should be derived.
 
-A pattern to use for the package names.
++ A pattern to use for the package names.
 
-A description for each package.
++ A description for each package.
 
-An empty string for extra_depends, which disables the default dependency on the main lighttpd package. Thus, if a file in ${libdir} called mod_alias.so is found, a package called lighttpd-module-alias is created for it and the DESCRIPTION is set to "Lighttpd module for alias".
++ An empty string for `extra_depends`, which disables the default dependency on the main `lighttpd` package. Thus, if a file in `${libdir}` called `mod_alias.so` is found, a package called `lighttpd-module-alias` is created for it and the DESCRIPTION is set to "Lighttpd module for alias".
 
-Often, packaging modules is as simple as the previous example. However, more advanced options exist that you can use within do_split_packages to modify its behavior. And, if you need to, you can add more logic by specifying a hook function that is called for each package. It is also perfectly acceptable to call do_split_packages multiple times if you have more than one set of modules to package.
+Often, packaging modules is as simple as the previous example. However, more advanced options exist that you can use within `do_split_packages` to modify its behavior. And, if you need to, you can add more logic by specifying a hook function that is called for each package. It is also perfectly acceptable to call `do_split_packages` multiple times if you have more than one set of modules to package.
 
-For more examples that show how to use do_split_packages, see the connman.inc file in the meta/recipes-connectivity/connman/ directory of the poky source repository. You can also find examples in meta/classes/kernel.bbclass.
+For more examples that show how to use `do_split_packages`, see the `connman.inc` file in the `meta/recipes-connectivity/connman/` directory of the `poky` source repository. You can also find examples in `meta/classes/kernel.bbclass`.
 
-Following is a reference that shows do_split_packages mandatory and optional arguments:
-
+Following is a reference that shows `do_split_packages` mandatory and optional arguments:
+```
      Mandatory arguments
 
      root
@@ -3488,290 +3489,297 @@ Following is a reference that shows do_split_packages mandatory and optional arg
      summary
         Summary to set for each package. Must include %s;
         defaults to description if not set.
-
-#### 3.22.3.2. Satisfying Dependencies¶
-The second part for handling optional module packaging is to ensure that any dependencies on optional modules from other recipes are satisfied by your recipe. You can be sure these dependencies are satisfied by using the PACKAGES_DYNAMIC variable. Here is an example that continues with the lighttpd recipe shown earlier:
-
+```
+#### 3.22.3.2. Satisfying Dependencies
+The second part for handling optional module packaging is to ensure that any dependencies on optional modules from other recipes are satisfied by your recipe. You can be sure these dependencies are satisfied by using the `PACKAGES_DYNAMIC` variable. Here is an example that continues with the `lighttpd` recipe shown earlier:
+```
      PACKAGES_DYNAMIC = "lighttpd-module-.*"
-                    
-The name specified in the regular expression can of course be anything. In this example, it is lighttpd-module- and is specified as the prefix to ensure that any RDEPENDS and RRECOMMENDS on a package name starting with the prefix are satisfied during build time. If you are using do_split_packages as described in the previous section, the value you put in PACKAGES_DYNAMIC should correspond to the name pattern specified in the call to do_split_packages.
+```                    
+The name specified in the regular expression can of course be anything. In this example, it is `lighttpd-module-` and is specified as the prefix to ensure that any `RDEPENDS` and `RRECOMMENDS` on a package name starting with the prefix are satisfied during build time. If you are using `do_split_packages` as described in the previous section, the value you put in `PACKAGES_DYNAMIC` should correspond to the name pattern specified in the call to `do_split_packages`.
 
-### 3.22.4. Using Runtime Package Management¶
-During a build, BitBake always transforms a recipe into one or more packages. For example, BitBake takes the bash recipe and produces a number of packages (e.g. bash, bash-bashbug, bash-completion, bash-completion-dbg, bash-completion-dev, bash-completion-extra, bash-dbg, and so forth). Not all generated packages are included in an image.
+### 3.22.4. Using Runtime Package Management
+During a build, BitBake always transforms a recipe into one or more packages. For example, BitBake takes the bash recipe and produces a number of packages (e.g. `bash`, `bash-bashbug`, `bash-completion`, `bash-completion-dbg`, `bash-completion-dev`, `bash-completion-extra`, `bash-dbg`, and so forth). Not all generated packages are included in an image.
 
 In several situations, you might need to update, add, remove, or query the packages on a target device at runtime (i.e. without having to generate a new image). Examples of such situations include:
 
-You want to provide in-the-field updates to deployed devices (e.g. security updates).
++ You want to provide in-the-field updates to deployed devices (e.g. security updates).
 
-You want to have a fast turn-around development cycle for one or more applications that run on your device.
++ You want to have a fast turn-around development cycle for one or more applications that run on your device.
 
-You want to temporarily install the "debug" packages of various applications on your device so that debugging can be greatly improved by allowing access to symbols and source debugging.
++ You want to temporarily install the "debug" packages of various applications on your device so that debugging can be greatly improved by allowing access to symbols and source debugging.
 
-You want to deploy a more minimal package selection of your device but allow in-the-field updates to add a larger selection for customization.
++ You want to deploy a more minimal package selection of your device but allow in-the-field updates to add a larger selection for customization.
 
 In all these situations, you have something similar to a more traditional Linux distribution in that in-field devices are able to receive pre-compiled packages from a server for installation or update. Being able to install these packages on a running, in-field device is what is termed "runtime package management".
 
 In order to use runtime package management, you need a host or server machine that serves up the pre-compiled packages plus the required metadata. You also need package manipulation tools on the target. The build machine is a likely candidate to act as the server. However, that machine does not necessarily have to be the package server. The build machine could push its artifacts to another machine that acts as the server (e.g. Internet-facing). In fact, doing so is advantageous for a production environment as getting the packages away from the development system's build directory prevents accidental overwrites.
 
-A simple build that targets just one device produces more than one package database. In other words, the packages produced by a build are separated out into a couple of different package groupings based on criteria such as the target's CPU architecture, the target board, or the C library used on the target. For example, a build targeting the qemux86 device produces the following three package databases: noarch, i586, and qemux86. If you wanted your qemux86 device to be aware of all the packages that were available to it, you would need to point it to each of these databases individually. In a similar way, a traditional Linux distribution usually is configured to be aware of a number of software repositories from which it retrieves packages.
+A simple build that targets just one device produces more than one package database. In other words, the packages produced by a build are separated out into a couple of different package groupings based on criteria such as the target's CPU architecture, the target board, or the C library used on the target. For example, a build targeting the qemux86 device produces the following three package databases: `noarch`, `i586`, and `qemux86`. If you wanted your `qemux86` device to be aware of all the packages that were available to it, you would need to point it to each of these databases individually. In a similar way, a traditional Linux distribution usually is configured to be aware of a number of software repositories from which it retrieves packages.
 
 Using runtime package management is completely optional and not required for a successful build or deployment in any way. But if you want to make use of runtime package management, you need to do a couple things above and beyond the basics. The remainder of this section describes what you need to do.
 
-#### 3.22.4.1. Build Considerations¶
+#### 3.22.4.1. Build Considerations
 This section describes build considerations of which you need to be aware in order to provide support for runtime package management.
 
 When BitBake generates packages, it needs to know what format or formats to use. In your configuration, you use the PACKAGE_CLASSES variable to specify the format:
 
-Open the `local.conf` file inside your Build Directory (e.g. ~/poky/build/conf/`local.conf`).
+1. Open the `local.conf` file inside your Build Directory (e.g. `~/poky/build/conf/local.conf`).
 
-Select the desired package format as follows:
+2. Select the desired package format as follows:
 
      PACKAGE_CLASSES ?= “package_packageformat”
                             
-where packageformat can be "ipk", "rpm", "deb", or "tar" which are the supported package formats.
+     where packageformat can be "ipk", "rpm", "deb", or "tar" which are the supported package formats.
 
-Note
-Because the Yocto Project supports four different package formats, you can set the variable with more than one argument. However, the OpenEmbedded build system only uses the first argument when creating an image or Software Development Kit (SDK).
-If you would like your image to start off with a basic package database containing the packages in your current build as well as to have the relevant tools available on the target for runtime package management, you can include "package-management" in the IMAGE_FEATURES variable. Including "package-management" in this configuration variable ensures that when the image is assembled for your target, the image includes the currently-known package databases as well as the target-specific tools required for runtime package management to be performed on the target. However, this is not strictly necessary. You could start your image off without any databases but only include the required on-target package tool(s). As an example, you could include "opkg" in your IMAGE_INSTALL variable if you are using the IPK package format. You can then initialize your target's package database(s) later once your image is up and running.
+     > Note  
+     > Because the Yocto Project supports four different package formats, you can set the variable with more than one argument. However, the OpenEmbedded build system only uses the first argument when creating an image or Software Development Kit (SDK).
+
+If you would like your image to start off with a basic package database containing the packages in your current build as well as to have the relevant tools available on the target for runtime package management, you can include "package-management" in the `IMAGE_FEATURES` variable. Including "package-management" in this configuration variable ensures that when the image is assembled for your target, the image includes the currently-known package databases as well as the target-specific tools required for runtime package management to be performed on the target. However, this is not strictly necessary. You could start your image off without any databases but only include the required on-target package tool(s). As an example, you could include "opkg" in your `IMAGE_INSTALL` variable if you are using the IPK package format. You can then initialize your target's package database(s) later once your image is up and running.
 
 Whenever you perform any sort of build step that can potentially generate a package or modify existing package, it is always a good idea to re-generate the package index after the build by using the following command:
-
+```
     $ bitbake package-index
-                    
+```                    
 It might be tempting to build the package and the package index at the same time with a command such as the following:
-
+```
     $ bitbake some-package package-index
-                    
+```                    
 Do not do this as BitBake does not schedule the package index for after the completion of the package you are building. Consequently, you cannot be sure of the package index including information for the package you just built. Thus, be sure to run the package update step separately after building any packages.
 
-You can use the PACKAGE_FEED_ARCHS, PACKAGE_FEED_BASE_PATHS, and PACKAGE_FEED_URIS variables to pre-configure target images to use a package feed. If you do not define these variables, then manual steps as described in the subsequent sections are necessary to configure the target. You should set these variables before building the image in order to produce a correctly configured image.
+You can use the `PACKAGE_FEED_ARCHS`, `PACKAGE_FEED_BASE_PATHS`, and `PACKAGE_FEED_URIS` variables to pre-configure target images to use a package feed. If you do not define these variables, then manual steps as described in the subsequent sections are necessary to configure the target. You should set these variables before building the image in order to produce a correctly configured image.
 
-When your build is complete, your packages reside in the ${TMPDIR}/deploy/packageformat directory. For example, if ${TMPDIR} is tmp and your selected package type is RPM, then your RPM packages are available in tmp/deploy/rpm.
+When your build is complete, your packages reside in the `${TMPDIR}/deploy/packageformat` directory. For example, if `${TMPDIR}` is tmp and your selected package type is RPM, then your RPM packages are available in `tmp/deploy/rpm`.
 
 #### 3.22.4.2. Host or Server Machine Setup¶
 Although other protocols are possible, a server using HTTP typically serves packages. If you want to use HTTP, then set up and configure a web server such as Apache 2, lighttpd, or SimpleHTTPServer on the machine serving the packages.
 
 To keep things simple, this section describes how to set up a SimpleHTTPServer web server to share package feeds from the developer's machine. Although this server might not be the best for a production environment, the setup is simple and straight forward. Should you want to use a different server more suited for production (e.g. Apache 2, Lighttpd, or Nginx), take the appropriate steps to do so.
 
-From within the build directory where you have built an image based on your packaging choice (i.e. the PACKAGE_CLASSES setting), simply start the server. The following example assumes a build directory of ~/poky/build/tmp/deploy/rpm and a PACKAGE_CLASSES setting of "package_rpm":
-
+From within the build directory where you have built an image based on your packaging choice (i.e. the `PACKAGE_CLASSES` setting), simply start the server. The following example assumes a build directory of `~/poky/build/tmp/deploy/rpm` and a `PACKAGE_CLASSES` setting of "package_rpm":
+```
      $ cd ~/poky/build/tmp/deploy/rpm
      $ python -m SimpleHTTPServer
-
-#### 3.22.4.3. Target Setup¶
+```
+#### 3.22.4.3. Target Setup
 Setting up the target differs depending on the package management system. This section provides information for RPM, IPK, and DEB.
 
-##### 3.22.4.3.1. Using RPM¶
-The Dandified Packaging Tool (DNF) performs runtime package management of RPM packages. In order to use DNF for runtime package management, you must perform an initial setup on the target machine for cases where the PACKAGE_FEED_* variables were not set as part of the image that is running on the target. This means if you built your image and did not not use these variables as part of the build and your image is now running on the target, you need to perform the steps in this section if you want to use runtime package management.
+##### 3.22.4.3.1. Using RPM
+The Dandified Packaging Tool (DNF) performs runtime package management of RPM packages. In order to use DNF for runtime package management, you must perform an initial setup on the target machine for cases where the `PACKAGE_FEED_*` variables were not set as part of the image that is running on the target. This means if you built your image and did not not use these variables as part of the build and your image is now running on the target, you need to perform the steps in this section if you want to use runtime package management.
 
-Note
-For information on the PACKAGE_FEED_* variables, see PACKAGE_FEED_ARCHS, PACKAGE_FEED_BASE_PATHS, and PACKAGE_FEED_URIS in the Yocto Project Reference Manual variables glossary.
-On the target, you must inform DNF that package databases are available. You do this by creating a file named /etc/yum.repos.d/oe-packages.repo and defining the oe-packages.
+> Note  
+> For information on the PACKAGE_FEED_* variables, see PACKAGE_FEED_ARCHS, PACKAGE_FEED_BASE_PATHS, and PACKAGE_FEED_URIS in the Yocto Project Reference Manual variables glossary.
 
-As an example, assume the target is able to use the following package databases: all, i586, and qemux86 from a server named my.server. The specifics for setting up the web server are up to you. The critical requirement is that the URIs in the target repository configuration point to the correct remote location for the feeds.
+On the target, you must inform DNF that package databases are available. You do this by creating a file named `/etc/yum.repos.d/oe-packages.repo` and defining the `oe-packages`.
 
-Tip
-For development purposes, you can point the web server to the build system's deploy directory. However, for production use, it is better to copy the package directories to a location outside of the build area and use that location. Doing so avoids situations where the build system overwrites or changes the deploy directory.
+As an example, assume the target is able to use the following package databases: `all`, `i586`, and `qemux86` from a server named `my.server`. The specifics for setting up the web server are up to you. The critical requirement is that the URIs in the target repository configuration point to the correct remote location for the feeds.
+
+> Tip  
+> For development purposes, you can point the web server to the build system's `deploy` directory. However, for production use, it is better to copy the package directories to a location outside of the build area and use that location. Doing so avoids situations where the build system overwrites or changes the `deploy` directory.
+
 When telling DNF where to look for the package databases, you must declare individual locations per architecture or a single location used for all architectures. You cannot do both:
 
-Create an Explicit List of Architectures: Define individual base URLs to identify where each package database is located:
-
++ ***Create an Explicit List of Architectures***: Define individual base URLs to identify where each package database is located:
+     ```
      [oe-packages]
      baseurl=http://my.server/rpm/i586 http://my.server/rpm/qemux86 http://my.server/rpm/all
-                                
-This example informs DNF about individual package databases for all three architectures.
+     ```                           
+     This example informs DNF about individual package databases for all three architectures.
 
-Create a Single (Full) Package Index: Define a single base URL that identifies where a full package database is located:
-
++ ***Create a Single (Full) Package Index***: Define a single base URL that identifies where a full package database is located:
+     ```
      [oe-packages]
      baseurl=http://my.server/rpm
-                                
-This example informs DNF about a single package database that contains all the package index information for all supported architectures.
+     ```                           
+     This example informs DNF about a single package database that contains all the package index information for all supported architectures.
 
 Once you have informed DNF where to find the package databases, you need to fetch them:
-
+```
      # dnf makecache
-                        
+```                        
 DNF is now able to find, install, and upgrade packages from the specified repository or repositories.
 
 Note
 See the DNF documentation for additional information.
 
-##### 3.22.4.3.2. Using IPK¶
-The opkg application performs runtime package management of IPK packages. You must perform an initial setup for opkg on the target machine if the PACKAGE_FEED_ARCHS, PACKAGE_FEED_BASE_PATHS, and PACKAGE_FEED_URIS variables have not been set or the target image was built before the variables were set.
+##### 3.22.4.3.2. Using IPK
+The `opkg` application performs runtime package management of IPK packages. You must perform an initial setup for `opkg` on the target machine if the `PACKAGE_FEED_ARCHS`, `PACKAGE_FEED_BASE_PATHS`, and `PACKAGE_FEED_URIS` variables have not been set or the target image was built before the variables were set.
 
-The opkg application uses configuration files to find available package databases. Thus, you need to create a configuration file inside the /etc/opkg/ direction, which informs opkg of any repository you want to use.
+The `opkg` application uses configuration files to find available package databases. Thus, you need to create a configuration file inside the `/etc/opkg/` direction, which informs `opkg` of any repository you want to use.
 
-As an example, suppose you are serving packages from a ipk/ directory containing the i586, all, and qemux86 databases through an HTTP server named my.server. On the target, create a configuration file (e.g. my_repo.conf) inside the /etc/opkg/ directory containing the following:
-
+As an example, suppose you are serving packages from a `ipk/` directory containing the `i586`, `all`, and `qemux86` databases through an HTTP server named `my.server`. On the target, create a configuration file (e.g. `my_repo.conf`) inside the `/etc/opkg/` directory containing the following:
+```
      src/gz all http://my.server/ipk/all
      src/gz i586 http://my.server/ipk/i586
      src/gz qemux86 http://my.server/ipk/qemux86
-                        
-Next, instruct opkg to fetch the repository information:
-
+```                        
+Next, instruct `opkg` to fetch the repository information:
+```
      # opkg update
-                        
-The opkg application is now able to find, install, and upgrade packages from the specified repository.
+```                        
+The `opkg` application is now able to find, install, and upgrade packages from the specified repository.
 
-##### 3.22.4.3.3. Using DEB¶
-The apt application performs runtime package management of DEB packages. This application uses a source list file to find available package databases. You must perform an initial setup for apt on the target machine if the PACKAGE_FEED_ARCHS, PACKAGE_FEED_BASE_PATHS, and PACKAGE_FEED_URIS variables have not been set or the target image was built before the variables were set.
+##### 3.22.4.3.3. Using DEB
+The `apt` application performs runtime package management of DEB packages. This application uses a source list file to find available package databases. You must perform an initial setup for `apt` on the target machine if the `PACKAGE_FEED_ARCHS`, `PACKAGE_FEED_BASE_PATHS`, and `PACKAGE_FEED_URIS` variables have not been set or the target image was built before the variables were set.
 
-To inform apt of the repository you want to use, you might create a list file (e.g. my_repo.list) inside the /etc/apt/sources.list.d/ directory. As an example, suppose you are serving packages from a deb/ directory containing the i586, all, and qemux86 databases through an HTTP server named my.server. The list file should contain:
-
+To inform apt of the repository you want to use, you might create a list file (e.g. `my_repo.list`) inside the `/etc/apt/sources.list.d/` directory. As an example, suppose you are serving packages from a `deb/` directory containing the `i586`, `all`, and `qemux86` databases through an HTTP server named `my.server`. The list file should contain:
+```
      deb http://my.server/deb/all ./
      deb http://my.server/deb/i586 ./
      deb http://my.server/deb/qemux86 ./
-                        
-Next, instruct the apt application to fetch the repository information:
-
+```                        
+Next, instruct the `apt` application to fetch the repository information:
+```
      # apt-get update
-                        
-After this step, apt is able to find, install, and upgrade packages from the specified repository.
+```                        
+After this step, `apt` is able to find, install, and upgrade packages from the specified repository.
 
-### 3.22.5. Generating and Using Signed Packages¶
+### 3.22.5. Generating and Using Signed Packages
 In order to add security to RPM packages used during a build, you can take steps to securely sign them. Once a signature is verified, the OpenEmbedded build system can use the package in the build. If security fails for a signed package, the build system aborts the build.
 
 This section describes how to sign RPM packages during a build and how to use signed package feeds (repositories) when doing a build.
 
 #### 3.22.5.1. Signing RPM Packages¶
-To enable signing RPM packages, you must set up the following configurations in either your local.config or distro.config file:
-
+To enable signing RPM packages, you must set up the following configurations in either your `local.config` or `distro.config` file:
+```
      # Inherit sign_rpm.bbclass to enable signing functionality
      INHERIT += " sign_rpm"
      # Define the GPG key that will be used for signing.
      RPM_GPG_NAME = "key_name"
      # Provide passphrase for the key
      RPM_GPG_PASSPHRASE = "passphrase"
-                    
-Note
-Be sure to supply appropriate values for both key_name and passphrase
-Aside from the RPM_GPG_NAME and RPM_GPG_PASSPHRASE variables in the previous example, two optional variables related to signing exist:
+```                    
+> Note  
+> Be sure to supply appropriate values for both key_name and passphrase
 
-GPG_BIN: Specifies a gpg binary/wrapper that is executed when the package is signed.
+Aside from the `RPM_GPG_NAME` and `RPM_GPG_PASSPHRASE` variables in the previous example, two optional variables related to signing exist:
 
-GPG_PATH: Specifies the gpg home directory used when the package is signed.
++ ***GPG_BIN***: Specifies a `gpg` binary/wrapper that is executed when the package is signed.
 
-#### 3.22.5.2. Processing Package Feeds¶
++ ***GPG_PATH***: Specifies the `gpg` home directory used when the package is signed.
+
+#### 3.22.5.2. Processing Package Feeds
 In addition to being able to sign RPM packages, you can also enable signed package feeds for IPK and RPM packages.
 
-The steps you need to take to enable signed package feed use are similar to the steps used to sign RPM packages. You must define the following in your local.config or distro.config file:
-
+The steps you need to take to enable signed package feed use are similar to the steps used to sign RPM packages. You must define the following in your `local.config` or `distro.config` file:
+```
      INHERIT += "sign_package_feed"
      PACKAGE_FEED_GPG_NAME = "key_name"
      PACKAGE_FEED_GPG_PASSPHRASE_FILE = "path_to_file_containing_passphrase"
-                    
-For signed package feeds, the passphrase must exist in a separate file, which is pointed to by the PACKAGE_FEED_GPG_PASSPHRASE_FILE variable. Regarding security, keeping a plain text passphrase out of the configuration is more secure.
+```                    
+For signed package feeds, the passphrase must exist in a separate file, which is pointed to by the `PACKAGE_FEED_GPG_PASSPHRASE_FILE` variable. Regarding security, keeping a plain text passphrase out of the configuration is more secure.
 
-Aside from the PACKAGE_FEED_GPG_NAME and PACKAGE_FEED_GPG_PASSPHRASE_FILE variables, three optional variables related to signed package feeds exist:
+Aside from the `PACKAGE_FEED_GPG_NAME` and `PACKAGE_FEED_GPG_PASSPHRASE_FILE` variables, three optional variables related to signed package feeds exist:
 
-GPG_BIN: Specifies a gpg binary/wrapper that is executed when the package is signed.
++ ***GPG_BIN***: Specifies a `gpg` binary/wrapper that is executed when the package is signed.
 
-GPG_PATH: Specifies the gpg home directory used when the package is signed.
++ ***GPG_PATH***: Specifies the `gpg` home directory used when the package is signed.
 
-PACKAGE_FEED_GPG_SIGNATURE_TYPE: Specifies the type of gpg signature. This variable applies only to RPM and IPK package feeds. Allowable values for the PACKAGE_FEED_GPG_SIGNATURE_TYPE are "ASC", which is the default and specifies ascii armored, and "BIN", which specifies binary.
++ ***PACKAGE_FEED_GPG_SIGNATURE_TYPE***: Specifies the type of `gpg` signature. This variable applies only to RPM and IPK package feeds. Allowable values for the `PACKAGE_FEED_GPG_SIGNATURE_TYPE` are "ASC", which is the default and specifies ascii armored, and "BIN", which specifies binary.
 
-### 3.22.6. Testing Packages With ptest¶
-A Package Test (ptest) runs tests against packages built by the OpenEmbedded build system on the target machine. A ptest contains at least two items: the actual test, and a shell script (run-ptest) that starts the test. The shell script that starts the test must not contain the actual test - the script only starts the test. On the other hand, the test can be anything from a simple shell script that runs a binary and checks the output to an elaborate system of test binaries and data files.
+### 3.22.6. Testing Packages With ptest
+A Package Test (ptest) runs tests against packages built by the OpenEmbedded build system on the target machine. A ptest contains at least two items: the actual test, and a shell script (`run-ptest`) that starts the test. The shell script that starts the test must not contain the actual test - the script only starts the test. On the other hand, the test can be anything from a simple shell script that runs a binary and checks the output to an elaborate system of test binaries and data files.
 
 The test generates output in the format used by Automake:
-
+```
      result: testname
-                
-where the result can be PASS, FAIL, or SKIP, and the testname can be any identifying string.
+```                
+where the result can be `PASS`, `FAIL`, or `SKIP`, and the testname can be any identifying string.
 
 For a list of Yocto Project recipes that are already enabled with ptest, see the Ptest wiki page.
 
-Note
-A recipe is "ptest-enabled" if it inherits the ptest class.
+> Note  
+> A recipe is "ptest-enabled" if it inherits the 'ptest' class.
 
-#### 3.22.6.1. Adding ptest to Your Build¶
-To add package testing to your build, add the DISTRO_FEATURES and EXTRA_IMAGE_FEATURES variables to your `local.conf` file, which is found in the Build Directory:
-
+#### 3.22.6.1. Adding ptest to Your Build
+To add package testing to your build, add the `DISTRO_FEATURES` and `EXTRA_IMAGE_FEATURES` variables to your `local.conf` file, which is found in the Build Directory:
+```
      DISTRO_FEATURES_append = " ptest"
      EXTRA_IMAGE_FEATURES += "ptest-pkgs"
-                    
-Once your build is complete, the ptest files are installed into the /usr/lib/package/ptest directory within the image, where package is the name of the package.
+```                    
+Once your build is complete, the ptest files are installed into the `/usr/lib/package/ptest` directory within the image, where *package* is the name of the package.
 
-#### 3.22.6.2. Running ptest¶
-The ptest-runner package installs a shell script that loops through all installed ptest test suites and runs them in sequence. Consequently, you might want to add this package to your image.
+#### 3.22.6.2. Running ptest
+The `ptest-runner` package installs a shell script that loops through all installed ptest test suites and runs them in sequence. Consequently, you might want to add this package to your image.
 
-#### 3.22.6.3. Getting Your Package Ready¶
+#### 3.22.6.3. Getting Your Package Ready
 In order to enable a recipe to run installed ptests on target hardware, you need to prepare the recipes that build the packages you want to test. Here is what you have to do for each recipe:
 
-Be sure the recipe inherits the ptest class: Include the following line in each recipe:
-
++ ***Be sure the recipe inherits the `ptest` class***: Include the following line in each recipe:
+```
      inherit ptest
-                            
-Create run-ptest: This script starts your test. Locate the script where you will refer to it using SRC_URI. Here is an example that starts a test for dbus:
-
+```                            
++ ***Create run-ptest***: This script starts your test. Locate the script where you will refer to it using SRC_URI. Here is an example that starts a test for dbus:
+```
      #!/bin/sh
      cd test
      make -k runtest-TESTS
-                            
-Ensure dependencies are met: If the test adds build or runtime dependencies that normally do not exist for the package (such as requiring "make" to run the test suite), use the DEPENDS and RDEPENDS variables in your recipe in order for the package to meet the dependencies. Here is an example where the package has a runtime dependency on "make":
-
+```                            
++ ***Ensure dependencies are met***: If the test adds build or runtime dependencies that normally do not exist for the package (such as requiring "make" to run the test suite), use the DEPENDS and RDEPENDS variables in your recipe in order for the package to meet the dependencies. Here is an example where the package has a runtime dependency on "make":
+```
      RDEPENDS_`${PN}`-ptest += "make"
-                            
-Add a function to build the test suite: Not many packages support cross-compilation of their test suites. Consequently, you usually need to add a cross-compilation function to the package.
+```                            
++ ***Add a function to build the test suite***: Not many packages support cross-compilation of their test suites. Consequently, you usually need to add a cross-compilation function to the package.
 
-Many packages based on Automake compile and run the test suite by using a single command such as make check. However, the host make check builds and runs on the same computer, while cross-compiling requires that the package is built on the host but executed for the target architecture (though often, as in the case for ptest, the execution occurs on the host). The built version of Automake that ships with the Yocto Project includes a patch that separates building and execution. Consequently, packages that use the unaltered, patched version of make check automatically cross-compiles.
+Many packages based on Automake compile and run the test suite by using a single command such as `make check`. However, the host `make check` builds and runs on the same computer, while cross-compiling requires that the package is built on the host but executed for the target architecture (though often, as in the case for ptest, the execution occurs on the host). The built version of Automake that ships with the Yocto Project includes a patch that separates building and execution. Consequently, packages that use the unaltered, patched version of `make check` automatically cross-compiles.
 
-Regardless, you still must add a do_compile_ptest function to build the test suite. Add a function similar to the following to your recipe:
-
+Regardless, you still must add a `do_compile_ptest` function to build the test suite. Add a function similar to the following to your recipe:
+```
      do_compile_ptest() {
         oe_runmake buildtest-TESTS
      }
-                            
-Ensure special configurations are set: If the package requires special configurations prior to compiling the test code, you must insert a do_configure_ptest function into the recipe.
+```                            
++ ***Ensure special configurations are set***: If the package requires special configurations prior to compiling the test code, you must insert a `do_configure_ptest` function into the recipe.
 
-Install the test suite: The ptest class automatically copies the file run-ptest to the target and then runs make install-ptest to run the tests. If this is not enough, you need to create a do_install_ptest function and make sure it gets called after the "make install-ptest" completes.
++ ***Install the test suite***: The `ptest` class automatically copies the file `run-ptest` to the target and then runs `make install-ptest` to run the tests. If this is not enough, you need to create a `do_install_ptest` function and make sure it gets called after the "make install-ptest" completes.
 
-### 3.22.7. Creating Node Package Manager (NPM) Packages¶
+### 3.22.7. Creating Node Package Manager (NPM) Packages
 NPM is a package manager for the JavaScript programming language. The Yocto Project supports the NPM fetcher. You can use this fetcher in combination with devtool to create recipes that produce NPM packages.
 
-Two workflows exist that allow you to create NPM packages using devtool: the NPM registry modules method and the NPM project code method.
+Two workflows exist that allow you to create NPM packages using `devtool`: the NPM registry modules method and the NPM project code method.
 
-Note
-While it is possible to create NPM recipes manually, using devtool is far simpler.
+> Note  
+> While it is possible to create NPM recipes manually, using devtool is far simpler.
+
 Additionally, some requirements and caveats exist.
 
 #### 3.22.7.1. Requirements and Caveats¶
-You need to be aware of the following before using devtool to create NPM packages:
+You need to be aware of the following before using `devtool` to create NPM packages:
 
-Of the two methods that you can use devtool to create NPM packages, the registry approach is slightly simpler. However, you might consider the project approach because you do not have to publish your module in the NPM registry (npm-registry), which is NPM's public registry.
++ Of the two methods that you can use `devtool` to create NPM packages, the registry approach is slightly simpler. However, you might consider the project approach because you do not have to publish your module in the NPM registry (`npm-registry`), which is NPM's public registry.
 
-Be familiar with devtool.
++ Be familiar with devtool.
 
-The NPM host tools need the native nodejs-npm package, which is part of the OpenEmbedded environment. You need to get the package by cloning the https://github.com/openembedded/meta-openembedded repository out of GitHub. Be sure to add the path to your local copy to your `bblayers.conf` file.
++ The NPM host tools need the native nodejs-npm package, which is part of the OpenEmbedded environment. You need to get the package by cloning the https://github.com/openembedded/meta-openembedded repository out of GitHub. Be sure to add the path to your local copy to your `bblayers.conf` file.
 
-devtool cannot detect native libraries in module dependencies. Consequently, you must manually add packages to your recipe.
++ devtool cannot detect native libraries in module dependencies. Consequently, you must manually add packages to your recipe.
 
-While deploying NPM packages, devtool cannot determine which dependent packages are missing on the target (e.g. the node runtime nodejs). Consequently, you need to find out what files are missing and be sure they are on the target.
++ While deploying NPM packages, `devtool` cannot determine which dependent packages are missing on the target (e.g. the node runtime nodejs). Consequently, you need to find out what files are missing and be sure they are on the target.
 
-Although you might not need NPM to run your node package, it is useful to have NPM on your target. The NPM package name is nodejs-npm.
++ Although you might not need NPM to run your node package, it is useful to have NPM on your target. The NPM package name is nodejs-npm.
 
-#### 3.22.7.2. Using the Registry Modules Method¶
-This section presents an example that uses the cute-files module, which is a file browser web application.
+#### 3.22.7.2. Using the Registry Modules Method
+This section presents an example that uses the `cute-files` module, which is a file browser web application.
 
-Note
-You must know the cute-files module version.
+> Note  
+> You must know the cute-files module version.
+
 The first thing you need to do is use devtool and the NPM fetcher to create the recipe:
-
+```
      $ devtool add "npm://registry.npmjs.org;name=cute-files;version=1.0.2"
-                    
-The devtool add command runs recipetool create and uses the same fetch URI to download each dependency and capture license details where possible. The result is a generated recipe.
+```                    
+The `devtool add` command runs `recipetool create` and uses the same fetch URI to download each dependency and capture license details where possible. The result is a generated recipe.
 
-The recipe file is fairly simple and contains every license that recipetool finds and includes the licenses in the recipe's LIC_FILES_CHKSUM variables. You need to examine the variables and look for those with "unknown" in the LICENSE field. You need to track down the license information for "unknown" modules and manually add the information to the recipe.
+The recipe file is fairly simple and contains every license that `recipetool` finds and includes the licenses in the recipe's LIC_FILES_CHKSUM variables. You need to examine the variables and look for those with "unknown" in the LICENSE field. You need to track down the license information for "unknown" modules and manually add the information to the recipe.
 
-recipetool creates "shrinkwrap" and "lockdown" files for your recipe. Shrinkwrap files capture the version of all dependent modules. Many packages do not provide shrinkwrap files. recipetool create a shrinkwrap file as it runs. You can replace the shrinkwrap file with your own file by setting the NPM_SHRINKWRAP variable.
+`recipetool` creates "shrinkwrap" and "lockdown" files for your recipe. Shrinkwrap files capture the version of all dependent modules. Many packages do not provide shrinkwrap files. `recipetool` create a shrinkwrap file as it runs. You can replace the shrinkwrap file with your own file by setting the NPM_SHRINKWRAP variable.
 
 Lockdown files contain the checksum for each module to determine if your users download the same files when building with a recipe. Lockdown files ensure that dependencies have not been changed and that your NPM registry is still providing the same file.
 
-Note
-A package is created for each sub-module. This policy is the only practical way to have the licenses for all of the dependencies represented in the license manifest of the image.
-The devtool edit-recipe command lets you take a look at the recipe:
+> Note  
+> A package is created for each sub-module. This policy is the only practical way to have the licenses for all of the dependencies represented in the license manifest of the image.
 
+The `devtool edit-recipe` command lets you take a look at the recipe:
+```
      $ devtool edit-recipe cute-files
      SUMMARY = "Turn any folder on your computer into a cute file browser, available on the local network."
      LICENSE = "BSD-3-Clause & Unknown & MIT & ISC"
@@ -3791,175 +3799,177 @@ The devtool edit-recipe command lets you take a look at the recipe:
      ...
      LICENSE_`${PN}`-express = "MIT"
      LICENSE_`${PN}` = "MIT"
-                    
+```                    
 Three key points exist in the previous example:
 
-SRC_URI uses the NPM scheme so that the NPM fetcher is used.
++ SRC_URI uses the NPM scheme so that the NPM fetcher is used.
 
-recipetool collects all the license information. If a sub-module's license is unavailable, the sub-module's name appears in the comments.
++ recipetool collects all the license information. If a sub-module's license is unavailable, the sub-module's name appears in the comments.
 
-The inherit npm statement causes the npm class to package up all the modules.
++ The inherit npm statement causes the npm class to package up all the modules.
 
-You can run the following command to build the cute-files package:
-
+You can run the following command to build the `cute-files` package:
+```
      $ devtool build cute-files
-                    
+```                    
 Remember that nodejs must be installed on the target before your package.
 
 Assuming 192.168.7.2 for the target's IP address, use the following command to deploy your package:
-
+```
      $ devtool deploy-target -s cute-files root@192.168.7.2
-                    
+```                    
 Once the package is installed on the target, you can test the application:
 
-Note
-Because of a know issue, you cannot simply run cute-files as you would if you had run npm install.
+> Note  
+> Because of a know issue, you cannot simply run `cute-files` as you would if you had run `npm install`.
+```
      $ cd /usr/lib/node_modules/cute-files
      $ node cute-files.js
-                    
+```                    
 On a browser, go to http://192.168.7.2:3000 and you see the following:
 ![pic](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/cute-files-npm-example.png)
 
-You can find the recipe in workspace/recipes/cute-files. You can use the recipe in any layer you choose.
+You can find the recipe in `workspace/recipes/cute-files`. You can use the recipe in any layer you choose.
 
-#### 3.22.7.3. Using the NPM Projects Code Method¶
-Although it is useful to package modules already in the NPM registry, adding node.js projects under development is a more common developer use case.
+#### 3.22.7.3. Using the NPM Projects Code Method
+Although it is useful to package modules already in the NPM registry, adding `node.js` projects under development is a more common developer use case.
 
-This section covers the NPM projects code method, which is very similar to the "registry" approach described in the previous section. In the NPM projects method, you provide devtool with an URL that points to the source files.
+This section covers the NPM projects code method, which is very similar to the "registry" approach described in the previous section. In the NPM projects method, you provide `devtool` with an URL that points to the source files.
 
-Replicating the same example, (i.e. cute-files) use the following command:
-
+Replicating the same example, (i.e. `cute-files`) use the following command:
+```
      $ devtool add https://github.com/martinaglv/cute-files.git
-                    
+```                    
 The recipe this command generates is very similar to the recipe created in the previous section. However, the SRC_URI looks like the following:
-
+```
      SRC_URI = "git://github.com/martinaglv/cute-files.git;protocol=https \
                npm://registry.npmjs.org;name=commander;version=2.9.0;subdir=node_modules/commander \
                npm://registry.npmjs.org;name=express;version=4.14.0;subdir=node_modules/express \
                npm://registry.npmjs.org;name=content-disposition;version=0.3.0;subdir=node_modules/content-disposition \
                "
-                    
+```                    
 In this example, the main module is taken from the Git repository and dependents are taken from the NPM registry. Other than those differences, the recipe is basically the same between the two methods. You can build and deploy the package exactly as described in the previous section that uses the registry modules method.
 
-## 3.23. Efficiently Fetching Source Files During a Build¶
+## 3.23. Efficiently Fetching Source Files During a Build
 The OpenEmbedded build system works with source files located through the SRC_URI variable. When you build something using BitBake, a big part of the operation is locating and downloading all the source tarballs. For images, downloading all the source for various packages can take a significant amount of time.
 
 This section shows you how you can use mirrors to speed up fetching source files and how you can pre-fetch files all of which leads to more efficient use of resources and time.
 
-### 3.23.1. Setting up Effective Mirrors¶
+### 3.23.1. Setting up Effective Mirrors
 A good deal that goes into a Yocto Project build is simply downloading all of the source tarballs. Maybe you have been working with another build system (OpenEmbedded or Angstrom) for which you have built up a sizable directory of source tarballs. Or, perhaps someone else has such a directory for which you have read access. If so, you can save time by adding statements to your configuration file so that the build process checks local directories first for existing tarballs before checking the Internet.
 
 Here is an efficient way to set it up in your `local.conf` file:
-
+```
      SOURCE_MIRROR_URL ?= "file:///home/you/your-download-dir/"
      INHERIT += "own-mirrors"
      BB_GENERATE_MIRROR_TARBALLS = "1"
      # BB_NO_NETWORK = "1"
-                
-In the previous example, the BB_GENERATE_MIRROR_TARBALLS variable causes the OpenEmbedded build system to generate tarballs of the Git repositories and store them in the DL_DIR directory. Due to performance reasons, generating and storing these tarballs is not the build system's default behavior.
+```                
+In the previous example, the `BB_GENERATE_MIRROR_TARBALLS` variable causes the OpenEmbedded build system to generate tarballs of the Git repositories and store them in the `DL_DIR` directory. Due to performance reasons, generating and storing these tarballs is not the build system's default behavior.
 
-You can also use the PREMIRRORS variable. For an example, see the variable's glossary entry in the Yocto Project Reference Manual.
+You can also use the `PREMIRRORS` variable. For an example, see the variable's glossary entry in the Yocto Project Reference Manual.
 
-### 3.23.2. Getting Source Files and Suppressing the Build¶
+### 3.23.2. Getting Source Files and Suppressing the Build
 Another technique you can use to ready yourself for a successive string of build operations, is to pre-fetch all the source files without actually starting a build. This technique lets you work through any download issues and ultimately gathers all the source files into your download directory build/downloads, which is located with DL_DIR.
 
 Use the following BitBake command form to fetch all the necessary sources without starting the build:
-
+```
      $ bitbake -c target runall="fetch"
-                
+```                
 This variation of the BitBake command guarantees that you have all the sources for that BitBake target should you disconnect from the Internet and want to do the build later offline.
 
-## 3.24. Selecting an Initialization Manager¶
+## 3.24. Selecting an Initialization Manager
 By default, the Yocto Project uses SysVinit as the initialization manager. However, support also exists for systemd, which is a full replacement for init with parallel starting of services, reduced shell overhead and other features that are used by many distributions.
 
 If you want to use SysVinit, you do not have to do anything. But, if you want to use systemd, you must take some steps as described in the following sections.
 
-### 3.24.1. Using systemd Exclusively¶
+### 3.24.1. Using systemd Exclusively
 Set these variables in your distribution configuration file as follows:
-
+```
      DISTRO_FEATURES_append = " systemd"
      VIRTUAL-RUNTIME_init_manager = "systemd"
-                
+```                
 You can also prevent the SysVinit distribution feature from being automatically enabled as follows:
-
+```
      DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
-                
+```                
 Doing so removes any redundant SysVinit scripts.
 
 To remove initscripts from your image altogether, set this variable also:
-
+```
      VIRTUAL-RUNTIME_initscripts = ""
-                
-For information on the backfill variable, see DISTRO_FEATURES_BACKFILL_CONSIDERED.
+```                
+For information on the backfill variable, see `DISTRO_FEATURES_BACKFILL_CONSIDERED`.
 
-### 3.24.2. Using systemd for the Main Image and Using SysVinit for the Rescue Image¶
+### 3.24.2. Using systemd for the Main Image and Using SysVinit for the Rescue Image
 Set these variables in your distribution configuration file as follows:
-
+```
      DISTRO_FEATURES_append = " systemd"
      VIRTUAL-RUNTIME_init_manager = "systemd"
-                
-Doing so causes your main image to use the packagegroup-core-boot.bb recipe and systemd. The rescue/minimal image cannot use this package group. However, it can install SysVinit and the appropriate packages will have support for both systemd and SysVinit.
+```                
+Doing so causes your main image to use the `packagegroup-core-boot.bb` recipe and systemd. The rescue/minimal image cannot use this package group. However, it can install SysVinit and the appropriate packages will have support for both systemd and SysVinit.
 
-## 3.25. Selecting a Device Manager¶
-The Yocto Project provides multiple ways to manage the device manager (/dev):
+## 3.25. Selecting a Device Manager
+The Yocto Project provides multiple ways to manage the device manager (`/dev`):
 
-Persistent and Pre-Populated/dev: For this case, the /dev directory is persistent and the required device nodes are created during the build.
++ ***Persistent and Pre-Populated/dev***: For this case, the `/dev` directory is persistent and the required device nodes are created during the build.
 
-Use devtmpfs with a Device Manager: For this case, the /dev directory is provided by the kernel as an in-memory file system and is automatically populated by the kernel at runtime. Additional configuration of device nodes is done in user space by a device manager like udev or busybox-mdev.
++ ***Use devtmpfs with a Device Manager***: For this case, the `/dev` directory is provided by the kernel as an in-memory file system and is automatically populated by the kernel at runtime. Additional configuration of device nodes is done in user space by a device manager like `udev` or `busybox-mdev`.
 
-### 3.25.1. Using Persistent and Pre-Populated/dev¶
+### 3.25.1. Using Persistent and Pre-Populated`/dev`
 To use the static method for device population, you need to set the USE_DEVFS variable to "0" as follows:
-
+```
      USE_DEVFS = "0"
-                
-The content of the resulting /dev directory is defined in a Device Table file. The IMAGE_DEVICE_TABLES variable defines the Device Table to use and should be set in the machine or distro configuration file. Alternatively, you can set this variable in your `local.conf` configuration file.
+```                
+The content of the resulting `/dev` directory is defined in a Device Table file. The `IMAGE_DEVICE_TABLES` variable defines the Device Table to use and should be set in the machine or distro configuration file. Alternatively, you can set this variable in your `local.conf` configuration file.
 
-If you do not define the IMAGE_DEVICE_TABLES variable, the default device_table-minimal.txt is used:
-
+If you do not define the `IMAGE_DEVICE_TABLES` variable, the default `device_table-minimal.txt` is used:
+```
      IMAGE_DEVICE_TABLES = "device_table-mymachine.txt"
-                
-The population is handled by the makedevs utility during image creation:
+```                
+The population is handled by the `makedevs` utility during image creation:
 
-### 3.25.2. Using devtmpfs and a Device Manager¶
+### 3.25.2. Using devtmpfs and a Device Manager
 To use the dynamic method for device population, you need to use (or be sure to set) the USE_DEVFS variable to "1", which is the default:
-
+```
      USE_DEVFS = "1"
-                
-With this setting, the resulting /dev directory is populated by the kernel using devtmpfs. Make sure the corresponding kernel configuration variable CONFIG_DEVTMPFS is set when building you build a Linux kernel.
+```                
+With this setting, the resulting `/dev` directory is populated by the kernel using `devtmpfs`. Make sure the corresponding kernel configuration variable `CONFIG_DEVTMPFS` is set when building you build a Linux kernel.
 
-All devices created by devtmpfs will be owned by root and have permissions 0600.
+All devices created by `devtmpfs` will be owned by `root` and have permissions `0600`.
 
-To have more control over the device nodes, you can use a device manager like udev or busybox-mdev. You choose the device manager by defining the VIRTUAL-RUNTIME_dev_manager variable in your machine or distro configuration file. Alternatively, you can set this variable in your `local.conf` configuration file:
-
+To have more control over the device nodes, you can use a device manager like `udev` or `busybox-mdev`. You choose the device manager by defining the `VIRTUAL-RUNTIME_dev_manager` variable in your machine or distro configuration file. Alternatively, you can set this variable in your `local.conf` configuration file:
+```
      VIRTUAL-RUNTIME_dev_manager = "udev"
 
      # Some alternative values
      # VIRTUAL-RUNTIME_dev_manager = "busybox-mdev"
      # VIRTUAL-RUNTIME_dev_manager = "systemd"
+```
 
-## 3.26. Using an External SCM¶
+## 3.26. Using an External SCM
 If you're working on a recipe that pulls from an external Source Code Manager (SCM), it is possible to have the OpenEmbedded build system notice new recipe changes added to the SCM and then build the resulting packages that depend on the new recipes by using the latest versions. This only works for SCMs from which it is possible to get a sensible revision number for changes. Currently, you can do this with Apache Subversion (SVN), Git, and Bazaar (BZR) repositories.
 
 To enable this behavior, the PV of the recipe needs to reference SRCPV. Here is an example:
-
+```
      PV = "1.2.3+git${SRCPV}"
-            
+```            
 Then, you can add the following to your `local.conf`:
-
+```
      SRCREV_pn-PN = "${AUTOREV}"
-            
+```            
 PN is the name of the recipe for which you want to enable automatic source revision updating.
 
 If you do not want to update your local configuration file, you can add the following directly to the recipe to finish enabling the feature:
-
+```
      SRCREV = "${AUTOREV}"
-            
-The Yocto Project provides a distribution named poky-bleeding, whose configuration file contains the line:
-
+```            
+The Yocto Project provides a distribution named `poky-bleeding`, whose configuration file contains the line:
+```
      require conf/distro/include/poky-floating-revisions.inc
-            
+```            
 This line pulls in the listed include file that contains numerous lines of exactly that form:
-
+```
      #SRCREV_pn-opkg-native ?= "${AUTOREV}"
      #SRCREV_pn-opkg-sdk ?= "${AUTOREV}"
      #SRCREV_pn-opkg ?= "${AUTOREV}"
@@ -3979,80 +3989,81 @@ This line pulls in the listed include file that contains numerous lines of exact
           .
           .
           .
-            
+```            
 These lines allow you to experiment with building a distribution that tracks the latest development source for numerous packages.
 
-Caution
-The poky-bleeding distribution is not tested on a regular basis. Keep this in mind if you use it.
+> Caution  
+> The `poky-bleeding` distribution is not tested on a regular basis. Keep this in mind if you use it.
 
-## 3.27. Creating a Read-Only Root Filesystem¶
+## 3.27. Creating a Read-Only Root Filesystem
 Suppose, for security reasons, you need to disable your target device's root filesystem's write permissions (i.e. you need a read-only root filesystem). Or, perhaps you are running the device's operating system from a read-only storage device. For either case, you can customize your image for that behavior.
 
-Note
-Supporting a read-only root filesystem requires that the system and applications do not try to write to the root filesystem. You must configure all parts of the target system to write elsewhere, or to gracefully fail in the event of attempting to write to the root filesystem.
+> Note  
+> Supporting a read-only root filesystem requires that the system and applications do not try to write to the root filesystem. You must configure all parts of the target system to write elsewhere, or to gracefully fail in the event of attempting to write to the root filesystem.
 
-### 3.27.1. Creating the Root Filesystem¶
+### 3.27.1. Creating the Root Filesystem
 To create the read-only root filesystem, simply add the "read-only-rootfs" feature to your image. Using either of the following statements in your image recipe or from within the `local.conf` file found in the Build Directory causes the build system to create a read-only root filesystem:
-
+```
      IMAGE_FEATURES = "read-only-rootfs"
-                
+```                
 or
-
+```
      EXTRA_IMAGE_FEATURES += "read-only-rootfs"
-                
+```                
 For more information on how to use these variables, see the "Customizing Images Using Custom IMAGE_FEATURES and EXTRA_IMAGE_FEATURES" section. For information on the variables, see IMAGE_FEATURES and EXTRA_IMAGE_FEATURES.
 
 ### 3.27.2. Post-Installation Scripts¶
-It is very important that you make sure all post-Installation (pkg_postinst) scripts for packages that are installed into the image can be run at the time when the root filesystem is created during the build on the host system. These scripts cannot attempt to run during first-boot on the target device. With the "read-only-rootfs" feature enabled, the build system checks during root filesystem creation to make sure all post-installation scripts succeed. If any of these scripts still need to be run after the root filesystem is created, the build immediately fails. These build-time checks ensure that the build fails rather than the target device fails later during its initial boot operation.
+It is very important that you make sure all post-Installation (`pkg_postinst`) scripts for packages that are installed into the image can be run at the time when the root filesystem is created during the build on the host system. These scripts cannot attempt to run during first-boot on the target device. With the "read-only-rootfs" feature enabled, the build system checks during root filesystem creation to make sure all post-installation scripts succeed. If any of these scripts still need to be run after the root filesystem is created, the build immediately fails. These build-time checks ensure that the build fails rather than the target device fails later during its initial boot operation.
 
 Most of the common post-installation scripts generated by the build system for the out-of-the-box Yocto Project are engineered so that they can run during root filesystem creation (e.g. post-installation scripts for caching fonts). However, if you create and add custom scripts, you need to be sure they can be run during this file system creation.
 
 Here are some common problems that prevent post-installation scripts from running during root filesystem creation:
 
-Not using $D in front of absolute paths: The build system defines $D when the root filesystem is created. Furthermore, $D is blank when the script is run on the target device. This implies two purposes for $D: ensuring paths are valid in both the host and target environments, and checking to determine which environment is being used as a method for taking appropriate actions.
++ ***Not using `$D` in front of absolute paths***: The build system defines `$D` when the root filesystem is created. Furthermore, `$D` is blank when the script is run on the target device. This implies two purposes for $D: ensuring paths are valid in both the host and target environments, and checking to determine which environment is being used as a method for taking appropriate actions.
 
-Attempting to run processes that are specific to or dependent on the target architecture: You can work around these attempts by using native tools, which run on the host system, to accomplish the same tasks, or by alternatively running the processes under QEMU, which has the qemu_run_binary function. For more information, see the qemu class.
++ ***Attempting to run processes that are specific to or dependent on the target architecture***: You can work around these attempts by using native tools, which run on the host system, to accomplish the same tasks, or by alternatively running the processes under QEMU, which has the `qemu_run_binary` function. For more information, see the `qemu` class.
 
-### 3.27.3. Areas With Write Access¶
-With the "read-only-rootfs" feature enabled, any attempt by the target to write to the root filesystem at runtime fails. Consequently, you must make sure that you configure processes and applications that attempt these types of writes do so to directories with write access (e.g. /tmp or /var/run).
+### 3.27.3. Areas With Write Access
+With the "read-only-rootfs" feature enabled, any attempt by the target to write to the root filesystem at runtime fails. Consequently, you must make sure that you configure processes and applications that attempt these types of writes do so to directories with write access (e.g. `/tmp` or `/var/run`).
 
-## 3.28. Maintaining Build Output Quality¶
+## 3.28. Maintaining Build Output Quality
 Many factors can influence the quality of a build. For example, if you upgrade a recipe to use a new version of an upstream software package or you experiment with some new configuration options, subtle changes can occur that you might not detect until later. Consider the case where your recipe is using a newer version of an upstream package. In this case, a new version of a piece of software might introduce an optional dependency on another library, which is auto-detected. If that library has already been built when the software is building, the software will link to the built library and that library will be pulled into your image along with the new software even if you did not want the library.
 
 The buildhistory class exists to help you maintain the quality of your build output. You can use the class to highlight unexpected and possibly unwanted changes in the build output. When you enable build history, it records information about the contents of each package and image and then commits that information to a local Git repository where you can examine the information.
 
 The remainder of this section describes the following:
 
-How you can enable and disable build history
++ How you can enable and disable build history
 
-How to understand what the build history contains
++ How to understand what the build history contains
 
-How to limit the information used for build history
++ How to limit the information used for build history
 
-How to examine the build history from both a command-line and web interface
++ How to examine the build history from both a command-line and web interface
 
 ### 3.28.1. Enabling and Disabling Build History¶
-Build history is disabled by default. To enable it, add the following INHERIT statement and set the BUILDHISTORY_COMMIT variable to "1" at the end of your conf/`local.conf` file found in the Build Directory:
-
+Build history is disabled by default. To enable it, add the following INHERIT statement and set the BUILDHISTORY_COMMIT variable to "1" at the end of your `conf/local.conf` file found in the Build Directory:
+```
      INHERIT += "buildhistory"
      BUILDHISTORY_COMMIT = "1"
-                
+```                
 Enabling build history as previously described causes the OpenEmbedded build system to collect build output information and commit it as a single commit to a local Git repository.
 
-Note
-Enabling build history increases your build times slightly, particularly for images, and increases the amount of disk space used during the build.
+> Note  
+> Enabling build history increases your build times slightly, particularly for images, and increases the amount of disk space used during the build.
+
 You can disable build history by removing the previous statements from your conf/`local.conf` file.
 
 ### 3.28.2. Understanding What the Build History Contains¶
-Build history information is kept in ${TOPDIR}/buildhistory in the Build Directory as defined by the BUILDHISTORY_DIR variable. The following is an example abbreviated listing:
+Build history information is kept in `${TOPDIR}/buildhistory` in the Build Directory as defined by the `BUILDHISTORY_DIR` variable. The following is an example abbreviated listing:
 
 ![abbreviate list](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/buildhistory.png)
 
-At the top level, a metadata-revs file exists that lists the revisions of the repositories for the enabled layers when the build was produced. The rest of the data splits into separate packages, images and sdk directories, the contents of which are described as follows.
+At the top level, a metadata-revs file exists that lists the revisions of the repositories for the enabled layers when the build was produced. The rest of the data splits into separate `packages`, `images` and `sdk` directories, the contents of which are described as follows.
 
 #### 3.28.2.1. Build History Package Information¶
-The history for each package contains a text file that has name-value pairs with information about the package. For example, buildhistory/packages/i586-poky-linux/busybox/busybox/latest contains the following:
-
+The history for each package contains a text file that has name-value pairs with information about the package. For example, `buildhistory/packages/i586-poky-linux/busybox/busybox/latest` contains the following:
+```
      PV = 1.22.1
      PR = r32
      RPROVIDES =
@@ -4066,11 +4077,11 @@ The history for each package contains a text file that has name-value pairs with
         /usr/share/omf /usr/share/sounds /usr/lib/bonobo/servers
      FILELIST = /bin/busybox /bin/busybox.nosuid /bin/busybox.suid /bin/sh \
         /etc/busybox.links.nosuid /etc/busybox.links.suid
-                    
-Most of these name-value pairs correspond to variables used to produce the package. The exceptions are FILELIST, which is the actual list of files in the package, and PKGSIZE, which is the total size of files in the package in bytes.
+```                    
+Most of these name-value pairs correspond to variables used to produce the package. The exceptions are `FILELIST`, which is the actual list of files in the package, and `PKGSIZE`, which is the total size of files in the package in bytes.
 
-A file also exists that corresponds to the recipe from which the package came (e.g. buildhistory/packages/i586-poky-linux/busybox/latest):
-
+A file also exists that corresponds to the recipe from which the package came (e.g. `buildhistory/packages/i586-poky-linux/busybox/latest`):
+```
      PV = 1.22.1
      PR = r32
      DEPENDS = initscripts kern-tools-native update-rc.d-native \
@@ -4079,16 +4090,16 @@ A file also exists that corresponds to the recipe from which the package came (e
      PACKAGES = busybox-ptest busybox-httpd busybox-udhcpd busybox-udhcpc \
         busybox-syslog busybox-mdev busybox-hwclock busybox-dbg \
         busybox-staticdev busybox-dev busybox-doc busybox-locale busybox
-                    
-Finally, for those recipes fetched from a version control system (e.g., Git), a file exists that lists source revisions that are specified in the recipe and lists the actual revisions used during the build. Listed and actual revisions might differ when SRCREV is set to ${AUTOREV}. Here is an example assuming buildhistory/packages/qemux86-poky-linux/linux-yocto/latest_srcrev):
-
+```                    
+Finally, for those recipes fetched from a version control system (e.g., Git), a file exists that lists source revisions that are specified in the recipe and lists the actual revisions used during the build. Listed and actual revisions might differ when SRCREV is set to ${AUTOREV}. Here is an example assuming `buildhistory/packages/qemux86-poky-linux/linux-yocto/latest_srcrev`):
+```
      # SRCREV_machine = "38cd560d5022ed2dbd1ab0dca9642e47c98a0aa1"
      SRCREV_machine = "38cd560d5022ed2dbd1ab0dca9642e47c98a0aa1"
      # SRCREV_meta = "a227f20eff056e511d504b2e490f3774ab260d6f"
      SRCREV_meta = "a227f20eff056e511d504b2e490f3774ab260d6f"
-                    
+```                    
 You can use the buildhistory-collect-srcrevs command with the -a option to collect the stored SRCREV values from build history and report them in a format suitable for use in global configuration (e.g., `local.conf` or a distro include file) to override floating AUTOREV values to a fixed set of revisions. Here is some example output from this command:
-
+```
      $ buildhistory-collect-srcrevs -a
      # i586-poky-linux
      SRCREV_pn-glibc = "b8079dd0d360648e4e8de48656c5c38972621072"
@@ -4110,38 +4121,39 @@ You can use the buildhistory-collect-srcrevs command with the -a option to colle
      SRCREV_meta_pn-linux-yocto = "a227f20eff056e511d504b2e490f3774ab260d6f"
      # all-poky-linux
      SRCREV_pn-update-rc.d = "eca680ddf28d024954895f59a241a622dd575c11"
-                    
-Note
-Here are some notes on using the buildhistory-collect-srcrevs command:
-By default, only values where the SRCREV was not hardcoded (usually when AUTOREV is used) are reported. Use the -a option to see all SRCREV values.
+```                    
+> Note  
+> Here are some notes on using the buildhistory-collect-srcrevs command:
+> + By default, only values where the SRCREV was not hardcoded (usually when AUTOREV is used) are reported. Use the -a option to see all SRCREV values.
+> 
+> + The output statements might not have any effect if overrides are applied elsewhere in the build system configuration. Use the -f option to add the forcevariable override to each output line if you need to work around this restriction.
+> 
+> + The script does apply special handling when building for multiple machines. However, the script does place a comment before each set of values that specifies which triplet to which they belong as previously shown (e.g., i586-poky-linux).
 
-The output statements might not have any effect if overrides are applied elsewhere in the build system configuration. Use the -f option to add the forcevariable override to each output line if you need to work around this restriction.
-
-The script does apply special handling when building for multiple machines. However, the script does place a comment before each set of values that specifies which triplet to which they belong as previously shown (e.g., i586-poky-linux).
-
-#### 3.28.2.2. Build History Image Information¶
+#### 3.28.2.2. Build History Image Information
 The files produced for each image are as follows:
 
-image-files: A directory containing selected files from the root filesystem. The files are defined by BUILDHISTORY_IMAGE_FILES.
++ `image-files`: A directory containing selected files from the root filesystem. The files are defined by BUILDHISTORY_IMAGE_FILES.
 
-build-id.txt: Human-readable information about the build configuration and metadata source revisions. This file contains the full build header as printed by BitBake.
++ `build-id.txt`: Human-readable information about the build configuration and metadata source revisions. This file contains the full build header as printed by BitBake.
 
-*.dot: Dependency graphs for the image that are compatible with graphviz.
++ `*.dot`: Dependency graphs for the image that are compatible with graphviz.
 
-files-in-image.txt: A list of files in the image with permissions, owner, group, size, and symlink information.
++ `files-in-image.txt`: A list of files in the image with permissions, owner, group, size, and symlink information.
 
-image-info.txt: A text file containing name-value pairs with information about the image. See the following listing example for more information.
++ `image-info.txt`: A text file containing name-value pairs with information about the image. See the following listing example for more information.
 
-installed-package-names.txt: A list of installed packages by name only.
++ `installed-package-names.txt`: A list of installed packages by name only.
 
-installed-package-sizes.txt: A list of installed packages ordered by size.
++ `installed-package-sizes.txt`: A list of installed packages ordered by size.
 
-installed-packages.txt: A list of installed packages with full package filenames.
++ `installed-packages.txt`: A list of installed packages with full package filenames.
 
-Note
-Installed package information is able to be gathered and produced even if package management is disabled for the final image.
+> Note  
+> Installed package information is able to be gathered and produced even if package management is disabled for the final image.
+
 Here is an example of image-info.txt:
-
+```
      DISTRO = poky
      DISTRO_VERSION = 1.7
      USER_CLASSES = buildstats image-mklibs image-prelink
@@ -4158,48 +4170,49 @@ Here is an example of image-info.txt:
         postinst_enable_logging; rootfs_update_timestamp ; ssh_disable_dns_lookup ;
      IMAGE_POSTPROCESS_COMMAND =   buildhistory_get_imageinfo ;
      IMAGESIZE = 6900
-                    
-Other than IMAGESIZE, which is the total size of the files in the image in Kbytes, the name-value pairs are variables that may have influenced the content of the image. This information is often useful when you are trying to determine why a change in the package or file listings has occurred.
+```                    
+Other than `IMAGESIZE`, which is the total size of the files in the image in Kbytes, the name-value pairs are variables that may have influenced the content of the image. This information is often useful when you are trying to determine why a change in the package or file listings has occurred.
 
-#### 3.28.2.3. Using Build History to Gather Image Information Only¶
-As you can see, build history produces image information, including dependency graphs, so you can see why something was pulled into the image. If you are just interested in this information and not interested in collecting specific package or SDK information, you can enable writing only image information without any history by adding the following to your conf/`local.conf` file found in the Build Directory:
-
+#### 3.28.2.3. Using Build History to Gather Image Information Only
+As you can see, build history produces image information, including dependency graphs, so you can see why something was pulled into the image. If you are just interested in this information and not interested in collecting specific package or SDK information, you can enable writing only image information without any history by adding the following to your `conf/local.conf` file found in the Build Directory:
+```
      INHERIT += "buildhistory"
      BUILDHISTORY_COMMIT = "0"
      BUILDHISTORY_FEATURES = "image"
-                    
+```                    
 Here, you set the BUILDHISTORY_FEATURES variable to use the image feature only.
 
 #### 3.28.2.4. Build History SDK Information¶
-Build history collects similar information on the contents of SDKs (e.g. bitbake -c populate_sdk imagename) as compared to information it collects for images. Furthermore, this information differs depending on whether an extensible or standard SDK is being produced.
+Build history collects similar information on the contents of SDKs (e.g. `bitbake -c populate_sdk imagename`) as compared to information it collects for images. Furthermore, this information differs depending on whether an extensible or standard SDK is being produced.
 
 The following list shows the files produced for SDKs:
 
-files-in-sdk.txt: A list of files in the SDK with permissions, owner, group, size, and symlink information. This list includes both the host and target parts of the SDK.
++ `files-in-sdk.txt`: A list of files in the SDK with permissions, owner, group, size, and symlink information. This list includes both the host and target parts of the SDK.
 
-sdk-info.txt: A text file containing name-value pairs with information about the SDK. See the following listing example for more information.
++ `sdk-info.txt`: A text file containing name-value pairs with information about the SDK. See the following listing example for more information.
 
-sstate-task-sizes.txt: A text file containing name-value pairs with information about task group sizes (e.g. do_populate_sysroot tasks have a total size). The sstate-task-sizes.txt file exists only when an extensible SDK is created.
++ `sstate-task-sizes.txt`: A text file containing name-value pairs with information about task group sizes (e.g. do_populate_sysroot tasks have a total size). The sstate-task-sizes.txt file exists only when an extensible SDK is created.
 
-sstate-package-sizes.txt: A text file containing name-value pairs with information for the shared-state packages and sizes in the SDK. The sstate-package-sizes.txt file exists only when an extensible SDK is created.
++ `sstate-package-sizes.txt`: A text file containing name-value pairs with information for the shared-state packages and sizes in the SDK. The sstate-package-sizes.txt file exists only when an extensible SDK is created.
 
-sdk-files: A folder that contains copies of the files mentioned in BUILDHISTORY_SDK_FILES if the files are present in the output. Additionally, the default value of BUILDHISTORY_SDK_FILES is specific to the extensible SDK although you can set it differently if you would like to pull in specific files from the standard SDK.
++ `sdk-files`: A folder that contains copies of the files mentioned in BUILDHISTORY_SDK_FILES if the files are present in the output. Additionally, the default value of BUILDHISTORY_SDK_FILES is specific to the extensible SDK although you can set it differently if you would like to pull in specific files from the standard SDK.
 
-The default files are conf/`local.conf`, conf/`bblayers.conf`, conf/auto.conf, conf/locked-sigs.inc, and conf/devtool.conf. Thus, for an extensible SDK, these files get copied into the sdk-files directory.
+     The default files are conf/`local.conf`, conf/`bblayers.conf`, conf/auto.conf, conf/locked-sigs.inc, and conf/devtool.conf. Thus, for an extensible SDK, these files get copied into the sdk-files directory.
 
-The following information appears under each of the host and target directories for the portions of the SDK that run on the host and on the target, respectively:
++ The following information appears under each of the host and target directories for the portions of the SDK that run on the host and on the target, respectively:
 
-Note
-The following files for the most part are empty when producing an extensible SDK because this type of SDK is not constructed from packages as is the standard SDK.
-depends.dot: Dependency graph for the SDK that is compatible with graphviz.
+     > Note  
+     > The following files for the most part are empty when producing an extensible SDK because this type of SDK is not constructed from packages as is the standard SDK.
 
-installed-package-names.txt: A list of installed packages by name only.
+     + `depends.dot`: Dependency graph for the SDK that is compatible with graphviz.
 
-installed-package-sizes.txt: A list of installed packages ordered by size.
+     + `installed-package-names.txt`: A list of installed packages by name only.
 
-installed-packages.txt: A list of installed packages with full package filenames.
+     + `installed-package-sizes.txt`: A list of installed packages ordered by size.
 
-Here is an example of sdk-info.txt:
+     + `installed-packages.txt`: A list of installed packages with full package filenames.
+
+Here is an example of `sdk-info.txt`:
 
      DISTRO = poky
      DISTRO_VERSION = 1.3+snapshot-20130327
@@ -4212,17 +4225,17 @@ Here is an example of sdk-info.txt:
                     
 Other than SDKSIZE, which is the total size of the files in the SDK in Kbytes, the name-value pairs are variables that might have influenced the content of the SDK. This information is often useful when you are trying to determine why a change in the package or file listings has occurred.
 
-#### 3.28.2.5. Examining Build History Information¶
+#### 3.28.2.5. Examining Build History Information
 You can examine build history output from the command line or from a web interface.
 
 To see any changes that have occurred (assuming you have BUILDHISTORY_COMMIT = "1"), you can simply use any Git command that allows you to view the history of a repository. Here is one method:
-
+```
       $ git log -p
-                    
+```                    
 You need to realize, however, that this method does show changes that are not significant (e.g. a package's size changing by a few bytes).
 
 A command-line tool called buildhistory-diff does exist, though, that queries the Git repository and prints just the differences that might be significant in human-readable form. Here is an example:
-
+```
      $ ~/poky/poky/scripts/buildhistory-diff . HEAD^
      Changes to images/qemux86_64/glibc/core-image-minimal (files-in-image.txt):
         /etc/anotherpkg.conf was added
@@ -4237,177 +4250,182 @@ A command-line tool called buildhistory-diff does exist, though, that queries th
      packages/qemux86_64-poky-linux/v86d/v86d: PKGSIZE changed from 110579 to 144381 (+30%)
         * PR changed from "r0" to "r1"
         * PV changed from "0.1.10" to "0.1.12"
-                    
-Note
-The buildhistory-diff tool requires the GitPython package. Be sure to install it using Pip3 as follows:
-   $ pip3 install GitPython --user
-                        
-Alternatively, you can install python3-git using the appropriate distribution package manager (e.g. apt-get, dnf, or zipper).
+```                    
+> Note  
+> The `buildhistory-diff` tool requires the `GitPython` package. Be sure to install it using Pip3 as follows:  
+> ```
+>    $ pip3 install GitPython --user
+> ```                        
+> Alternatively, you can install `python3-git` using the appropriate distribution package manager (e.g. `apt-get`, `dnf`, or `zipper`).
+
 To see changes to the build history using a web interface, follow the instruction in the README file here. http://git.yoctoproject.org/cgit/cgit.cgi/buildhistory-web/.
 
 Here is a sample screenshot of the interface:
 
 ![Interfaces](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/buildhistory-web.png)
 
-## 3.29. Performing Automated Runtime Testing¶
-The OpenEmbedded build system makes available a series of automated tests for images to verify runtime functionality. You can run these tests on either QEMU or actual target hardware. Tests are written in Python making use of the unittest module, and the majority of them run commands on the target system over SSH. This section describes how you set up the environment to use these tests, run available tests, and write and add your own tests.
+## 3.29. Performing Automated Runtime Testing
+The OpenEmbedded build system makes available a series of automated tests for images to verify runtime functionality. You can run these tests on either QEMU or actual target hardware. Tests are written in Python making use of the `unittest` module, and the majority of them run commands on the target system over SSH. This section describes how you set up the environment to use these tests, run available tests, and write and add your own tests.
 
 For information on the test and QA infrastructure available within the Yocto Project, see the "Testing and Quality Assurance" section in the Yocto Project Reference Manual.
 
-### 3.29.1. Enabling Tests¶
+### 3.29.1. Enabling Tests
 Depending on whether you are planning to run tests using QEMU or on the hardware, you have to take different steps to enable the tests. See the following subsections for information on how to enable both types of tests.
 
-#### 3.29.1.1. Enabling Runtime Tests on QEMU¶
+#### 3.29.1.1. Enabling Runtime Tests on QEMU
 In order to run tests, you need to do the following:
 
-Set up to avoid interaction with sudo for networking: To accomplish this, you must do one of the following:
++ Set up to avoid interaction with sudo for networking: To accomplish this, you must do one of the following:
 
-Add NOPASSWD for your user in /etc/sudoers either for all commands or just for runqemu-ifup. You must provide the full path as that can change if you are using multiple clones of the source repository.
+     + Add NOPASSWD for your user in /etc/sudoers either for all commands or just for runqemu-ifup. You must provide the full path as that can change if you are using multiple clones of the source repository.
 
-Note
-On some distributions, you also need to comment out "Defaults requiretty" in /etc/sudoers.
-Manually configure a tap interface for your system.
+     > Note  
+     > On some distributions, you also need to comment out "Defaults requiretty" in /etc/sudoers.
 
-Run as root the script in scripts/runqemu-gen-tapdevs, which should generate a list of tap devices. This is the option typically chosen for Autobuilder-type environments.
+     + Manually configure a tap interface for your system.
 
-Notes
-Be sure to use an absolute path when calling this script with sudo.
+     + Run as root the script in scripts/runqemu-gen-tapdevs, which should generate a list of tap devices. This is the option typically chosen for Autobuilder-type environments.
 
-The package recipe qemu-helper-native is required to run this script. Build the package using the following command:
+     > Notes  
+     > Be sure to use an absolute path when calling this script with sudo.
+     >
+     > The package recipe qemu-helper-native is required to run this script. Build the package using the following command:
+     > ```
+     >     $ bitbake qemu-helper-native
+     > ```
 
-     $ bitbake qemu-helper-native
-                                                
-Set the DISPLAY variable: You need to set this variable so that you have an X server available (e.g. start vncserver for a headless machine).
++ Set the DISPLAY variable: You need to set this variable so that you have an X server available (e.g. start vncserver for a headless machine).
 
-Be sure your host's firewall accepts incoming connections from 192.168.7.0/24: Some of the tests (in particular DNF tests) start an HTTP server on a random high number port, which is used to serve files to the target. The DNF module serves ${WORKDIR}/oe-rootfs-repo so it can run DNF channel commands. That means your host's firewall must accept incoming connections from 192.168.7.0/24, which is the default IP range used for tap devices by runqemu.
++ Be sure your host's firewall accepts incoming connections from 192.168.7.0/24: Some of the tests (in particular DNF tests) start an HTTP server on a random high number port, which is used to serve files to the target. The DNF module serves ${WORKDIR}/oe-rootfs-repo so it can run DNF channel commands. That means your host's firewall must accept incoming connections from 192.168.7.0/24, which is the default IP range used for tap devices by runqemu.
 
-Be sure your host has the correct packages installed: Depending your host's distribution, you need to have the following packages installed:
++ Be sure your host has the correct packages installed: Depending your host's distribution, you need to have the following packages installed:
 
-Ubuntu and Debian: sysstat and iproute2
+     + Ubuntu and Debian: `sysstat` and `iproute2`
 
-OpenSUSE: sysstat and iproute2
+     + OpenSUSE: `sysstat` and `iproute2`
 
-Fedora: sysstat and iproute
+     + Fedora: `sysstat` and `iproute`
 
-CentOS: sysstat and iproute
+     + CentOS: `sysstat` and `iproute`
 
 Once you start running the tests, the following happens:
 
-A copy of the root filesystem is written to ${WORKDIR}/testimage.
+1. A copy of the root filesystem is written to `${WORKDIR}/testimage`.
 
-The image is booted under QEMU using the standard runqemu script.
+2. The image is booted under QEMU using the standard `runqemu` script.
 
-A default timeout of 500 seconds occurs to allow for the boot process to reach the login prompt. You can change the timeout period by setting TEST_QEMUBOOT_TIMEOUT in the `local.conf` file.
+3. A default timeout of 500 seconds occurs to allow for the boot process to reach the login prompt. You can change the timeout period by setting TEST_QEMUBOOT_TIMEOUT in the `local.conf` file.
 
-Once the boot process is reached and the login prompt appears, the tests run. The full boot log is written to ${WORKDIR}/testimage/qemu_boot_log.
+4. Once the boot process is reached and the login prompt appears, the tests run. The full boot log is written to `${WORKDIR}/testimage/qemu_boot_log`.
 
-Each test module loads in the order found in TEST_SUITES. You can find the full output of the commands run over SSH in ${WORKDIR}/testimgage/ssh_target_log.
+5. Each test module loads in the order found in TEST_SUITES. You can find the full output of the commands run over SSH in `${WORKDIR}/testimgage/ssh_target_log`.
 
-If no failures occur, the task running the tests ends successfully. You can find the output from the unittest in the task log at ${WORKDIR}/temp/log.do_testimage.
+6. If no failures occur, the task running the tests ends successfully. You can find the output from the unittest in the task log at `${WORKDIR}/temp/log.do_testimage`.
 
-#### 3.29.1.2. Enabling Runtime Tests on Hardware¶
+#### 3.29.1.2. Enabling Runtime Tests on Hardware
 The OpenEmbedded build system can run tests on real hardware, and for certain devices it can also deploy the image to be tested onto the device beforehand.
 
 For automated deployment, a "master image" is installed onto the hardware once as part of setup. Then, each time tests are to be run, the following occurs:
 
-The master image is booted into and used to write the image to be tested to a second partition.
+1. The master image is booted into and used to write the image to be tested to a second partition.
 
-The device is then rebooted using an external script that you need to provide.
+2. The device is then rebooted using an external script that you need to provide.
 
-The device boots into the image to be tested.
+3. The device boots into the image to be tested.
 
 When running tests (independent of whether the image has been deployed automatically or not), the device is expected to be connected to a network on a pre-determined IP address. You can either use static IP addresses written into the image, or set the image to use DHCP and have your DHCP server on the test network assign a known IP address based on the MAC address of the device.
 
 In order to run tests on hardware, you need to set TEST_TARGET to an appropriate value. For QEMU, you do not have to change anything, the default value is "QemuTarget". For running tests on hardware, the following options exist:
 
-"SimpleRemoteTarget": Choose "SimpleRemoteTarget" if you are going to run tests on a target system that is already running the image to be tested and is available on the network. You can use "SimpleRemoteTarget" in conjunction with either real hardware or an image running within a separately started QEMU or any other virtual machine manager.
++ "***SimpleRemoteTarget***": Choose "SimpleRemoteTarget" if you are going to run tests on a target system that is already running the image to be tested and is available on the network. You can use "SimpleRemoteTarget" in conjunction with either real hardware or an image running within a separately started QEMU or any other virtual machine manager.
 
-"SystemdbootTarget": Choose "SystemdbootTarget" if your hardware is an EFI-based machine with systemd-boot as bootloader and core-image-testmaster (or something similar) is installed. Also, your hardware under test must be in a DHCP-enabled network that gives it the same IP address for each reboot.
++ "***SystemdbootTarget***": Choose "SystemdbootTarget" if your hardware is an EFI-based machine with systemd-boot as bootloader and core-image-testmaster (or something similar) is installed. Also, your hardware under test must be in a DHCP-enabled network that gives it the same IP address for each reboot.
 
-If you choose "SystemdbootTarget", there are additional requirements and considerations. See the "Selecting SystemdbootTarget" section, which follows, for more information.
+     If you choose "SystemdbootTarget", there are additional requirements and considerations. See the "Selecting SystemdbootTarget" section, which follows, for more information.
 
-"BeagleBoneTarget": Choose "BeagleBoneTarget" if you are deploying images and running tests on the BeagleBone "Black" or original "White" hardware. For information on how to use these tests, see the comments at the top of the BeagleBoneTarget meta-yocto-bsp/lib/oeqa/controllers/beaglebonetarget.py file.
++ "***BeagleBoneTarget***": Choose "BeagleBoneTarget" if you are deploying images and running tests on the BeagleBone "Black" or original "White" hardware. For information on how to use these tests, see the comments at the top of the BeagleBoneTarget meta-yocto-bsp/lib/oeqa/controllers/beaglebonetarget.py file.
 
-"EdgeRouterTarget": Choose "EdgeRouterTarget" is you are deploying images and running tests on the Ubiquiti Networks EdgeRouter Lite. For information on how to use these tests, see the comments at the top of the EdgeRouterTarget meta-yocto-bsp/lib/oeqa/controllers/edgeroutertarget.py file.
++ "***EdgeRouterTarget***": Choose "EdgeRouterTarget" is you are deploying images and running tests on the Ubiquiti Networks EdgeRouter Lite. For information on how to use these tests, see the comments at the top of the EdgeRouterTarget meta-yocto-bsp/lib/oeqa/controllers/edgeroutertarget.py file.
 
-"GrubTarget": Choose the "supports deploying images and running tests on any generic PC that boots using GRUB. For information on how to use these tests, see the comments at the top of the GrubTarget meta-yocto-bsp/lib/oeqa/controllers/grubtarget.py file.
++ "***GrubTarget***": Choose the "supports deploying images and running tests on any generic PC that boots using GRUB. For information on how to use these tests, see the comments at the top of the GrubTarget meta-yocto-bsp/lib/oeqa/controllers/grubtarget.py file.
 
-"your-target": Create your own custom target if you want to run tests when you are deploying images and running tests on a custom machine within your BSP layer. To do this, you need to add a Python unit that defines the target class under lib/oeqa/controllers/ within your layer. You must also provide an empty __init__.py. For examples, see files in meta-yocto-bsp/lib/oeqa/controllers/.
++ "your-target": Create your own custom target if you want to run tests when you are deploying images and running tests on a custom machine within your BSP layer. To do this, you need to add a Python unit that defines the target class under lib/oeqa/controllers/ within your layer. You must also provide an empty __init__.py. For examples, see files in meta-yocto-bsp/lib/oeqa/controllers/.
 
-#### 3.29.1.3. Selecting SystemdbootTarget¶
+#### 3.29.1.3. Selecting SystemdbootTarget
 If you did not set TEST_TARGET to "SystemdbootTarget", then you do not need any information in this section. You can skip down to the "Running Tests" section.
 
 If you did set TEST_TARGET to "SystemdbootTarget", you also need to perform a one-time setup of your master image by doing the following:
 
-Set EFI_PROVIDER: Be sure that EFI_PROVIDER is as follows:
-
+1. ***Set EFI_PROVIDER***: Be sure that EFI_PROVIDER is as follows:
+```
      EFI_PROVIDER = "systemd-boot"
-                            
-Build the master image: Build the core-image-testmaster image. The core-image-testmaster recipe is provided as an example for a "master" image and you can customize the image recipe as you would any other recipe.
+```                            
+2. ***Build the master image***: Build the core-image-testmaster image. The core-image-testmaster recipe is provided as an example for a "master" image and you can customize the image recipe as you would any other recipe.
 
-Here are the image recipe requirements:
+     Here are the image recipe requirements:
 
-Inherits core-image so that kernel modules are installed.
+   + Inherits core-image so that kernel modules are installed.
 
-Installs normal linux utilities not busybox ones (e.g. bash, coreutils, tar, gzip, and kmod).
+   + Installs normal linux utilities not busybox ones (e.g. bash, coreutils, tar, gzip, and kmod).
 
-Uses a custom Initial RAM Disk (initramfs) image with a custom installer. A normal image that you can install usually creates a single rootfs partition. This image uses another installer that creates a specific partition layout. Not all Board Support Packages (BSPs) can use an installer. For such cases, you need to manually create the following partition layout on the target:
+   + Uses a custom Initial RAM Disk (initramfs) image with a custom installer. A normal image that you can install usually creates a single rootfs partition. This image uses another installer that creates a specific partition layout. Not all Board Support Packages (BSPs) can use an installer. For such cases, you need to manually create the following partition layout on the target:
 
-First partition mounted under /boot, labeled "boot".
+          + First partition mounted under /boot, labeled "boot".
 
-The main rootfs partition where this image gets installed, which is mounted under /.
+          + The main rootfs partition where this image gets installed, which is mounted under /.
 
-Another partition labeled "testrootfs" where test images get deployed.
+          + Another partition labeled "testrootfs" where test images get deployed.
 
-Install image: Install the image that you just built on the target system.
+3. ***Install image***: Install the image that you just built on the target system.
 
 The final thing you need to do when setting TEST_TARGET to "SystemdbootTarget" is to set up the test image:
 
-Set up your `local.conf` file: Make sure you have the following statements in your `local.conf` file:
-
+1. ***Set up your `local.conf` file***: Make sure you have the following statements in your `local.conf` file:
+```
      IMAGE_FSTYPES += "tar.gz"
      INHERIT += "testimage"
      TEST_TARGET = "SystemdbootTarget"
      TEST_TARGET_IP = "192.168.2.3"
-                            
-Build your test image: Use BitBake to build the image:
-
+```                            
+2. ***Build your test image***: Use BitBake to build the image:
+```
      $ bitbake core-image-sato
-
-#### 3.29.1.4. Power Control¶
+```
+#### 3.29.1.4. Power Control
 For most hardware targets other than SimpleRemoteTarget, you can control power:
 
-You can use TEST_POWERCONTROL_CMD together with TEST_POWERCONTROL_EXTRA_ARGS as a command that runs on the host and does power cycling. The test code passes one argument to that command: off, on or cycle (off then on). Here is an example that could appear in your `local.conf` file:
-
++ You can use TEST_POWERCONTROL_CMD together with TEST_POWERCONTROL_EXTRA_ARGS as a command that runs on the host and does power cycling. The test code passes one argument to that command: off, on or cycle (off then on). Here is an example that could appear in your `local.conf` file:
+     ```
      TEST_POWERCONTROL_CMD = "powercontrol.exp test 10.11.12.1 nuc1"
-                            
-In this example, the expect script does the following:
-
+     ```                            
+     In this example, the expect script does the following:
+     ```
      ssh test@10.11.12.1 "pyctl nuc1 arg"
-                            
-It then runs a Python script that controls power for a label called nuc1.
+     ```                            
+     It then runs a Python script that controls power for a label called nuc1.
 
-Note
-You need to customize TEST_POWERCONTROL_CMD and TEST_POWERCONTROL_EXTRA_ARGS for your own setup. The one requirement is that it accepts "on", "off", and "cycle" as the last argument.
-When no command is defined, it connects to the device over SSH and uses the classic reboot command to reboot the device. Classic reboot is fine as long as the machine actually reboots (i.e. the SSH test has not failed). It is useful for scenarios where you have a simple setup, typically with a single board, and where some manual interaction is okay from time to time.
+     > Note  
+     > You need to customize TEST_POWERCONTROL_CMD and TEST_POWERCONTROL_EXTRA_ARGS for your own setup. The one requirement is that it accepts "on", "off", and "cycle" as the last argument.
+
++ When no command is defined, it connects to the device over SSH and uses the classic reboot command to reboot the device. Classic reboot is fine as long as the machine actually reboots (i.e. the SSH test has not failed). It is useful for scenarios where you have a simple setup, typically with a single board, and where some manual interaction is okay from time to time.
 
 If you have no hardware to automatically perform power control but still wish to experiment with automated hardware testing, you can use the dialog-power-control script that shows a dialog prompting you to perform the required power action. This script requires either KDialog or Zenity to be installed. To use this script, set the TEST_POWERCONTROL_CMD variable as follows:
-
+```
      TEST_POWERCONTROL_CMD = "${COREBASE}/scripts/contrib/dialog-power-control"
-
-#### 3.29.1.5. Serial Console Connection¶
+```
+#### 3.29.1.5. Serial Console Connection
 For test target classes requiring a serial console to interact with the bootloader (e.g. BeagleBoneTarget, EdgeRouterTarget, and GrubTarget), you need to specify a command to use to connect to the serial console of the target machine by using the TEST_SERIALCONTROL_CMD variable and optionally the TEST_SERIALCONTROL_EXTRA_ARGS variable.
 
-These cases could be a serial terminal program if the machine is connected to a local serial port, or a telnet or ssh command connecting to a remote console server. Regardless of the case, the command simply needs to connect to the serial console and forward that connection to standard input and output as any normal terminal program does. For example, to use the picocom terminal program on serial device /dev/ttyUSB0 at 115200bps, you would set the variable as follows:
-
+These cases could be a serial terminal program if the machine is connected to a local serial port, or a telnet or ssh command connecting to a remote console server. Regardless of the case, the command simply needs to connect to the serial console and forward that connection to standard input and output as any normal terminal program does. For example, to use the picocom terminal program on serial device `/dev/ttyUSB0` at 115200bps, you would set the variable as follows:
+```
      TEST_SERIALCONTROL_CMD = "picocom /dev/ttyUSB0 -b 115200"
-                    
+```                    
 For local devices where the serial port device disappears when the device reboots, an additional "serdevtry" wrapper script is provided. To use this wrapper, simply prefix the terminal command with ${COREBASE}/scripts/contrib/serdevtry:
-
+```
      TEST_SERIALCONTROL_CMD = "${COREBASE}/scripts/contrib/serdevtry picocom -b
 115200 /dev/ttyUSB0"
-
-### 3.29.2. Running Tests¶
+```
+### 3.29.2. Running Tests
 You can start the tests automatically or manually:
 
 Automatically running tests: To run the tests automatically after the OpenEmbedded build system successfully creates an image, first set the TESTIMAGE_AUTO variable to "1" in your `local.conf` file in the Build Directory:
