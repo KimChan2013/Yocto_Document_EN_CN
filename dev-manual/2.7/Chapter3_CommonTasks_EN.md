@@ -24,7 +24,7 @@
     - [3.4.3 Adding a Formfactor Configuration File](#343-adding-a-formfactor-configuration-file)
   - [3.5 Upgrading Recipes](#35-upgrading-recipes)
     - [3.5.1 Using the Auto Upgrade Helper (AUH)](#351-using-the-auto-upgrade-helper-auh)
-    - [3.5.2 Using devtool upgrade](#352-using-devtool-upgrade)
+    - [3.5.2 Using `devtool upgrade`](#352-using-devtool-upgrade)
     - [3.5.3 Manually Upgrading a Recipe](#353-manually-upgrading-a-recipe)
   - [3.6 Finding Temporary Source Code](#36-finding-temporary-source-code)
   - [3.7 Using Quilt in Your Workflow](#37-using-quilt-in-your-workflow)
@@ -37,6 +37,7 @@
       - [3.10.2.2 Enabling Multiple Configuration Build Dependencies](#31022-enabling-multiple-configuration-build-dependencies)
     - [3.10.3 Building an Initial RAM Filesystem (initramfs) Image](#3103-building-an-initial-ram-filesystem-initramfs-image)
     - [3.10.4 Building a Tiny System](#3104-building-a-tiny-system)
+      - [3.10.4.1. Overview](#31041-overview)
     - [3.10.4.2 Goals and Guiding Principles](#31042-goals-and-guiding-principles)
       - [3.10.4.3 Understand What Contributes to Your Image Size](#31043-understand-what-contributes-to-your-image-size)
       - [3.10.4.4 Trim the Root Filesystem](#31044-trim-the-root-filesystem)
@@ -76,7 +77,7 @@
     - [3.16.7.2 Using a Modified Kickstart File](#31672-using-a-modified-kickstart-file)
       - [3.16.7.3 Using a Modified Kickstart File and Running in Raw Mode¶](#31673-using-a-modified-kickstart-file-and-running-in-raw-mode%c2%b6)
       - [3.16.7.4. Using Wic to Manipulate an Image](#31674-using-wic-to-manipulate-an-image)
-  - [3.17 Flashing Images Using bmaptool](#317-flashing-images-using-bmaptool)
+  - [3.17 Flashing Images Using `bmaptool`](#317-flashing-images-using-bmaptool)
   - [3.18 Making Images More Secure](#318-making-images-more-secure)
     - [3.18.1 General Considerations](#3181-general-considerations)
     - [3.18.2. Security Flags](#3182-security-flags)
@@ -84,8 +85,8 @@
     - [3.18.4. Tools for Hardening Your Image¶](#3184-tools-for-hardening-your-image%c2%b6)
   - [3.19. Creating Your Own Distribution¶](#319-creating-your-own-distribution%c2%b6)
   - [3.20. Creating a Custom Template Configuration Directory¶](#320-creating-a-custom-template-configuration-directory%c2%b6)
-  - [3.21. Conserving Disk Space During Builds¶](#321-conserving-disk-space-during-builds%c2%b6)
-  - [3.22. Working with Packages¶](#322-working-with-packages%c2%b6)
+  - [3.21. Conserving Disk Space During Builds](#321-conserving-disk-space-during-builds)
+  - [3.22. Working with Packages](#322-working-with-packages)
     - [3.22.1. Excluding Packages from an Image¶](#3221-excluding-packages-from-an-image%c2%b6)
     - [3.22.2. Incrementing a Package Version¶](#3222-incrementing-a-package-version%c2%b6)
       - [3.22.2.1. Working With a PR Service¶](#32221-working-with-a-pr-service%c2%b6)
@@ -223,9 +224,9 @@ With rare exceptions, a layer's name follows this form:
 ```                        
 Following this layer naming convention can save you trouble later when tools, components, or variables "assume" your layer name begins with "meta-". A notable example is in configuration files as shown in the following step where layer names without the "meta-" string are appended to several variables used in the configuration.
 
-3. ***Create a Layer Configuration File***: Inside your new layer folder, you need to create a conf/layer.conf file. It is easiest to take an existing layer configuration file and copy that to your layer's conf directory and then modify the file as needed.
+3. ***Create a Layer Configuration File***: Inside your new layer folder, you need to create a `conf/`layer.conf`` file. It is easiest to take an existing layer configuration file and copy that to your layer's conf directory and then modify the file as needed.
 
-The meta-yocto-bsp/conf/layer.conf file in the Yocto Project Source Repositories demonstrates the required syntax. For your layer, you need to replace "yoctobsp" with a unique identifier for your layer (e.g. "machinexyz" for a layer named "meta-machinexyz"):
+The `meta-yocto-bsp/conf/`layer.conf`` file in the Yocto Project Source Repositories demonstrates the required syntax. For your layer, you need to replace "yoctobsp" with a unique identifier for your layer (e.g. "machinexyz" for a layer named "meta-machinexyz"):
 ```
      # We have a conf and classes directory, add to BBPATH
      BBPATH .= ":${LAYERDIR}"
@@ -242,47 +243,47 @@ The meta-yocto-bsp/conf/layer.conf file in the Yocto Project Source Repositories
 ```                        
 Following is an explanation of the layer configuration file:
 
-+ BBPATH: Adds the layer's root directory to BitBake's search path. Through the use of the BBPATH variable, BitBake locates class files (.bbclass), configuration files, and files that are included with include and require statements. For these cases, BitBake uses the first file that matches the name found in BBPATH. This is similar to the way the PATH variable is used for binaries. It is recommended, therefore, that you use unique class and configuration filenames in your custom layer.
++ [BBPATH](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBPATH): Adds the layer's root directory to BitBake's search path. Through the use of the BBPATH variable, BitBake locates class files (.bbclass), configuration files, and files that are included with include and require statements. For these cases, BitBake uses the first file that matches the name found in BBPATH. This is similar to the way the PATH variable is used for binaries. It is recommended, therefore, that you use unique class and configuration filenames in your custom layer.
 
-+ BBFILES: Defines the location for all recipes in the layer.
++ [BBFILES](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILES): Defines the location for all recipes in the layer.
 
-+ BBFILE_COLLECTIONS: Establishes the current layer through a unique identifier that is used throughout the OpenEmbedded build system to refer to the layer. In this example, the identifier "yoctobsp" is the representation for the container layer named "meta-yocto-bsp".
++ [BBFILE_COLLECTIONS](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_COLLECTIONS): Establishes the current layer through a unique identifier that is used throughout the OpenEmbedded build system to refer to the layer. In this example, the identifier "yoctobsp" is the representation for the container layer named "meta-yocto-bsp".
 
-+ BBFILE_PATTERN: Expands immediately during parsing to provide the directory of the layer.
++ [BBFILE_PATTERN](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_PATTERN): Expands immediately during parsing to provide the directory of the layer.
 
-+ BBFILE_PRIORITY: Establishes a priority to use for recipes in the layer when the OpenEmbedded build finds recipes of the same name in different layers.
++ [BBFILE_PRIORITY](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_PRIORITY): Establishes a priority to use for recipes in the layer when the OpenEmbedded build finds recipes of the same name in different layers.
 
-+ LAYERVERSION: Establishes a version number for the layer. You can use this version number to specify this exact version of the layer as a dependency when using the LAYERDEPENDS variable.
++ [LAYERVERSION](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-LAYERVERSION): Establishes a version number for the layer. You can use this version number to specify this exact version of the layer as a dependency when using the LAYERDEPENDS variable.
 
-+ LAYERSERIES_COMPAT: Lists the Yocto Project releases for which the current version is compatible. This variable is a good way to indicate if your particular layer is current.
++ [LAYERSERIES_COMPAT](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-LAYERSERIES_COMPAT): Lists the Yocto Project releases for which the current version is compatible. This variable is a good way to indicate if your particular layer is current.
 
-4. ***Add Content***: Depending on the type of layer, add the content. If the layer adds support for a machine, add the machine configuration in a conf/machine/ file within the layer. If the layer adds distro policy, add the distro configuration in a conf/distro/ file within the layer. If the layer introduces new recipes, put the recipes you need in recipes-* subdirectories within the layer.
+4. ***Add Content***: Depending on the type of layer, add the content. If the layer adds support for a machine, add the machine configuration in a `conf/machine/` file within the layer. If the layer adds distro policy, add the distro configuration in a conf/distro/ file within the layer. If the layer introduces new recipes, put the recipes you need in `recipes-*` subdirectories within the layer.
 
-> Note  
-> For an explanation of layer hierarchy that is compliant with the Yocto Project, see the "Example Filesystem Layout" section in the Yocto Project Board Support Package (BSP) Developer's Guide.
+     > Note  
+     > For an explanation of layer hierarchy that is compliant with the Yocto Project, see the "Example Filesystem Layout" section in the Yocto Project Board Support Package (BSP) Developer's Guide.
 
 5. ***Optionally Test for Compatibility***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
 
 ### 3.1.2 Following Best Practices When Creating Layers
 To create layers that are easier to maintain and that will not impact builds for other machines, you should consider the information in the following list:
 
-+ Avoid "Overlaying" Entire Recipes from Other Layers in Your Configuration: In other words, do not copy an entire recipe into your layer and then modify it. Rather, use an append file (.bbappend) to override only those parts of the original recipe you need to modify.
++ ***Avoid "Overlaying" Entire Recipes from Other Layers in Your Configuration***: In other words, do not copy an entire recipe into your layer and then modify it. Rather, use an append file (`.bbappend`) to override only those parts of the original recipe you need to modify.
 
-+ Avoid Duplicating Include Files: Use append files (.bbappend) for each recipe that uses an include file. Or, if you are introducing a new recipe that requires the included file, use the path relative to the original layer directory to refer to the file. For example, use require recipes-core/package/file.inc instead of require file.inc. If you're finding you have to overlay the include file, it could indicate a deficiency in the include file in the layer to which it originally belongs. If this is the case, you should try to address that deficiency instead of overlaying the include file. For example, you could address this by getting the maintainer of the include file to add a variable or variables to make it easy to override the parts needing to be overridden.
++ ***Avoid Duplicating Include Files***: Use append files (`.bbappend`) for each recipe that uses an include file. Or, if you are introducing a new recipe that requires the included file, use the path relative to the original layer directory to refer to the file. For example, use `require recipes-core/package/file.inc` instead of `require file.inc`. If you're finding you have to overlay the include file, it could indicate a deficiency in the include file in the layer to which it originally belongs. If this is the case, you should try to address that deficiency instead of overlaying the include file. For example, you could address this by getting the maintainer of the include file to add a variable or variables to make it easy to override the parts needing to be overridden.
 
-+ Structure Your Layers: Proper use of overrides within append files and placement of machine-specific files within your layer can ensure that a build is not using the wrong Metadata and negatively impacting a build for a different machine. Following are some examples:
++ ***Structure Your Layers***: Proper use of overrides within append files and placement of machine-specific files within your layer can ensure that a build is not using the wrong Metadata and negatively impacting a build for a different machine. Following are some examples:
 
-  + Modify Variables to Support a Different Machine: Suppose you have a layer named meta-one that adds support for building machine "one". To do so, you use an append file named base-files.bbappend and create a dependency on "foo" by altering the DEPENDS variable:
+  + ***Modify Variables to Support a Different Machine***: Suppose you have a layer named `meta-one` that adds support for building machine "one". To do so, you use an append file named `base-files.bbappend` and create a dependency on "foo" by altering the DEPENDS variable:
     ```
      DEPENDS = "foo"
     ```                                
-    The dependency is created during any build that includes the layer meta-one. However, you might not want this dependency for all machines. For example, suppose you are building for machine "two" but your bblayers.conf file has the meta-one layer included. During the build, the base-files for machine "two" will also have the dependency on foo.
+    The dependency is created during any build that includes the layer `meta-one`. However, you might not want this dependency for all machines. For example, suppose you are building for machine "two" but your ``bblayers.conf`` file has the `meta-one` layer included. During the build, the `base-files` for machine "two" will also have the dependency on `foo`.
 
-    To make sure your changes apply only when building machine "one", use a machine override with the DEPENDS statement:
+    To make sure your changes apply only when building machine "one", use a machine override with the `DEPENDS` statement:
     ```
      DEPENDS_one = "foo"
     ```                                
-    You should follow the same strategy when using _append and _prepend operations:
+    You should follow the same strategy when using `_append` and `_prepend` operations:
     ```
      DEPENDS_append_one = " foo"
      DEPENDS_prepend_one = "foo "
@@ -293,30 +294,31 @@ To create layers that are easier to maintain and that will not impact builds for
     ```                                
     > Note  
     > Avoiding "+=" and "=+" and using machine-specific _append and _prepend operations is recommended as well.
-  + Place Machine-Specific Files in Machine-Specific Locations: When you have a base recipe, such as base-files.bb, that contains a SRC_URI statement to a file, you can use an append file to cause the build to use your own version of the file. For example, an append file in your layer at meta-one/recipes-core/base-files/base-files.bbappend could extend FILESPATH using FILESEXTRAPATHS as follows:
+  + Place Machine-Specific Files in Machine-Specific Locations: When you have a base recipe, such as `base-files.bb`, that contains a SRC_URI statement to a file, you can use an append file to cause the build to use your own version of the file. For example, an append file in your layer at `meta-one/recipes-core/base-files/base-files.bbappend` could extend FILESPATH using FILESEXTRAPATHS as follows:
     ```
      FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
     ```                                
-    The build for machine "one" will pick up your machine-specific file as long as you have the file in meta-one/recipes-core/base-files/base-files/. However, if you are building for a different machine and the bblayers.conf file includes the meta-one layer and the location of your machine-specific file is the first location where that file is found according to FILESPATH, builds for all machines will also use that machine-specific file.
+    The build for machine "one" will pick up your machine-specific file as long as you have the file in `meta-one/recipes-core/base-files/base-files/`. However, if you are building for a different machine and the ``bblayers.conf`` file includes the `meta-one` layer and the location of your machine-specific file is the first location where that file is found according to `FILESPATH`, builds for all machines will also use that machine-specific file.
 
-    You can make sure that a machine-specific file is used for a particular machine by putting the file in a subdirectory specific to the machine. For example, rather than placing the file in meta-one/recipes-core/base-files/base-files/ as shown above, put it in meta-one/recipes-core/base-files/base-files/one/. Not only does this make sure the file is used only when building for machine "one", but the build process locates the file more quickly.
+    You can make sure that a machine-specific file is used for a particular machine by putting the file in a subdirectory specific to the machine. For example, rather than placing the file in `meta-one/recipes-core/base-files/base-files/` as shown above, put it in `meta-one/recipes-core/base-files/base-files/one/`. Not only does this make sure the file is used only when building for machine "one", but the build process locates the file more quickly.
 
-    In summary, you need to place all files referenced from SRC_URI in a machine-specific subdirectory within the layer in order to restrict those files to machine-specific builds.
+    In summary, you need to place all files referenced from `SRC_URI` in a machine-specific subdirectory within the layer in order to restrict those files to machine-specific builds.
 
-+ Perform Steps to Apply for Yocto Project Compatibility: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
++ ***Perform Steps to Apply for Yocto Project Compatibility***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
 
-+ Follow the Layer Naming Convention: Store custom layers in a Git repository that use the meta-layer_name format.
++ ***Follow the Layer Naming Convention***: Store custom layers in a Git repository that use the meta-layer_name format.
 
-+ Group Your Layers Locally: Clone your repository alongside other cloned meta directories from the Source Directory.
++ ***Group Your Layers Locally***: Clone your repository alongside other cloned meta directories from the Source Directory.
 
 ### 3.1.3 Making Sure Your Layer is Compatible With Yocto Project
 When you create a layer used with the Yocto Project, it is advantageous to make sure that the layer interacts well with existing Yocto Project layers (i.e. the layer is compatible with the Yocto Project). Ensuring compatibility makes the layer easy to be consumed by others in the Yocto Project community and could allow you permission to use the Yocto Project Compatible Logo.
 
 > Note  
 > Only Yocto Project member organizations are permitted to use the Yocto Project Compatible Logo. The logo is not available for general use. For information on how to become a Yocto Project member organization, see the Yocto Project Website.
+
 The Yocto Project Compatibility Program consists of a layer application process that requests permission to use the Yocto Project Compatibility Logo for your layer and application. The process consists of two parts:
 
-1. Successfully passing a script (yocto-check-layer) that when run against your layer, tests it against constraints based on experiences of how layers have worked in the real world and where pitfalls have been found. Getting a "PASS" result from the script is required for successful compatibility registration.
+1. Successfully passing a script (`yocto-check-layer`) that when run against your layer, tests it against constraints based on experiences of how layers have worked in the real world and where pitfalls have been found. Getting a "PASS" result from the script is required for successful compatibility registration.
 
 2. Completion of an application acceptance form, which you can find at https://www.yoctoproject.org/webform/yocto-project-compatible-registration.
 
@@ -337,14 +339,14 @@ To access the form, use this link: https://www.yoctoproject.org/webform/yocto-pr
 
 The application consists of the following sections:
 
-+ Contact Information: Provide your contact information as the fields require. Along with your information, provide the released versions of the Yocto Project for which your layer is compatible.
++ ***Contact Information***: Provide your contact information as the fields require. Along with your information, provide the released versions of the Yocto Project for which your layer is compatible.
 
-+ Acceptance Criteria: Provide "Yes" or "No" answers for each of the items in the checklist. Space exists at the bottom of the form for any explanations for items for which you answered "No".
++ ***Acceptance Criteria***: Provide "Yes" or "No" answers for each of the items in the checklist. Space exists at the bottom of the form for any explanations for items for which you answered "No".
 
-+ Recommendations: Provide answers for the questions regarding Linux kernel use and build success.
++ ***Recommendations***: Provide answers for the questions regarding Linux kernel use and build success.
 
 #### 3.1.3.2 yocto-check-layer Script
-The yocto-check-layer script provides you a way to assess how compatible your layer is with the Yocto Project. You should run this script prior to using the form to apply for compatibility as described in the previous section. You need to achieve a "PASS" result in order to have your application form successfully processed.
+The `yocto-check-layer` script provides you a way to assess how compatible your layer is with the Yocto Project. You should run this script prior to using the form to apply for compatibility as described in the previous section. You need to achieve a "PASS" result in order to have your application form successfully processed.
 
 The script divides tests into three areas: COMMON, BSP, and DISTRO. For example, given a distribution layer (DISTRO), the layer must pass both the COMMON and DISTRO related tests. Furthermore, if your layer is a BSP layer, the layer must pass the COMMON and BSP set of tests.
 
@@ -357,26 +359,26 @@ Be sure to provide the actual directory for your layer as part of the command.
 
 Entering the command causes the script to determine the type of layer and then to execute a set of specific tests against the layer. The following list overviews the test:
 
-+ common.test_readme: Tests if a README file exists in the layer and the file is not empty.
++ `common.test_readme`: Tests if a README file exists in the layer and the file is not empty.
 
-+ common.test_parse: Tests to make sure that BitBake can parse the files without error (i.e. bitbake -p).
++ `common.test_parse`: Tests to make sure that BitBake can parse the files without error (i.e. bitbake -p).
 
-+ common.test_show_environment: Tests that the global or per-recipe environment is in order without errors (i.e. bitbake -e).
++ `common.test_show_environment`: Tests that the global or per-recipe environment is in order without errors (i.e. bitbake -e).
 
-+ common.test_signatures: Tests to be sure that BSP and DISTRO layers do not come with recipes that change signatures.
++ `common.test_signatures`: Tests to be sure that BSP and DISTRO layers do not come with recipes that change signatures.
 
-+ bsp.test_bsp_defines_machines: Tests if a BSP layer has machine configurations.
++ `bsp.test_bsp_defines_machines`: Tests if a BSP layer has machine configurations.
 
-+ bsp.test_bsp_no_set_machine: Tests to ensure a BSP layer does not set the machine when the layer is added.
++ `bsp.test_bsp_no_set_machine`: Tests to ensure a BSP layer does not set the machine when the layer is added.
 
-+ distro.test_distro_defines_distros: Tests if a DISTRO layer has distro configurations.
++ `distro.test_distro_defines_distros`: Tests if a DISTRO layer has distro configurations.
 
-+ distro.test_distro_no_set_distro: Tests to ensure a DISTRO layer does not set the distribution when the layer is added.
++ `distro.test_distro_no_set_distro`: Tests to ensure a DISTRO layer does not set the distribution when the layer is added.
 
 ### 3.1.4 Enabling Your Layer
-Before the OpenEmbedded build system can use your new layer, you need to enable it. To enable your layer, simply add your layer's path to the BBLAYERS variable in your conf/bblayers.conf file, which is found in the Build Directory. The following example shows how to enable a layer named meta-mylayer:
+Before the OpenEmbedded build system can use your new layer, you need to enable it. To enable your layer, simply add your layer's path to the BBLAYERS variable in your `conf/`bblayers.conf`` file, which is found in the Build Directory. The following example shows how to enable a layer named `meta-mylayer`:
 ```
-     # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+     # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/`bblayers.conf`
      # changes incompatibly
      POKY_BBLAYERS_CONF_VERSION = "2"
 
@@ -390,23 +392,23 @@ Before the OpenEmbedded build system can use your new layer, you need to enable 
        /home/user/poky/meta-mylayer \
        "
 ```                
-BitBake parses each conf/layer.conf file from the top down as specified in the BBLAYERS variable within the conf/bblayers.conf file. During the processing of each conf/layer.conf file, BitBake adds the recipes, classes and configurations contained within the particular layer to the source directory.
+BitBake parses each `conf/`layer.conf`` file from the top down as specified in the `BBLAYERS` variable within the `conf/`bblayers.conf`` file. During the processing of each `conf/`layer.conf`` file, BitBake adds the recipes, classes and configurations contained within the particular layer to the source directory.
 
-### 3.1.5 Using .bbappend Files in Your Layer
-A recipe that appends Metadata to another recipe is called a BitBake append file. A BitBake append file uses the .bbappend file type suffix, while the corresponding recipe to which Metadata is being appended uses the .bb file type suffix.
+### 3.1.5 Using `.bbappend` files in Your Layer
+A recipe that appends Metadata to another recipe is called a BitBake append file. A BitBake append file uses the `.bbappend` file type suffix, while the corresponding recipe to which Metadata is being appended uses the .bb file type suffix.
 
-You can use a .bbappend file in your layer to make additions or changes to the content of another layer's recipe without having to copy the other layer's recipe into your layer. Your .bbappend file resides in your layer, while the main .bb recipe file to which you are appending Metadata resides in a different layer.
+You can use a `.bbappend` file in your layer to make additions or changes to the content of another layer's recipe without having to copy the other layer's recipe into your layer. Your `.bbappend` file resides in your layer, while the main `.bb` recipe file to which you are appending Metadata resides in a different layer.
 
 Being able to append information to an existing recipe not only avoids duplication, but also automatically applies recipe changes from a different layer into your layer. If you were copying recipes, you would have to manually merge changes as they occur.
 
-When you create an append file, you must use the same root name as the corresponding recipe file. For example, the append file someapp_2.7.bbappend must apply to someapp_2.7.bb. This means the original recipe and append file names are version number-specific. If the corresponding recipe is renamed to update to a newer version, you must also rename and possibly update the corresponding .bbappend as well. During the build process, BitBake displays an error on starting if it detects a .bbappend file that does not have a corresponding recipe with a matching name. See the BB_DANGLINGAPPENDS_WARNONLY variable for information on how to handle this error.
+When you create an append file, you must use the same root name as the corresponding recipe file. For example, the append file `someapp_2.7.bbappend` must apply to `someapp_2.7.bb`. This means the original recipe and append file names are version number-specific. If the corresponding recipe is renamed to update to a newer version, you must also rename and possibly update the corresponding `.bbappend` as well. During the build process, BitBake displays an error on starting if it detects a `.bbappend` file that does not have a corresponding recipe with a matching name. See the BB_DANGLINGAPPENDS_WARNONLY variable for information on how to handle this error.
 
-As an example, consider the main formfactor recipe and a corresponding formfactor append file both from the Source Directory. Here is the main formfactor recipe, which is named formfactor_0.0.bb and located in the "meta" layer at meta/recipes-bsp/formfactor:
+As an example, consider the main formfactor recipe and a corresponding formfactor append file both from the Source Directory. Here is the main formfactor recipe, which is named formfactor_0.0.bb and located in the "meta" layer at `meta/recipes-bsp/formfactor`:
 ```
      SUMMARY = "Device formfactor information"
      SECTION = "base"
      LICENSE = "MIT"
-     LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
+     LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;`md5`=3da9cfbcb788c80a0384361b4de20420"
      PR = "r45"
 
      SRC_URI = "file://config file://machconfig"
@@ -426,22 +428,22 @@ As an example, consider the main formfactor recipe and a corresponding formfacto
 ```                     
 In the main recipe, note the SRC_URI variable, which tells the OpenEmbedded build system where to find files during the build.
 
-Following is the append file, which is named formfactor_0.0.bbappend and is from the Raspberry Pi BSP Layer named meta-raspberrypi. The file is in the layer at recipes-bsp/formfactor:
+Following is the append file, which is named `formfactor_0.0.bbappend` and is from the Raspberry Pi BSP Layer named `meta-raspberrypi`. The file is in the layer at `recipes-bsp/formfactor`:
 ```
-     FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+     FILESEXTRAPATHS_prepend := "${THISDIR}/`${PN}`:"
 ```                
-By default, the build system uses the FILESPATH variable to locate files. This append file extends the locations by setting the FILESEXTRAPATHS variable. Setting this variable in the .bbappend file is the most reliable and recommended method for adding directories to the search path used by the build system to find files.
+By default, the build system uses the FILESPATH variable to locate files. This append file extends the locations by setting the FILESEXTRAPATHS variable. Setting this variable in the `.bbappend` file is the most reliable and recommended method for adding directories to the search path used by the build system to find files.
 
-The statement in this example extends the directories to include ${THISDIR}/${PN}, which resolves to a directory named formfactor in the same directory in which the append file resides (i.e. meta-raspberrypi/recipes-bsp/formfactor. This implies that you must have the supporting directory structure set up that will contain any files or patches you will be including from the layer.
+The statement in this example extends the directories to include `${THISDIR}/`${PN}``, which resolves to a directory named `formfactor` in the same directory in which the append file resides (i.e. `meta-raspberrypi/recipes-bsp/formfactor`. This implies that you must have the supporting directory structure set up that will contain any files or patches you will be including from the layer.
 
 Using the immediate expansion assignment operator := is important because of the reference to THISDIR. The trailing colon character is important as it ensures that items in the list remain colon-separated.
 
 > Note  
-> BitBake automatically defines the THISDIR variable. You should never set this variable yourself. Using "_prepend" as part of the FILESEXTRAPATHS ensures your path will be searched prior to other paths in the final list.  
-> Also, not all append files add extra files. Many append files simply exist to add build options (e.g. systemd). For these cases, your append file would not even use the FILESEXTRAPATHS statement.
+> BitBake automatically defines the `THISDIR` variable. You should never set this variable yourself. Using "_prepend" as part of the `FILESEXTRAPATHS` ensures your path will be searched prior to other paths in the final list.  
+> Also, not all append files add extra files. Many append files simply exist to add build options (e.g. `systemd`). For these cases, your append file would not even use the `FILESEXTRAPATHS` statement.
 
 ### 3.1.6 Prioritizing Your Layer
-Each layer is assigned a priority value. Priority values control which layer takes precedence if there are recipe files with the same name in multiple layers. For these cases, the recipe file from the layer with a higher priority number takes precedence. Priority values also affect the order in which multiple .bbappend files for the same recipe are applied. You can either specify the priority manually, or allow the build system to calculate it based on the layer's dependencies.
+Each layer is assigned a priority value. Priority values control which layer takes precedence if there are recipe files with the same name in multiple layers. For these cases, the recipe file from the layer with a higher priority number takes precedence. Priority values also affect the order in which multiple `.bbappend` files for the same recipe are applied. You can either specify the priority manually, or allow the build system to calculate it based on the layer's dependencies.
 
 To specify the layer's priority manually, use the BBFILE_PRIORITY variable and append the layer's root name:
 ```
@@ -449,10 +451,10 @@ To specify the layer's priority manually, use the BBFILE_PRIORITY variable and a
 ```                
 > Note  
 > It is possible for a recipe with a lower version number PV in a layer that has a higher priority to take precedence.  
-> Also, the layer priority does not currently affect the precedence order of .conf or .bbclass files. Future versions of BitBake might address this.
+> Also, the layer priority does not currently affect the precedence order of `.conf` or `.bbclass` files. Future versions of BitBake might address this.
 
 ### 3.1.7 Managing Layers
-You can use the BitBake layer management tool bitbake-layers to provide a view into the structure of recipes across a multi-layer project. Being able to generate output that reports on configured layers with their paths and priorities and on .bbappend files and their applicable recipes can help to reveal potential problems.
+You can use the BitBake layer management tool bitbake-layers to provide a view into the structure of recipes across a multi-layer project. Being able to generate output that reports on configured layers with their paths and priorities and on `.bbappend` files and their applicable recipes can help to reveal potential problems.
 
 For help on the BitBake layer management tool, use the following command:
 ```
@@ -479,12 +481,12 @@ For help on the BitBake layer management tool, use the following command:
          show-appends        list bbappend files and recipe files they apply to
          show-cross-depends  Show dependencies between recipes that cross layer
                              boundaries.
-         add-layer           Add one or more layers to bblayers.conf.
-         remove-layer        Remove one or more layers from bblayers.conf.
+         add-layer           Add one or more layers to `bblayers.conf`.
+         remove-layer        Remove one or more layers from `bblayers.conf`.
          flatten             flatten layer configuration into a separate output
                              directory.
          layerindex-fetch    Fetches a layer from a layer index along with its
-                             dependent layers, and adds them to conf/bblayers.conf.
+                             dependent layers, and adds them to conf/`bblayers.conf`.
          layerindex-show-depends
                              Find layer dependencies from layer index.
          create-layer        Create a basic layer
@@ -501,21 +503,21 @@ The following list describes the available commands:
 
 + ***show-recipes***: Lists available recipes and the layers that provide them.
 
-+ ***show-appends***: Lists .bbappend files and the recipe files to which they apply.
++ ***show-appends***: Lists `.bbappend` files and the recipe files to which they apply.
 
 + ***show-cross-depends***: Lists dependency relationships between recipes that cross layer boundaries.
 
-+ ***add-layer***: Adds a layer to bblayers.conf.
++ ***add-layer***: Adds a layer to ``bblayers.conf``.
 
-+ ***remove-layer***: Removes a layer from bblayers.conf
++ ***remove-layer***: Removes a layer from ``bblayers.conf``
 
-+ ***flatten***: Flattens the layer configuration into a separate output directory. Flattening your layer configuration builds a "flattened" directory that contains the contents of all layers, with any overlayed recipes removed and any .bbappend files appended to the corresponding recipes. You might have to perform some manual cleanup of the flattened layer as follows:
++ ***flatten***: Flattens the layer configuration into a separate output directory. Flattening your layer configuration builds a "flattened" directory that contains the contents of all layers, with any overlayed recipes removed and any `.bbappend` files appended to the corresponding recipes. You might have to perform some manual cleanup of the flattened layer as follows:
 
     + Non-recipe files (such as patches) are overwritten. The flatten command shows a warning for these files.
 
-    + Anything beyond the normal layer setup has been added to the layer.conf file. Only the lowest priority layer's layer.conf is used.
+    + Anything beyond the normal layer setup has been added to the `layer.conf` file. Only the lowest priority layer's `layer.conf` is used.
 
-    + Overridden and appended items from .bbappend files need to be cleaned up. The contents of each .bbappend end up in the flattened recipe. However, if there are appended or changed variable values, you need to tidy these up yourself. Consider the following example. Here, the bitbake-layers command adds the line #### bbappended ... so that you know where the following lines originate:
+    + Overridden and appended items from `.bbappend` files need to be cleaned up. The contents of each .bbappend end up in the flattened recipe. However, if there are appended or changed variable values, you need to tidy these up yourself. Consider the following example. Here, the `bitbake-layers` command adds the line `#### bbappended ...` so that you know where the following lines originate:
     ```conf
      ...
      DESCRIPTION = "A useful utility"
@@ -537,45 +539,45 @@ The following list describes the available commands:
      ...
 
     ```
-+ ***layerindex-fetch***: Fetches a layer from a layer index, along with its dependent layers, and adds the layers to the conf/bblayers.conf file.
++ ***layerindex-fetch***: Fetches a layer from a layer index, along with its dependent layers, and adds the layers to the `conf/`bblayers.conf`` file.
 
 + ***layerindex-show-depends***: Finds layer dependencies from the layer index.
 
 + ***create-layer***: Creates a basic layer.
 
-### 3.1.8 Creating a General Layer Using the bitbake-layers Script
-The bitbake-layers script with the create-layer subcommand simplifies creating a new general layer.
+### 3.1.8 Creating a General Layer Using the `bitbake-layers` Script
+The `bitbake-layers` script with the `create-layer` subcommand simplifies creating a new general layer.
 
 > Notes  
 > + For information on BSP layers, see the "BSP Layers" section in the Yocto Project Board Specific (BSP) Developer's Guide.  
-> + In order to use a layer with the OpenEmbedded build system, you need to add the layer to your bblayers.conf configuration file. See the "Adding a Layer Using the bitbake-layers Script" section for more information.
+> + In order to use a layer with the OpenEmbedded build system, you need to add the layer to your ``bblayers.conf`` configuration file. See the "Adding a Layer Using the bitbake-layers Script" section for more information.
 
 The default mode of the script's operation with this subcommand is to create a layer with the following:
 
 + A layer priority of 6.
 
-+ A conf subdirectory that contains a layer.conf file.
++ A `conf` subdirectory that contains a `layer.conf` file.
 
-+ A recipes-example subdirectory that contains a further subdirectory named example, which contains an example.bb recipe file.
++ A `recipes-example` subdirectory that contains a further subdirectory named `example`, which contains an `example.bb` recipe file.
 
-+ A COPYING.MIT, which is the license statement for the layer. The script assumes you want to use the MIT license, which is typical for most layers, for the contents of the layer itself.
++ A `COPYING.MIT`, which is the license statement for the layer. The script assumes you want to use the MIT license, which is typical for most layers, for the contents of the layer itself.
 
-+ A README file, which is a file describing the contents of your new layer.
++ A `README` file, which is a file describing the contents of your new layer.
 
-In its simplest form, you can use the following command form to create a layer. The command creates a layer whose name corresponds to your_layer_name in the current directory:
-```bash
+In its simplest form, you can use the following command form to create a layer. The command creates a layer whose name corresponds to *`your_layer_name`* in the current directory:
+```
      $ bitbake-layers create-layer your_layer_name
 ```                
-As an example, the following command creates a layer named meta-scottrif in your home directory:
-```bash
+As an example, the following command creates a layer named `meta-scottrif` in your home directory:
+```
      $ cd /usr/home
      $ bitbake-layers create-layer meta-scottrif
      NOTE: Starting bitbake server...
      Add your new layer with 'bitbake-layers add-layer meta-scottrif'
 ```                
-If you want to set the priority of the layer to other than the default value of "6", you can either use the ‐‐priority option or you can edit the BBFILE_PRIORITY value in the conf/layer.conf after the script creates it. Furthermore, if you want to give the example recipe file some name other than the default, you can use the ‐‐example-recipe-name option.
+If you want to set the priority of the layer to other than the default value of "6", you can either use the `‐‐priority` option or you can edit the `BBFILE_PRIORITY` value in the `conf/layer.conf` after the script creates it. Furthermore, if you want to give the example recipe file some name other than the default, you can use the `‐‐example-recipe-name` option.
 
-The easiest way to see how the bitbake-layers create-layer command works is to experiment with the script. You can also read the usage information by entering the following:
+The easiest way to see how the `bitbake-layers` `create-layer` command works is to experiment with the script. You can also read the usage information by entering the following:
 ```
      $ bitbake-layers create-layer --help
      NOTE: Starting bitbake server...
@@ -596,14 +598,14 @@ The easiest way to see how the bitbake-layers create-layer command works is to e
                              Filename of the example recipe
 ```
 
-### 3.1.9 Adding a Layer Using the bitbake-layers Script
-Once you create your general layer, you must add it to your bblayers.conf file. Adding the layer to this configuration file makes the OpenEmbedded build system aware of your layer so that it can search it for metadata.
+### 3.1.9 Adding a Layer Using the `bitbake-layers` Script
+Once you create your general layer, you must add it to your ``bblayers.conf`` file. Adding the layer to this configuration file makes the OpenEmbedded build system aware of your layer so that it can search it for metadata.
 
-Add your layer by using the bitbake-layers add-layer command:
+Add your layer by using the `bitbake-layers` `add-layer` command:
 ```
      $ bitbake-layers add-layer your_layer_name
 ```                
-Here is an example that adds a layer named meta-scottrif to the configuration file. Following the command that adds the layer is another bitbake-layers command that shows the layers that are in your bblayers.conf file:
+Here is an example that adds a layer named `meta-scottrif` to the configuration file. Following the command that adds the layer is another `bitbake-layers` command that shows the layers that are in your ``bblayers.conf`` file:
 ```
      $ bitbake-layers add-layer meta-scottrif
      NOTE: Starting bitbake server...
@@ -628,64 +630,64 @@ Adding the layer to this file enables the build system to locate the layer durin
 ## 3.2. Customizing Images
 You can customize images to satisfy particular requirements. This section describes several methods and provides guidelines for each.
 
-### 3.2.1 Customizing Images Using local.conf
-Probably the easiest way to customize an image is to add a package by way of the local.conf configuration file. Because it is limited to local use, this method generally only allows you to add packages and is not as flexible as creating your own customized image. When you add packages using local variables this way, you need to realize that these variable changes are in effect for every build and consequently affect all images, which might not be what you require.
+### 3.2.1 Customizing Images Using ``local.conf``
+Probably the easiest way to customize an image is to add a package by way of the ``local.conf`` configuration file. Because it is limited to local use, this method generally only allows you to add packages and is not as flexible as creating your own customized image. When you add packages using local variables this way, you need to realize that these variable changes are in effect for every build and consequently affect all images, which might not be what you require.
 
-To add a package to your image using the local configuration file, use the IMAGE_INSTALL variable with the _append operator:
+To add a package to your image using the local configuration file, use the `IMAGE_INSTALL` variable with the `_append` operator:
 ```
      IMAGE_INSTALL_append = " strace"
 ```                
-Use of the syntax is important - specifically, the space between the quote and the package name, which is strace in this example. This space is required since the _append operator does not add the space.
+Use of the syntax is important - specifically, the space between the quote and the package name, which is `strace` in this example. This space is required since the `_append` operator does not add the space.
 
-Furthermore, you must use _append instead of the += operator if you want to avoid ordering issues. The reason for this is because doing so unconditionally appends to the variable and avoids ordering problems due to the variable being set in image recipes and .bbclass files with operators like ?=. Using _append ensures the operation takes affect.
+Furthermore, you must use `_append` instead of the += operator if you want to avoid ordering issues. The reason for this is because doing so unconditionally appends to the variable and avoids ordering problems due to the variable being set in image recipes and `.bbclass` files with operators like `?=.` Using `_append` ensures the operation takes affect.
 
 As shown in its simplest use, IMAGE_INSTALL_append affects all images. It is possible to extend the syntax so that the variable applies to a specific image only. Here is an example:
 ```
      IMAGE_INSTALL_append_pn-core-image-minimal = " strace"
 ```                
-This example adds strace to the core-image-minimal image only.
+This example adds `strace` to the `core-image-minimal` image only.
 
-You can add packages using a similar approach through the CORE_IMAGE_EXTRA_INSTALL variable. If you use this variable, only core-image-* images are affected.
+You can add packages using a similar approach through the CORE_IMAGE_EXTRA_INSTALL variable. If you use this variable, only `core-image-*` images are affected.
 
-### 3.2.2 Customizing Images Using Custom IMAGE_FEATURES and EXTRA_IMAGE_FEATURES
-Another method for customizing your image is to enable or disable high-level image features by using the IMAGE_FEATURES and EXTRA_IMAGE_FEATURES variables. Although the functions for both variables are nearly equivalent, best practices dictate using IMAGE_FEATURES from within a recipe and using EXTRA_IMAGE_FEATURES from within your local.conf file, which is found in the Build Directory.
+### 3.2.2 Customizing Images Using Custom `IMAGE_FEATURES` and `EXTRA_IMAGE_FEATURES`
+Another method for customizing your image is to enable or disable high-level image features by using the `IMAGE_FEATURES` and `EXTRA_IMAGE_FEATURES` variables. Although the functions for both variables are nearly equivalent, best practices dictate using `IMAGE_FEATURES` from within a recipe and using `EXTRA_IMAGE_FEATURES` from within your ``local.conf`` file, which is found in the Build Directory.
 
-To understand how these features work, the best reference is meta/classes/core-image.bbclass. This class lists out the available IMAGE_FEATURES of which most map to package groups while some, such as debug-tweaks and read-only-rootfs, resolve as general configuration settings.
+To understand how these features work, the best reference is `meta/classes/core-image.bbclass`. This class lists out the available `IMAGE_FEATURES` of which most map to package groups while some, such as `debug-tweaks` and `read-only-rootfs`, resolve as general configuration settings.
 
-In summary, the file looks at the contents of the IMAGE_FEATURES variable and then maps or configures the feature accordingly. Based on this information, the build system automatically adds the appropriate packages or configurations to the IMAGE_INSTALL variable. Effectively, you are enabling extra features by extending the class or creating a custom class for use with specialized image .bb files.
+In summary, the file looks at the contents of the `IMAGE_FEATURES` variable and then maps or configures the feature accordingly. Based on this information, the build system automatically adds the appropriate packages or configurations to the `IMAGE_INSTALL` variable. Effectively, you are enabling extra features by extending the class or creating a custom class for use with specialized image `.bb` files.
 
-Use the EXTRA_IMAGE_FEATURES variable from within your local configuration file. Using a separate area from which to enable features with this variable helps you avoid overwriting the features in the image recipe that are enabled with IMAGE_FEATURES. The value of EXTRA_IMAGE_FEATURES is added to IMAGE_FEATURES within meta/conf/bitbake.conf.
+Use the `EXTRA_IMAGE_FEATURES` variable from within your local configuration file. Using a separate area from which to enable features with this variable helps you avoid overwriting the features in the image recipe that are enabled with `IMAGE_FEATURES`. The value of `EXTRA_IMAGE_FEATURES` is added to `IMAGE_FEATURES` within `meta/conf/bitbake.conf`.
 
-To illustrate how you can use these variables to modify your image, consider an example that selects the SSH server. The Yocto Project ships with two SSH servers you can use with your images: Dropbear and OpenSSH. Dropbear is a minimal SSH server appropriate for resource-constrained environments, while OpenSSH is a well-known standard SSH server implementation. By default, the core-image-sato image is configured to use Dropbear. The core-image-full-cmdline and core-image-lsb images both include OpenSSH. The core-image-minimal image does not contain an SSH server.
+To illustrate how you can use these variables to modify your image, consider an example that selects the SSH server. The Yocto Project ships with two SSH servers you can use with your images: Dropbear and OpenSSH. Dropbear is a minimal SSH server appropriate for resource-constrained environments, while OpenSSH is a well-known standard SSH server implementation. By default, the `core-image-sato` image is configured to use Dropbear. The `core-image-full-cmdline` and `core-image-lsb` images both include OpenSSH. The `core-image-minimal` image does not contain an SSH server.
 
-You can customize your image and change these defaults. Edit the IMAGE_FEATURES variable in your recipe or use the EXTRA_IMAGE_FEATURES in your local.conf file so that it configures the image you are working with to include ssh-server-dropbear or ssh-server-openssh.
+You can customize your image and change these defaults. Edit the `IMAGE_FEATURES` variable in your recipe or use the `EXTRA_IMAGE_FEATURES` in your ``local.conf`` file so that it configures the image you are working with to include `ssh-server-dropbear` or `ssh-server-openssh`.
 
 > Note  
 > See the "Images" section in the Yocto Project Reference Manual for a complete list of image features that ship with the Yocto Project.
 
-### 3.2.3 Customizing Images Using Custom .bb Files
+### 3.2.3 Customizing Images Using Custom `.bb` Files
 You can also customize an image by creating a custom recipe that defines additional software as part of the image. The following example shows the form for the two lines you need:
 ```
      IMAGE_INSTALL = "packagegroup-core-x11-base package1 package2"
 
      inherit core-image
 ```                
-Defining the software using a custom recipe gives you total control over the contents of the image. It is important to use the correct names of packages in the IMAGE_INSTALL variable. You must use the OpenEmbedded notation and not the Debian notation for the names (e.g. glibc-dev instead of libc6-dev).
+Defining the software using a custom recipe gives you total control over the contents of the image. It is important to use the correct names of packages in the `IMAGE_INSTALL` variable. You must use the OpenEmbedded notation and not the Debian notation for the names (e.g. `glibc-dev` instead of `libc6-dev`).
 
-The other method for creating a custom image is to base it on an existing image. For example, if you want to create an image based on core-image-sato but add the additional package strace to the image, copy the meta/recipes-sato/images/core-image-sato.bb to a new .bb and add the following line to the end of the copy:
+The other method for creating a custom image is to base it on an existing image. For example, if you want to create an image based on `core-image-sato` but add the additional package `strace` to the image, copy the `meta/recipes-sato/images/core-image-sato.bb` to a new `.bb` and add the following line to the end of the copy:
 ```
      IMAGE_INSTALL += "strace"
 ```
 
 ### 3.2.4 Customizing Images Using Custom Package Groups
-For complex custom images, the best approach for customizing an image is to create a custom package group recipe that is used to build the image or images. A good example of a package group recipe is meta/recipes-core/packagegroups/packagegroup-base.bb.
+For complex custom images, the best approach for customizing an image is to create a custom package group recipe that is used to build the image or images. A good example of a package group recipe is `meta/recipes-core/packagegroups/packagegroup-base.bb`.
 
-If you examine that recipe, you see that the PACKAGES variable lists the package group packages to produce. The inherit packagegroup statement sets appropriate default values and automatically adds -dev, -dbg, and -ptest complementary packages for each package specified in the PACKAGES statement.
+If you examine that recipe, you see that the `PACKAGES` variable lists the package group packages to produce. The `inherit packagegroup` statement sets appropriate default values and automatically adds `-dev`, `-dbg`, and `-ptest` complementary packages for each package specified in the `PACKAGES` statement.
 
 > Note  
-> The inherit packages should be located near the top of the recipe, certainly before the PACKAGES statement.
+> The `inherit packages` should be located near the top of the recipe, certainly before the `PACKAGES` statement.
 
-For each package you specify in PACKAGES, you can use RDEPENDS and RRECOMMENDS entries to provide a list of packages the parent task package should contain. You can see examples of these further down in the packagegroup-base.bb recipe.
+For each package you specify in `PACKAGES`, you can use `RDEPENDS` and `RRECOMMENDS` entries to provide a list of packages the parent task package should contain. You can see examples of these further down in the `packagegroup-base.bb` recipe.
 
 Here is a short, fabricated example showing the same basic pieces:
 ```conf
@@ -711,12 +713,12 @@ Here is a short, fabricated example showing the same basic pieces:
      RRECOMMENDS_packagegroup-custom-tools = "\
          kernel-module-oprofile"
 ```                
-In the previous example, two package group packages are created with their dependencies and their recommended package dependencies listed: packagegroup-custom-apps, and packagegroup-custom-tools. To build an image using these package group packages, you need to add packagegroup-custom-apps and/or packagegroup-custom-tools to IMAGE_INSTALL. For other forms of image dependencies see the other areas of this section.
+In the previous example, two package group packages are created with their dependencies and their recommended package dependencies listed: `packagegroup-custom-apps`, and `packagegroup-custom-tools`. To build an image using these package group packages, you need to add `packagegroup-custom-apps` and/or `packagegroup-custom-tools` to `IMAGE_INSTALL`. For other forms of image dependencies see the other areas of this section.
 
 ### 3.2.5 Customizing an Image Hostname
-By default, the configured hostname (i.e. /etc/hostname) in an image is the same as the machine name. For example, if MACHINE equals "qemux86", the configured hostname written to /etc/hostname is "qemux86".
+By default, the configured hostname (i.e. `/etc/hostname`) in an image is the same as the machine name. For example, if `MACHINE` equals "qemux86", the configured hostname written to `/etc/hostname` is "qemux86".
 
-You can customize this name by altering the value of the "hostname" variable in the base-files recipe using either an append file or a configuration file. Use the following in an append file:
+You can customize this name by altering the value of the "hostname" variable in the `base-files` recipe using either an append file or a configuration file. Use the following in an append file:
 ```
      hostname="myhostname"
 ```                
@@ -733,7 +735,7 @@ Another point of interest is that if you unset the variable, the image will have
 Having no default hostname in the filesystem is suitable for environments that use dynamic hostnames such as virtual machines.
 
 ## 3.3 Writing a New Recipe
-Recipes (.bb files) are fundamental components in the Yocto Project environment. Each software component built by the OpenEmbedded build system requires a recipe to define the component. This section describes how to create, write, and test a new recipe.
+Recipes (`.bb` files) are fundamental components in the Yocto Project environment. Each software component built by the OpenEmbedded build system requires a recipe to define the component. This section describes how to create, write, and test a new recipe.
 
 > Note  
 > For information on variables that are useful for recipes and for information about recipe naming issues, see the "Required" section of the Yocto Project Reference Manual.
@@ -746,24 +748,24 @@ The following figure shows the basic process for creating a new recipe. The rema
 ### 3.3.2 Locate or Automatically Create a Base Recipe
 You can always write a recipe from scratch. However, three choices exist that can help you quickly get a start on a new recipe:
 
-+ devtool add: A command that assists in creating a recipe and an environment conducive to development.
++ `devtool add`: A command that assists in creating a recipe and an environment conducive to development.
 
-+ recipetool create: A command provided by the Yocto Project that automates creation of a base recipe based on the source files.
++ `recipetool create`: A command provided by the Yocto Project that automates creation of a base recipe based on the source files.
 
-+ Existing Recipes: Location and modification of an existing recipe that is similar in function to the recipe you need.
++ ***Existing Recipes***: Location and modification of an existing recipe that is similar in function to the recipe you need.
 
 > Note  
 > For information on recipe syntax, see the "Recipe Syntax" section.
 
-#### 3.3.2.1 Creating the Base Recipe Using devtool add
-The devtool add command uses the same logic for auto-creating the recipe as recipetool create, which is listed below. Additionally, however, devtool add sets up an environment that makes it easy for you to patch the source and to make changes to the recipe as is often necessary when adding a recipe to build a new piece of software to be included in a build.
+#### 3.3.2.1 Creating the Base Recipe Using `devtool add`
+The `devtool add` command uses the same logic for auto-creating the recipe as `recipetool create`, which is listed below. Additionally, however, `devtool add` sets up an environment that makes it easy for you to patch the source and to make changes to the recipe as is often necessary when adding a recipe to build a new piece of software to be included in a build.
 
-You can find a complete description of the devtool add command in the "A Closer Look at devtool add" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual.
+You can find a complete description of the `devtool add` command in the "A Closer Look at devtool add" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual.
 
 #### 3.3.2.2 Creating the Base Recipe Using recipetool create
-recipetool create automates creation of a base recipe given a set of source code files. As long as you can extract or point to the source files, the tool will construct a recipe and automatically configure all pre-build information into the recipe. For example, suppose you have an application that builds using Autotools. Creating the base recipe using recipetool results in a recipe that has the pre-build dependencies, license requirements, and checksums configured.
+`recipetool create` automates creation of a base recipe given a set of source code files. As long as you can extract or point to the source files, the tool will construct a recipe and automatically configure all pre-build information into the recipe. For example, suppose you have an application that builds using Autotools. Creating the base recipe using `recipetool` results in a recipe that has the pre-build dependencies, license requirements, and checksums configured.
 
-To run the tool, you just need to be in your Build Directory and have sourced the build environment setup script (i.e. oe-init-build-env). To get help on the tool, use the following command:
+To run the tool, you just need to be in your Build Directory and have sourced the build environment setup script (i.e. `oe-init-build-env`). To get help on the tool, use the following command:
 ```
      $ recipetool -h
      NOTE: Starting bitbake server...
@@ -787,17 +789,17 @@ To run the tool, you just need to be in your Build Directory and have sourced th
        appendsrcfile   Create/update a bbappend to add or replace a source file
      Use recipetool <subcommand> --help to get help on a specific command
 ```                    
-Running recipetool create -o OUTFILE creates the base recipe and locates it properly in the layer that contains your source files. Following are some syntax examples:
+Running `recipetool create -o OUTFILE` creates the base recipe and locates it properly in the layer that contains your source files. Following are some syntax examples:
 
-Use this syntax to generate a recipe based on source. Once generated, the recipe resides in the existing source code layer:
+Use this syntax to generate a recipe based on `source`. Once generated, the recipe resides in the existing source code layer:
 ```
      recipetool create -o OUTFILE source
 ```                    
-Use this syntax to generate a recipe using code that you extract from source. The extracted code is placed in its own layer defined by EXTERNALSRC.
+Use this syntax to generate a recipe using code that you extract from `source`. The extracted code is placed in its own layer defined by `EXTERNALSRC`.
 ```
      recipetool create -o OUTFILE -x EXTERNALSRC source
 ```                    
-Use this syntax to generate a recipe based on source. The options direct recipetool to generate debugging information. Once generated, the recipe resides in the existing source code layer:
+Use this syntax to generate a recipe based on `source`. The options direct `recipetool` to generate debugging information. Once generated, the recipe resides in the existing source code layer:
 ```
      recipetool create -d -o OUTFILE source
 ```
@@ -807,11 +809,11 @@ Before writing a recipe from scratch, it is often useful to discover whether som
 
 Working from an existing recipe or a skeleton recipe is the best way to get started. Here are some points on both methods:
 
-Locate and modify a recipe that is close to what you want to do: This method works when you are familiar with the current recipe space. The method does not work so well for those new to the Yocto Project or writing recipes.
++ ***Locate and modify a recipe that is close to what you want to do***: This method works when you are familiar with the current recipe space. The method does not work so well for those new to the Yocto Project or writing recipes.
 
 Some risks associated with this method are using a recipe that has areas totally unrelated to what you are trying to accomplish with your recipe, not recognizing areas of the recipe that you might have to add from scratch, and so forth. All these risks stem from unfamiliarity with the existing recipe space.
 
-Use and modify the following skeleton recipe: If for some reason you do not want to use recipetool and you cannot find an existing recipe that is close to meeting your needs, you can use the following structure to provide the fundamental areas of a new recipe.
++ ***Use and modify the following skeleton recipe***: If for some reason you do not want to use `recipetool` and you cannot find an existing recipe that is close to meeting your needs, you can use the following structure to provide the fundamental areas of a new recipe.
 ```
      DESCRIPTION = ""
      HOMEPAGE = ""
@@ -826,64 +828,64 @@ Use and modify the following skeleton recipe: If for some reason you do not want
 ### 3.3.3 Storing and Naming the Recipe
 Once you have your base recipe, you should put it in your own layer and name it appropriately. Locating it correctly ensures that the OpenEmbedded build system can find it when you use BitBake to process the recipe.
 
-+ Storing Your Recipe: The OpenEmbedded build system locates your recipe through the layer's conf/layer.conf file and the BBFILES variable. This variable sets up a path from which the build system can locate recipes. Here is the typical use:
-```
++ ***Storing Your Recipe***: The OpenEmbedded build system locates your recipe through the layer's `conf/layer.conf` file and the `BBFILES` variable. This variable sets up a path from which the build system can locate recipes. Here is the typical use:
+     ```
      BBFILES += "${LAYERDIR}/recipes-*/*/*.bb \
                  ${LAYERDIR}/recipes-*/*/*.bbappend"
-```                    
-    Consequently, you need to be sure you locate your new recipe inside your layer such that it can be found.
+     ```                    
+     Consequently, you need to be sure you locate your new recipe inside your layer such that it can be found.
 
-    You can find more information on how layers are structured in the "Understanding and Creating Layers" section.
+     You can find more information on how layers are structured in the "Understanding and Creating Layers" section.
 
-+ Naming Your Recipe: When you name your recipe, you need to follow this naming convention:
-```
++ ***Naming Your Recipe***: When you name your recipe, you need to follow this naming convention:
+     ```
      basename_version.bb
-```                    
-    Use lower-cased characters and do not include the reserved suffixes -native, -cross, -initial, or -dev casually (i.e. do not use them as part of your recipe name unless the string applies). Here are some examples:
-```
+     ```                    
+     Use lower-cased characters and do not include the reserved suffixes `-native`, `-cross`, `-initial`, or `-dev` casually (i.e. do not use them as part of your recipe name unless the string applies). Here are some examples:
+     ```
      cups_1.7.0.bb
      gawk_4.0.2.bb
      irssi_0.8.16-rc1.bb
-```
+     ```
 
 ### 3.3.4 Running a Build on the Recipe
 Creating a new recipe is usually an iterative process that requires using BitBake to process the recipe multiple times in order to progressively discover and add information to the recipe file.
 
-Assuming you have sourced the build environment setup script (i.e. oe-init-build-env) and you are in the Build Directory, use BitBake to process your recipe. All you need to provide is the basename of the recipe as described in the previous section:
+Assuming you have sourced the build environment setup script (i.e. `oe-init-build-env`) and you are in the Build Directory, use BitBake to process your recipe. All you need to provide is the `basename` of the recipe as described in the previous section:
 ```
      $ bitbake basename
 ```                
-During the build, the OpenEmbedded build system creates a temporary work directory for each recipe (${WORKDIR}) where it keeps extracted source files, log files, intermediate compilation and packaging files, and so forth.
+During the build, the OpenEmbedded build system creates a temporary work directory for each recipe (`${WORKDIR}`) where it keeps extracted source files, log files, intermediate compilation and packaging files, and so forth.
 
 The path to the per-recipe temporary work directory depends on the context in which it is being built. The quickest way to find this path is to have BitBake return it by running the following:
 ```
      $ bitbake -e basename | grep ^WORKDIR=
 ```                
-As an example, assume a Source Directory top-level folder named poky, a default Build Directory at poky/build, and a qemux86-poky-linux machine target system. Furthermore, suppose your recipe is named foo_1.3.0.bb. In this case, the work directory the build system uses to build the package would be as follows:
+As an example, assume a Source Directory top-level folder named `poky`, a default Build Directory at `poky/build`, and a `qemux86-poky-linux` machine target system. Furthermore, suppose your recipe is named `foo_1.3.0.bb`. In this case, the work directory the build system uses to build the package would be as follows:
 ```
      poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
 ```                
-Inside this directory you can find sub-directories such as image, packages-split, and temp. After the build, you can examine these to determine how well the build went.
+Inside this directory you can find sub-directories such as `image`, `packages-split`, and `temp`. After the build, you can examine these to determine how well the build went.
 
 > Note  
-> You can find log files for each task in the recipe's temp directory (e.g. poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0/temp). Log files are named log.taskname (e.g. log.do_configure, log.do_fetch, and log.do_compile).
+> You can find log files for each task in the recipe's `temp` directory (e.g. `poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0/temp`). Log files are named `log.taskname` (e.g. `log.do_configure`, `log.do_fetch`, and `log.do_compile`).
 
 You can find more information about the build process in "The Yocto Project Development Environment" chapter of the Yocto Project Overview and Concepts Manual.
 
 ### 3.3.5. Fetching Code
-The first thing your recipe must do is specify how to fetch the source files. Fetching is controlled mainly through the SRC_URI variable. Your recipe must have a SRC_URI variable that points to where the source is located. For a graphical representation of source locations, see the "Sources" section in the Yocto Project Overview and Concepts Manual.
+The first thing your recipe must do is specify how to fetch the source files. Fetching is controlled mainly through the `SRC_URI` variable. Your recipe must have a `SRC_URI` variable that points to where the source is located. For a graphical representation of source locations, see the "Sources" section in the Yocto Project Overview and Concepts Manual.
 
-The do_fetch task uses the prefix of each entry in the SRC_URI variable value to determine which fetcher to use to get your source files. It is the SRC_URI variable that triggers the fetcher. The do_patch task uses the variable after source is fetched to apply patches. The OpenEmbedded build system uses FILESOVERRIDES for scanning directory locations for local files in SRC_URI.
+The `do_fetch` task uses the prefix of each entry in the `SRC_URI` variable value to determine which fetcher to use to get your source files. It is the `SRC_URI` variable that triggers the fetcher. The `do_patch` task uses the variable after source is fetched to apply patches. The OpenEmbedded build system uses FILESOVERRIDES for scanning directory locations for local files in `SRC_URI`.
 
-The SRC_URI variable in your recipe must define each unique location for your source files. It is good practice to not hard-code pathnames in an URL used in SRC_URI. Rather than hard-code these paths, use ${PV}, which causes the fetch process to use the version specified in the recipe filename. Specifying the version in this manner means that upgrading the recipe to a future version is as simple as renaming the recipe to match the new version.
+The `SRC_URI` variable in your recipe must define each unique location for your source files. It is good practice to not hard-code pathnames in an URL used in `SRC_URI`. Rather than hard-code these paths, use `${PV}`, which causes the fetch process to use the version specified in the recipe filename. Specifying the version in this manner means that upgrading the recipe to a future version is as simple as renaming the recipe to match the new version.
 
-Here is a simple example from the meta/recipes-devtools/cdrtools/cdrtools-native_3.01a20.bb recipe where the source comes from a single tarball. Notice the use of the PV variable:
+Here is a simple example from the `meta/recipes-devtools/cdrtools/cdrtools-native_3.01a20.bb` recipe where the source comes from a single tarball. Notice the use of the `PV` variable:
 ```
      SRC_URI = "ftp://ftp.berlios.de/pub/cdrecord/alpha/cdrtools-${PV}.tar.bz2"
 ```                
-Files mentioned in SRC_URI whose names end in a typical archive extension (e.g. .tar, .tar.gz, .tar.bz2, .zip, and so forth), are automatically extracted during the do_unpack task. For another example that specifies these types of files, see the "Autotooled Package" section.
+Files mentioned in `SRC_URI` whose names end in a typical archive extension (e.g. `.tar`, `.tar.gz`, `.tar.bz2`, `.zip`, and so forth), are automatically extracted during the `do_unpack` task. For another example that specifies these types of files, see the "Autotooled Package" section.
 
-Another way of specifying source is from an SCM. For Git repositories, you must specify SRCREV and you should specify PV to include the revision with SRCPV. Here is an example from the recipe meta/recipes-kernel/blktrace/blktrace_git.bb:
+Another way of specifying source is from an SCM. For Git repositories, you must specify `SRCREV` and you should specify `PV` to include the revision with SRCPV. Here is an example from the recipe `meta/recipes-kernel/blktrace/blktrace_git.bb`:
 ```
      SRCREV = "d6918c8832793b4205ed3bfede78c2f915c23385"
 
@@ -893,80 +895,80 @@ Another way of specifying source is from an SCM. For Git repositories, you must 
      SRC_URI = "git://git.kernel.dk/blktrace.git \
                 file://ldflags.patch"
 ```                
-If your SRC_URI statement includes URLs pointing to individual files fetched from a remote server other than a version control system, BitBake attempts to verify the files against checksums defined in your recipe to ensure they have not been tampered with or otherwise modified since the recipe was written. Two checksums are used: SRC_URI[md5sum] and SRC_URI[sha256sum].
+If your `SRC_URI` statement includes URLs pointing to individual files fetched from a remote server other than a version control system, BitBake attempts to verify the files against checksums defined in your recipe to ensure they have not been tampered with or otherwise modified since the recipe was written. Two checksums are used: `SRC_URI[`md5`sum]` and `SRC_URI[`sha256`sum]`.
 
-If your SRC_URI variable points to more than a single URL (excluding SCM URLs), you need to provide the md5 and sha256 checksums for each URL. For these cases, you provide a name for each URL as part of the SRC_URI and then reference that name in the subsequent checksum statements. Here is an example:
+If your `SRC_URI` variable points to more than a single URL (excluding SCM URLs), you need to provide the ``md5`` and ``sha256`` checksums for each URL. For these cases, you provide a name for each URL as part of the `SRC_URI` and then reference that name in the subsequent checksum statements. Here is an example:
 ```
      SRC_URI = "${DEBIAN_MIRROR}/main/a/apmd/apmd_3.2.2.orig.tar.gz;name=tarball \
                 ${DEBIAN_MIRROR}/main/a/apmd/apmd_${PV}.diff.gz;name=patch"
 
-     SRC_URI[tarball.md5sum] = "b1e6309e8331e0f4e6efd311c2d97fa8"
-     SRC_URI[tarball.sha256sum] = "7f7d9f60b7766b852881d40b8ff91d8e39fccb0d1d913102a5c75a2dbb52332d"
+     SRC_URI[tarball.`md5`sum] = "b1e6309e8331e0f4e6efd311c2d97fa8"
+     SRC_URI[tarball.`sha256`sum] = "7f7d9f60b7766b852881d40b8ff91d8e39fccb0d1d913102a5c75a2dbb52332d"
 
-     SRC_URI[patch.md5sum] = "57e1b689264ea80f78353519eece0c92"
-     SRC_URI[patch.sha256sum] = "7905ff96be93d725544d0040e425c42f9c05580db3c272f11cff75b9aa89d430"
+     SRC_URI[patch.`md5`sum] = "57e1b689264ea80f78353519eece0c92"
+     SRC_URI[patch.`sha256`sum] = "7905ff96be93d725544d0040e425c42f9c05580db3c272f11cff75b9aa89d430"
 ```                
-Proper values for md5 and sha256 checksums might be available with other signatures on the download page for the upstream source (e.g. md5, sha1, sha256, GPG, and so forth). Because the OpenEmbedded build system only deals with sha256sum and md5sum, you should verify all the signatures you find by hand.
+Proper values for `md5` and `sha256` checksums might be available with other signatures on the download page for the upstream source (e.g. `md5`, `sha1`, `sha256`, `GPG`, and so forth). Because the OpenEmbedded build system only deals with `sha256`sum and `md5`sum, you should verify all the signatures you find by hand.
 
-If no SRC_URI checksums are specified when you attempt to build the recipe, or you provide an incorrect checksum, the build will produce an error for each missing or incorrect checksum. As part of the error message, the build system provides the checksum string corresponding to the fetched file. Once you have the correct checksums, you can copy and paste them into your recipe and then run the build again to continue.
+If no `SRC_URI` checksums are specified when you attempt to build the recipe, or you provide an incorrect checksum, the build will produce an error for each missing or incorrect checksum. As part of the error message, the build system provides the checksum string corresponding to the fetched file. Once you have the correct checksums, you can copy and paste them into your recipe and then run the build again to continue.
 
 > Note  
 > As mentioned, if the upstream source provides signatures for verifying the downloaded source code, you should verify those manually before setting the checksum values in the recipe and continuing with the build.
 
-This final example is a bit more complicated and is from the meta/recipes-sato/rxvt-unicode/rxvt-unicode_9.20.bb recipe. The example's SRC_URI statement identifies multiple files as the source files for the recipe: a tarball, a patch file, a desktop file, and an icon.
+This final example is a bit more complicated and is from the `meta/recipes-sato/rxvt-unicode/rxvt-unicode_9.20.bb` recipe. The example's `SRC_URI` statement identifies multiple files as the source files for the recipe: a tarball, a patch file, a desktop file, and an icon.
 ```
      SRC_URI = "http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-${PV}.tar.bz2 \
                 file://xwc.patch \
                 file://rxvt.desktop \
                 file://rxvt.png"
 ```                
-When you specify local files using the file:// URI protocol, the build system fetches files from the local machine. The path is relative to the FILESPATH variable and searches specific directories in a certain order: ${BP}, ${BPN}, and files. The directories are assumed to be subdirectories of the directory in which the recipe or append file resides. For another example that specifies these types of files, see the "Single .c File Package (Hello World!)" section.
+When you specify local files using the `file://` URI protocol, the build system fetches files from the local machine. The path is relative to the `FILESPATH` variable and searches specific directories in a certain order: `${BP}`, `${BPN}`, and `files`. The directories are assumed to be subdirectories of the directory in which the recipe or append file resides. For another example that specifies these types of files, see the "Single .c File Package (Hello World!)" section.
 
-The previous example also specifies a patch file. Patch files are files whose names usually end in .patch or .diff but can end with compressed suffixes such as diff.gz and patch.bz2, for example. The build system automatically applies patches as described in the "Patching Code" section.
+The previous example also specifies a patch file. Patch files are files whose names usually end in `.patch` or `.diff` but can end with compressed suffixes such as `diff.gz` and `patch.bz2`, for example. The build system automatically applies patches as described in the "Patching Code" section.
 
 ### 3.3.6 Unpacking Code
-During the build, the do_unpack task unpacks the source with ${S} pointing to where it is unpacked.
+During the build, the `do_unpack` task unpacks the source with `${S}` pointing to where it is unpacked.
 
-If you are fetching your source files from an upstream source archived tarball and the tarball's internal structure matches the common convention of a top-level subdirectory named ${BPN}-${PV}, then you do not need to set S. However, if SRC_URI specifies to fetch source from an archive that does not use this convention, or from an SCM like Git or Subversion, your recipe needs to define S.
+If you are fetching your source files from an upstream source archived tarball and the tarball's internal structure matches the common convention of a top-level subdirectory named `${BPN}-${PV}`, then you do not need to set `S`. However, if `SRC_URI` specifies to fetch source from an archive that does not use this convention, or from an SCM like Git or Subversion, your recipe needs to define `S`.
 
-If processing your recipe using BitBake successfully unpacks the source files, you need to be sure that the directory pointed to by ${S} matches the structure of the source.
+If processing your recipe using BitBake successfully unpacks the source files, you need to be sure that the directory pointed to by `${S}` matches the structure of the source.
 
 ### 3.3.7 Patching Code
-Sometimes it is necessary to patch code after it has been fetched. Any files mentioned in SRC_URI whose names end in .patch or .diff or compressed versions of these suffixes (e.g. diff.gz are treated as patches. The do_patch task automatically applies these patches.
+Sometimes it is necessary to patch code after it has been fetched. Any files mentioned in `SRC_URI` whose names end in `.patch` or `.diff` or compressed versions of these suffixes (e.g. `diff.gz` are treated as patches. The `do_patch` task automatically applies these patches.
 
-The build system should be able to apply patches with the "-p1" option (i.e. one directory level in the path will be stripped off). If your patch needs to have more directory levels stripped off, specify the number of levels using the "striplevel" option in the SRC_URI entry for the patch. Alternatively, if your patch needs to be applied in a specific subdirectory that is not specified in the patch file, use the "patchdir" option in the entry.
+The build system should be able to apply patches with the "-p1" option (i.e. one directory level in the path will be stripped off). If your patch needs to have more directory levels stripped off, specify the number of levels using the "striplevel" option in the `SRC_URI` entry for the patch. Alternatively, if your patch needs to be applied in a specific subdirectory that is not specified in the patch file, use the "patchdir" option in the entry.
 
-As with all local files referenced in SRC_URI using file://, you should place patch files in a directory next to the recipe either named the same as the base name of the recipe (BP and BPN) or "files".
+As with all local files referenced in `SRC_URI` using `file://`, you should place patch files in a directory next to the recipe either named the same as the base name of the recipe (`BP` and `BPN`) or "files".
 
 ### 3.3.8 Licensing
 Your recipe needs to have both the LICENSE and LIC_FILES_CHKSUM variables:
 
-+ ***LICENSE***: This variable specifies the license for the software. If you do not know the license under which the software you are building is distributed, you should go to the source code and look for that information. Typical files containing this information include COPYING, LICENSE, and README files. You could also find the information near the top of a source file. For example, given a piece of software licensed under the GNU General Public License version 2, you would set LICENSE as follows:
++ ***LICENSE***: This variable specifies the license for the software. If you do not know the license under which the software you are building is distributed, you should go to the source code and look for that information. Typical files containing this information include `COPYING`, `LICENSE`, and `README` files. You could also find the information near the top of a source file. For example, given a piece of software licensed under the GNU General Public License version 2, you would set `LICENSE` as follows:
 ```
      LICENSE = "GPLv2"
 ```                        
-The licenses you specify within LICENSE can have any name as long as you do not use spaces, since spaces are used as separators between license names. For standard licenses, use the names of the files in meta/files/common-licenses/ or the SPDXLICENSEMAP flag names defined in meta/conf/licenses.conf.
+The licenses you specify within LICENSE can have any name as long as you do not use spaces, since spaces are used as separators between license names. For standard licenses, use the names of the files in `meta/files/common-licenses/` or the `SPDXLICENSEMAP` flag names defined in `meta/conf/licenses.conf`.
 
 + ***LIC_FILES_CHKSUM***: The OpenEmbedded build system uses this variable to make sure the license text has not changed. If it has, the build produces an error and it affords you the chance to figure it out and correct the problem.
 
-You need to specify all applicable licensing files for the software. At the end of the configuration step, the build process will compare the checksums of the files to be sure the text has not changed. Any differences result in an error with the message containing the current checksum. For more explanation and examples of how to set the LIC_FILES_CHKSUM variable, see the "Tracking License Changes" section.
+You need to specify all applicable licensing files for the software. At the end of the configuration step, the build process will compare the checksums of the files to be sure the text has not changed. Any differences result in an error with the message containing the current checksum. For more explanation and examples of how to set the `LIC_FILES_CHKSUM` variable, see the "Tracking License Changes" section.
 
-To determine the correct checksum string, you can list the appropriate files in the LIC_FILES_CHKSUM variable with incorrect md5 strings, attempt to build the software, and then note the resulting error messages that will report the correct md5 strings. See the "Fetching Code" section for additional information.
+To determine the correct checksum string, you can list the appropriate files in the `LIC_FILES_CHKSUM` variable with incorrect `md5` strings, attempt to build the software, and then note the resulting error messages that will report the correct `md5` strings. See the "Fetching Code" section for additional information.
 
-Here is an example that assumes the software has a COPYING file:
+Here is an example that assumes the software has a `COPYING` file:
 
-     LIC_FILES_CHKSUM = "file://COPYING;md5=xxx"
+     LIC_FILES_CHKSUM = "file://COPYING;`md5`=xxx"
                         
 When you try to build the software, the build system will produce an error and give you the correct string that you can substitute into the recipe file for a subsequent build.
 
 ### 3.3.9 Dependencies
 Most software packages have a short list of other packages that they require, which are called dependencies. These dependencies fall into two main categories: build-time dependencies, which are required when the software is built; and runtime dependencies, which are required to be installed on the target in order for the software to run.
 
-Within a recipe, you specify build-time dependencies using the DEPENDS variable. Although nuances exist, items specified in DEPENDS should be names of other recipes. It is important that you specify all build-time dependencies explicitly. If you do not, due to the parallel nature of BitBake's execution, you can end up with a race condition where the dependency is present for one task of a recipe (e.g. do_configure) and then gone when the next task runs (e.g. do_compile).
+Within a recipe, you specify build-time dependencies using the `DEPENDS` variable. Although nuances exist, items specified in `DEPENDS` should be names of other recipes. It is important that you specify all build-time dependencies explicitly. If you do not, due to the parallel nature of BitBake's execution, you can end up with a race condition where the dependency is present for one task of a recipe (e.g. `do_configure`) and then gone when the next task runs (e.g. `do_compile`).
 
-Another consideration is that configure scripts might automatically check for optional dependencies and enable corresponding functionality if those dependencies are found. This behavior means that to ensure deterministic results and thus avoid more race conditions, you need to either explicitly specify these dependencies as well, or tell the configure script explicitly to disable the functionality. If you wish to make a recipe that is more generally useful (e.g. publish the recipe in a layer for others to use), instead of hard-disabling the functionality, you can use the PACKAGECONFIG variable to allow functionality and the corresponding dependencies to be enabled and disabled easily by other users of the recipe.
+Another consideration is that configure scripts might automatically check for optional dependencies and enable corresponding functionality if those dependencies are found. This behavior means that to ensure deterministic results and thus avoid more race conditions, you need to either explicitly specify these dependencies as well, or tell the configure script explicitly to disable the functionality. If you wish to make a recipe that is more generally useful (e.g. publish the recipe in a layer for others to use), instead of hard-disabling the functionality, you can use the `PACKAGECONFIG` variable to allow functionality and the corresponding dependencies to be enabled and disabled easily by other users of the recipe.
 
-Similar to build-time dependencies, you specify runtime dependencies through a variable - RDEPENDS, which is package-specific. All variables that are package-specific need to have the name of the package added to the end as an override. Since the main package for a recipe has the same name as the recipe, and the recipe's name can be found through the ${PN} variable, then you specify the dependencies for the main package by setting RDEPENDS_${PN}. If the package were named ${PN}-tools, then you would set RDEPENDS_${PN}-tools, and so forth.
+Similar to build-time dependencies, you specify runtime dependencies through a variable - `RDEPENDS`, which is package-specific. All variables that are package-specific need to have the name of the package added to the end as an override. Since the main package for a recipe has the same name as the recipe, and the recipe's name can be found through the ``${PN}`` variable, then you specify the dependencies for the main package by setting `RDEPENDS_`${PN}``. If the package were named ``${PN}`-tools`, then you would set `RDEPENDS_`${PN}`-tools`, and so forth.
 
 Some runtime dependencies will be set automatically at packaging time. These dependencies include any shared library dependencies (i.e. if a package "example" contains "libexample" and another package "mypackage" contains a binary that links to "libexample" then the OpenEmbedded build system will automatically add a runtime dependency to "mypackage" on "example"). See the "Automatically Added Runtime Dependencies" section in the Yocto Project Overview and Concepts Manual for further details.
 
@@ -974,61 +976,61 @@ Some runtime dependencies will be set automatically at packaging time. These dep
 Most software provides some means of setting build-time configuration options before compilation. Typically, setting these options is accomplished by running a configure script with some options, or by modifying a build configuration file.
 
 > Note  
-As of Yocto Project Release 1.7, some of the core recipes that package binary configuration scripts now disable the scripts due to the scripts previously requiring error-prone path substitution. The OpenEmbedded build system uses pkg-config now, which is much more robust. You can find a list of the *-config scripts that are disabled list in the "Binary Configuration Scripts Disabled" section in the Yocto Project Reference Manual.
+As of Yocto Project Release 1.7, some of the core recipes that package binary configuration scripts now disable the scripts due to the scripts previously requiring error-prone path substitution. The OpenEmbedded build system uses `pkg-config` now, which is much more robust. You can find a list of the `*-config` scripts that are disabled list in the "Binary Configuration Scripts Disabled" section in the Yocto Project Reference Manual.
 
-A major part of build-time configuration is about checking for build-time dependencies and possibly enabling optional functionality as a result. You need to specify any build-time dependencies for the software you are building in your recipe's DEPENDS value, in terms of other recipes that satisfy those dependencies. You can often find build-time or runtime dependencies described in the software's documentation.
+A major part of build-time configuration is about checking for build-time dependencies and possibly enabling optional functionality as a result. You need to specify any build-time dependencies for the software you are building in your recipe's `DEPENDS` value, in terms of other recipes that satisfy those dependencies. You can often find build-time or runtime dependencies described in the software's documentation.
 
 The following list provides configuration items of note based on how your software is built:
 
-+ ***Autotools***: If your source files have a configure.ac file, then your software is built using Autotools. If this is the case, you just need to worry about modifying the configuration.
++ ***Autotools***: If your source files have a `configure.ac` file, then your software is built using Autotools. If this is the case, you just need to worry about modifying the configuration.
 
-When using Autotools, your recipe needs to inherit the autotools class and your recipe does not have to contain a do_configure task. However, you might still want to make some adjustments. For example, you can set EXTRA_OECONF or PACKAGECONFIG_CONFARGS to pass any needed configure options that are specific to the recipe.
+When using Autotools, your recipe needs to inherit the `autotools` class and your recipe does not have to contain a `do_configure` task. However, you might still want to make some adjustments. For example, you can set `EXTRA_OECONF` or `PACKAGECONFIG_CONFARGS` to pass any needed configure options that are specific to the recipe.
 
-+ ***CMake***: If your source files have a CMakeLists.txt file, then your software is built using CMake. If this is the case, you just need to worry about modifying the configuration.
++ ***CMake***: If your source files have a `CMakeLists.txt` file, then your software is built using CMake. If this is the case, you just need to worry about modifying the configuration.
 
-When you use CMake, your recipe needs to inherit the cmake class and your recipe does not have to contain a do_configure task. You can make some adjustments by setting EXTRA_OECMAKE to pass any needed configure options that are specific to the recipe.
+When you use CMake, your recipe needs to inherit the `cmake` class and your recipe does not have to contain a `do_configure` task. You can make some adjustments by setting `EXTRA_OECMAKE` to pass any needed configure options that are specific to the recipe.
 
-+ ***Other***: If your source files do not have a configure.ac or CMakeLists.txt file, then your software is built using some method other than Autotools or CMake. If this is the case, you normally need to provide a do_configure task in your recipe unless, of course, there is nothing to configure.
++ ***Other***: If your source files do not have a `configure.ac` or `CMakeLists.txt` file, then your software is built using some method other than Autotools or CMake. If this is the case, you normally need to provide a `do_configure` task in your recipe unless, of course, there is nothing to configure.
 
 Even if your software is not being built by Autotools or CMake, you still might not need to deal with any configuration issues. You need to determine if configuration is even a required step. You might need to modify a Makefile or some configuration file used for the build to specify necessary build options. Or, perhaps you might need to run a provided, custom configure script with the appropriate options.
 
-For the case involving a custom configure script, you would run ./configure --help and look for the options you need to set.
+For the case involving a custom configure script, you would run `./configure --help` and look for the options you need to set.
 
-Once configuration succeeds, it is always good practice to look at the log.do_configure file to ensure that the appropriate options have been enabled and no additional build-time dependencies need to be added to DEPENDS. For example, if the configure script reports that it found something not mentioned in DEPENDS, or that it did not find something that it needed for some desired optional functionality, then you would need to add those to DEPENDS. Looking at the log might also reveal items being checked for, enabled, or both that you do not want, or items not being found that are in DEPENDS, in which case you would need to look at passing extra options to the configure script as needed. For reference information on configure options specific to the software you are building, you can consult the output of the ./configure --help command within ${S} or consult the software's upstream documentation.
+Once configuration succeeds, it is always good practice to look at the `log.do_configure` file to ensure that the appropriate options have been enabled and no additional build-time dependencies need to be added to `DEPENDS`. For example, if the configure script reports that it found something not mentioned in `DEPENDS`, or that it did not find something that it needed for some desired optional functionality, then you would need to add those to `DEPENDS`. Looking at the log might also reveal items being checked for, enabled, or both that you do not want, or items not being found that are in `DEPENDS`, in which case you would need to look at passing extra options to the configure script as needed. For reference information on configure options specific to the software you are building, you can consult the output of the `./configure --help` command within `${S}` or consult the software's upstream documentation.
 
 # 3.3.11 Using Headers to Interface with Devices
-If your recipe builds an application that needs to communicate with some device or needs an API into a custom kernel, you will need to provide appropriate header files. Under no circumstances should you ever modify the existing meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc file. These headers are used to build libc and must not be compromised with custom or machine-specific header information. If you customize libc through modified headers all other applications that use libc thus become affected.
+If your recipe builds an application that needs to communicate with some device or needs an API into a custom kernel, you will need to provide appropriate header files. Under no circumstances should you ever modify the existing `meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc` file. These headers are used to build `libc` and must not be compromised with custom or machine-specific header information. If you customize `libc` through modified headers all other applications that use `libc` thus become affected.
 
 > Warning  
-> Never copy and customize the libc header file (i.e. meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc).
+> Never copy and customize the `libc` header file (i.e. `meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc`).
 
 The correct way to interface to a device or custom kernel is to use a separate package that provides the additional headers for the driver or other unique interfaces. When doing so, your application also becomes responsible for creating a dependency on that specific provider.
 
 Consider the following:
 
-+ Never modify linux-libc-headers.inc. Consider that file to be part of the libc system, and not something you use to access the kernel directly. You should access libc through specific libc calls.
++ Never modify `linux-libc-headers.inc`. Consider that file to be part of the `libc` system, and not something you use to access the kernel directly. You should access `libc` through specific `libc` calls.
 
 + Applications that must talk directly to devices should either provide necessary headers themselves, or establish a dependency on a special headers package that is specific to that driver.
 
 For example, suppose you want to modify an existing header that adds I/O control or network support. If the modifications are used by a small number programs, providing a unique version of a header is easy and has little impact. When doing so, bear in mind the guidelines in the previous list.
 
 > Note  
-> If for some reason your changes need to modify the behavior of the libc, and subsequently all other applications on the system, use a .bbappend to modify the linux-kernel-headers.inc file. However, take care to not make the changes machine specific.
+> If for some reason your changes need to modify the behavior of the `libc`, and subsequently all other applications on the system, use a `.bbappend` to modify the `linux-kernel-headers.inc` file. However, take care to not make the changes machine specific.
 
-Consider a case where your kernel is older and you need an older libc ABI. The headers installed by your recipe should still be a standard mainline kernel, not your own custom one.
+Consider a case where your kernel is older and you need an older `libc` ABI. The headers installed by your recipe should still be a standard mainline kernel, not your own custom one.
 
-When you use custom kernel headers you need to get them from STAGING_KERNEL_DIR, which is the directory with kernel headers that are required to build out-of-tree modules. Your recipe will also need the following:
+When you use custom kernel headers you need to get them from `STAGING_KERNEL_DIR`, which is the directory with kernel headers that are required to build out-of-tree modules. Your recipe will also need the following:
 ```
      do_configure[depends] += "virtual/kernel:do_shared_workdir"
 ```
 
 ### 3.3.12 Compilation
-During a build, the do_compile task happens after source is fetched, unpacked, and configured. If the recipe passes through do_compile successfully, nothing needs to be done.
+During a build, the `do_compile` task happens after source is fetched, unpacked, and configured. If the recipe passes through `do_compile` successfully, nothing needs to be done.
 
 However, if the compile step fails, you need to diagnose the failure. Here are some common issues that cause failures.
 
 > Note  
-> For cases where improper paths are detected for configuration files or for when libraries/headers cannot be found, be sure you are using the more robust pkg-config. See the note in section "Configuring the Recipe" for additional information.
+> For cases where improper paths are detected for configuration files or for when libraries/headers cannot be found, be sure you are using the more robust `pkg-config`. See the note in section "Configuring the Recipe" for additional information.
 
 + ***Parallel build failures***: These failures manifest themselves as intermittent errors, or errors reporting that a file or directory that should be created by some other part of the build process could not be found. This type of failure can occur even if, upon inspection, the file or directory does exist after the build has failed, because that part of the build process happened in the wrong order.
 
@@ -1038,34 +1040,34 @@ To fix the problem, you need to either satisfy the missing dependency in the Mak
 ```                        
 For information on parallel Makefile issues, see the "Debugging Parallel Make Races" section.
 
-+ ***Improper host path usage***: This failure applies to recipes building for the target or nativesdk only. The failure occurs when the compilation process uses improper headers, libraries, or other files from the host system when cross-compiling for the target.
++ ***Improper host path usage***: This failure applies to recipes building for the target or `nativesdk` only. The failure occurs when the compilation process uses improper headers, libraries, or other files from the host system when cross-compiling for the target.
 
-To fix the problem, examine the log.do_compile file to identify the host paths being used (e.g. /usr/include, /usr/lib, and so forth) and then either add configure options, apply a patch, or do both.
+To fix the problem, examine the `log.do_compile` file to identify the host paths being used (e.g. `/usr/include`, `/usr/lib`, and so forth) and then either add configure options, apply a patch, or do both.
 
-+ ***Failure to find required libraries/headers***: If a build-time dependency is missing because it has not been declared in DEPENDS, or because the dependency exists but the path used by the build process to find the file is incorrect and the configure step did not detect it, the compilation process could fail. For either of these failures, the compilation process notes that files could not be found. In these cases, you need to go back and add additional options to the configure script as well as possibly add additional build-time dependencies to DEPENDS.
++ ***Failure to find required libraries/headers***: If a build-time dependency is missing because it has not been declared in `DEPENDS`, or because the dependency exists but the path used by the build process to find the file is incorrect and the configure step did not detect it, the compilation process could fail. For either of these failures, the compilation process notes that files could not be found. In these cases, you need to go back and add additional options to the configure script as well as possibly add additional build-time dependencies to `DEPENDS`.
 
-Occasionally, it is necessary to apply a patch to the source to ensure the correct paths are used. If you need to specify paths to find files staged into the sysroot from other recipes, use the variables that the OpenEmbedded build system provides (e.g. STAGING_BINDIR, STAGING_INCDIR, STAGING_DATADIR, and so forth).
+Occasionally, it is necessary to apply a patch to the source to ensure the correct paths are used. If you need to specify paths to find files staged into the sysroot from other recipes, use the variables that the OpenEmbedded build system provides (e.g. `STAGING_BINDIR`, `STAGING_INCDIR`, `STAGING_DATADIR`, and so forth).
 
 ### 3.3.13 Installing
-During do_install, the task copies the built files along with their hierarchy to locations that would mirror their locations on the target device. The installation process copies files from the ${S}, ${B}, and ${WORKDIR} directories to the ${D} directory to create the structure as it should appear on the target system.
+During `do_install`, the task copies the built files along with their hierarchy to locations that would mirror their locations on the target device. The installation process copies files from the `${S}`, `${B}`, and `${WORKDIR}` directories to the `${D}` directory to create the structure as it should appear on the target system.
 
 How your software is built affects what you must do to be sure your software is installed correctly. The following list describes what you must do for installation depending on the type of build system used by the software being built:
 
-+ ***Autotools and CMake***: If the software your recipe is building uses Autotools or CMake, the OpenEmbedded build system understands how to install the software. Consequently, you do not have to have a do_install task as part of your recipe. You just need to make sure the install portion of the build completes with no issues. However, if you wish to install additional files not already being installed by make install, you should do this using a do_install_append function using the install command as described in the "Manual" bulleted item later in this list.
++ ***Autotools and CMake***: If the software your recipe is building uses Autotools or CMake, the OpenEmbedded build system understands how to install the software. Consequently, you do not have to have a `do_install` task as part of your recipe. You just need to make sure the install portion of the build completes with no issues. However, if you wish to install additional files not already being installed by `make install`, you should do this using a `do_install_append` function using the install command as described in the "Manual" bulleted item later in this list.
 
-+ ***Other (using make install)***: You need to define a do_install function in your recipe. The function should call oe_runmake install and will likely need to pass in the destination directory as well. How you pass that path is dependent on how the Makefile being run is written (e.g. DESTDIR=${D}, PREFIX=${D}, INSTALLROOT=${D}, and so forth).
++ ***Other (using make install)***: You need to define a `do_install` function in your recipe. The function should call `oe_runmake install` and will likely need to pass in the destination directory as well. How you pass that path is dependent on how the `Makefile` being run is written (e.g. `DESTDIR=${D}`, `PREFIX=${D}`, `INSTALLROOT=${D}`, and so forth).
 
-For an example recipe using make install, see the "Makefile-Based Package" section.
+For an example recipe using `make install`, see the "Makefile-Based Package" section.
 
-+ ***Manual***: You need to define a do_install function in your recipe. The function must first use install -d to create the directories under ${D}. Once the directories exist, your function can use install to manually install the built software into the directories.
++ ***Manual***: You need to define a `do_install` function in your recipe. The function must first use `install -d` to create the directories under `${D}`. Once the directories exist, your function can use `install` to manually install the built software into the directories.
 
-You can find more information on install at http://www.gnu.org/software/coreutils/manual/html_node/install-invocation.html.
+You can find more information on `install` at http://www.gnu.org/software/coreutils/manual/html_node/install-invocation.html.
 
-For the scenarios that do not use Autotools or CMake, you need to track the installation and diagnose and fix any issues until everything installs correctly. You need to look in the default location of ${D}, which is ${WORKDIR}/image, to be sure your files have been installed correctly.
+For the scenarios that do not use Autotools or CMake, you need to track the installation and diagnose and fix any issues until everything installs correctly. You need to look in the default location of `${D}`, which is `${WORKDIR}/image`, to be sure your files have been installed correctly.
 
 > Notes  
-> During the installation process, you might need to modify some of the installed files to suit the target layout. For example, you might need to replace hard-coded paths in an initscript with values of variables provided by the build system, such as replacing /usr/bin/ with ${bindir}. If you do perform such modifications during do_install, be sure to modify the destination file after copying rather than before copying. Modifying after copying ensures that the build system can re-execute do_install if needed.  
-> oe_runmake install, which can be run directly or can be run indirectly by the autotools and cmake classes, runs make install in parallel. Sometimes, a Makefile can have missing dependencies between targets that can result in race conditions. If you experience intermittent failures during do_install, you might be able to work around them by disabling parallel Makefile installs by adding the following to the recipe:
+> During the installation process, you might need to modify some of the installed files to suit the target layout. For example, you might need to replace hard-coded paths in an initscript with values of variables provided by the build system, such as replacing `/usr/bin/` with `${bindir}`. If you do perform such modifications during `do_install`, be sure to modify the destination file after copying rather than before copying. Modifying after copying ensures that the build system can re-execute `do_install` if needed.  
+> `oe_runmake install`, which can be run directly or can be run indirectly by the `autotools` and `cmake` classes, runs `make install` in parallel. Sometimes, a Makefile can have missing dependencies between targets that can result in race conditions. If you experience intermittent failures during `do_install`, you might be able to work around them by disabling parallel Makefile installs by adding the following to the recipe:
 > ```
 >     PARALLEL_MAKEINST = ""
 > ```                       
@@ -1074,114 +1076,114 @@ For the scenarios that do not use Autotools or CMake, you need to track the inst
 ### 3.3.14 Enabling System Services
 If you want to install a service, which is a process that usually starts on boot and runs in the background, then you must include some additional definitions in your recipe.
 
-If you are adding services and the service initialization script or the service file itself is not installed, you must provide for that installation in your recipe using a do_install_append function. If your recipe already has a do_install function, update the function near its end rather than adding an additional do_install_append function.
+If you are adding services and the service initialization script or the service file itself is not installed, you must provide for that installation in your recipe using a `do_install_append` function. If your recipe already has a `do_install` function, update the function near its end rather than adding an additional `do_install_append function`.
 
-When you create the installation for your services, you need to accomplish what is normally done by make install. In other words, make sure your installation arranges the output similar to how it is arranged on the target system.
+When you create the installation for your services, you need to accomplish what is normally done by `make install`. In other words, make sure your installation arranges the output similar to how it is arranged on the target system.
 
 The OpenEmbedded build system provides support for starting services two different ways:
 
 + ***SysVinit***: SysVinit is a system and service manager that manages the init system used to control the very basic functions of your system. The init program is the first program started by the Linux kernel when the system boots. Init then controls the startup, running and shutdown of all other programs.
 
-To enable a service using SysVinit, your recipe needs to inherit the update-rc.d class. The class helps facilitate safely installing the package on the target.
+To enable a service using SysVinit, your recipe needs to inherit the `update-rc.d` class. The class helps facilitate safely installing the package on the target.
 
-You will need to set the INITSCRIPT_PACKAGES, INITSCRIPT_NAME, and INITSCRIPT_PARAMS variables within your recipe.
+You will need to set the `INITSCRIPT_PACKAGES`, `INITSCRIPT_NAME`, and `INITSCRIPT_PARAMS` variables within your recipe.
 
 + ***systemd***: System Management Daemon (systemd) was designed to replace SysVinit and to provide enhanced management of services. For more information on systemd, see the systemd homepage at http://freedesktop.org/wiki/Software/systemd/.
 
-To enable a service using systemd, your recipe needs to inherit the systemd class. See the systemd.bbclass file located in your Source Directory. section for more information.
+To enable a service using systemd, your recipe needs to inherit the `systemd` class. See the `systemd.bbclass` file located in your Source Directory. section for more information.
 
 ### 3.3.15 Packaging
 Successful packaging is a combination of automated processes performed by the OpenEmbedded build system and some specific steps you need to take. The following list describes the process:
 
-+ Splitting Files: The do_package task splits the files produced by the recipe into logical components. Even software that produces a single binary might still have debug symbols, documentation, and other logical components that should be split out. The do_package task ensures that files are split up and packaged correctly.
++ ***Splitting Files***: The `do_package` task splits the files produced by the recipe into logical components. Even software that produces a single binary might still have debug symbols, documentation, and other logical components that should be split out. The `do_package` task ensures that files are split up and packaged correctly.
 
-+ Running QA Checks: The insane class adds a step to the package generation process so that output quality assurance checks are generated by the OpenEmbedded build system. This step performs a range of checks to be sure the build's output is free of common problems that show up during runtime. For information on these checks, see the insane class and the "QA Error and Warning Messages" chapter in the Yocto Project Reference Manual.
++ ***Running QA Checks***: The `insane` class adds a step to the package generation process so that output quality assurance checks are generated by the OpenEmbedded build system. This step performs a range of checks to be sure the build's output is free of common problems that show up during runtime. For information on these checks, see the `insane` class and the "QA Error and Warning Messages" chapter in the Yocto Project Reference Manual.
 
-+ Hand-Checking Your Packages: After you build your software, you need to be sure your packages are correct. Examine the ${WORKDIR}/packages-split directory and make sure files are where you expect them to be. If you discover problems, you can set PACKAGES, FILES, do_install(_append), and so forth as needed.
++ ***Hand-Checking Your Packages***: After you build your software, you need to be sure your packages are correct. Examine the `${WORKDIR}/packages-split` directory and make sure files are where you expect them to be. If you discover problems, you can set `PACKAGES`, `FILES`, `do_install(_append)`, and so forth as needed.
 
-+ Splitting an Application into Multiple Packages: If you need to split an application into several packages, see the "Splitting an Application into Multiple Packages" section for an example.
++ ***Splitting an Application into Multiple Packages***: If you need to split an application into several packages, see the "Splitting an Application into Multiple Packages" section for an example.
 
-+ Installing a Post-Installation Script: For an example showing how to install a post-installation script, see the "Post-Installation Scripts" section.
++ ***Installing a Post-Installation Script***: For an example showing how to install a post-installation script, see the "Post-Installation Scripts" section.
 
-+ Marking Package Architecture: Depending on what your recipe is building and how it is configured, it might be important to mark the packages produced as being specific to a particular machine, or to mark them as not being specific to a particular machine or architecture at all.
++ ***Marking Package Architecture***: Depending on what your recipe is building and how it is configured, it might be important to mark the packages produced as being specific to a particular machine, or to mark them as not being specific to a particular machine or architecture at all.
 
-By default, packages apply to any machine with the same architecture as the target machine. When a recipe produces packages that are machine-specific (e.g. the MACHINE value is passed into the configure script or a patch is applied only for a particular machine), you should mark them as such by adding the following to the recipe:
+By default, packages apply to any machine with the same architecture as the target machine. When a recipe produces packages that are machine-specific (e.g. the `MACHINE` value is passed into the configure script or a patch is applied only for a particular machine), you should mark them as such by adding the following to the recipe:
 ```
      PACKAGE_ARCH = "${MACHINE_ARCH}"
 ```                        
-On the other hand, if the recipe produces packages that do not contain anything specific to the target machine or architecture at all (e.g. recipes that simply package script files or configuration files), you should use the allarch class to do this for you by adding this to your recipe:
+On the other hand, if the recipe produces packages that do not contain anything specific to the target machine or architecture at all (e.g. recipes that simply package script files or configuration files), you should use the `allarch` class to do this for you by adding this to your recipe:
 ```
      inherit allarch
 ```                        
 Ensuring that the package architecture is correct is not critical while you are doing the first few builds of your recipe. However, it is important in order to ensure that your recipe rebuilds (or does not rebuild) appropriately in response to changes in configuration, and to ensure that you get the appropriate packages installed on the target machine, particularly if you run separate builds for more than one target machine.
 
 ### 3.3.16 Sharing Files Between Recipes
-Recipes often need to use files provided by other recipes on the build host. For example, an application linking to a common library needs access to the library itself and its associated headers. The way this access is accomplished is by populating a sysroot with files. Each recipe has two sysroots in its work directory, one for target files (recipe-sysroot) and one for files that are native to the build host (recipe-sysroot-native).
+Recipes often need to use files provided by other recipes on the build host. For example, an application linking to a common library needs access to the library itself and its associated headers. The way this access is accomplished is by populating a sysroot with files. Each recipe has two sysroots in its work directory, one for target files (`recipe-sysroot`) and one for files that are native to the build host (`recipe-sysroot-native`).
 
 > Note  
-> You could find the term "staging" used within the Yocto project regarding files populating sysroots (e.g. the STAGING_DIR variable).
+> You could find the term "staging" used within the Yocto project regarding files populating sysroots (e.g. the `STAGING_DIR` variable).
 
-Recipes should never populate the sysroot directly (i.e. write files into sysroot). Instead, files should be installed into standard locations during the do_install task within the ${D} directory. The reason for this limitation is that almost all files that populate the sysroot are cataloged in manifests in order to ensure the files can be removed later when a recipe is either modified or removed. Thus, the sysroot is able to remain free from stale files.
+Recipes should never populate the sysroot directly (i.e. write files into sysroot). Instead, files should be installed into standard locations during the `do_install` task within the `${D}` directory. The reason for this limitation is that almost all files that populate the sysroot are cataloged in manifests in order to ensure the files can be removed later when a recipe is either modified or removed. Thus, the sysroot is able to remain free from stale files.
 
-A subset of the files installed by the do_install task are used by the do_populate_sysroot task as defined by the the SYSROOT_DIRS variable to automatically populate the sysroot. It is possible to modify the list of directories that populate the sysroot. The following example shows how you could add the /opt directory to the list of directories within a recipe:
+A subset of the files installed by the `do_install` task are used by the `do_populate_sysroot` task as defined by the the `SYSROOT_DIRS` variable to automatically populate the sysroot. It is possible to modify the list of directories that populate the sysroot. The following example shows how you could add the `/opt` directory to the list of directories within a recipe:
 ```
      SYSROOT_DIRS += "/opt"
 ```                
-For a more complete description of the do_populate_sysroot task and its associated functions, see the staging class.
+For a more complete description of the `do_populate_sysroot` task and its associated functions, see the `staging` class.
 
 
 ### 3.3.17 Using Virtual Providers
-Prior to a build, if you know that several different recipes provide the same functionality, you can use a virtual provider (i.e. virtual/*) as a placeholder for the actual provider. The actual provider is determined at build-time.
+Prior to a build, if you know that several different recipes provide the same functionality, you can use a virtual provider (i.e. `virtual/*`) as a placeholder for the actual provider. The actual provider is determined at build-time.
 
-A common scenario where a virtual provider is used would be for the kernel recipe. Suppose you have three kernel recipes whose PN values map to kernel-big, kernel-mid, and kernel-small. Furthermore, each of these recipes in some way uses a PROVIDES statement that essentially identifies itself as being able to provide virtual/kernel. Here is one way through the kernel class:
+A common scenario where a virtual provider is used would be for the kernel recipe. Suppose you have three kernel recipes whose PN values map to `kernel-big`, `kernel-mid`, and `kernel-small`. Furthermore, each of these recipes in some way uses a `PROVIDES` statement that essentially identifies itself as being able to provide `virtual/kernel`. Here is one way through the `kernel` class:
 ```
      PROVIDES += "${@ "virtual/kernel" if (d.getVar("KERNEL_PACKAGE_NAME") == "kernel") else "" }"
 ```                
-Any recipe that inherits the kernel class is going to utilize a PROVIDES statement that identifies that recipe as being able to provide the virtual/kernel item.
+Any recipe that inherits the `kernel` class is going to utilize a `PROVIDES` statement that identifies that recipe as being able to provide the `virtual/kernel` item.
 
-Now comes the time to actually build an image and you need a kernel recipe, but which one? You can configure your build to call out the kernel recipe you want by using the PREFERRED_PROVIDER variable. As an example, consider the x86-base.inc include file, which is a machine (i.e. MACHINE) configuration file. This include file is the reason all x86-based machines use the linux-yocto kernel. Here are the relevant lines from the include file:
+Now comes the time to actually build an image and you need a kernel recipe, but which one? You can configure your build to call out the kernel recipe you want by using the `PREFERRED_PROVIDER` variable. As an example, consider the `x86-base.inc` include file, which is a machine (i.e. `MACHINE`) configuration file. This include file is the reason all x86-based machines use the `linux-yocto` kernel. Here are the relevant lines from the include file:
 ```
      PREFERRED_PROVIDER_virtual/kernel ??= "linux-yocto"
      PREFERRED_VERSION_linux-yocto ??= "4.15%"
 ```                
-When you use a virtual provider, you do not have to "hard code" a recipe name as a build dependency. You can use the DEPENDS variable to state the build is dependent on virtual/kernel for example:
+When you use a virtual provider, you do not have to "hard code" a recipe name as a build dependency. You can use the `DEPENDS` variable to state the build is dependent on `virtual/kernel` for example:
 ```
      DEPENDS = "virtual/kernel"
 ```                
-During the build, the OpenEmbedded build system picks the correct recipe needed for the virtual/kernel dependency based on the PREFERRED_PROVIDER variable. If you want to use the small kernel mentioned at the beginning of this section, configure your build as follows:
+During the build, the OpenEmbedded build system picks the correct recipe needed for the `virtual/kernel` dependency based on the `PREFERRED_PROVIDER` variable. If you want to use the small kernel mentioned at the beginning of this section, configure your build as follows:
 ```
      PREFERRED_PROVIDER_virtual/kernel ??= "kernel-small"
 ```                
 > Note  
-> Any recipe that PROVIDES a virtual/* item that is ultimately not selected through PREFERRED_PROVIDER does not get built. Preventing these recipes from building is usually the desired behavior since this mechanism's purpose is to select between mutually exclusive alternative providers.
+> Any recipe that `PROVIDES` a `virtual/*` item that is ultimately not selected through `PREFERRED_PROVIDER` does not get built. Preventing these recipes from building is usually the desired behavior since this mechanism's purpose is to select between mutually exclusive alternative providers.
 
 The following lists specific examples of virtual providers:
 
-+ virtual/kernel: Provides the name of the kernel recipe to use when building a kernel image.
++ `virtual/kernel`: Provides the name of the kernel recipe to use when building a kernel image.
 
-+ virtual/bootloader: Provides the name of the bootloader to use when building an image.
++ `virtual/bootloader`: Provides the name of the bootloader to use when building an image.
 
-+ virtual/mesa: Provides gbm.pc.
++ `virtual/mesa`: Provides `gbm.pc`.
 
-+ virtual/egl: Provides egl.pc and possibly wayland-egl.pc.
++ `virtual/egl`: Provides `egl.pc` and possibly `wayland-egl.pc`.
 
-+ virtual/libgl: Provides gl.pc (i.e. libGL).
++ `virtual/libgl`: Provides `gl.pc` (i.e. `libGL`).
 
-+ virtual/libgles1: Provides glesv1_cm.pc (i.e. libGLESv1_CM).
++ `virtual/libgles1`: Provides `glesv1_cm.pc` (i.e. `libGLESv1_CM`).
 
-+ virtual/libgles2: Provides glesv2.pc (i.e. libGLESv2).
++ `virtual/libgles2`: Provides `glesv2.pc` (i.e. `libGLESv2`).
 
 ### 3.3.18 Properly Versioning Pre-Release Recipes
-Sometimes the name of a recipe can lead to versioning problems when the recipe is upgraded to a final release. For example, consider the irssi_0.8.16-rc1.bb recipe file in the list of example recipes in the "Storing and Naming the Recipe" section. This recipe is at a release candidate stage (i.e. "rc1"). When the recipe is released, the recipe filename becomes irssi_0.8.16.bb. The version change from 0.8.16-rc1 to 0.8.16 is seen as a decrease by the build system and package managers, so the resulting packages will not correctly trigger an upgrade.
+Sometimes the name of a recipe can lead to versioning problems when the recipe is upgraded to a final release. For example, consider the `irssi_0.8.16-rc1.bb` recipe file in the list of example recipes in the "Storing and Naming the Recipe" section. This recipe is at a release candidate stage (i.e. "rc1"). When the recipe is released, the recipe filename becomes `irssi_0.8.16.bb`. The version change from `0.8.16-rc1` to `0.8.16` is seen as a decrease by the build system and package managers, so the resulting packages will not correctly trigger an upgrade.
 
-In order to ensure the versions compare properly, the recommended convention is to set PV within the recipe to "previous_version+current_version". You can use an additional variable so that you can use the current version elsewhere. Here is an example:
+In order to ensure the versions compare properly, the recommended convention is to set `PV` within the recipe to "*previous_version*+*current_version*". You can use an additional variable so that you can use the current version elsewhere. Here is an example:
 ```
      REALPV = "0.8.16-rc1"
      PV = "0.8.15+${REALPV}"
 ```
 
 ### 3.3.19 Post-Installation Scripts
-Post-installation scripts run immediately after installing a package on the target or during image creation when a package is included in an image. To add a post-installation script to a package, add a pkg_postinst_PACKAGENAME() function to the recipe file (.bb) and replace PACKAGENAME with the name of the package you want to attach to the postinst script. To apply the post-installation script to the main package for the recipe, which is usually what is required, specify ${PN} in place of PACKAGENAME.
+Post-installation scripts run immediately after installing a package on the target or during image creation when a package is included in an image. To add a post-installation script to a package, add a `pkg_postinst_`*PACKAGENAME*() function to the recipe file (`.bb`) and replace *PACKAGENAME* with the name of the package you want to attach to the `postinst` script. To apply the post-installation script to the main package for the recipe, which is usually what is required, specify ``${PN}`` in place of *PACKAGENAME*.
 
 A post-installation function has the following structure:
 ```
@@ -1194,12 +1196,12 @@ The script defined in the post-installation function is called when the root fil
 > Note  
 > Any RPM post-installation script that runs on the target should return a 0 exit code. RPM does not allow non-zero exit codes for these scripts, and the RPM package manager will cause the package to fail installation on the target.
 
-Sometimes it is necessary for the execution of a post-installation script to be delayed until the first boot. For example, the script might need to be executed on the device itself. To delay script execution until boot time, you must explicitly mark post installs to defer to the target. You can use pkg_postinst_ontarget() or call postinst-intercepts defer_to_first_boot from pkg_postinst(). Any failure of a pkg_postinst() script (including exit 1) triggers an error during the do_rootfs task.
+Sometimes it is necessary for the execution of a post-installation script to be delayed until the first boot. For example, the script might need to be executed on the device itself. To delay script execution until boot time, you must explicitly mark post installs to defer to the target. You can use `pkg_postinst_ontarget`() or call `postinst-intercepts defer_to_first_boot` from `pkg_postinst`(). Any failure of a `pkg_postinst`() script (including exit 1) triggers an error during the `do_rootfs` task.
 
-If you have recipes that use pkg_postinst function and they require the use of non-standard native tools that have dependencies during rootfs construction, you need to use the PACKAGE_WRITE_DEPS variable in your recipe to list these tools. If you do not use this variable, the tools might be missing and execution of the post-installation script is deferred until first boot. Deferring the script to first boot is undesirable and for read-only rootfs impossible.
+If you have recipes that use `pkg_postinst` function and they require the use of non-standard native tools that have dependencies during rootfs construction, you need to use the `PACKAGE_WRITE_DEPS` variable in your recipe to list these tools. If you do not use this variable, the tools might be missing and execution of the post-installation script is deferred until first boot. Deferring the script to first boot is undesirable and for read-only rootfs impossible.
 
 > Note  
-> Equivalent support for pre-install, pre-uninstall, and post-uninstall scripts exist by way of pkg_preinst, pkg_prerm, and pkg_postrm, respectively. These scrips work in exactly the same way as does pkg_postinst with the exception that they run at different times. Also, because of when they run, they are not applicable to being run at image creation time like pkg_postinst.
+> Equivalent support for pre-install, pre-uninstall, and post-uninstall scripts exist by way of `pkg_preinst`, `pkg_prerm`, and `pkg_postrm`, respectively. These scrips work in exactly the same way as does `pkg_postinst` with the exception that they run at different times. Also, because of when they run, they are not applicable to being run at image creation time like `pkg_postinst`.
 
 ### 3.3.20 Testing
 The final step for completing your recipe is to be sure that the software you built runs correctly. To accomplish runtime testing, add the build's output packages to your image and test them on the target.
@@ -1220,12 +1222,12 @@ To help summarize how to write a recipe, this section provides some examples giv
 + Adding binaries to an image
 
 ### 3.3.21.1 Single .c File Package (Hello World!)
-Building an application from a single file that is stored locally (e.g. under files) requires a recipe that has the file listed in the SRC_URI variable. Additionally, you need to manually write the do_compile and do_install tasks. The S variable defines the directory containing the source code, which is set to WORKDIR in this case - the directory BitBake uses for the build.
+Building an application from a single file that is stored locally (e.g. under `files`) requires a recipe that has the file listed in the `SRC_URI` variable. Additionally, you need to manually write the `do_compile` and `do_install` tasks. The `S` variable defines the directory containing the source code, which is set to `WORKDIR` in this case - the directory BitBake uses for the build.
 ```
      SUMMARY = "Simple helloworld application"
      SECTION = "examples"
      LICENSE = "MIT"
-     LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
+     LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;`md5`=0835ade698e0bcf8506ecda2f7b4f302"
 
      SRC_URI = "file://helloworld.c"
 
@@ -1240,38 +1242,38 @@ Building an application from a single file that is stored locally (e.g. under fi
      	install -m 0755 helloworld ${D}${bindir}
      }
 ```                    
-By default, the helloworld, helloworld-dbg, and helloworld-dev packages are built. For information on how to customize the packaging process, see the "Splitting an Application into Multiple Packages" section.
+By default, the `helloworld`, `helloworld-dbg`, and `helloworld-dev` packages are built. For information on how to customize the packaging process, see the "Splitting an Application into Multiple Packages" section.
 
 ### 3.3.21.2 Autotooled Package
-Applications that use Autotools such as autoconf and automake require a recipe that has a source archive listed in SRC_URI and also inherit the autotools class, which contains the definitions of all the steps needed to build an Autotool-based application. The result of the build is automatically packaged. And, if the application uses NLS for localization, packages with local information are generated (one package per language). Following is one example: (hello_2.3.bb)
+Applications that use Autotools such as `autoconf` and `automake` require a recipe that has a source archive listed in `SRC_URI` and also inherit the `autotools` class, which contains the definitions of all the steps needed to build an Autotool-based application. The result of the build is automatically packaged. And, if the application uses NLS for localization, packages with local information are generated (one package per language). Following is one example: (`hello_2.3.bb`)
 ```
      SUMMARY = "GNU Helloworld application"
      SECTION = "examples"
      LICENSE = "GPLv2+"
-     LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
+     LIC_FILES_CHKSUM = "file://COPYING;`md5`=751419260aa954499f7abaabaa882bbe"
 
      SRC_URI = "${GNU_MIRROR}/hello/hello-${PV}.tar.gz"
 
      inherit autotools gettext
 ```                     
-The variable LIC_FILES_CHKSUM is used to track source license changes as described in the "Tracking License Changes" section in the Yocto Project Overview and Concepts Manual. You can quickly create Autotool-based recipes in a manner similar to the previous example.
+The variable `LIC_FILES_CHKSUM` is used to track source license changes as described in the "Tracking License Changes" section in the Yocto Project Overview and Concepts Manual. You can quickly create Autotool-based recipes in a manner similar to the previous example.
 
 #### 3.3.21.3 Makefile-Based Package
-Applications that use GNU make also require a recipe that has the source archive listed in SRC_URI. You do not need to add a do_compile step since by default BitBake starts the make command to compile the application. If you need additional make options, you should store them in the EXTRA_OEMAKE or PACKAGECONFIG_CONFARGS variables. BitBake passes these options into the GNU make invocation. Note that a do_install task is still required. Otherwise, BitBake runs an empty do_install task by default.
+Applications that use GNU make also require a recipe that has the source archive listed in `SRC_URI`. You do not need to add a `do_compile` step since by default BitBake starts the `make` command to compile the application. If you need additional `make` options, you should store them in the `EXTRA_OEMAKE` or `PACKAGECONFIG_CONFARGS` variables. BitBake passes these options into the GNU make invocation. Note that a `do_install` task is still required. Otherwise, BitBake runs an empty `do_install` task by default.
 
-Some applications might require extra parameters to be passed to the compiler. For example, the application might need an additional header path. You can accomplish this by adding to the CFLAGS variable. The following example shows this:
+Some applications might require extra parameters to be passed to the compiler. For example, the application might need an additional header path. You can accomplish this by adding to the `CFLAGS` variable. The following example shows this:
 ```
      CFLAGS_prepend = "-I ${S}/include "
 ```                    
-In the following example, mtd-utils is a makefile-based package:
+In the following example, `mtd-utils` is a makefile-based package:
 ```
      SUMMARY = "Tools for managing memory technology devices"
      SECTION = "base"
      DEPENDS = "zlib lzo e2fsprogs util-linux"
      HOMEPAGE = "http://www.linux-mtd.infradead.org/"
      LICENSE = "GPLv2+"
-     LIC_FILES_CHKSUM = "file://COPYING;md5=0636e73ff0215e8d672dc4c32c317bb3 \
-                         file://include/common.h;beginline=1;endline=17;md5=ba05b07912a44ea2bf81ce409380049c"
+     LIC_FILES_CHKSUM = "file://COPYING;`md5`=0636e73ff0215e8d672dc4c32c317bb3 \
+                         file://include/common.h;beginline=1;endline=17;`md5`=ba05b07912a44ea2bf81ce409380049c"
 
      # Use the latest version at 26 Oct, 2013
      SRCREV = "9f107132a6a073cce37434ca9cda6917dd8d866b"
@@ -1301,15 +1303,15 @@ In the following example, mtd-utils is a makefile-based package:
 ```
 
 #### 3.3.21.4 Splitting an Application into Multiple Packages
-You can use the variables PACKAGES and FILES to split an application into multiple packages.
+You can use the variables `PACKAGES` and `FILES` to split an application into multiple packages.
 
-Following is an example that uses the libxpm recipe. By default, this recipe generates a single package that contains the library along with a few binaries. You can modify the recipe to split the binaries into separate packages:
+Following is an example that uses the `libxpm` recipe. By default, this recipe generates a single package that contains the library along with a few binaries. You can modify the recipe to split the binaries into separate packages:
 ```
      require xorg-lib-common.inc
 
      SUMMARY = "Xpm: X Pixmap extension library"
      LICENSE = "BSD"
-     LIC_FILES_CHKSUM = "file://COPYING;md5=51f4270b012ecd4ab1a164f5f4ed6cf7"
+     LIC_FILES_CHKSUM = "file://COPYING;`md5`=51f4270b012ecd4ab1a164f5f4ed6cf7"
      DEPENDS += "libxext libsm libxt"
      PE = "1"
 
@@ -1319,33 +1321,33 @@ Following is an example that uses the libxpm recipe. By default, this recipe gen
      FILES_cxpm = "${bindir}/cxpm"
      FILES_sxpm = "${bindir}/sxpm"
 ```                    
-In the previous example, we want to ship the sxpm and cxpm binaries in separate packages. Since bindir would be packaged into the main PN package by default, we prepend the PACKAGES variable so additional package names are added to the start of list. This results in the extra FILES_* variables then containing information that define which files and directories go into which packages. Files included by earlier packages are skipped by latter packages. Thus, the main PN package does not include the above listed files.
+In the previous example, we want to ship the `sxpm` and `cxpm` binaries in separate packages. Since `bindir` would be packaged into the main `PN` package by default, we prepend the `PACKAGES` variable so additional package names are added to the start of list. This results in the extra `FILES_*` variables then containing information that define which files and directories go into which packages. Files included by earlier packages are skipped by latter packages. Thus, the main `PN` package does not include the above listed files.
 
 ### 3.3.21.5 Packaging Externally Produced Binaries
-Sometimes, you need to add pre-compiled binaries to an image. For example, suppose that binaries for proprietary code exist, which are created by a particular division of a company. Your part of the company needs to use those binaries as part of an image that you are building using the OpenEmbedded build system. Since you only have the binaries and not the source code, you cannot use a typical recipe that expects to fetch the source specified in SRC_URI and then compile it.
+Sometimes, you need to add pre-compiled binaries to an image. For example, suppose that binaries for proprietary code exist, which are created by a particular division of a company. Your part of the company needs to use those binaries as part of an image that you are building using the OpenEmbedded build system. Since you only have the binaries and not the source code, you cannot use a typical recipe that expects to fetch the source specified in `SRC_URI` and then compile it.
 
 One method is to package the binaries and then install them as part of the image. Generally, it is not a good idea to package binaries since, among other things, it can hinder the ability to reproduce builds and could lead to compatibility problems with ABI in the future. However, sometimes you have no choice.
 
-The easiest solution is to create a recipe that uses the bin_package class and to be sure that you are using default locations for build artifacts. In most cases, the bin_package class handles "skipping" the configure and compile steps as well as sets things up to grab packages from the appropriate area. In particular, this class sets noexec on both the do_configure and do_compile tasks, sets FILES_${PN} to "/" so that it picks up all files, and sets up a do_install task, which effectively copies all files from ${S} to ${D}. The bin_package class works well when the files extracted into ${S} are already laid out in the way they should be laid out on the target. For more information on these variables, see the FILES, PN, S, and D variables in the Yocto Project Reference Manual's variable glossary.
+The easiest solution is to create a recipe that uses the `bin_package` class and to be sure that you are using default locations for build artifacts. In most cases, the `bin_package` class handles "skipping" the configure and compile steps as well as sets things up to grab packages from the appropriate area. In particular, this class sets `noexec` on both the `do_configure` and `do_compile` tasks, sets `FILES_`${PN}`` to "/" so that it picks up all files, and sets up a `do_install` task, which effectively copies all files from `${S}` to `${D}`. The `bin_package` class works well when the files extracted into `${S}` are already laid out in the way they should be laid out on the target. For more information on these variables, see the `FILES`, `PN`, `S`, and `D` variables in the Yocto Project Reference Manual's variable glossary.
 
 > Notes  
-> Using DEPENDS is a good idea even for components distributed in binary form, and is often necessary for shared libraries. For a shared library, listing the library dependencies in DEPENDS makes sure that the libraries are available in the staging sysroot when other recipes link against the library, which might be necessary for successful linking.  
-> Using DEPENDS also allows runtime dependencies between packages to be added automatically. See the "Automatically Added Runtime Dependencies" section in the Yocto Project Overview and Concepts Manual for more information.
+> Using `DEPENDS` is a good idea even for components distributed in binary form, and is often necessary for shared libraries. For a shared library, listing the library dependencies in DEPENDS makes sure that the libraries are available in the staging sysroot when other recipes link against the library, which might be necessary for successful linking.  
+> Using `DEPENDS` also allows runtime dependencies between packages to be added automatically. See the "Automatically Added Runtime Dependencies" section in the Yocto Project Overview and Concepts Manual for more information.
 
-If you cannot use the bin_package class, you need to be sure you are doing the following:
+If you cannot use the `bin_package` class, you need to be sure you are doing the following:
 
-+ Create a recipe where the do_configure and do_compile tasks do nothing: It is usually sufficient to just not define these tasks in the recipe, because the default implementations do nothing unless a Makefile is found in ${S}.
++ Create a recipe where the `do_configure` and `do_compile` tasks do nothing: It is usually sufficient to just not define these tasks in the recipe, because the default implementations do nothing unless a Makefile is found in `${S}`.
 
-If ${S} might contain a Makefile, or if you inherit some class that replaces do_configure and do_compile with custom versions, then you can use the [noexec] flag to turn the tasks into no-ops, as follows:
+If `${S}` might contain a Makefile, or if you inherit some class that replaces `do_configure` and `do_compile` with custom versions, then you can use the [`noexec`] flag to turn the tasks into no-ops, as follows:
 ```
      do_configure[noexec] = "1"
      do_compile[noexec] = "1"
 ```                            
-Unlike deleting the tasks, using the flag preserves the dependency chain from the do_fetch, do_unpack, and do_patch tasks to the do_install task.
+Unlike `deleting the tasks`, using the flag preserves the dependency chain from the `do_fetch`, `do_unpack`, and `do_patch` tasks to the `do_install` task.
 
-+ Make sure your do_install task installs the binaries appropriately.
++ Make sure your `do_install` task installs the binaries appropriately.
 
-+ Ensure that you set up FILES (usually FILES_${PN}) to point to the files you have installed, which of course depends on where you have installed them and whether those files are in different locations than the defaults.
++ Ensure that you set up `FILES` (usually `FILES_`${PN}``) to point to the files you have installed, which of course depends on where you have installed them and whether those files are in different locations than the defaults.
 
 ### 3.3.22 Following Recipe Style Guidelines
 When writing recipes, it is good to conform to existing style guidelines. The OpenEmbedded Styleguide wiki page provides rough guidelines for preferred recipe style.
@@ -1355,7 +1357,7 @@ It is common for existing recipes to deviate a bit from this style. However, aim
 ### 3.3.23 Recipe Syntax
 Understanding recipe file syntax is important for writing recipes. The following list overviews the basic items that make up a BitBake recipe file. For more complete BitBake syntax descriptions, see the "Syntax and Operators" chapter of the BitBake User Manual.
 
-+ Variable Assignments and Manipulations: Variable assignments allow a value to be assigned to a variable. The assignment can be static text or might include the contents of other variables. In addition to the assignment, appending and prepending operations are also supported.
++ ***Variable Assignments and Manipulations***: Variable assignments allow a value to be assigned to a variable. The assignment can be static text or might include the contents of other variables. In addition to the assignment, appending and prepending operations are also supported.
 
 The following example shows some of the ways you can use variables in recipes:
 ```
@@ -1363,9 +1365,9 @@ The following example shows some of the ways you can use variables in recipes:
      CFLAGS += "-DNO_ASM"
      SRC_URI_append = " file://fixup.patch"
 ```                        
-+ Functions: Functions provide a series of actions to be performed. You usually use functions to override the default implementation of a task function or to complement a default function (i.e. append or prepend to an existing function). Standard functions use sh shell syntax, although access to OpenEmbedded variables and internal methods are also available.
++ ***Functions***: Functions provide a series of actions to be performed. You usually use functions to override the default implementation of a task function or to complement a default function (i.e. append or prepend to an existing function). Standard functions use sh shell syntax, although access to OpenEmbedded variables and internal methods are also available.
 
-The following is an example function from the sed recipe:
+The following is an example function from the `sed` recipe:
 ```
      do_install () {
          autotools_do_install
@@ -1376,7 +1378,7 @@ The following is an example function from the sed recipe:
 ```                        
 It is also possible to implement new functions that are called between existing tasks as long as the new functions are not replacing or complementing the default functions. You can implement functions in Python instead of shell. Both of these options are not seen in the majority of recipes.
 
-+ Keywords: BitBake recipes use only a few keywords. You use keywords to include common functions (inherit), load parts of a recipe from other files (include and require) and export variables to the environment (export).
++ ***Keywords***: BitBake recipes use only a few keywords. You use keywords to include common functions (`inherit`), load parts of a recipe from other files (`include` and `require`) and export variables to the environment (`export`).
 
 The following example shows the use of some of these keywords:
 ```
@@ -1384,13 +1386,13 @@ The following example shows the use of some of these keywords:
      inherit autoconf
      require otherfile.inc
 ```                        
-+ Comments (#): Any lines that begin with the hash character (#) are treated as comment lines and are ignored:
++ ***Comments (#)***: Any lines that begin with the hash character (`#`) are treated as comment lines and are ignored:
 ```
      # This is a comment
 ```                        
 This next list summarizes the most important and most commonly used parts of the recipe syntax. For more information on these parts of the syntax, you can reference the Syntax and Operators chapter in the BitBake User Manual.
 
-+ Line Continuation (\): Use the backward slash (\) character to split a statement over multiple lines. Place the slash character at the end of the line that is to be continued on the next line:
++ ***Line Continuation (\)***: Use the backward slash (\) character to split a statement over multiple lines. Place the slash character at the end of the line that is to be continued on the next line:
 ```
      VAR = "A really long \
             line"
@@ -1398,22 +1400,21 @@ This next list summarizes the most important and most commonly used parts of the
 > Note  
 > You cannot have any characters including spaces or tabs after the slash character.
 
-+ Using Variables (${VARNAME}): Use the ${VARNAME} syntax to access the contents of a variable:
++ ***Using Variables (${VARNAME})***: Use the ${VARNAME} syntax to access the contents of a variable:
 ```
      SRC_URI = "${SOURCEFORGE_MIRROR}/libpng/zlib-${PV}.tar.gz"
 ```                        
 > Note  
-> It is important to understand that the value of a variable expressed in this form does not get substituted automatically. 
-
-The expansion of these expressions happens on-demand later (e.g. usually when a function that makes reference to the variable executes). This behavior ensures that the values are most appropriate for the context in which they are finally used. On the rare occasion that you do need the variable expression to be expanded immediately, you can use the := operator instead of = when you make the assignment, but this is not generally needed.
+> It is important to understand that the value of a variable expressed in this form does not get substituted automatically.   
+> The expansion of these expressions happens on-demand later (e.g. usually when a function that makes reference to the variable executes). This behavior ensures that the values are most appropriate for the context in which they are finally used. On the rare occasion that you do need the variable expression to be expanded immediately, you can use the := operator instead of = when you make the assignment, but this is not generally needed.
 + Quote All Assignments ("value"): Use double quotes around values in all variable assignments (e.g. "value"). Following is an example:
 
      VAR1 = "${OTHERVAR}"
      VAR2 = "The version is ${PV}"
                         
-+ Conditional Assignment (?=): Conditional assignment is used to assign a value to a variable, but only when the variable is currently unset. Use the question mark followed by the equal sign (?=) to make a "soft" assignment used for conditional assignment. Typically, "soft" assignments are used in the local.conf file for variables that are allowed to come through from the external environment.
++ **Conditional Assignment (?=)**: Conditional assignment is used to assign a value to a variable, but only when the variable is currently unset. Use the question mark followed by the equal sign (?=) to make a "soft" assignment used for conditional assignment. Typically, "soft" assignments are used in the ``local.conf`` file for variables that are allowed to come through from the external environment.
 
-Here is an example where VAR1 is set to "New value" if it is currently empty. However, if VAR1 has already been set, it remains unchanged:
+Here is an example where `VAR1` is set to "New value" if it is currently empty. However, if `VAR1` has already been set, it remains unchanged:
 
      VAR1 ?= "New value"
                         
@@ -1422,7 +1423,7 @@ In this next example, VAR1 is left with the value "Original value":
      VAR1 = "Original value"
      VAR1 ?= "New value"
 ```                        
-+ Appending (+=): Use the plus character followed by the equals sign (+=) to append values to existing variables.
++ ***Appending (+=)***: Use the plus character followed by the equals sign (+=) to append values to existing variables.
 
 > Note  
 > This operator adds a space between the existing content of the variable and the new content.
@@ -1431,7 +1432,7 @@ Here is an example:
 ```
      SRC_URI += "file://fix-makefile.patch"
 ```                        
-Prepending (=+): Use the equals sign followed by the plus character (=+) to prepend values to existing variables.
++ ***Prepending (=+)***: Use the equals sign followed by the plus character (=+) to prepend values to existing variables.
 
 > Note  
 > This operator adds a space between the new content and the existing content of the variable.
@@ -1440,7 +1441,7 @@ Here is an example:
 ```
      VAR =+ "Starts"
 ```                        
-Appending (_append): Use the _append operator to append values to existing variables. This operator does not add any additional space. Also, the operator is applied after all the +=, and =+ operators have been applied and after all = assignments have occurred.
++ ***Appending (_append)***: Use the `_append` operator to append values to existing variables. This operator does not add any additional space. Also, the operator is applied after all the +=, and =+ operators have been applied and after all = assignments have occurred.
 
 The following example shows the space being explicitly added to the start to ensure the appended value is not merged with the existing value:
 ```
@@ -1450,7 +1451,7 @@ You can also use the _append operator with overrides, which results in the actio
 ```
      SRC_URI_append_sh4 = " file://fix-makefile.patch"
 ```                        
-+ Prepending (_prepend): Use the _prepend operator to prepend values to existing variables. This operator does not add any additional space. Also, the operator is applied after all the +=, and =+ operators have been applied and after all = assignments have occurred.
++ ***Prepending (_prepend)***: Use the `_prepend` operator to prepend values to existing variables. This operator does not add any additional space. Also, the operator is applied after all the +=, and =+ operators have been applied and after all = assignments have occurred.
 
 The following example shows the space being explicitly added to the end to ensure the prepended value is not merged with the existing value:
 ```
@@ -1460,33 +1461,33 @@ You can also use the _prepend operator with overrides, which results in the acti
 ```
      CFLAGS_prepend_sh4 = "-I${S}/myincludes "
 ```                        
-+ Overrides: You can use overrides to set a value conditionally, typically based on how the recipe is being built. For example, to set the KBRANCH variable's value to "standard/base" for any target MACHINE, except for qemuarm where it should be set to "standard/arm-versatile-926ejs", you would do the following:
++ ***Overrides***: You can use overrides to set a value conditionally, typically based on how the recipe is being built. For example, to set the `KBRANCH` variable's value to "standard/base" for any target `MACHINE`, except for qemuarm where it should be set to "standard/arm-versatile-926ejs", you would do the following:
 ```
      KBRANCH = "standard/base"
      KBRANCH_qemuarm  = "standard/arm-versatile-926ejs"
 ```                        
-Overrides are also used to separate alternate values of a variable in other situations. For example, when setting variables such as FILES and RDEPENDS that are specific to individual packages produced by a recipe, you should always use an override that specifies the name of the package.
+Overrides are also used to separate alternate values of a variable in other situations. For example, when setting variables such as `FILES` and `RDEPENDS` that are specific to individual packages produced by a recipe, you should always use an override that specifies the name of the package.
 
-+ Indentation: Use spaces for indentation rather than than tabs. For shell functions, both currently work. However, it is a policy decision of the Yocto Project to use tabs in shell functions. Realize that some layers have a policy to use spaces for all indentation.
++ ***Indentation***: Use spaces for indentation rather than than tabs. For shell functions, both currently work. However, it is a policy decision of the Yocto Project to use tabs in shell functions. Realize that some layers have a policy to use spaces for all indentation.
 
-+ Using Python for Complex Operations: For more advanced processing, it is possible to use Python code during variable assignments (e.g. search and replacement on a variable).
++ ***Using Python for Complex Operations***: For more advanced processing, it is possible to use Python code during variable assignments (e.g. search and replacement on a variable).
 
-You indicate Python code using the ${@python_code} syntax for the variable assignment:
+You indicate Python code using the `${@python_code}` syntax for the variable assignment:
 ```
      SRC_URI = "ftp://ftp.info-zip.org/pub/infozip/src/zip${@d.getVar('PV',1).replace('.', '')}.tgz
 ```                        
-+ Shell Function Syntax: Write shell functions as if you were writing a shell script when you describe a list of actions to take. You should ensure that your script works with a generic sh and that it does not require any bash or other shell-specific functionality. The same considerations apply to various system utilities (e.g. sed, grep, awk, and so forth) that you might wish to use. If in doubt, you should check with multiple implementations - including those from BusyBox.
++ ***Shell Function Syntax***: Write shell functions as if you were writing a shell script when you describe a list of actions to take. You should ensure that your script works with a generic sh and that it does not require any `bash` or other shell-specific functionality. The same considerations apply to various system utilities (e.g. `sed`, `grep`, `awk`, and so forth) that you might wish to use. If in doubt, you should check with multiple implementations - including those from BusyBox.
 
 ## 3.4 Adding a New Machine
 Adding a new machine to the Yocto Project is a straightforward process. This section describes how to add machines that are similar to those that the Yocto Project already supports.
 
 > Note  
-> Although well within the capabilities of the Yocto Project, adding a totally new architecture might require changes to gcc/glibc and to the site information, which is beyond the scope of this manual.
+> Although well within the capabilities of the Yocto Project, adding a totally new architecture might require changes to `gcc/glibc` and to the site information, which is beyond the scope of this manual.
 
 For a complete example that shows how to add a new machine, see the "Creating a New BSP Layer Using the bitbake-layers Script" section in the Yocto Project Board Support Package (BSP) Developer's Guide.
 
 ### 3.4.1 Adding the Machine Configuration File
-To add a new machine, you need to add a new machine configuration file to the layer's conf/machine directory. This configuration file provides details about the device you are adding.
+To add a new machine, you need to add a new machine configuration file to the layer's `conf/machine` directory. This configuration file provides details about the device you are adding.
 
 The OpenEmbedded build system uses the root name of the machine configuration file to reference the new machine. For example, given a machine configuration file named crownbay.conf, the build system recognizes the machine as "crownbay".
 
@@ -1494,7 +1495,7 @@ The most important variables you must set in your machine configuration file or 
 
 + TARGET_ARCH (e.g. "arm")
 
-+ PREFERRED_PROVIDER_virtual/kernel
++ PREFERRED_PROVIDER_`virtual/kernel`
 
 + MACHINE_FEATURES (e.g. "apm screen wifi")
 
@@ -1506,23 +1507,23 @@ You might also need these variables:
 
 + IMAGE_FSTYPES (e.g. "tar.gz jffs2")
 
-You can find full details on these variables in the reference section. You can leverage existing machine .conf files from meta-yocto-bsp/conf/machine/.
+You can find full details on these variables in the reference section. You can leverage existing machine `.conf` files from `meta-yocto-bsp/conf/machine/`.
 
 ### 3.4.2 Adding a Kernel for the Machine
-The OpenEmbedded build system needs to be able to build a kernel for the machine. You need to either create a new kernel recipe for this machine, or extend an existing kernel recipe. You can find several kernel recipe examples in the Source Directory at meta/recipes-kernel/linux that you can use as references.
+The OpenEmbedded build system needs to be able to build a kernel for the machine. You need to either create a new kernel recipe for this machine, or extend an existing kernel recipe. You can find several kernel recipe examples in the Source Directory at `meta/recipes-kernel/linux` that you can use as references.
 
-If you are creating a new kernel recipe, normal recipe-writing rules apply for setting up a SRC_URI. Thus, you need to specify any necessary patches and set S to point at the source code. You need to create a do_configure task that configures the unpacked kernel with a defconfig file. You can do this by using a make defconfig command or, more commonly, by copying in a suitable defconfig file and then running make oldconfig. By making use of inherit kernel and potentially some of the linux-*.inc files, most other functionality is centralized and the defaults of the class normally work well.
+If you are creating a new kernel recipe, normal recipe-writing rules apply for setting up a `SRC_URI`. Thus, you need to specify any necessary patches and set S to point at the source code. You need to create a `do_configure` task that configures the unpacked kernel with a `defconfig` file. You can do this by using a `make defconfig` command or, more commonly, by copying in a suitable `defconfig` file and then running `make oldconfig`. By making use of `inherit kernel` and potentially some of the `linux-*.inc` files, most other functionality is centralized and the defaults of the class normally work well.
 
-If you are extending an existing kernel recipe, it is usually a matter of adding a suitable defconfig file. The file needs to be added into a location similar to defconfig files used for other machines in a given kernel recipe. A possible way to do this is by listing the file in the SRC_URI and adding the machine to the expression in COMPATIBLE_MACHINE:
+If you are extending an existing kernel recipe, it is usually a matter of adding a suitable `defconfig` file. The file needs to be added into a location similar to `defconfig` files used for other machines in a given kernel recipe. A possible way to do this is by listing the file in the `SRC_URI` and adding the machine to the expression in `COMPATIBLE_MACHINE`:
 
      COMPATIBLE_MACHINE = '(qemux86|qemumips)'
                 
-For more information on defconfig files, see the "Changing the Configuration" section in the Yocto Project Linux Kernel Development Manual.
+For more information on `defconfig` files, see the "Changing the Configuration" section in the Yocto Project Linux Kernel Development Manual.
 
 ### 3.4.3 Adding a Formfactor Configuration File
 A formfactor configuration file provides information about the target hardware for which the image is being built and information that the build system cannot obtain from other sources such as the kernel. Some examples of information contained in a formfactor configuration file include framebuffer orientation, whether or not the system has a keyboard, the positioning of the keyboard in relation to the screen, and the screen resolution.
 
-The build system uses reasonable defaults in most cases. However, if customization is necessary, you need to create a machconfig file in the meta/recipes-bsp/formfactor/files directory. This directory contains directories for specific machines such as qemuarm and qemux86. For information about the settings available and the defaults, see the meta/recipes-bsp/formfactor/files/config file found in the same area.
+The build system uses reasonable defaults in most cases. However, if customization is necessary, you need to create a `machconfig` file in the `meta/recipes-bsp/formfactor/files` directory. This directory contains directories for specific machines such as `qemuarm` and `qemux86`. For information about the settings available and the defaults, see the `meta/recipes-bsp/formfactor/files/config` file found in the same area.
 
 Following is an example for "qemuarm" machine:
 
@@ -1540,9 +1541,9 @@ Following is an example for "qemuarm" machine:
 ## 3.5 Upgrading Recipes
 Over time, upstream developers publish new versions for software built by layer recipes. It is recommended to keep recipes up-to-date with upstream version releases.
 
-While several methods exist that allow you upgrade a recipe, you might consider checking on the upgrade status of a recipe first. You can do so using the devtool check-upgrade-status command. See the "Checking on the Upgrade Status of a Recipe" section in the Yocto Project Reference Manual for more information.
+While several methods exist that allow you upgrade a recipe, you might consider checking on the upgrade status of a recipe first. You can do so using the `devtool check-upgrade-status` command. See the "Checking on the Upgrade Status of a Recipe" section in the Yocto Project Reference Manual for more information.
 
-The remainder of this section describes three ways you can upgrade a recipe. You can use the Automated Upgrade Helper (AUH) to set up automatic version upgrades. Alternatively, you can use devtool upgrade to set up semi-automatic version upgrades. Finally, you can manually upgrade a recipe by editing the recipe itself.
+The remainder of this section describes three ways you can upgrade a recipe. You can use the Automated Upgrade Helper (AUH) to set up automatic version upgrades. Alternatively, you can use `devtool upgrade` to set up semi-automatic version upgrades. Finally, you can manually upgrade a recipe by editing the recipe itself.
 
 ### 3.5.1 Using the Auto Upgrade Helper (AUH)
 The AUH utility works in conjunction with the OpenEmbedded build system in order to automatically generate upgrades for recipes based on new versions being published upstream. Use AUH when you want to create a service that performs the upgrades automatically and optionally sends you an email with the results.
@@ -1550,15 +1551,15 @@ The AUH utility works in conjunction with the OpenEmbedded build system in order
 AUH allows you to update several recipes with a single use. You can also optionally perform build and integration tests using images with the results saved to your hard drive and emails of results optionally sent to recipe maintainers. Finally, AUH creates Git commits with appropriate commit messages in the layer's tree for the changes made to recipes.
 
 > Note  
-> Conditions do exist when you should not use AUH to upgrade recipes and you should instead use either devtool upgrade or upgrade your recipes manually:  
-> + When AUH cannot complete the upgrade sequence. This situation usually results because custom patches carried by the recipe cannot be automatically rebased to the new version. In this case, devtool upgrade allows you to manually resolve conflicts.  
+> Conditions do exist when you should not use AUH to upgrade recipes and you should instead use either `devtool upgrade` or upgrade your recipes manually:  
+> + When AUH cannot complete the upgrade sequence. This situation usually results because custom patches carried by the recipe cannot be automatically rebased to the new version. In this case, `devtool upgrade` allows you to manually resolve conflicts.  
 > + When for any reason you want fuller control over the upgrade process. For example, when you want special arrangements for testing.
 
 The following steps describe how to set up the AUH utility:
 
-1. Be Sure the Development Host is Set Up: You need to be sure that your development host is set up to use the Yocto Project. For information on how to set up your host, see the "Preparing the Build Host" section.
+1. ***Be Sure the Development Host is Set Up***: You need to be sure that your development host is set up to use the Yocto Project. For information on how to set up your host, see the "Preparing the Build Host" section.
 
-2. Make Sure Git is Configured: The AUH utility requires Git to be configured because AUH uses Git to save upgrades. Thus, you must have Git user and email configured. The following command shows your configurations:
+2. ***Make Sure Git is Configured***: The AUH utility requires Git to be configured because AUH uses Git to save upgrades. Thus, you must have Git user and email configured. The following command shows your configurations:
 
      $ git config --list
                         
@@ -1567,7 +1568,7 @@ If you do not have the user and email configured, you can use the following comm
      $ git config --global user.name some_name
      $ git config --global user.email username@domain.com
                         
-3. Clone the AUH Repository: To use AUH, you must clone the repository onto your development host. The following command uses Git to create a local copy of the repository on your system:
+3. ***Clone the AUH Repository***: To use AUH, you must clone the repository onto your development host. The following command uses Git to create a local copy of the repository on your system:
 
      $ git clone git://git.yoctoproject.org/auto-upgrade-helper
      Cloning into 'auto-upgrade-helper'...
@@ -1580,46 +1581,46 @@ If you do not have the user and email configured, you can use the following comm
                         
 AUH is not part of the OpenEmbedded-Core (OE-Core) or Poky repositories.
 
-4. Create a Dedicated Build Directory: Run the oe-init-build-env script to create a fresh build directory that you use exclusively for running the AUH utility:
+4. ***Create a Dedicated Build Directory:*** Run the `oe-init-build-env` script to create a fresh build directory that you use exclusively for running the AUH utility:
 
      $ cd ~/poky
      $ source oe-init-build-env your_AUH_build_directory
                         
 Re-using an existing build directory and its configurations is not recommended as existing settings could cause AUH to fail or behave undesirably.
 
-5. Make Configurations in Your Local Configuration File: Several settings need to exist in the local.conf file in the build directory you just created for AUH. Make these following configurations:
+5. ***Make Configurations in Your Local Configuration File***: Several settings need to exist in the ``local.conf`` file in the build directory you just created for AUH. Make these following configurations:
 
-   + If you want to enable Build History, which is optional, you need the following lines in the conf/local.conf file:
+   + If you want to enable Build History, which is optional, you need the following lines in the `conf/`local.conf`` file:
 
      INHERIT =+ "buildhistory"
      BUILDHISTORY_COMMIT = "1"
                                 
-    With this configuration and a successful upgrade, a build history "diff" file appears in the upgrade-helper/work/recipe/buildhistory-diff.txt file found in your build directory.
+    With this configuration and a successful upgrade, a build history "diff" file appears in the `upgrade-helper/work/recipe/buildhistory-diff.txt` file found in your build directory.
 
-    + If you want to enable testing through the testimage class, which is optional, you need to have the following set in your conf/local.conf file:
+    + If you want to enable testing through the testimage class, which is optional, you need to have the following set in your `conf/`local.conf`` file:
 
      INHERIT += "testimage"
                                 
     > Note  
-    > If your distro does not enable by default ptest, which Poky does, you need the following in your local.conf file:  
+    > If your distro does not enable by default ptest, which Poky does, you need the following in your ``local.conf`` file:  
     > ```
     >    DISTRO_FEATURES_append = " ptest"
     > ```
                                     
-6. Optionally Start a vncserver: If you are running in a server without an X11 session, you need to start a vncserver:
+6. ***Optionally Start a vncserver***: If you are running in a server without an X11 session, you need to start a vncserver:
 
      $ vncserver :1
      $ export DISPLAY=:1
                         
-7. Create and Edit an AUH Configuration File: You need to have the upgrade-helper/upgrade-helper.conf configuration file in your build directory. You can find a sample configuration file in the AUH source repository.
+7. ***Create and Edit an AUH Configuration File***: You need to have the `upgrade-helper/upgrade-helper.conf` configuration file in your build directory. You can find a sample configuration file in the AUH source repository.
 
-Read through the sample file and make configurations as needed. For example, if you enabled build history in your local.conf as described earlier, you must enable it in upgrade-helper.conf.
+Read through the sample file and make configurations as needed. For example, if you enabled build history in your ``local.conf`` as described earlier, you must enable it in `upgrade-helper.conf`.
 
-Also, if you are using the default maintainers.inc file supplied with Poky and located in meta-yocto and you do not set a "maintainers_whitelist" or "global_maintainer_override" in the upgrade-helper.conf configuration, and you specify "-e all" on the AUH command-line, the utility automatically sends out emails to all the default maintainers. Please avoid this.
+Also, if you are using the default `maintainers.inc` file supplied with Poky and located in `meta-yocto` and you do not set a "maintainers_whitelist" or "global_maintainer_override" in the `upgrade-helper.conf` configuration, and you specify "-e all" on the AUH command-line, the utility automatically sends out emails to all the default maintainers. Please avoid this.
 
 This next set of examples describes how to use the AUH:
 
-+ Upgrading a Specific Recipe: To upgrade a specific recipe, use the following form:
++ ***Upgrading a Specific Recipe***: To upgrade a specific recipe, use the following form:
 
      $ upgrade-helper.py recipe_name
                         
@@ -1627,7 +1628,7 @@ For example, this command upgrades the xmodmap recipe:
 
      $ upgrade-helper.py xmodmap
                         
-+ Upgrading a Specific Recipe to a Particular Version: To upgrade a specific recipe to a particular version, use the following form:
++ ***Upgrading a Specific Recipe to a Particular Version***: To upgrade a specific recipe to a particular version, use the following form:
 
      $ upgrade-helper.py recipe_name -t version
                         
@@ -1635,11 +1636,11 @@ For example, this command upgrades the xmodmap recipe to version 1.2.3:
 
      $ upgrade-helper.py xmodmap -t 1.2.3
                         
-+ Upgrading all Recipes to the Latest Versions and Suppressing Email Notifications: To upgrade all recipes to their most recent versions and suppress the email notifications, use the following command:
++ ***Upgrading all Recipes to the Latest Versions and Suppressing Email Notifications***: To upgrade all recipes to their most recent versions and suppress the email notifications, use the following command:
 
      $ upgrade-helper.py all
                         
-+ Upgrading all Recipes to the Latest Versions and Send Email Notifications: To upgrade all recipes to their most recent versions and send email messages to maintainers for each attempted recipe as well as a status email, use the following command:
++ ***Upgrading all Recipes to the Latest Versions and Send Email Notifications***: To upgrade all recipes to their most recent versions and send email messages to maintainers for each attempted recipe as well as a status email, use the following command:
 
      $ upgrade-helper.py -e all
                         
@@ -1649,10 +1650,10 @@ Once you have run the AUH utility, you can find the results in the AUH build dir
                 
 The AUH utility also creates recipe update commits from successful upgrade attempts in the layer tree.
 
-You can easily set up to run the AUH utility on a regular basis by using a cron job. See the weeklyjob.sh file distributed with the utility for an example.
+You can easily set up to run the AUH utility on a regular basis by using a cron job. See the `weeklyjob.sh` file distributed with the utility for an example.
 
-### 3.5.2 Using devtool upgrade
-As mentioned earlier, an alternative method for upgrading recipes to newer versions is to use devtool upgrade. You can read about devtool upgrade in general in the "Use devtool upgrade to Create a Version of the Recipe that Supports a Newer Version of the Software" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) Manual.
+### 3.5.2 Using `devtool upgrade`
+As mentioned earlier, an alternative method for upgrading recipes to newer versions is to use `devtool upgrade`. You can read about `devtool upgrade` in general in the "Use devtool upgrade to Create a Version of the Recipe that Supports a Newer Version of the Software" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) Manual.
 
 To see all the command-line options available with devtool upgrade, use the following help command:
 
@@ -1662,15 +1663,16 @@ If you want to find out what version a recipe is currently at upstream without a
 
      $ devtool latest-version recipe_name
                 
-As mentioned in the previous section describing AUH, devtool upgrade works in a less-automated manner than AUH. Specifically, devtool upgrade only works on a single recipe that you name on the command line, cannot perform build and integration testing using images, and does not automatically generate commits for changes in the source tree. Despite all these "limitations", devtool upgrade updates the recipe file to the new upstream version and attempts to rebase custom patches contained by the recipe as needed.
+As mentioned in the previous section describing AUH, `devtool upgrade` works in a less-automated manner than AUH. Specifically, `devtool upgrade` only works on a single recipe that you name on the command line, cannot perform build and integration testing using images, and does not automatically generate commits for changes in the source tree. Despite all these "limitations", `devtool upgrade` updates the recipe file to the new upstream version and attempts to rebase custom patches contained by the recipe as needed.
 
-Note
-AUH uses much of devtool upgrade behind the scenes making AUH somewhat of a "wrapper" application for devtool upgrade.
-A typical scenario involves having used Git to clone an upstream repository that you use during build operations. Because you are (or have) built the recipe in the past, the layer is likely added to your configuration already. If for some reason, the layer is not added, you could add it easily using the bitbake-layers script. For example, suppose you use the nano.bb recipe from the meta-oe layer in the meta-openembedded repository. For this example, assume that the layer has been cloned into following area:
+> **Note**  
+> AUH uses much of `devtool upgrade` behind the scenes making AUH somewhat of a "wrapper" application for `devtool upgrade`.
+
+A typical scenario involves having used Git to clone an upstream repository that you use during build operations. Because you are (or have) built the recipe in the past, the layer is likely added to your configuration already. If for some reason, the layer is not added, you could add it easily using the `bitbake-layers` script. For example, suppose you use the `nano.bb` recipe from the `meta-oe` layer in the `meta-openembedded` repository. For this example, assume that the layer has been cloned into following area:
 
      /home/scottrif/meta-openembedded
                 
-The following command from your Build Directory adds the layer to your build configuration (i.e. ${BUILDDIR}/conf/bblayers.conf):
+The following command from your Build Directory adds the layer to your build configuration (i.e. `${BUILDDIR}/conf/`bblayers.conf``):
 
      $ bitbake-layers add-layer /home/scottrif/meta-openembedded/meta-oe
      NOTE: Starting bitbake server...
@@ -1681,10 +1683,11 @@ The following command from your Build Directory adds the layer to your build con
      Removing 5 recipes from the i586 sysroot: 100% |#################| Time: 0:00:00
      Removing 5 recipes from the qemux86 sysroot: 100% |##############| Time: 0:00:00
                 
-For this example, assume that the nano.bb recipe that is upstream has a 2.9.3 version number. However, the version in the local repository is 2.7.4. The following command from your build directory automatically upgrades the recipe for you:
+For this example, assume that the `nano.bb` recipe that is upstream has a 2.9.3 version number. However, the version in the local repository is 2.7.4. The following command from your build directory automatically upgrades the recipe for you:
 
-Note
-Using the -V option is not necessary. Omitting the version number causes devtool upgrade to upgrade the recipe to the most recent version.
+> **Note**  
+> Using the `-V` option is not necessary. Omitting the version number causes `devtool upgrade` to upgrade the recipe to the most recent version.
+
      $ devtool upgrade nano -V 2.9.3
      NOTE: Starting bitbake server...
      NOTE: Creating workspace layer in /home/scottrif/poky/build/workspace
@@ -1702,7 +1705,7 @@ Using the -V option is not necessary. Omitting the version number causes devtool
      NOTE: Upgraded source extracted to /home/scottrif/poky/build/workspace/sources/nano
      NOTE: New recipe is /home/scottrif/poky/build/workspace/recipes/nano/nano_2.9.3.bb
                 
-Continuing with this example, you can use devtool build to build the newly upgraded recipe:
+Continuing with this example, you can use `devtool build` to build the newly upgraded recipe:
 
      $ devtool build nano
      NOTE: Starting bitbake server...
@@ -1719,9 +1722,9 @@ Continuing with this example, you can use devtool build to build the newly upgra
      NOTE: nano: compiling from external source tree /home/scottrif/poky/build/workspace/sources/nano
      NOTE: Tasks Summary: Attempted 520 tasks of which 304 didn't need to be rerun and all succeeded.
                 
-Within the devtool upgrade workflow, opportunity exists to deploy and test your rebuilt software. For this example, however, running devtool finish cleans up the workspace once the source in your workspace is clean. This usually means using Git to stage and submit commits for the changes generated by the upgrade process.
+Within the `devtool upgrade` workflow, opportunity exists to deploy and test your rebuilt software. For this example, however, running `devtool finish` cleans up the workspace once the source in your workspace is clean. This usually means using Git to stage and submit commits for the changes generated by the upgrade process.
 
-Once the tree is clean, you can clean things up in this example with the following command from the ${BUILDDIR}/workspace/sources/nano directory:
+Once the tree is clean, you can clean things up in this example with the following command from the `${BUILDDIR}/workspace/sources/nano` directory:
 
      $ devtool finish nano meta-oe
      NOTE: Starting bitbake server...
@@ -1735,71 +1738,71 @@ Once the tree is clean, you can clean things up in this example with the followi
      NOTE: Moving recipe file to /home/scottrif/meta-openembedded/meta-oe/recipes-support/nano
      NOTE: Leaving source tree /home/scottrif/poky/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
                 
-Using the devtool finish command cleans up the workspace and creates a patch file based on your commits. The tool puts all patch files back into the source directory in a sub-directory named nano in this case.
+Using the `devtool finish` command cleans up the workspace and creates a patch file based on your commits. The tool puts all patch files back into the source directory in a sub-directory named `nano` in this case.
 
 ### 3.5.3 Manually Upgrading a Recipe
-If for some reason you choose not to upgrade recipes using the Auto Upgrade Helper (AUH) or by using devtool upgrade, you can manually edit the recipe files to upgrade the versions.
+If for some reason you choose not to upgrade recipes using the Auto Upgrade Helper (AUH) or by using `devtool upgrade`, you can manually edit the recipe files to upgrade the versions.
 
-> Caution  
-> Manually updating multiple recipes scales poorly and involves many steps. The recommendation to upgrade recipe versions is through AUH or devtool upgrade, both of which automate some steps and provide guidance for others needed for the manual process.
+> **Caution**  
+> Manually updating multiple recipes scales poorly and involves many steps. The recommendation to upgrade recipe versions is through AUH or `devtool upgrade`, both of which automate some steps and provide guidance for others needed for the manual process.
 
 To manually upgrade recipe versions, follow these general steps:
 
-1. Change the Version: Rename the recipe such that the version (i.e. the PV part of the recipe name) changes appropriately. If the version is not part of the recipe name, change the value as it is set for PV within the recipe itself.
+1. **Change the Version**: Rename the recipe such that the version (i.e. the `PV` part of the recipe name) changes appropriately. If the version is not part of the recipe name, change the value as it is set for `PV` within the recipe itself.
 
-2. Update SRCREV if Needed: If the source code your recipe builds is fetched from Git or some other version control system, update SRCREV to point to the commit hash that matches the new version.
+2. **Update `SRCREV` if Needed**: If the source code your recipe builds is fetched from Git or some other version control system, update `SRCREV` to point to the commit hash that matches the new version.
 
-3. Build the Software: Try to build the recipe using BitBake. Typical build failures include the following:
+3. **Build the Software**: Try to build the recipe using BitBake. Typical build failures include the following:
 
-    + License statements were updated for the new version. For this case, you need to review any changes to the license and update the values of LICENSE and LIC_FILES_CHKSUM as needed.
+    + License statements were updated for the new version. For this case, you need to review any changes to the license and update the values of `LICENSE` and `LIC_FILES_CHKSUM` as needed.
 
-    > Note  
-    > License changes are often inconsequential. For example, the license text's copyright year might have changed.
+     > Note  
+     > License changes are often inconsequential. For example, the license text's copyright year might have changed.
     
     + Custom patches carried by the older version of the recipe might fail to apply to the new version. For these cases, you need to review the failures. Patches might not be necessary for the new version of the software if the upgraded version has fixed those issues. If a patch is necessary and failing, you need to rebase it into the new version.
 
-4. Optionally Attempt to Build for Several Architectures: Once you successfully build the new software for a given architecture, you could test the build for other architectures by changing the MACHINE variable and rebuilding the software. This optional step is especially important if the recipe is to be released publicly.
+4. **Optionally Attempt to Build for Several Architectures**: Once you successfully build the new software for a given architecture, you could test the build for other architectures by changing the `MACHINE` variable and rebuilding the software. This optional step is especially important if the recipe is to be released publicly.
 
-5. Check the Upstream Change Log or Release Notes: Checking both these reveals if new features exist that could break backwards-compatibility. If so, you need to take steps to mitigate or eliminate that situation.
+5. **Check the Upstream Change Log or Release Notes**: Checking both these reveals if new features exist that could break backwards-compatibility. If so, you need to take steps to mitigate or eliminate that situation.
 
-6. Optionally Create a Bootable Image and Test: If you want, you can test the new software by booting it onto actual hardware.
+6. **Optionally Create a Bootable Image and Test**: If you want, you can test the new software by booting it onto actual hardware.
 
-7. Create a Commit with the Change in the Layer Repository: After all builds work and any testing is successful, you can create commits for any changes in the layer holding your upgraded recipe.
+7. **Create a Commit with the Change in the Layer Repository**: After all builds work and any testing is successful, you can create commits for any changes in the layer holding your upgraded recipe.
 
 ## 3.6 Finding Temporary Source Code
 You might find it helpful during development to modify the temporary source code used by recipes to build packages. For example, suppose you are developing a patch and you need to experiment a bit to figure out your solution. After you have initially built the package, you can iteratively tweak the source code, which is located in the Build Directory, and then you can force a re-compile and quickly test your altered code. Once you settle on a solution, you can then preserve your changes in the form of patches.
 
-During a build, the unpacked temporary source code used by recipes to build packages is available in the Build Directory as defined by the S variable. Below is the default value for the S variable as defined in the meta/conf/bitbake.conf configuration file in the Source Directory:
+During a build, the unpacked temporary source code used by recipes to build packages is available in the Build Directory as defined by the `S` variable. Below is the default value for the S variable as defined in the `meta/conf/bitbake.conf` configuration file in the Source Directory:
 
      S = "${WORKDIR}/${BP}"
             
-You should be aware that many recipes override the S variable. For example, recipes that fetch their source from Git usually set S to ${WORKDIR}/git.
+You should be aware that many recipes override the `S` variable. For example, recipes that fetch their source from Git usually set `S` to `${WORKDIR}/git`.
 
-> Note  
-> The BP represents the base recipe name, which consists of the name and version:
+> **Note**  
+> The `BP` represents the base recipe name, which consists of the name and version:
 > ```
 >      BP = "${BPN}-${PV}"
 > ```
                 
-The path to the work directory for the recipe (WORKDIR) is defined as follows:
+The path to the work directory for the recipe (`WORKDIR`) is defined as follows:
 
-     ${TMPDIR}/work/${MULTIMACH_TARGET_SYS}/${PN}/${EXTENDPE}${PV}-${PR}
+     ${TMPDIR}/work/${MULTIMACH_TARGET_SYS}/`${PN}`/${EXTENDPE}${PV}-${PR}
             
 The actual directory depends on several things:
 
-+ TMPDIR: The top-level build output directory.
++ `TMPDIR`: The top-level build output directory.
 
-+ MULTIMACH_TARGET_SYS: The target system identifier.
++ `MULTIMACH_TARGET_SYS`: The target system identifier.
 
-+ PN: The recipe name.
++ `PN`: The recipe name.
 
-+ EXTENDPE: The epoch - (if PE is not specified, which is usually the case for most recipes, then EXTENDPE is blank).
++ `EXTENDPE`: The epoch - (if PE is not specified, which is usually the case for most recipes, then EXTENDPE is blank).
 
-+ PV: The recipe version.
++ `PV`: The recipe version.
 
-+ PR: The recipe revision.
++ `PR`: The recipe revision.
 
-As an example, assume a Source Directory top-level folder named poky, a default Build Directory at poky/build, and a qemux86-poky-linux machine target system. Furthermore, suppose your recipe is named foo_1.3.0.bb. In this case, the work directory the build system uses to build the package would be as follows:
+As an example, assume a Source Directory top-level folder named `poky`, a default Build Directory at `poky/build`, and a `qemux86-poky-linux` machine target system. Furthermore, suppose your recipe is named `foo_1.3.0.bb`. In this case, the work directory the build system uses to build the package would be as follows:
 
      poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
 
@@ -1807,49 +1810,50 @@ As an example, assume a Source Directory top-level folder named poky, a default 
 Quilt is a powerful tool that allows you to capture source code changes without having a clean source tree. This section outlines the typical workflow you can use to modify source code, test changes, and then preserve the changes in the form of a patch all using Quilt.
 
 > Tip  
-> With regard to preserving changes to source files, if you clean a recipe or have rm_work enabled, the devtool workflow as described in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual is a safer development flow than the flow that uses Quilt.
+> With regard to preserving changes to source files, if you clean a recipe or have `rm_work` enabled, the `devtool` workflow as described in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual is a safer development flow than the flow that uses Quilt.
 
 Follow these general steps:
 
-1. Find the Source Code: Temporary source code used by the OpenEmbedded build system is kept in the Build Directory. See the "Finding Temporary Source Code" section to learn how to locate the directory that has the temporary source code for a particular package.
+1. ***Find the Source Code***: Temporary source code used by the OpenEmbedded build system is kept in the Build Directory. See the "Finding Temporary Source Code" section to learn how to locate the directory that has the temporary source code for a particular package.
 
-2. Change Your Working Directory: You need to be in the directory that has the temporary source code. That directory is defined by the S variable.
+2. ***Change Your Working Directory***: You need to be in the directory that has the temporary source code. That directory is defined by the S variable.
 
-3. Create a New Patch: Before modifying source code, you need to create a new patch. To create a new patch file, use quilt new as below:
+3. ***Create a New Patch***: Before modifying source code, you need to create a new patch. To create a new patch file, use `quilt new` as below:
 
      $ quilt new my_changes.patch
                     
-4. Notify Quilt and Add Files: After creating the patch, you need to notify Quilt about the files you plan to edit. You notify Quilt by adding the files to the patch you just created:
+4. ***Notify Quilt and Add Files***: After creating the patch, you need to notify Quilt about the files you plan to edit. You notify Quilt by adding the files to the patch you just created:
 
      $ quilt add file1.c file2.c file3.c
                     
-5. Edit the Files: Make your changes in the source code to the files you added to the patch.
+5. ***Edit the Files***: Make your changes in the source code to the files you added to the patch.
 
-6. Test Your Changes: Once you have modified the source code, the easiest way to test your changes is by calling the do_compile task as shown in the following example:
+6. ***Test Your Changes***: Once you have modified the source code, the easiest way to test your changes is by calling the `do_compile` task as shown in the following example:
 
      $ bitbake -c compile -f package
                     
-The -f or --force option forces the specified task to execute. If you find problems with your code, you can just keep editing and re-testing iteratively until things work as expected.
+     The `-f` or `--force` option forces the specified task to execute. If you find problems with your code, you can just keep editing and re-testing iteratively until things work as expected.
 
-> Note  
-> All the modifications you make to the temporary source code disappear once you run the do_clean or do_cleanall tasks using BitBake (i.e. bitbake -c clean package and bitbake -c cleanall package). Modifications will also disappear if you use the rm_work feature as described in the "Conserving Disk Space During Builds" section.
+     > Note  
+     > All the modifications you make to the temporary source code disappear once you run the `do_clean` or `do_cleanall` tasks using BitBake (i.e. `bitbake -c clean package` and `bitbake -c cleanall package`). Modifications will also disappear if you use the rm_work feature as described in the "Conserving Disk Space During Builds" section.
 
-7. Generate the Patch: Once your changes work as expected, you need to use Quilt to generate the final patch that contains all your modifications.
+7. ***Generate the Patch***: Once your changes work as expected, you need to use Quilt to generate the final patch that contains all your modifications.
 
      $ quilt refresh
                     
-At this point, the my_changes.patch file has all your edits made to the file1.c, file2.c, and file3.c files.
+     At this point, the `my_changes.patch` file has all your edits made to the `file1.c`, `file2.c`, and `file3.c` files.
 
-You can find the resulting patch file in the patches/ subdirectory of the source (S) directory.
+     You can find the resulting patch file in the `patches/` subdirectory of the source (`S`) directory.
 
-8. Copy the Patch File: For simplicity, copy the patch file into a directory named files, which you can create in the same directory that holds the recipe (.bb) file or the append (.bbappend) file. Placing the patch here guarantees that the OpenEmbedded build system will find the patch. Next, add the patch into the SRC_URI of the recipe. Here is an example:
-
+8. ***Copy the Patch File***: For simplicity, copy the patch file into a directory named `files`, which you can create in the same directory that holds the recipe (`.bb`) file or the append (`.bbappend`) file. Placing the patch here guarantees that the OpenEmbedded build system will find the patch. Next, add the patch into the `SRC_URI` of the recipe. Here is an example:
+     ```
      SRC_URI += "file://my_changes.patch"
+     ```
 
 ## 3.8 Using a Development Shell
-When debugging certain commands or even when just editing packages, devshell can be a useful tool. When you invoke devshell, all tasks up to and including do_patch are run for the specified target. Then, a new terminal is opened and you are placed in ${S}, the source directory. In the new terminal, all the OpenEmbedded build-related environment variables are still defined so you can use commands such as configure and make. The commands execute just as if the OpenEmbedded build system were executing them. Consequently, working this way can be helpful when debugging a build or preparing software to be used with the OpenEmbedded build system.
+When debugging certain commands or even when just editing packages, `devshell` can be a useful tool. When you invoke `devshell`, all tasks up to and including `do_patch` are run for the specified target. Then, a new terminal is opened and you are placed in `${S}`, the source directory. In the new terminal, all the OpenEmbedded build-related environment variables are still defined so you can use commands such as `configure` and `make`. The commands execute just as if the OpenEmbedded build system were executing them. Consequently, working this way can be helpful when debugging a build or preparing software to be used with the OpenEmbedded build system.
 
-Following is an example that uses devshell on a target named matchbox-desktop:
+Following is an example that uses `devshell` on a target named `matchbox-desktop`:
 
      $ bitbake matchbox-desktop -c devshell
             
@@ -1857,32 +1861,32 @@ This command spawns a terminal with a shell prompt within the OpenEmbedded build
 
 For spawned terminals, the following occurs:
 
-+ The PATH variable includes the cross-toolchain.
++ The `PATH` variable includes the cross-toolchain.
 
-+ The pkgconfig variables find the correct .pc files.
++ The `pkgconfig` variables find the correct `.pc` files.
 
-+ The configure command finds the Yocto Project site files as well as any other necessary files.
++ The `configure` command finds the Yocto Project site files as well as any other necessary files.
 
-Within this environment, you can run configure or compile commands as if they were being run by the OpenEmbedded build system itself. As noted earlier, the working directory also automatically changes to the Source Directory (S).
+Within this environment, you can run configure or compile commands as if they were being run by the OpenEmbedded build system itself. As noted earlier, the working directory also automatically changes to the Source Directory (`S`).
 
-To manually run a specific task using devshell, run the corresponding run.* script in the ${WORKDIR}/temp directory (e.g., run.do_configure.pid). If a task's script does not exist, which would be the case if the task was skipped by way of the sstate cache, you can create the task by first running it outside of the devshell:
+To manually run a specific task using `devshell`, run the corresponding `run.*` script in the `${WORKDIR}/temp` directory (e.g., `run.do_configure.pid`). If a task's script does not exist, which would be the case if the task was skipped by way of the sstate cache, you can create the task by first running it outside of the `devshell`:
 
      $ bitbake -c task
             
 > Notes  
-> + Execution of a task's run.* script and BitBake's execution of a task are identical. In other words, running the script re-runs the task just as it would be run using the bitbake -c command.
-> + Any run.* file that does not have a .pid extension is a symbolic link (symlink) to the most recent version of that file.
+> + Execution of a task's `run.*` script and BitBake's execution of a task are identical. In other words, running the script re-runs the task just as it would be run using the `bitbake -c` command.
+> + Any `run.*` file that does not have a `.pid` extension is a symbolic link (symlink) to the most recent version of that file.
 
-Remember, that the devshell is a mechanism that allows you to get into the BitBake task execution environment. And as such, all commands must be called just as BitBake would call them. That means you need to provide the appropriate options for cross-compilation and so forth as applicable.
+Remember, that the `devshell` is a mechanism that allows you to get into the BitBake task execution environment. And as such, all commands must be called just as BitBake would call them. That means you need to provide the appropriate options for cross-compilation and so forth as applicable.
 
-When you are finished using devshell, exit the shell or close the terminal window.
+When you are finished using `devshell`, exit the shell or close the terminal window.
 
 > Notes  
-> + It is worth remembering that when using devshell you need to use the full compiler name such as arm-poky-linux-gnueabi-gcc instead of just using gcc. The same applies to other applications such as binutils, libtool and so forth. BitBake sets up environment variables such as CC to assist applications, such as make to find the correct tools.
-> + It is also worth noting that devshell still works over X11 forwarding and similar situations.      
+> + It is worth remembering that when using `devshell` you need to use the full compiler name such as `arm-poky-linux-gnueabi-gcc` instead of just using `gcc`. The same applies to other applications such as `binutils`, `libtool` and so forth. BitBake sets up environment variables such as `CC` to assist applications, such as `make` to find the correct tools.
+> + It is also worth noting that `devshell` still works over X11 forwarding and similar situations.      
 
 ## 3.9 Using a Development Python Shell
-Similar to working within a development shell as described in the previous section, you can also spawn and work within an interactive Python development shell. When debugging certain commands or even when just editing packages, devpyshell can be a useful tool. When you invoke devpyshell, all tasks up to and including do_patch are run for the specified target. Then a new terminal is opened. Additionally, key Python objects and code are available in the same way they are to BitBake tasks, in particular, the data store 'd'. So, commands such as the following are useful when exploring the data store and running functions:
+Similar to working within a development shell as described in the previous section, you can also spawn and work within an interactive Python development shell. When debugging certain commands or even when just editing packages, `devpyshell` can be a useful tool. When you invoke `devpyshell`, all tasks up to and including `do_patch` are run for the specified target. Then a new terminal is opened. Additionally, key Python objects and code are available in the same way they are to BitBake tasks, in particular, the data store 'd'. So, commands such as the following are useful when exploring the data store and running functions:
 
      pydevshell> d.getVar("STAGING_DIR")
      '/media/build1/poky/build/tmp/sysroots'
@@ -1898,13 +1902,13 @@ Similar to working within a development shell as described in the previous secti
             
 The commands execute just as if the OpenEmbedded build system were executing them. Consequently, working this way can be helpful when debugging a build or preparing software to be used with the OpenEmbedded build system.
 
-Following is an example that uses devpyshell on a target named matchbox-desktop:
+Following is an example that uses `devpyshell` on a target named `matchbox-desktop`:
 
      $ bitbake matchbox-desktop -c devpyshell
             
-This command spawns a terminal and places you in an interactive Python interpreter within the OpenEmbedded build environment. The OE_TERMINAL variable controls what type of shell is opened.
+This command spawns a terminal and places you in an interactive Python interpreter within the OpenEmbedded build environment. The `OE_TERMINAL` variable controls what type of shell is opened.
 
-When you are finished using devpyshell, you can exit the shell either by using Ctrl+d or closing the terminal window.
+When you are finished using `devpyshell`, you can exit the shell either by using Ctrl+d or closing the terminal window.
 
 
 ## 3.10 Building
@@ -1913,109 +1917,110 @@ This section describes various build procedures. For example, the steps needed f
 ### 3.10.1 Building a Simple Image
 In the development environment, you need to build an image whenever you change hardware support, add or change system libraries, or add or change services that have dependencies. Several methods exist that allow you to build an image within the Yocto Project. This section presents the basic steps you need to build a simple image using BitBake from a build host running Linux.
 
-Notes
-For information on how to build an image using Toaster, see the Toaster User Manual.
+> Notes  
+> For information on how to build an image using Toaster, see the Toaster User Manual.  
+> For information on how to use devtool to build images, see the "Using devtool in Your SDK Workflow" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual.  
+> For a quick example on how to build an image using the OpenEmbedded build system, see the Yocto Project Quick Build document.
 
-For information on how to use devtool to build images, see the "Using devtool in Your SDK Workflow" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual.
-
-For a quick example on how to build an image using the OpenEmbedded build system, see the Yocto Project Quick Build document.
-
-The build process creates an entire Linux distribution from source and places it in your Build Directory under tmp/deploy/images. For detailed information on the build process using BitBake, see the "Images" section in the Yocto Project Overview and Concepts Manual.
+The build process creates an entire Linux distribution from source and places it in your Build Directory under `tmp/deploy/images`. For detailed information on the build process using BitBake, see the "Images" section in the Yocto Project Overview and Concepts Manual.
 
 The following figure and list overviews the build process:
 ![overviews the build process](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/bitbake-build-flow.png "https://www.yoctoproject.org/docs/2.7/dev-manual/figures/bitbake-build-flow.png")
 
-1. Set up Your Host Development System to Support Development Using the Yocto Project: See the "Setting Up to Use the Yocto Project" section for options on how to get a build host ready to use the Yocto Project.
+1. ***Set up Your Host Development System to Support Development Using the Yocto Project***: See the "Setting Up to Use the Yocto Project" section for options on how to get a build host ready to use the Yocto Project.
 
-2. Initialize the Build Environment: Initialize the build environment by sourcing the build environment script (i.e. oe-init-build-env):
+2. ***Initialize the Build Environment***: Initialize the build environment by sourcing the build environment script (i.e. `oe-init-build-env`):
 
      $ source oe-init-build-env [build_dir]
                         
-When you use the initialization script, the OpenEmbedded build system uses build as the default Build Directory in your current work directory. You can use a build_dir argument with the script to specify a different build directory.
+     When you use the initialization script, the OpenEmbedded build system uses `build` as the default Build Directory in your current work directory. You can use a `build_dir` argument with the script to specify a different build directory.
 
-Tip
-A common practice is to use a different Build Directory for different targets. For example, ~/build/x86 for a qemux86 target, and ~/build/arm for a qemuarm target.
+     > **Tip**  
+     > A common practice is to use a different Build Directory for different targets. For example, `~/build/x86` for a `qemux86` target, and `~/build/arm` for a `qemuarm` target.
 
-3. Make Sure Your local.conf File is Correct: Ensure the conf/local.conf configuration file, which is found in the Build Directory, is set up how you want it. This file defines many aspects of the build environment including the target machine architecture through the MACHINE variable, the packaging format used during the build (PACKAGE_CLASSES), and a centralized tarball download directory through the DL_DIR variable.
+3. ***Make Sure Your `local.conf` File is Correct***: Ensure the `conf/`local.conf`` configuration file, which is found in the Build Directory, is set up how you want it. This file defines many aspects of the build environment including the target machine architecture through the `MACHINE` variable, the packaging format used during the build (`PACKAGE_CLASSES`), and a centralized tarball download directory through the `DL_DIR` variable.
 
-4. Build the Image: Build the image using the bitbake command:
+4. ***Build the Image***: Build the image using the `bitbake` command:
 
      $ bitbake target
                         
-Note
-For information on BitBake, see the BitBake User Manual.
-The target is the name of the recipe you want to build. Common targets are the images in meta/recipes-core/images, meta/recipes-sato/images, and so forth all found in the Source Directory. Or, the target can be the name of a recipe for a specific piece of software such as BusyBox. For more details about the images the OpenEmbedded build system supports, see the "Images" chapter in the Yocto Project Reference Manual.
+     > **Note**  
+     > For information on BitBake, see the BitBake User Manual.
 
-As an example, the following command builds the core-image-minimal image:
+     The `target` is the name of the recipe you want to build. Common targets are the images in `meta/recipes-core/images`, `meta/recipes-sato/images`, and so forth all found in the Source Directory. Or, the target can be the name of a recipe for a specific piece of software such as BusyBox. For more details about the images the OpenEmbedded build system supports, see the "Images" chapter in the Yocto Project Reference Manual.
 
+     As an example, the following command builds the `core-image-minimal` image:
+     ```
      $ bitbake core-image-minimal
-                        
-Once an image has been built, it often needs to be installed. The images and kernels built by the OpenEmbedded build system are placed in the Build Directory in tmp/deploy/images. For information on how to run pre-built images such as qemux86 and qemuarm, see the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual. For information about how to install these images, see the documentation for your particular board or machine.
+     ```
+
+     Once an image has been built, it often needs to be installed. The images and kernels built by the OpenEmbedded build system are placed in the Build Directory in `tmp/deploy/images`. For information on how to run pre-built images such as `qemux86` and `qemuarm`, see the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual. For information about how to install these images, see the documentation for your particular board or machine.
 
 ### 3.10.2 Building Images for Multiple Targets Using Multiple Configurations
-You can use a single bitbake command to build multiple images or packages for different targets where each image or package requires a different configuration (multiple configuration builds). The builds, in this scenario, are sometimes referred to as "multiconfigs", and this section uses that term throughout.
+You can use a single `bitbake` command to build multiple images or packages for different targets where each image or package requires a different configuration (multiple configuration builds). The builds, in this scenario, are sometimes referred to as "multiconfigs", and this section uses that term throughout.
 
 This section describes how to set up for multiple configuration builds and how to account for cross-build dependencies between the multiconfigs.
 
 #### 3.10.2.1 Setting Up and Running a Multiple Configuration Build
-To accomplish a multiple configuration build, you must define each target's configuration separately using a parallel configuration file in the Build Directory, and you must follow a required file hierarchy. Additionally, you must enable the multiple configuration builds in your local.conf file.
+To accomplish a multiple configuration build, you must define each target's configuration separately using a parallel configuration file in the Build Directory, and you must follow a required file hierarchy. Additionally, you must enable the multiple configuration builds in your ``local.conf`` file.
 
 Follow these steps to set up and execute multiple configuration builds:
-+ Create Separate Configuration Files: You need to create a single configuration file for each build target (each multiconfig). Minimally, each configuration file must define the machine and the temporary directory BitBake uses for the build. Suggested practice dictates that you do not overlap the temporary directories used during the builds. However, it is possible that you can share the temporary directory (TMPDIR). For example, consider a scenario with two different multiconfigs for the same MACHINE: "qemux86" built for two distributions such as "poky" and "poky-lsb". In this case, you might want to use the same TMPDIR.
++ ***Create Separate Configuration Files***: You need to create a single configuration file for each build target (each multiconfig). Minimally, each configuration file must define the machine and the temporary directory BitBake uses for the build. Suggested practice dictates that you do not overlap the temporary directories used during the builds. However, it is possible that you can share the temporary directory (`TMPDIR`). For example, consider a scenario with two different multiconfigs for the same `MACHINE`: "qemux86" built for two distributions such as "poky" and "poky-lsb". In this case, you might want to use the same `TMPDIR`.
 
-Here is an example showing the minimal statements needed in a configuration file for a "qemux86" target whose temporary build directory is tmpmultix86:
-
+     Here is an example showing the minimal statements needed in a configuration file for a "qemux86" target whose temporary build directory is `tmpmultix86`:
+     ```
      MACHINE="qemux86"
      TMPDIR="${TOPDIR}/tmpmultix86"
-                            
-The location for these multiconfig configuration files is specific. They must reside in the current build directory in a sub-directory of conf named multiconfig. Following is an example that defines two configuration files for the "x86" and "arm" multiconfigs:
+     ```
+
+The location for these multiconfig configuration files is specific. They must reside in the current build directory in a sub-directory of `conf` named `multiconfig`. Following is an example that defines two configuration files for the "x86" and "arm" multiconfigs:
 ![Config](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/multiconfig_files.png "Conig")
 
 The reason for this required file hierarchy is because the BBPATH variable is not constructed until the layers are parsed. Consequently, using the configuration file as a pre-configuration file is not possible unless it is located in the current working directory.
 
-+ Add the BitBake Multi-configuration Variable to the Local Configuration File: Use the BBMULTICONFIG variable in your conf/local.conf configuration file to specify each multiconfig. Continuing with the example from the previous figure, the BBMULTICONFIG variable needs to enable two multiconfigs: "x86" and "arm" by specifying each configuration file:
-
++ ***Add the BitBake Multi-configuration Variable to the Local Configuration File***: Use the `BBMULTICONFIG` variable in your `conf/`local.conf`` configuration file to specify each multiconfig. Continuing with the example from the previous figure, the `BBMULTICONFIG` variable needs to enable two multiconfigs: "x86" and "arm" by specifying each configuration file:
+     ```
      BBMULTICONFIG = "x86 arm"
-                            
-+ Launch BitBake: Use the following BitBake command form to launch the multiple configuration build:
-
+     ```                            
++ ***Launch BitBake***: Use the following BitBake command form to launch the multiple configuration build:
+     ```
      $ bitbake [multiconfig:multiconfigname:]target [[[multiconfig:multiconfigname:]target] ... ]
-                            
-For the example in this section, the following command applies:
-
+     ```                            
+     For the example in this section, the following command applies:
+     ```
      $ bitbake multiconfig:x86:core-image-minimal multiconfig:arm:core-image-sato
-                            
-The previous BitBake command builds a core-image-minimal image that is configured through the x86.conf configuration file and builds a core-image-sato image that is configured through the arm.conf configuration file.
+     ```                            
+     The previous BitBake command builds a `core-image-minimal` image that is configured through the `x86.conf` configuration file and builds a `core-image-sato` image that is configured through the `arm.conf` configuration file.
 
-> Note  
-> Support for multiple configuration builds in the Yocto Project 2.7 (Warrior) Release does not include Shared State (sstate) optimizations. Consequently, if a build uses the same object twice in, for example, two different TMPDIR directories, the build either loads from an existing sstate cache for that build at the start or builds the object fresh.
+     > **Note**  
+     > Support for multiple configuration builds in the Yocto Project 2.7 (Warrior) Release does not include Shared State (sstate) optimizations. Consequently, if a build uses the same object twice in, for example, two different `TMPDIR` directories, the build either loads from an existing sstate cache for that build at the start or builds the object fresh.
 
 #### 3.10.2.2 Enabling Multiple Configuration Build Dependencies
-Sometimes dependencies can exist between targets (multiconfigs) in a multiple configuration build. For example, suppose that in order to build a core-image-sato image for an "x86" multiconfig, the root filesystem of an "arm" multiconfig must exist. This dependency is essentially that the do_image task in the core-image-sato recipe depends on the completion of the do_rootfs task of the core-image-minimal recipe.
+Sometimes dependencies can exist between targets (multiconfigs) in a multiple configuration build. For example, suppose that in order to build a `core-image-sato` image for an "x86" multiconfig, the root filesystem of an "arm" multiconfig must exist. This dependency is essentially that the `do_image` task in the `core-image-sato` recipe depends on the completion of the `do_rootfs` task of the `core-image-minimal` recipe.
 
 To enable dependencies in a multiple configuration build, you must declare the dependencies in the recipe using the following statement form:
-
+```
      task_or_package[mcdepends] = "multiconfig:from_multiconfig:to_multiconfig:recipe_name:task_on_which_to_depend"
-                    
-To better show how to use this statement, consider the example scenario from the first paragraph of this section. The following statement needs to be added to the recipe that builds the core-image-sato image:
-
+```                    
+To better show how to use this statement, consider the example scenario from the first paragraph of this section. The following statement needs to be added to the recipe that builds the `core-image-sato` image:
+```
      do_image[mcdepends] = "multiconfig:x86:arm:core-image-minimal:do_rootfs"
-                    
-In this example, the from_multiconfig is "x86". The to_multiconfig is "arm". The task on which the do_image task in the recipe depends is the do_rootfs task from the core-image-minimal recipe associated with the "arm" multiconfig.
+```                    
+In this example, the `from_multiconfig` is "x86". The `to_multiconfig` is "arm". The task on which the `do_image` task in the recipe depends is the `do_rootfs` task from the `core-image-minimal` recipe associated with the "arm" multiconfig.
 
 Once you set up this dependency, you can build the "x86" multiconfig using a BitBake command as follows:
-
+```
      $ bitbake multiconfig:x86:core-image-sato
-                   
-This command executes all the tasks needed to create the core-image-sato image for the "x86" multiconfig. Because of the dependency, BitBake also executes through the do_rootfs task for the "arm" multiconfig build.
+```                   
+This command executes all the tasks needed to create the `core-image-sato` image for the "x86" multiconfig. Because of the dependency, BitBake also executes through the `do_rootfs` task for the "arm" multiconfig build.
 
-Having a recipe depend on the root filesystem of another build might not seem that useful. Consider this change to the statement in the core-image-sato recipe:
-
+Having a recipe depend on the root filesystem of another build might not seem that useful. Consider this change to the statement in the `core-image-sato` recipe:
+```
      do_image[mcdepends] = "multiconfig:x86:arm:core-image-minimal:do_image"
-                   
-In this case, BitBake must create the core-image-minimal image for the "arm" build since the "x86" build depends on it.
+```                   
+In this case, BitBake must create the `core-image-minimal` image for the "arm" build since the "x86" build depends on it.
 
-Because "x86" and "arm" are enabled for multiple configuration builds and have separate configuration files, BitBake places the artifacts for each build in the respective temporary build directories (i.e. TMPDIR).
+Because "x86" and "arm" are enabled for multiple configuration builds and have separate configuration files, BitBake places the artifacts for each build in the respective temporary build directories (i.e. `TMPDIR`).
 
 ### 3.10.3 Building an Initial RAM Filesystem (initramfs) Image
 An initial RAM filesystem (initramfs) image provides a temporary root filesystem used for early system initialization (e.g. loading of modules needed to locate and mount the "real" root filesystem).
@@ -2025,43 +2030,43 @@ An initial RAM filesystem (initramfs) image provides a temporary root filesystem
 
 Follow these steps to create an initramfs image:
 
-1. Create the initramfs Image Recipe: You can reference the core-image-minimal-initramfs.bb recipe found in the meta/recipes-core directory of the Source Directory as an example from which to work.
+1. ***Create the initramfs Image Recipe***: You can reference the `core-image-minimal-initramfs.bb` recipe found in the `meta/recipes-core` directory of the Source Directory as an example from which to work.
 
-2. Decide if You Need to Bundle the initramfs Image Into the Kernel Image: If you want the initramfs image that is built to be bundled in with the kernel image, set the INITRAMFS_IMAGE_BUNDLE variable to "1" in your local.conf configuration file and set the INITRAMFS_IMAGE variable in the recipe that builds the kernel image.
+2. ***Decide if You Need to Bundle the initramfs Image Into the Kernel Image***: If you want the initramfs image that is built to be bundled in with the kernel image, set the `INITRAMFS_IMAGE_BUNDLE` variable to "1" in your ``local.conf`` configuration file and set the `INITRAMFS_IMAGE` variable in the recipe that builds the kernel image.
 
-> Tip  
-> It is recommended that you do bundle the initramfs image with the kernel image to avoid circular dependencies between the kernel recipe and the initramfs recipe should the initramfs image include kernel modules.
+     > **Tip**  
+     > It is recommended that you do bundle the initramfs image with the kernel image to avoid circular dependencies between the kernel recipe and the initramfs recipe should the initramfs image include kernel modules.
 
-Setting the INITRAMFS_IMAGE_BUNDLE flag causes the initramfs image to be unpacked into the ${B}/usr/ directory. The unpacked initramfs image is then passed to the kernel's Makefile using the CONFIG_INITRAMFS_SOURCE variable, allowing the initramfs image to be built into the kernel normally.
+     Setting the `INITRAMFS_IMAGE_BUNDLE` flag causes the initramfs image to be unpacked into the `${B}/usr/` directory. The unpacked initramfs image is then passed to the kernel's `Makefile` using the `CONFIG_INITRAMFS_SOURCE` variable, allowing the initramfs image to be built into the kernel normally.
 
-> Note  
-> If you choose to not bundle the initramfs image with the kernel image, you are essentially using an Initial RAM Disk (initrd). Creating an initrd is handled primarily through the INITRD_IMAGE, INITRD_LIVE, and INITRD_IMAGE_LIVE variables. For more information, see the image-live.bbclass file.
+     > **Note**  
+     > If you choose to not bundle the initramfs image with the kernel image, you are essentially using an Initial RAM Disk (initrd). Creating an initrd is handled primarily through the `INITRD_IMAGE`, `INITRD_LIVE`, and `INITRD_IMAGE_LIVE` variables. For more information, see the `image-live.bbclass` file.
 
-3. Optionally Add Items to the initramfs Image Through the initramfs Image Recipe: If you add items to the initramfs image by way of its recipe, you should use PACKAGE_INSTALL rather than IMAGE_INSTALL. PACKAGE_INSTALL gives more direct control of what is added to the image as compared to the defaults you might not necessarily want that are set by the image or core-image classes.
+3. **Optionally Add Items to the initramfs Image Through the initramfs Image Recipe**: If you add items to the initramfs image by way of its recipe, you should use `PACKAGE_INSTALL` rather than `IMAGE_INSTALL`. `PACKAGE_INSTALL` gives more direct control of what is added to the image as compared to the defaults you might not necessarily want that are set by the `image` or `core-image` classes.
 
-4. Build the Kernel Image and the initramfs Image: Build your kernel image using BitBake. Because the initramfs image recipe is a dependency of the kernel image, the initramfs image is built as well and bundled with the kernel image if you used the INITRAMFS_IMAGE_BUNDLE variable described earlier.
+4. **Build the Kernel Image and the initramfs Image**: Build your kernel image using BitBake. Because the initramfs image recipe is a dependency of the kernel image, the initramfs image is built as well and bundled with the kernel image if you used the `INITRAMFS_IMAGE_BUNDLE` variable described earlier.
 
 ### 3.10.4 Building a Tiny System
 Very small distributions have some significant advantages such as requiring less on-die or in-package memory (cheaper), better performance through efficient cache usage, lower power requirements due to less memory, faster boot times, and reduced development overhead. Some real-world examples where a very small distribution gives you distinct advantages are digital cameras, medical devices, and small headless systems.
 
-This section presents information that shows you how you can trim your distribution to even smaller sizes than the poky-tiny distribution, which is around 5 Mbytes, that can be built out-of-the-box using the Yocto Project.
+This section presents information that shows you how you can trim your distribution to even smaller sizes than the `poky-tiny` distribution, which is around 5 Mbytes, that can be built out-of-the-box using the Yocto Project.
 
-3.10.4.1. Overview¶
+#### 3.10.4.1. Overview
 The following list presents the overall steps you need to consider and perform to create distributions with smaller root filesystems, achieve faster boot times, maintain your critical functionality, and avoid initial RAM disks:
 
-+ Determine your goals and guiding principles.
++ [Determine your goals and guiding principles](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#goals-and-guiding-principles).
 
-+ Understand what contributes to your image size.
++ [Understand what contributes to your image size](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#understand-what-gives-your-image-size).
 
-+ Reduce the size of the root filesystem.
++ [Reduce the size of the root filesystem](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#trim-the-root-filesystem).
 
-+ Reduce the size of the kernel.
++ [Reduce the size of the kernel](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#trim-the-kernel).
 
-+ Eliminate packaging requirements.
++ [Eliminate packaging requirements](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#remove-package-management-requirements).
 
-+ Look for other ways to minimize size.
++ [Look for other ways to minimize size](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#look-for-other-ways-to-minimize-size).
 
-+ Iterate on the process.
++ [Iterate on the process](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#iterate-on-the-process).
 
 ### 3.10.4.2 Goals and Guiding Principles
 Before you can reach your destination, you need to know where you are going. Here is an example list that you can use as a guide when creating very small distributions:
@@ -2080,51 +2085,51 @@ Before you can reach your destination, you need to know where you are going. Her
 It is easiest to have something to start with when creating your own distribution. You can use the Yocto Project out-of-the-box to create the poky-tiny distribution. Ultimately, you will want to make changes in your own distribution that are likely modeled after poky-tiny.
 
 > Note  
-> To use poky-tiny in your build, set the DISTRO variable in your local.conf file to "poky-tiny" as described in the "Creating Your Own Distribution" section.
+> To use `poky-tiny` in your build, set the `DISTRO` variable in your ``local.conf`` file to "poky-tiny" as described in the "Creating Your Own Distribution" section.
 
-Understanding some memory concepts will help you reduce the system size. Memory consists of static, dynamic, and temporary memory. Static memory is the TEXT (code), DATA (initialized data in the code), and BSS (uninitialized data) sections. Dynamic memory represents memory that is allocated at runtime: stacks, hash tables, and so forth. Temporary memory is recovered after the boot process. This memory consists of memory used for decompressing the kernel and for the __init__ functions.
+Understanding some memory concepts will help you reduce the system size. Memory consists of static, dynamic, and temporary memory. Static memory is the TEXT (code), DATA (initialized data in the code), and BSS (uninitialized data) sections. Dynamic memory represents memory that is allocated at runtime: stacks, hash tables, and so forth. Temporary memory is recovered after the boot process. This memory consists of memory used for decompressing the kernel and for the `__init__` functions.
 
-To help you see where you currently are with kernel and root filesystem sizes, you can use two tools found in the Source Directory in the scripts/tiny/ directory:
+To help you see where you currently are with kernel and root filesystem sizes, you can use two tools found in the Source Directory in the `scripts/tiny/` directory:
 
-+ ksize.py: Reports component sizes for the kernel build objects.
++ `ksize.py`: Reports component sizes for the kernel build objects.
 
-+ dirsize.py: Reports component sizes for the root filesystem.
++ `dirsize.py`: Reports component sizes for the root filesystem.
 
 This next tool and command help you organize configuration fragments and view file dependencies in a human-readable form:
 
-+ merge_config.sh: Helps you manage configuration files and fragments within the kernel. With this tool, you can merge individual configuration fragments together. The tool allows you to make overrides and warns you of any missing configuration options. The tool is ideal for allowing you to iterate on configurations, create minimal configurations, and create configuration files for different machines without having to duplicate your process.
++ `merge_config.sh`: Helps you manage configuration files and fragments within the kernel. With this tool, you can merge individual configuration fragments together. The tool allows you to make overrides and warns you of any missing configuration options. The tool is ideal for allowing you to iterate on configurations, create minimal configurations, and create configuration files for different machines without having to duplicate your process.
 
-+ The merge_config.sh script is part of the Linux Yocto kernel Git repositories (i.e. linux-yocto-3.14, linux-yocto-3.10, linux-yocto-3.8, and so forth) in the scripts/kconfig directory.
++ The `merge_config.sh` script is part of the Linux Yocto kernel Git repositories (i.e. `linux-yocto-3.14`, `linux-yocto-3.10`, `linux-yocto-3.8`, and so forth) in the `scripts/kconfig` directory.
 
 For more information on configuration fragments, see the "Creating Configuration Fragments" section in the Yocto Project Linux Kernel Development Manual.
 
-+ bitbake -u taskexp -g bitbake_target: Using the BitBake command with these options brings up a Dependency Explorer from which you can view file dependencies. Understanding these dependencies allows you to make informed decisions when cutting out various pieces of the kernel and root filesystem.
++ `bitbake -u taskexp -g bitbake_target`: Using the BitBake command with these options brings up a Dependency Explorer from which you can view file dependencies. Understanding these dependencies allows you to make informed decisions when cutting out various pieces of the kernel and root filesystem.
 
 #### 3.10.4.4 Trim the Root Filesystem
 The root filesystem is made up of packages for booting, libraries, and applications. To change things, you can configure how the packaging happens, which changes the way you build them. You can also modify the filesystem itself or select a different filesystem.
 
-First, find out what is hogging your root filesystem by running the dirsize.py script from your root directory:
-
+First, find out what is hogging your root filesystem by running the `dirsize.py` script from your root directory:
+```
      $ cd root-directory-of-image
      $ dirsize.py 100000 > dirsize-100k.log
      $ cat dirsize-100k.log
-                    
+```                    
 You can apply a filter to the script to ignore files under a certain size. The previous example filters out any files below 100 Kbytes. The sizes reported by the tool are uncompressed, and thus will be smaller by a relatively constant factor in a compressed root filesystem. When you examine your log file, you can focus on areas of the root filesystem that take up large amounts of memory.
 
 You need to be sure that what you eliminate does not cripple the functionality you need. One way to see how packages relate to each other is by using the Dependency Explorer UI with the BitBake command:
-
+```
      $ cd image-directory
      $ bitbake -u taskexp -g image
-                    
+```                    
 Use the interface to select potential packages you wish to eliminate and see their dependency relationships.
 
-When deciding how to reduce the size, get rid of packages that result in minimal impact on the feature set. For example, you might not need a VGA display. Or, you might be able to get by with devtmpfs and mdev instead of udev.
+When deciding how to reduce the size, get rid of packages that result in minimal impact on the feature set. For example, you might not need a VGA display. Or, you might be able to get by with `devtmpfs` and `mdev` instead of `udev`.
 
-Use your local.conf file to make changes. For example, to eliminate udev and glib, set the following in the local configuration file:
+Use your ``local.conf`` file to make changes. For example, to eliminate `udev` and `glib`, set the following in the local configuration file:
 
      VIRTUAL-RUNTIME_dev_manager = ""
                     
-Finally, you should consider exactly the type of root filesystem you need to meet your needs while also reducing its size. For example, consider cramfs, squashfs, ubifs, ext2, or an initramfs using initramfs. Be aware that ext3 requires a 1 Mbyte journal. If you are okay with running read-only, you do not need this journal.
+Finally, you should consider exactly the type of root filesystem you need to meet your needs while also reducing its size. For example, consider `cramfs`, `squashfs`, `ubifs`, `ext2`, or an `initramfs` using `initramfs`. Be aware that `ext3` requires a 1 Mbyte journal. If you are okay with running read-only, you do not need this journal.
 
 > Note  
 > After each round of elimination, you need to rebuild your system and then use the tools to see the effects of your reductions.
@@ -2135,7 +2140,7 @@ The kernel is built by including policies for hardware-independent aspects. What
 > Note  
 > You can modify the kernel source if you want to help with boot time.
 
-Run the ksize.py script from the top-level Linux build directory to get an idea of what is making up the kernel:
+Run the `ksize.py` script from the top-level Linux build directory to get an idea of what is making up the kernel:
 
      $ cd top-level-linux-build-directory
      $ ksize.py > ksize.log
@@ -2143,7 +2148,7 @@ Run the ksize.py script from the top-level Linux build directory to get an idea 
                     
 When you examine the log, you will see how much space is taken up with the built-in .o files for drivers, networking, core kernel files, filesystem, sound, and so forth. The sizes reported by the tool are uncompressed, and thus will be smaller by a relatively constant factor in a compressed kernel image. Look to reduce the areas that are large and taking up around the "90% rule."
 
-To examine, or drill down, into any particular area, use the -d option with the script:
+To examine, or drill down, into any particular area, use the `-d` option with the script:
 
      $ ksize.py -d > ksize.log
                     
@@ -2151,29 +2156,29 @@ Using this option breaks out the individual file information for each area of th
 
 Use your log file to see what you can eliminate from the kernel based on features you can let go. For example, if you are not going to need sound, you do not need any drivers that support sound.
 
-After figuring out what to eliminate, you need to reconfigure the kernel to reflect those changes during the next build. You could run menuconfig and make all your changes at once. However, that makes it difficult to see the effects of your individual eliminations and also makes it difficult to replicate the changes for perhaps another target device. A better method is to start with no configurations using allnoconfig, create configuration fragments for individual changes, and then manage the fragments into a single configuration file using merge_config.sh. The tool makes it easy for you to iterate using the configuration change and build cycle.
+After figuring out what to eliminate, you need to reconfigure the kernel to reflect those changes during the next build. You could run `menuconfig` and make all your changes at once. However, that makes it difficult to see the effects of your individual eliminations and also makes it difficult to replicate the changes for perhaps another target device. A better method is to start with no configurations using `allnoconfig`, create configuration fragments for individual changes, and then manage the fragments into a single configuration file using `merge_config.sh`. The tool makes it easy for you to iterate using the configuration change and build cycle.
 
 Each time you make configuration changes, you need to rebuild the kernel and check to see what impact your changes had on the overall size.
 
 #### 3.10.4.6 Remove Package Management Requirements
 Packaging requirements add size to the image. One way to reduce the size of the image is to remove all the packaging requirements from the image. This reduction includes both removing the package manager and its unique dependencies as well as removing the package management data itself.
 
-To eliminate all the packaging requirements for an image, be sure that "package-management" is not part of your IMAGE_FEATURES statement for the image. When you remove this feature, you are removing the package manager as well as its dependencies from the root filesystem.
+To eliminate all the packaging requirements for an image, be sure that "package-management" is not part of your `IMAGE_FEATURES` statement for the image. When you remove this feature, you are removing the package manager as well as its dependencies from the root filesystem.
 
 #### 3.10.4.7 Look for Other Ways to Minimize Size
 Depending on your particular circumstances, other areas that you can trim likely exist. The key to finding these areas is through tools and methods described here combined with experimentation and iteration. Here are a couple of areas to experiment with:
 
-+ glibc: In general, follow this process:
++ `glibc`: In general, follow this process:
 
-    1. Remove glibc features from DISTRO_FEATURES that you think you do not need.
+    1. Remove `glibc` features from `DISTRO_FEATURES` that you think you do not need.
 
     2. Build your distribution.
 
-    3. If the build fails due to missing symbols in a package, determine if you can reconfigure the package to not need those features. For example, change the configuration to not support wide character support as is done for ncurses. Or, if support for those characters is needed, determine what glibc features provide the support and restore the configuration.
+    3. If the build fails due to missing symbols in a package, determine if you can reconfigure the package to not need those features. For example, change the configuration to not support wide character support as is done for `ncurses`. Or, if support for those characters is needed, determine what `glibc` features provide the support and restore the configuration.
 
     4. Rebuild and repeat the process.
 
-+ busybox: For BusyBox, use a process similar as described for glibc. A difference is you will need to boot the resulting system to see if you are able to do everything you expect from the running system. You need to be sure to integrate configuration fragments into Busybox because BusyBox handles its own core features and then allows you to add configuration fragments on top.
++ `busybox`: For BusyBox, use a process similar as described for `glibc`. A difference is you will need to boot the resulting system to see if you are able to do everything you expect from the running system. You need to be sure to integrate configuration fragments into Busybox because BusyBox handles its own core features and then allows you to add configuration fragments on top.
 
 #### 3.10.4.8 Iterate on the Process
 If you have not reached your goals on system size, you need to iterate on the process. The process is the same. Use the tools and see just what is taking up 90% of the root filesystem and the kernel. Decide what you can eliminate without limiting your device beyond what you need.
@@ -2181,187 +2186,187 @@ If you have not reached your goals on system size, you need to iterate on the pr
 Depending on your system, a good place to look might be Busybox, which provides a stripped down version of Unix tools in a single, executable file. You might be able to drop virtual terminal services or perhaps ipv6.
 
 ### 3.10.5 Building Images for More than One Machine
-A common scenario developers face is creating images for several different machines that use the same software environment. In this situation, it is tempting to set the tunings and optimization flags for each build specifically for the targeted hardware (i.e. "maxing out" the tunings). Doing so can considerably add to build times and package feed maintenance collectively for the machines. For example, selecting tunes that are extremely specific to a CPU core used in a system might enable some micro optimizations in GCC for that particular system but would otherwise not gain you much of a performance difference across the other systems as compared to using a more general tuning across all the builds (e.g. setting DEFAULTTUNE specifically for each machine's build). Rather than "max out" each build's tunings, you can take steps that cause the OpenEmbedded build system to reuse software across the various machines where it makes sense.
+A common scenario developers face is creating images for several different machines that use the same software environment. In this situation, it is tempting to set the tunings and optimization flags for each build specifically for the targeted hardware (i.e. "maxing out" the tunings). Doing so can considerably add to build times and package feed maintenance collectively for the machines. For example, selecting tunes that are extremely specific to a CPU core used in a system might enable some micro optimizations in GCC for that particular system but would otherwise not gain you much of a performance difference across the other systems as compared to using a more general tuning across all the builds (e.g. setting `DEFAULTTUNE` specifically for each machine's build). Rather than "max out" each build's tunings, you can take steps that cause the OpenEmbedded build system to reuse software across the various machines where it makes sense.
 
 If build speed and package feed maintenance are considerations, you should consider the points in this section that can help you optimize your tunings to best consider build times and package feed maintenance.
 
-+ Share the Build Directory: If at all possible, share the TMPDIR across builds. The Yocto Project supports switching between different MACHINE values in the same TMPDIR. This practice is well supported and regularly used by developers when building for multiple machines. When you use the same TMPDIR for multiple machine builds, the OpenEmbedded build system can reuse the existing native and often cross-recipes for multiple machines. Thus, build time decreases.
++ ***Share the Build Directory***: If at all possible, share the `TMPDIR` across builds. The Yocto Project supports switching between different `MACHINE` values in the same `TMPDIR`. This practice is well supported and regularly used by developers when building for multiple machines. When you use the same `TMPDIR` for multiple machine builds, the OpenEmbedded build system can reuse the existing native and often cross-recipes for multiple machines. Thus, build time decreases.
 
-> Note  
-> If DISTRO settings change or fundamental configuration settings such as the filesystem layout, you need to work with a clean TMPDIR. Sharing TMPDIR under these circumstances might work but since it is not guaranteed, you should use a clean TMPDIR.
+     > Note  
+     > If `DISTRO` settings change or fundamental configuration settings such as the filesystem layout, you need to work with a clean `TMPDIR`. Sharing `TMPDIR` under these circumstances might work but since it is not guaranteed, you should use a clean `TMPDIR`.
 
-+ Enable the Appropriate Package Architecture: By default, the OpenEmbedded build system enables three levels of package architectures: "all", "tune" or "package", and "machine". Any given recipe usually selects one of these package architectures (types) for its output. Depending for what a given recipe creates packages, making sure you enable the appropriate package architecture can directly impact the build time.
++ ***Enable the Appropriate Package Architecture***: By default, the OpenEmbedded build system enables three levels of package architectures: "all", "tune" or "package", and "machine". Any given recipe usually selects one of these package architectures (types) for its output. Depending for what a given recipe creates packages, making sure you enable the appropriate package architecture can directly impact the build time.
 
-    A recipe that just generates scripts can enable "all" architecture because there are no binaries to build. To specifically enable "all" architecture, be sure your recipe inherits the allarch class. This class is useful for "all" architectures because it configures many variables so packages can be used across multiple architectures.
+    A recipe that just generates scripts can enable "all" architecture because there are no binaries to build. To specifically enable "all" architecture, be sure your recipe inherits the `allarch` class. This class is useful for "all" architectures because it configures many variables so packages can be used across multiple architectures.
 
-    If your recipe needs to generate packages that are machine-specific or when one of the build or runtime dependencies is already machine-architecture dependent, which makes your recipe also machine-architecture dependent, make sure your recipe enables the "machine" package architecture through the MACHINE_ARCH variable:
-
+    If your recipe needs to generate packages that are machine-specific or when one of the build or runtime dependencies is already machine-architecture dependent, which makes your recipe also machine-architecture dependent, make sure your recipe enables the "machine" package architecture through the `MACHINE_ARCH` variable:
+     ```
          PACKAGE_ARCH = "${MACHINE_ARCH}"
-                        
-    When you do not specifically enable a package architecture through the PACKAGE_ARCH, The OpenEmbedded build system defaults to the TUNE_PKGARCH setting:
-
+     ```                   
+    When you do not specifically enable a package architecture through the PACKAGE_ARCH, The OpenEmbedded build system defaults to the `TUNE_PKGARCH` setting:
+     ```
         PACKAGE_ARCH = "${TUNE_PKGARCH}"
-                        
-+ Choose a Generic Tuning File if Possible: Some tunes are more generic and can run on multiple targets (e.g. an armv5 set of packages could run on armv6 and armv7 processors in most cases). Similarly, i486 binaries could work on i586 and higher processors. You should realize, however, that advances on newer processor versions would not be used.
+     ```                   
++ ***Choose a Generic Tuning File if Possible***: Some tunes are more generic and can run on multiple targets (e.g. an `armv5` set of packages could run on `armv6` and `armv7` processors in most cases). Similarly, `i486` binaries could work on `i586` and higher processors. You should realize, however, that advances on newer processor versions would not be used.
 
-If you select the same tune for several different machines, the OpenEmbedded build system reuses software previously built, thus speeding up the overall build time. Realize that even though a new sysroot for each machine is generated, the software is not recompiled and only one package feed exists.
+     If you select the same tune for several different machines, the OpenEmbedded build system reuses software previously built, thus speeding up the overall build time. Realize that even though a new sysroot for each machine is generated, the software is not recompiled and only one package feed exists.
 
-+ Manage Granular Level Packaging: Sometimes cases exist where injecting another level of package architecture beyond the three higher levels noted earlier can be useful. For example, consider how NXP (formerly Freescale) allows for the easy reuse of binary packages in their layer meta-freescale. In this example, the fsl-dynamic-packagearch class shares GPU packages for i.MX53 boards because all boards share the AMD GPU. The i.MX6-based boards can do the same because all boards share the Vivante GPU. This class inspects the BitBake datastore to identify if the package provides or depends on one of the sub-architecture values. If so, the class sets the PACKAGE_ARCH value based on the MACHINE_SUBARCH value. If the package does not provide or depend on one of the sub-architecture values but it matches a value in the machine-specific filter, it sets MACHINE_ARCH. This behavior reduces the number of packages built and saves build time by reusing binaries.
++ ***Manage Granular Level Packaging***: Sometimes cases exist where injecting another level of package architecture beyond the three higher levels noted earlier can be useful. For example, consider how NXP (formerly Freescale) allows for the easy reuse of binary packages in their layer `meta-freescale`. In this example, the `fsl-dynamic-packagearch` class shares GPU packages for i.MX53 boards because all boards share the AMD GPU. The i.MX6-based boards can do the same because all boards share the Vivante GPU. This class inspects the BitBake datastore to identify if the package provides or depends on one of the sub-architecture values. If so, the class sets the `PACKAGE_ARCH` value based on the `MACHINE_SUBARCH` value. If the package does not provide or depend on one of the sub-architecture values but it matches a value in the machine-specific filter, it sets `MACHINE_ARCH`. This behavior reduces the number of packages built and saves build time by reusing binaries.
 
-+ Use Tools to Debug Issues: Sometimes you can run into situations where software is being rebuilt when you think it should not be. For example, the OpenEmbedded build system might not be using shared state between machines when you think it should be. These types of situations are usually due to references to machine-specific variables such as MACHINE, SERIAL_CONSOLES, XSERVER, MACHINE_FEATURES, and so forth in code that is supposed to only be tune-specific or when the recipe depends (DEPENDS, RDEPENDS, RRECOMMENDS, RSUGGESTS, and so forth) on some other recipe that already has PACKAGE_ARCH defined as "${MACHINE_ARCH}".
++ ***Use Tools to Debug Issues***: Sometimes you can run into situations where software is being rebuilt when you think it should not be. For example, the OpenEmbedded build system might not be using shared state between machines when you think it should be. These types of situations are usually due to references to machine-specific variables such as `MACHINE`, `SERIAL_CONSOLES`, `XSERVER`, `MACHINE_FEATURES`, and so forth in code that is supposed to only be tune-specific or when the recipe depends (`DEPENDS`, `RDEPENDS`, `RRECOMMENDS`, `RSUGGESTS`, and so forth) on some other recipe that already has `PACKAGE_ARCH` defined as "${MACHINE_ARCH}".
 
     > Note  
     > Patches to fix any issues identified are most welcome as these issues occasionally do occur.
 
     For such cases, you can use some tools to help you sort out the situation:
 
-    + sstate-diff-machines.sh: You can find this tool in the scripts directory of the Source Repositories. See the comments in the script for information on how to use the tool.
+    + *sstate-diff-machines.sh*: You can find this tool in the `scripts` directory of the Source Repositories. See the comments in the script for information on how to use the tool.
 
-    + BitBake's "-S printdiff" Option: Using this option causes BitBake to try to establish the closest signature match it can (e.g. in the shared state cache) and then run bitbake-diffsigs over the matches to determine the stamps and delta where these two stamp trees diverge.
+    + ***BitBake's "-S printdiff" Option***: Using this option causes BitBake to try to establish the closest signature match it can (e.g. in the shared state cache) and then run `bitbake-diffsigs` over the matches to determine the stamps and delta where these two stamp trees diverge.
 
 ### 3.10.6 Building Software from an External Source
 By default, the OpenEmbedded build system uses the Build Directory when building source code. The build process involves fetching the source files, unpacking them, and then patching them if necessary before the build takes place.
 
-Situations exist where you might want to build software from source files that are external to and thus outside of the OpenEmbedded build system. For example, suppose you have a project that includes a new BSP with a heavily customized kernel. And, you want to minimize exposing the build system to the development team so that they can focus on their project and maintain everyone's workflow as much as possible. In this case, you want a kernel source directory on the development machine where the development occurs. You want the recipe's SRC_URI variable to point to the external directory and use it as is, not copy it.
+Situations exist where you might want to build software from source files that are external to and thus outside of the OpenEmbedded build system. For example, suppose you have a project that includes a new BSP with a heavily customized kernel. And, you want to minimize exposing the build system to the development team so that they can focus on their project and maintain everyone's workflow as much as possible. In this case, you want a kernel source directory on the development machine where the development occurs. You want the recipe's `SRC_URI` variable to point to the external directory and use it as is, not copy it.
 
-To build from software that comes from an external source, all you need to do is inherit the externalsrc class and then set the EXTERNALSRC variable to point to your external source code. Here are the statements to put in your local.conf file:
-
+To build from software that comes from an external source, all you need to do is inherit the `externalsrc` class and then set the `EXTERNALSRC` variable to point to your external source code. Here are the statements to put in your ``local.conf`` file:
+```
      INHERIT += "externalsrc"
      EXTERNALSRC_pn-myrecipe = "path-to-your-source-tree"
-                
-This next example shows how to accomplish the same thing by setting EXTERNALSRC in the recipe itself or in the recipe's append file:
-
+```                
+This next example shows how to accomplish the same thing by setting `EXTERNALSRC` in the recipe itself or in the recipe's append file:
+```
      EXTERNALSRC = "path"
      EXTERNALSRC_BUILD = "path"
-                
+```                
 > Note  
-> In order for these settings to take effect, you must globally or locally inherit the externalsrc class.
+> In order for these settings to take effect, you must globally or locally inherit the `externalsrc` class.
 
-By default, externalsrc.bbclass builds the source code in a directory separate from the external source directory as specified by EXTERNALSRC. If you need to have the source built in the same directory in which it resides, or some other nominated directory, you can set EXTERNALSRC_BUILD to point to that directory:
-
+By default, `externalsrc.bbclass` builds the source code in a directory separate from the external source directory as specified by `EXTERNALSRC`. If you need to have the source built in the same directory in which it resides, or some other nominated directory, you can set `EXTERNALSRC_BUILD` to point to that directory:
+```
      EXTERNALSRC_BUILD_pn-myrecipe = "path-to-your-source-tree"
-
+```
 ### 3.10.7 Replicating a Build Offline
 It can be useful to take a "snapshot" of upstream sources used in a build and then use that "snapshot" later to replicate the build offline. To do so, you need to first prepare and populate your downloads directory your "snapshot" of files. Once your downloads directory is ready, you can use it at any time and from any machine to replicate your build.
 
 Follow these steps to populate your Downloads directory:
 
-1. Create a Clean Downloads Directory: Start with an empty downloads directory (DL_DIR). You start with an empty downloads directory by either removing the files in the existing directory or by setting DL_DIR to point to either an empty location or one that does not yet exist.
+1. ***Create a Clean Downloads Directory***: Start with an empty downloads directory (`DL_DIR`). You start with an empty downloads directory by either removing the files in the existing directory or by setting `DL_DIR` to point to either an empty location or one that does not yet exist.
 
-2. Generate Tarballs of the Source Git Repositories: Edit your local.conf configuration file as follows:
+2. ***Generate Tarballs of the Source Git Repositories***: Edit your ``local.conf`` configuration file as follows:
 
      DL_DIR = "/home/your-download-dir/"
      BB_GENERATE_MIRROR_TARBALLS = "1"
                         
-During the fetch process in the next step, BitBake gathers the source files and creates tarballs in the directory pointed to by DL_DIR. See the BB_GENERATE_MIRROR_TARBALLS variable for more information.
+     During the fetch process in the next step, BitBake gathers the source files and creates tarballs in the directory pointed to by `DL_DIR`. See the `BB_GENERATE_MIRROR_TARBALLS` variable for more information.
 
-3. Populate Your Downloads Directory Without Building: Use BitBake to fetch your sources but inhibit the build:
+3. ***Populate Your Downloads Directory Without Building***: Use BitBake to fetch your sources but inhibit the build:
 
      $ bitbake target --runonly=fetch
                         
-The downloads directory (i.e. ${DL_DIR}) now has a "snapshot" of the source files in the form of tarballs, which can be used for the build.
+     The downloads directory (i.e. `${DL_DIR}`) now has a "snapshot" of the source files in the form of tarballs, which can be used for the build.
 
-4. Optionally Remove Any Git or other SCM Subdirectories From the Downloads Directory: If you want, you can clean up your downloads directory by removing any Git or other Source Control Management (SCM) subdirectories such as ${DL_DIR}/git2/*. The tarballs already contain these subdirectories.
+4. ***Optionally Remove Any Git or other SCM Subdirectories From the Downloads Directory***: If you want, you can clean up your downloads directory by removing any Git or other Source Control Management (SCM) subdirectories such as `${DL_DIR}/git2/*`. The tarballs already contain these subdirectories.
 
 Once your downloads directory has everything it needs regarding source files, you can create your "own-mirror" and build your target. Understand that you can use the files to build the target offline from any machine and at any time.
 
 Follow these steps to build your target using the files in the downloads directory:
 
-1. Using Local Files Only: Inside your local.conf file, add the SOURCE_MIRROR_URL variable, inherit the own-mirrors class, and use the BB_NO_NETWORK variable to your local.conf.
+1. ***Using Local Files Only***: Inside your ``local.conf`` file, add the `SOURCE_MIRROR_URL` variable, inherit the `own-mirrors` class, and use the `BB_NO_NETWORK` variable to your ``local.conf``.
 
      SOURCE_MIRROR_URL ?= "file:///home/your-download-dir/"
      INHERIT += "own-mirrors"
      BB_NO_NETWORK = "1"
                         
-The SOURCE_MIRROR_URL and own-mirror class set up the system to use the downloads directory as your "own mirror". Using the BB_NO_NETWORK variable makes sure that BitBake's fetching process in step 3 stays local, which means files from your "own-mirror" are used.
+The `SOURCE_MIRROR_URL` and `own-mirror` class set up the system to use the downloads directory as your "own mirror". Using the `BB_NO_NETWORK` variable makes sure that BitBake's fetching process in step 3 stays local, which means files from your "own-mirror" are used.
 
-2. Start With a Clean Build: You can start with a clean build by removing the ${TMPDIR} directory or using a new Build Directory.
+2. ***Start With a Clean Build***: You can start with a clean build by removing the `${TMPDIR}` directory or using a new Build Directory.
 
-3. Build Your Target: Use BitBake to build your target:
+3. ***Build Your Target***: Use BitBake to build your target:
 
          $ bitbake target
                         
     The build completes using the known local "snapshot" of source files from your mirror. The resulting tarballs for your "snapshot" of source files are in the downloads directory.
 
     > Note  
-    > The offline build does not work if recipes attempt to find the latest version of software by setting SRCREV to ${AUTOREV}:
+    > The offline build does not work if recipes attempt to find the latest version of software by setting `SRCREV` to `${AUTOREV}`:
     >
     >     SRCREV = "${AUTOREV}"
     >                        
-    > When a recipe sets SRCREV to ${AUTOREV}, the build system accesses the network in an attempt to determine the latest version of software from the SCM. Typically, recipes that use AUTOREV are custom or modified recipes. Recipes that reside in public repositories usually do not use AUTOREV.  
-    > If you do have recipes that use AUTOREV, you can take steps to still use the recipes in an offline build. Do the following:  
+    > When a recipe sets `SRCREV` to `${AUTOREV}`, the build system accesses the network in an attempt to determine the latest version of software from the SCM. Typically, recipes that use `AUTOREV` are custom or modified recipes. Recipes that reside in public repositories usually do not use `AUTOREV`.  
+    > If you do have recipes that use `AUTOREV`, you can take steps to still use the recipes in an offline build. Do the following:  
     > a. Use a configuration generated by enabling build history.  
-    > b. Use the buildhistory-collect-srcrevs command to collect the stored SRCREV values from the build's history. For more information on collecting these values, see the "Build History Package Information" section.  
-    > c. Once you have the correct source revisions, you can modify those recipes to to set SRCREV to specific versions of the software.
+    > b. Use the `buildhistory-collect-srcrevs` command to collect the stored `SRCREV` values from the build's history. For more information on collecting these values, see the "Build History Package Information" section.  
+    > c. Once you have the correct source revisions, you can modify those recipes to to set `SRCREV` to specific versions of the software.
 
 ## 3.11 Speeding Up a Build
 Build time can be an issue. By default, the build system uses simple controls to try and maximize build efficiency. In general, the default settings for all the following variables result in the most efficient build times when dealing with single socket systems (i.e. a single CPU). If you have multiple CPUs, you might try increasing the default values to gain more speed. See the descriptions in the glossary for each variable for more information:
 
-+ BB_NUMBER_THREADS: The maximum number of threads BitBake simultaneously executes.
++ [`BB_NUMBER_THREADS`](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BB_NUMBER_THREADS): The maximum number of threads BitBake simultaneously executes.
 
-+ BB_NUMBER_PARSE_THREADS: The number of threads BitBake uses during parsing.
++ [`BB_NUMBER_PARSE_THREADS`](http://www.yoctoproject.org/docs/2.7/bitbake-user-manual/bitbake-user-manual.html#var-BB_NUMBER_PARSE_THREADS): The number of threads BitBake uses during parsing.
 
-+ PARALLEL_MAKE: Extra options passed to the make command during the do_compile task in order to specify parallel compilation on the local build host.
++ [`PARALLEL_MAKE`](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-PARALLEL_MAKE): Extra options passed to the make command during the `do_compile` task in order to specify parallel compilation on the local build host.
 
-+ PARALLEL_MAKEINST: Extra options passed to the make command during the do_install task in order to specify parallel installation on the local build host.
++ [`PARALLEL_MAKEINST`](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-PARALLEL_MAKEINST): Extra options passed to the make command during the `do_install` task in order to specify parallel installation on the local build host.
 
 As mentioned, these variables all scale to the number of processor cores available on the build system. For single socket systems, this auto-scaling ensures that the build system fundamentally takes advantage of potential parallel operations during the build based on the build machine's capabilities.
 
 Following are additional factors that can affect build speed:
 
-+ File system type: The file system type that the build is being performed on can also influence performance. Using ext4 is recommended as compared to ext2 and ext3 due to ext4 improved features such as extents.
++ File system type: The file system type that the build is being performed on can also influence performance. Using ext4 is recommended as compared to `ext2` and `ext3` due to `ext4` improved features such as extents.
 
-+ Disabling the updating of access time using noatime: The noatime mount option prevents the build system from updating file and directory access times.
++ Disabling the updating of access time using `noatime`: The `noatime` mount option prevents the build system from updating file and directory access times.
 
 + Setting a longer commit: Using the "commit=" mount option increases the interval in seconds between disk cache writes. Changing this interval from the five second default to something longer increases the risk of data loss but decreases the need to write to the disk, thus increasing the build performance.
 
 + Choosing the packaging backend: Of the available packaging backends, IPK is the fastest. Additionally, selecting a singular packaging backend also helps.
 
-+ Using tmpfs for TMPDIR as a temporary file system: While this can help speed up the build, the benefits are limited due to the compiler using -pipe. The build system goes to some lengths to avoid sync() calls into the file system on the principle that if there was a significant failure, the Build Directory contents could easily be rebuilt.
++ Using `tmpfs` for `TMPDIR` as a temporary file system: While this can help speed up the build, the benefits are limited due to the compiler using -pipe. The build system goes to some lengths to avoid `sync`() calls into the file system on the principle that if there was a significant failure, the Build Directory contents could easily be rebuilt.
 
-+ Inheriting the rm_work class: Inheriting this class has shown to speed up builds due to significantly lower amounts of data stored in the data cache as well as on disk. Inheriting this class also makes cleanup of TMPDIR faster, at the expense of being easily able to dive into the source code. File system maintainers have recommended that the fastest way to clean up large numbers of files is to reformat partitions rather than delete files due to the linear nature of partitions. This, of course, assumes you structure the disk partitions and file systems in a way that this is practical.
++ Inheriting the `rm_work` class: Inheriting this class has shown to speed up builds due to significantly lower amounts of data stored in the data cache as well as on disk. Inheriting this class also makes cleanup of `TMPDIR` faster, at the expense of being easily able to dive into the source code. File system maintainers have recommended that the fastest way to clean up large numbers of files is to reformat partitions rather than delete files due to the linear nature of partitions. This, of course, assumes you structure the disk partitions and file systems in a way that this is practical.
 
 Aside from the previous list, you should keep some trade offs in mind that can help you speed up the build:
 
-+ Remove items from DISTRO_FEATURES that you might not need.
++ Remove items from `DISTRO_FEATURES` that you might not need.
 
-+ Exclude debug symbols and other debug information: If you do not need these symbols and other debug information, disabling the *-dbg package generation can speed up the build. You can disable this generation by setting the INHIBIT_PACKAGE_DEBUG_SPLIT variable to "1".
++ Exclude debug symbols and other debug information: If you do not need these symbols and other debug information, disabling the `*-dbg` package generation can speed up the build. You can disable this generation by setting the `INHIBIT_PACKAGE_DEBUG_SPLIT` variable to "1".
 
-+ Disable static library generation for recipes derived from autoconf or libtool: Following is an example showing how to disable static libraries and still provide an override to handle exceptions:
-
++ Disable static library generation for recipes derived from `autoconf` or `libtool`: Following is an example showing how to disable static libraries and still provide an override to handle exceptions:
+     ```
      STATICLIBCONF = "--disable-static"
      STATICLIBCONF_sqlite3-native = ""
      EXTRA_OECONF += "${STATICLIBCONF}"
-                    
-> Notes  
-> Some recipes need static libraries in order to work correctly (e.g. pseudo-native needs sqlite3-native). Overrides, as in the previous example, account for these kinds of exceptions.  
-> Some packages have packaging code that assumes the presence of the static libraries. If so, you might need to exclude them as well.
+     ```                    
+     > **Notes**  
+     > Some recipes need static libraries in order to work correctly (e.g. `pseudo-native` needs `sqlite3-native`). Overrides, as in the previous example, account for these kinds of exceptions.  
+     > Some packages have packaging code that assumes the presence of the static libraries. If so, you might need to exclude them as well.
 
 ## 3.12 Working With Libraries
 Libraries are an integral part of your system. This section describes some common practices you might find helpful when working with libraries to build your system:
 
-+ How to include static library files
++ [How to include static library files](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#including-static-library-files)
 
-+ How to use the Multilib feature to combine multiple versions of library files into a single image
++ [How to use the Multilib feature to combine multiple versions of library files into a single image](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#combining-multiple-versions-library-files-into-one-image)
 
-+ How to install multiple versions of the same library in parallel on the same system
++ [How to install multiple versions of the same library in parallel on the same system](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#installing-multiple-versions-of-the-same-library)
 
 ### 3.12.1 Including Static Library Files
-If you are building a library and the library offers static linking, you can control which static library files (*.a files) get included in the built library.
+If you are building a library and the library offers static linking, you can control which static library files (`*.a` files) get included in the built library.
 
-The PACKAGES and FILES_* variables in the meta/conf/bitbake.conf configuration file define how files installed by the do_install task are packaged. By default, the PACKAGES variable includes ${PN}-staticdev, which represents all static library files.
+The `PACKAGES` and `FILES_*` variables in the `meta/conf/bitbake.conf` configuration file define how files installed by the `do_install` task are packaged. By default, the `PACKAGES` variable includes ``${PN}`-staticdev`, which represents all static library files.
 
 > Note  
-> Some previously released versions of the Yocto Project defined the static library files through ${PN}-dev.
+> Some previously released versions of the Yocto Project defined the static library files through ``${PN}`-dev`.
 
 Following is part of the BitBake configuration file, where you can see how the static library files are defined:
-
+```
      PACKAGE_BEFORE_PN ?= ""
-     PACKAGES = "${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale ${PACKAGE_BEFORE_PN} ${PN}"
-     PACKAGES_DYNAMIC = "^${PN}-locale-.*"
+     PACKAGES = "`${PN}`-dbg `${PN}`-staticdev `${PN}`-dev `${PN}`-doc `${PN}`-locale ${PACKAGE_BEFORE_PN} `${PN}`"
+     PACKAGES_DYNAMIC = "^`${PN}`-locale-.*"
      FILES = ""
 
-     FILES_${PN} = "${bindir}/* ${sbindir}/* ${libexecdir}/* ${libdir}/lib*${SOLIBS} \
+     FILES_`${PN}` = "${bindir}/* ${sbindir}/* ${libexecdir}/* ${libdir}/lib*${SOLIBS} \
                  ${sysconfdir} ${sharedstatedir} ${localstatedir} \
                  ${base_bindir}/* ${base_sbindir}/* \
                  ${base_libdir}/*${SOLIBS} \
@@ -2371,24 +2376,25 @@ Following is part of the BitBake configuration file, where you can see how the s
                  ${datadir}/idl ${datadir}/omf ${datadir}/sounds \
                  ${libdir}/bonobo/servers"
 
-     FILES_${PN}-bin = "${bindir}/* ${sbindir}/*"
+     FILES_`${PN}`-bin = "${bindir}/* ${sbindir}/*"
 
-     FILES_${PN}-doc = "${docdir} ${mandir} ${infodir} ${datadir}/gtk-doc \
+     FILES_`${PN}`-doc = "${docdir} ${mandir} ${infodir} ${datadir}/gtk-doc \
                  ${datadir}/gnome/help"
-     SECTION_${PN}-doc = "doc"
+     SECTION_`${PN}`-doc = "doc"
 
      FILES_SOLIBSDEV ?= "${base_libdir}/lib*${SOLIBSDEV} ${libdir}/lib*${SOLIBSDEV}"
-     FILES_${PN}-dev = "${includedir} ${FILES_SOLIBSDEV} ${libdir}/*.la \
+     FILES_`${PN}`-dev = "${includedir} ${FILES_SOLIBSDEV} ${libdir}/*.la \
                      ${libdir}/*.o ${libdir}/pkgconfig ${datadir}/pkgconfig \
                      ${datadir}/aclocal ${base_libdir}/*.o \
                      ${libdir}/${BPN}/*.la ${base_libdir}/*.la"
-     SECTION_${PN}-dev = "devel"
-     ALLOW_EMPTY_${PN}-dev = "1"
-     RDEPENDS_${PN}-dev = "${PN} (= ${EXTENDPKGV})"
+     SECTION_`${PN}`-dev = "devel"
+     ALLOW_EMPTY_`${PN}`-dev = "1"
+     RDEPENDS_`${PN}`-dev = "`${PN}` (= ${EXTENDPKGV})"
 
-     FILES_${PN}-staticdev = "${libdir}/*.a ${base_libdir}/*.a ${libdir}/${BPN}/*.a"
-     SECTION_${PN}-staticdev = "devel"
-     RDEPENDS_${PN}-staticdev = "${PN}-dev (= ${EXTENDPKGV})"
+     FILES_`${PN}`-staticdev = "${libdir}/*.a ${base_libdir}/*.a ${libdir}/${BPN}/*.a"
+     SECTION_`${PN}`-staticdev = "devel"
+     RDEPENDS_`${PN}`-staticdev = "`${PN}`-dev (= ${EXTENDPKGV})"
+```
 
 ### 3.12.2 Combining Multiple Versions of Library Files into One Image
 The build system offers the ability to build libraries with different target optimizations or architecture formats and combine these together into one system image. You can link different binaries in the image against the different libraries as needed for specific use cases. This feature is called "Multilib."
@@ -2397,52 +2403,52 @@ An example would be where you have most of a system compiled in 32-bit mode usin
 
 While the Multilib feature is most commonly used for 32 and 64-bit differences, the approach the build system uses facilitates different target optimizations. You could compile some binaries to use one set of libraries and other binaries to use a different set of libraries. The libraries could differ in architecture, compiler options, or other optimizations.
 
-Several examples exist in the meta-skeleton layer found in the Source Directory:
+Several examples exist in the `meta-skeleton` layer found in the Source Directory:
 
-+ conf/multilib-example.conf configuration file
++ `conf/multilib-example.conf` configuration file
 
-+ conf/multilib-example2.conf configuration file
++ `conf/multilib-example2.conf` configuration file
 
-+ recipes-multilib/images/core-image-multilib-example.bb recipe
++ `recipes-multilib/images/core-image-multilib-example.bb` recipe
 
 #### 3.12.2.1 Preparing to Use Multilib
 User-specific requirements drive the Multilib feature. Consequently, there is no one "out-of-the-box" configuration that likely exists to meet your needs.
 
-In order to enable Multilib, you first need to ensure your recipe is extended to support multiple libraries. Many standard recipes are already extended and support multiple libraries. You can check in the meta/conf/multilib.conf configuration file in the Source Directory to see how this is done using the BBCLASSEXTEND variable. Eventually, all recipes will be covered and this list will not be needed.
+In order to enable Multilib, you first need to ensure your recipe is extended to support multiple libraries. Many standard recipes are already extended and support multiple libraries. You can check in the `meta/conf/multilib.conf` configuration file in the Source Directory to see how this is done using the `BBCLASSEXTEND` variable. Eventually, all recipes will be covered and this list will not be needed.
 
-For the most part, the Multilib class extension works automatically to extend the package name from ${PN} to ${MLPREFIX}${PN}, where MLPREFIX is the particular multilib (e.g. "lib32-" or "lib64-"). Standard variables such as DEPENDS, RDEPENDS, RPROVIDES, RRECOMMENDS, PACKAGES, and PACKAGES_DYNAMIC are automatically extended by the system. If you are extending any manual code in the recipe, you can use the ${MLPREFIX} variable to ensure those names are extended correctly. This automatic extension code resides in multilib.bbclass.
+For the most part, the Multilib class extension works automatically to extend the package name from ``${PN}`` to `${MLPREFIX}`${PN}``, where `MLPREFIX` is the particular multilib (e.g. "lib32-" or "lib64-"). Standard variables such as `DEPENDS`, `RDEPENDS`, `RPROVIDES`, `RRECOMMENDS`, `PACKAGES`, and `PACKAGES_DYNAMIC` are automatically extended by the system. If you are extending any manual code in the recipe, you can use the `${MLPREFIX}` variable to ensure those names are extended correctly. This automatic extension code resides in `multilib.bbclass`.
 
 #### 3.12.2.2 Using Multilib
-After you have set up the recipes, you need to define the actual combination of multiple libraries you want to build. You accomplish this through your local.conf configuration file in the Build Directory. An example configuration would be as follows:
-
+After you have set up the recipes, you need to define the actual combination of multiple libraries you want to build. You accomplish this through your ``local.conf`` configuration file in the Build Directory. An example configuration would be as follows:
+```
      MACHINE = "qemux86-64"
      require conf/multilib.conf
      MULTILIBS = "multilib:lib32"
      DEFAULTTUNE_virtclass-multilib-lib32 = "x86"
      IMAGE_INSTALL_append = " lib32-glib-2.0"
-                    
-This example enables an additional library named lib32 alongside the normal target packages. When combining these "lib32" alternatives, the example uses "x86" for tuning. For information on this particular tuning, see meta/conf/machine/include/ia32/arch-ia32.inc.
+```                    
+This example enables an additional library named `lib32` alongside the normal target packages. When combining these "lib32" alternatives, the example uses "x86" for tuning. For information on this particular tuning, see `meta/conf/machine/include/ia32/arch-ia32.inc`.
 
-The example then includes lib32-glib-2.0 in all the images, which illustrates one method of including a multiple library dependency. You can use a normal image build to include this dependency, for example:
-
+The example then includes `lib32-glib-2.0` in all the images, which illustrates one method of including a multiple library dependency. You can use a normal image build to include this dependency, for example:
+```
      $ bitbake core-image-sato
-                    
+```                    
 You can also build Multilib packages specifically with a command like this:
-
+```
      $ bitbake lib32-glib-2.0
-
+```
 #### 3.12.2.3 Additional Implementation Details
 Generic implementation details as well as details that are specific to package management systems exist. Following are implementation details that exist regardless of the package management system:
 
-+ The typical convention used for the class extension code as used by Multilib assumes that all package names specified in PACKAGES that contain ${PN} have ${PN} at the start of the name. When that convention is not followed and ${PN} appears at the middle or the end of a name, problems occur.
++ The typical convention used for the class extension code as used by Multilib assumes that all package names specified in `PACKAGES` that contain `${PN}` have `${PN}` at the start of the name. When that convention is not followed and `${PN}` appears at the middle or the end of a name, problems occur.
 
-+ The TARGET_VENDOR value under Multilib will be extended to "-vendormlmultilib" (e.g. "-pokymllib32" for a "lib32" Multilib with Poky). The reason for this slightly unwieldy contraction is that any "-" characters in the vendor string presently break Autoconf's config.sub, and other separators are problematic for different reasons.
++ The `TARGET_VENDOR` value under Multilib will be extended to "-vendormlmultilib" (e.g. "-pokymllib32" for a "lib32" Multilib with Poky). The reason for this slightly unwieldy contraction is that any "-" characters in the vendor string presently break Autoconf's `config.sub`, and other separators are problematic for different reasons.
 
 For the RPM Package Management System, the following implementation details exist:
 
-+ A unique architecture is defined for the Multilib packages, along with creating a unique deploy folder under tmp/deploy/rpm in the Build Directory. For example, consider lib32 in a qemux86-64 image. The possible architectures in the system are "all", "qemux86_64", "lib32_qemux86_64", and "lib32_x86".
++ A unique architecture is defined for the Multilib packages, along with creating a unique deploy folder under `tmp/deploy/rpm` in the Build Directory. For example, consider `lib32` in a `qemux86-64` image. The possible architectures in the system are "all", "qemux86_64", "lib32_qemux86_64", and "lib32_x86".
 
-+ The ${MLPREFIX} variable is stripped from ${PN} during RPM packaging. The naming for a normal RPM package and a Multilib RPM package in a qemux86-64 system resolves to something similar to bash-4.1-r2.x86_64.rpm and bash-4.1.r2.lib32_x86.rpm, respectively.
++ The `${MLPREFIX}` variable is stripped from `${PN}` during RPM packaging. The naming for a normal RPM package and a Multilib RPM package in a `qemux86-64` system resolves to something similar to `bash-4.1-r2.x86_64.rpm` and `bash-4.1.r2.lib32_x86.rpm`, respectively.
 
 + When installing a Multilib image, the RPM backend first installs the base image and then installs the Multilib libraries.
 
@@ -2450,24 +2456,24 @@ For the RPM Package Management System, the following implementation details exis
 
 For the IPK Package Management System, the following implementation details exist:
 
-+ The ${MLPREFIX} is not stripped from ${PN} during IPK packaging. The naming for a normal RPM package and a Multilib IPK package in a qemux86-64 system resolves to something like bash_4.1-r2.x86_64.ipk and lib32-bash_4.1-rw_x86.ipk, respectively.
++ The `${MLPREFIX}` is not stripped from `${PN}` during IPK packaging. The naming for a normal RPM package and a Multilib IPK package in a `qemux86-64` system resolves to something like `bash_4.1-r2.x86_64.ipk` and `lib32-bash_4.1-rw_x86.ipk`, respectively.
 
-+ The IPK deploy folder is not modified with ${MLPREFIX} because packages with and without the Multilib feature can exist in the same folder due to the ${PN} differences.
++ The IPK deploy folder is not modified with `${MLPREFIX}` because packages with and without the Multilib feature can exist in the same folder due to the `${PN}` differences.
 
 + IPK defines a sanity check for Multilib installation using certain rules for file comparison, overridden, etc.
 
 ### 3.12.3 Installing Multiple Versions of the Same Library
 Situations can exist where you need to install and use multiple versions of the same library on the same system at the same time. These situations almost always exist when a library API changes and you have multiple pieces of software that depend on the separate versions of the library. To accommodate these situations, you can install multiple versions of the same library in parallel on the same system.
 
-The process is straightforward as long as the libraries use proper versioning. With properly versioned libraries, all you need to do to individually specify the libraries is create separate, appropriately named recipes where the PN part of the name includes a portion that differentiates each library version (e.g.the major part of the version number). Thus, instead of having a single recipe that loads one version of a library (e.g. clutter), you provide multiple recipes that result in different versions of the libraries you want. As an example, the following two recipes would allow the two separate versions of the clutter library to co-exist on the same system:
-
+The process is straightforward as long as the libraries use proper versioning. With properly versioned libraries, all you need to do to individually specify the libraries is create separate, appropriately named recipes where the `PN` part of the name includes a portion that differentiates each library version (e.g.the major part of the version number). Thus, instead of having a single recipe that loads one version of a library (e.g. `clutter`), you provide multiple recipes that result in different versions of the libraries you want. As an example, the following two recipes would allow the two separate versions of the clutter library to co-exist on the same system:
+```
      clutter-1.6_1.6.20.bb
      clutter-1.8_1.8.4.bb
-                
-Additionally, if you have other recipes that depend on a given library, you need to use the DEPENDS variable to create the dependency. Continuing with the same example, if you want to have a recipe depend on the 1.8 version of the clutter library, use the following in your recipe:
-
+```                
+Additionally, if you have other recipes that depend on a given library, you need to use the DEPENDS variable to create the dependency. Continuing with the same example, if you want to have a recipe depend on the 1.8 version of the `clutter` library, use the following in your recipe:
+```
      DEPENDS = "clutter-1.8"
-
+```
 ## 3.13. Using x32 psABI
 x32 processor-specific Application Binary Interface (x32 psABI) is a native 32-bit processor-specific ABI for Intel® 64 (x86-64) architectures. An ABI defines the calling conventions between functions in a processing environment. The interface determines what registers are used and what the sizes are for various C data types.
 
@@ -2475,31 +2481,31 @@ Some processing environments prefer using 32-bit applications even when running 
 
 The Yocto Project supports the final specifications of x32 psABI as follows:
 
-You can create packages and images in x32 psABI format on x86_64 architecture targets.
++ You can create packages and images in x32 psABI format on x86_64 architecture targets.
 
-You can successfully build recipes with the x32 toolchain.
++ You can successfully build recipes with the x32 toolchain.
 
-You can create and boot core-image-minimal and core-image-sato images.
++ You can create and boot `core-image-minimal` and `core-image-sato` images.
 
-RPM Package Manager (RPM) support exists for x32 binaries.
++ RPM Package Manager (RPM) support exists for x32 binaries.
 
-Support for large images exists.
++ Support for large images exists.
 
-To use the x32 psABI, you need to edit your conf/local.conf configuration file as follows:
-
+To use the x32 psABI, you need to edit your `conf/`local.conf`` configuration file as follows:
+```
      MACHINE = "qemux86-64"
      DEFAULTTUNE = "x86-64-x32"
      baselib = "${@d.getVar('BASE_LIB_tune-' + (d.getVar('DEFAULTTUNE') \
         or 'INVALID')) or 'lib'}"
-            
+```            
 Once you have set up your configuration file, use BitBake to build an image that supports the x32 psABI. Here is an example:
-
+```
      $ bitbake core-image-sato
-
+```
 ## 3.14 Enabling GObject Introspection Support
 GObject introspection is the standard mechanism for accessing GObject-based software from runtime environments. GObject is a feature of the GLib library that provides an object framework for the GNOME desktop and related software. GObject Introspection adds information to GObject that allows objects created within it to be represented across different programming languages. If you want to construct GStreamer pipelines using Python, or control UPnP infrastructure using Javascript and GUPnP, GObject introspection is the only way to do it.
 
-This section describes the Yocto Project support for generating and packaging GObject introspection data. GObject introspection data is a description of the API provided by libraries built on top of GLib framework, and, in particular, that framework's GObject mechanism. GObject Introspection Repository (GIR) files go to -dev packages, typelib files go to main packages as they are packaged together with libraries that are introspected.
+This section describes the Yocto Project support for generating and packaging GObject introspection data. GObject introspection data is a description of the API provided by libraries built on top of GLib framework, and, in particular, that framework's GObject mechanism. GObject Introspection Repository (GIR) files go to `-dev` packages, `typelib` files go to main packages as they are packaged together with libraries that are introspected.
 
 The data is generated when building such a library, by linking the library with a small executable binary that asks the library to describe itself, and then executing the binary and processing its output.
 
@@ -2508,17 +2514,18 @@ Generating this data in a cross-compilation environment is difficult because the
 ### 3.14.1 Enabling the Generation of Introspection Data
 Enabling the generation of introspection data (GIR files) in your library package involves the following:
 
-Inherit the gobject-introspection class.
+1. Inherit the `gobject-introspection` class.
 
-Make sure introspection is not disabled anywhere in the recipe or from anything the recipe includes. Also, make sure that "gobject-introspection-data" is not in DISTRO_FEATURES_BACKFILL_CONSIDERED and that "qemu-usermode" is not in MACHINE_FEATURES_BACKFILL_CONSIDERED. If either of these conditions exist, nothing will happen.
+2. Make sure introspection is not disabled anywhere in the recipe or from anything the recipe includes. Also, make sure that "gobject-introspection-data" is not in `DISTRO_FEATURES_BACKFILL_CONSIDERED` and that "qemu-usermode" is not in `MACHINE_FEATURES_BACKFILL_CONSIDERED`. If either of these conditions exist, nothing will happen.
 
-Try to build the recipe. If you encounter build errors that look like something is unable to find .so libraries, check where these libraries are located in the source tree and add the following to the recipe:
-
+3. Try to build the recipe. If you encounter build errors that look like something is unable to find `.so` libraries, check where these libraries are located in the source tree and add the following to the recipe:
+     ```
      GIR_EXTRA_LIBS_PATH = "${B}/something/.libs"
-                        
-Note
-See recipes in the oe-core repository that use that GIR_EXTRA_LIBS_PATH variable as an example.
-Look for any other errors, which probably mean that introspection support in a package is not entirely standard, and thus breaks down in a cross-compilation environment. For such cases, custom-made fixes are needed. A good place to ask and receive help in these cases is the Yocto Project mailing lists.
+     ```                   
+     > Note  
+     > See recipes in the `oe-core` repository that use that `GIR_EXTRA_LIBS_PATH` variable as an example.
+
+4. Look for any other errors, which probably mean that introspection support in a package is not entirely standard, and thus breaks down in a cross-compilation environment. For such cases, custom-made fixes are needed. A good place to ask and receive help in these cases is the Yocto Project mailing lists.
 
 Note
 Using a library that no longer builds against the latest Yocto Project release and prints introspection related errors is a good candidate for the previous procedure.
@@ -2526,28 +2533,29 @@ Using a library that no longer builds against the latest Yocto Project release a
 ### 3.14.2 Disabling the Generation of Introspection Data
 You might find that you do not want to generate introspection data. Or, perhaps QEMU does not work on your build host and target architecture combination. If so, you can use either of the following methods to disable GIR file generations:
 
-Add the following to your distro configuration:
++ Add the following to your distro configuration:
 
      DISTRO_FEATURES_BACKFILL_CONSIDERED = "gobject-introspection-data"
                         
-Adding this statement disables generating introspection data using QEMU but will still enable building introspection tools and libraries (i.e. building them does not require the use of QEMU).
+     Adding this statement disables generating introspection data using QEMU but will still enable building introspection tools and libraries (i.e. building them does not require the use of QEMU).
 
-Add the following to your machine configuration:
++ Add the following to your machine configuration:
 
      MACHINE_FEATURES_BACKFILL_CONSIDERED = "qemu-usermode"
                         
-Adding this statement disables the use of QEMU when building packages for your machine. Currently, this feature is used only by introspection recipes and has the same effect as the previously described option.
+     Adding this statement disables the use of QEMU when building packages for your machine. Currently, this feature is used only by introspection recipes and has the same effect as the previously described option.
 
-Note
-Future releases of the Yocto Project might have other features affected by this option.
+     > Note  
+     > Future releases of the Yocto Project might have other features affected by this option.
+
 If you disable introspection data, you can still obtain it through other means such as copying the data from a suitable sysroot, or by generating it on the target hardware. The OpenEmbedded build system does not currently provide specific support for these techniques.
 
 ### 3.14.3 Testing that Introspection Works in an Image
 Use the following procedure to test if generating introspection data is working in an image:
 
-1. Make sure that "gobject-introspection-data" is not in DISTRO_FEATURES_BACKFILL_CONSIDERED and that "qemu-usermode" is not in MACHINE_FEATURES_BACKFILL_CONSIDERED.
+1. Make sure that "gobject-introspection-data" is not in `DISTRO_FEATURES_BACKFILL_CONSIDERED` and that "qemu-usermode" is not in `MACHINE_FEATURES_BACKFILL_CONSIDERED`.
 
-2. Build core-image-sato.
+2. Build `core-image-sato`.
 
 3. Launch a Terminal and then start Python in the terminal.
 
@@ -2563,91 +2571,92 @@ Use the following procedure to test if generating introspection data is working 
 ### 3.14.4 Known Issues
 The following know issues exist for GObject Introspection Support:
 
-+ qemu-ppc64 immediately crashes. Consequently, you cannot build introspection data on that architecture.
++ `qemu-ppc64` immediately crashes. Consequently, you cannot build introspection data on that architecture.
 
 + x32 is not supported by QEMU. Consequently, introspection data is disabled.
 
 + musl causes transient GLib binaries to crash on assertion failures. Consequently, generating introspection data is disabled.
 
-+ Because QEMU is not able to run the binaries correctly, introspection is disabled for some specific packages under specific architectures (e.g. gcr, libsecret, and webkit).
++ Because QEMU is not able to run the binaries correctly, introspection is disabled for some specific packages under specific architectures (e.g. `gcr`, `libsecret`, and `webkit`).
 
 + QEMU usermode might not work properly when running 64-bit binaries under 32-bit host machines. In particular, "qemumips64" is known to not work under i686.
 
 ## 3.15 Optionally Using an External Toolchain
 You might want to use an external toolchain as part of your development. If this is the case, the fundamental steps you need to accomplish are as follows:
 
-Understand where the installed toolchain resides. For cases where you need to build the external toolchain, you would need to take separate steps to build and install the toolchain.
++ Understand where the installed toolchain resides. For cases where you need to build the external toolchain, you would need to take separate steps to build and install the toolchain.
 
-Make sure you add the layer that contains the toolchain to your bblayers.conf file through the BBLAYERS variable.
++ Make sure you add the layer that contains the toolchain to your ``bblayers.conf`` file through the BBLAYERS variable.
 
-Set the EXTERNAL_TOOLCHAIN variable in your local.conf file to the location in which you installed the toolchain.
++ Set the `EXTERNAL_TOOLCHAIN` variable in your ``local.conf`` file to the location in which you installed the toolchain.
 
-A good example of an external toolchain used with the Yocto Project is Mentor Graphics® Sourcery G++ Toolchain. You can see information on how to use that particular layer in the README file at http://github.com/MentorEmbedded/meta-sourcery/. You can find further information by reading about the TCMODE variable in the Yocto Project Reference Manual's variable glossary.
+A good example of an external toolchain used with the Yocto Project is Mentor Graphics® Sourcery G++ Toolchain. You can see information on how to use that particular layer in the README file at http://github.com/MentorEmbedded/meta-sourcery/. You can find further information by reading about the `TCMODE` variable in the Yocto Project Reference Manual's variable glossary.
 
 ## 3.16 Creating Partitioned Images Using Wic
 Creating an image for a particular hardware target using the OpenEmbedded build system does not necessarily mean you can boot that image as is on your device. Physical devices accept and boot images in various ways depending on the specifics of the device. Usually, information about the hardware can tell you what image format the device requires. Should your device require multiple partitions on an SD card, flash, or an HDD, you can use the OpenEmbedded Image Creator, Wic, to create the properly partitioned image.
 
-The wic command generates partitioned images from existing OpenEmbedded build artifacts. Image generation is driven by partitioning commands contained in an Openembedded kickstart file (.wks) specified either directly on the command line or as one of a selection of canned kickstart files as shown with the wic list images command in the "Using an Existing Kickstart File" section. When you apply the command to a given set of build artifacts, the result is an image or set of images that can be directly written onto media and used on a particular system.
+The `wic` command generates partitioned images from existing OpenEmbedded build artifacts. Image generation is driven by partitioning commands contained in an Openembedded kickstart file (`.wks`) specified either directly on the command line or as one of a selection of canned kickstart files as shown with the `wic list images` command in the "Using an Existing Kickstart File" section. When you apply the command to a given set of build artifacts, the result is an image or set of images that can be directly written onto media and used on a particular system.
 
-Note
-For a kickstart file reference, see the "OpenEmbedded Kickstart (.wks) Reference" Chapter in the Yocto Project Reference Manual.
-The wic command and the infrastructure it is based on is by definition incomplete. The purpose of the command is to allow the generation of customized images, and as such, was designed to be completely extensible through a plug-in interface. See the "Using the Wic Plug-Ins Interface" section for information on these plug-ins.
+> Note  
+> For a kickstart file reference, see the "OpenEmbedded Kickstart (.wks) Reference" Chapter in the Yocto Project Reference Manual.
+
+The `wic` command and the infrastructure it is based on is by definition incomplete. The purpose of the command is to allow the generation of customized images, and as such, was designed to be completely extensible through a plug-in interface. See the "Using the Wic Plug-Ins Interface" section for information on these plug-ins.
 
 This section provides some background information on Wic, describes what you need to have in place to run the tool, provides instruction on how to use the Wic utility, provides information on using the Wic plug-ins interface, and provides several examples that show how to use Wic.
 
 ### 3.16.1 Background
 This section provides some background on the Wic utility. While none of this information is required to use Wic, you might find it interesting.
 
-The name "Wic" is derived from OpenEmbedded Image Creator (oeic). The "oe" diphthong in "oeic" was promoted to the letter "w", because "oeic" is both difficult to remember and to pronounce.
++ The name "Wic" is derived from OpenEmbedded Image Creator (oeic). The "oe" diphthong in "oeic" was promoted to the letter "w", because "oeic" is both difficult to remember and to pronounce.
 
-Wic is loosely based on the Meego Image Creator (mic) framework. The Wic implementation has been heavily modified to make direct use of OpenEmbedded build artifacts instead of package installation and configuration, which are already incorporated within the OpenEmbedded artifacts.
++ Wic is loosely based on the Meego Image Creator (`mic`) framework. The Wic implementation has been heavily modified to make direct use of OpenEmbedded build artifacts instead of package installation and configuration, which are already incorporated within the OpenEmbedded artifacts.
 
-Wic is a completely independent standalone utility that initially provides easier-to-use and more flexible replacements for an existing functionality in OE-Core's image-live class. The difference between Wic and those examples is that with Wic the functionality of those scripts is implemented by a general-purpose partitioning language, which is based on Redhat kickstart syntax.
++ Wic is a completely independent standalone utility that initially provides easier-to-use and more flexible replacements for an existing functionality in OE-Core's `image-live` class. The difference between Wic and those examples is that with Wic the functionality of those scripts is implemented by a general-purpose partitioning language, which is based on Redhat kickstart syntax.
 
 ### 3.16.2 Requirements
 In order to use the Wic utility with the OpenEmbedded Build system, your system needs to meet the following requirements:
 
-The Linux distribution on your development host must support the Yocto Project. See the "Supported Linux Distributions" section in the Yocto Project Reference Manual for the list of distributions that support the Yocto Project.
++ The Linux distribution on your development host must support the Yocto Project. See the "Supported Linux Distributions" section in the Yocto Project Reference Manual for the list of distributions that support the Yocto Project.
 
-The standard system utilities, such as cp, must be installed on your development host system.
++ The standard system utilities, such as `cp`, must be installed on your development host system.
 
-You must have sourced the build environment setup script (i.e. oe-init-build-env) found in the Build Directory.
++ You must have sourced the build environment setup script (i.e. `oe-init-build-env`) found in the Build Directory.
 
-You need to have the build artifacts already available, which typically means that you must have already created an image using the Openembedded build system (e.g. core-image-minimal). While it might seem redundant to generate an image in order to create an image using Wic, the current version of Wic requires the artifacts in the form generated by the OpenEmbedded build system.
++ You need to have the build artifacts already available, which typically means that you must have already created an image using the Openembedded build system (e.g. `core-image-minimal`). While it might seem redundant to generate an image in order to create an image using Wic, the current version of Wic requires the artifacts in the form generated by the OpenEmbedded build system.
 
-You must build several native tools, which are built to run on the build system:
-
++ You must build several native tools, which are built to run on the build system:
+```
      $ bitbake parted-native dosfstools-native mtools-native
-                        
-Include "wic" as part of the IMAGE_FSTYPES variable.
+```                        
++ Include "wic" as part of the `IMAGE_FSTYPES` variable.
 
-Include the name of the wic kickstart file as part of the WKS_FILE variable
++ Include the name of the wic kickstart file as part of the `WKS_FILE` variable
 
 ### 3.16.3 Getting Help
-You can get general help for the wic command by entering the wic command by itself or by entering the command with a help argument as follows:
-
+You can get general help for the `wic` command by entering the `wic` command by itself or by entering the command with a help argument as follows:
+```
      $ wic -h
      $ wic --help
      $ wic help
-                
-Currently, Wic supports seven commands: cp, create, help, list, ls, rm, and write. You can get help for all these commands except "help" by using the following form:
-
+```                
+Currently, Wic supports seven commands: `cp`, `create`, `help`, `list`, `ls`, `rm`, and `write`. You can get help for all these commands except "help" by using the following form:
+```
      $ wic help command
-                
-For example, the following command returns help for the write command:
-
+```                
+For example, the following command returns help for the `write` command:
+```
      $ wic help write
-                
-Wic supports help for three topics: overview, plugins, and kickstart. You can get help for any topic using the following form:
-
+```                
+Wic supports help for three topics: `overview`, `plugins`, and `kickstart`. You can get help for any topic using the following form:
+```
      $ wic help topic
-                
+```                
 For example, the following returns overview help for Wic:
-
+```
      $ wic help overview
-                
-One additional level of help exists for Wic. You can get help on individual images through the list command. You can use the list command to return the available Wic images as follows:
-
+```                
+One additional level of help exists for Wic. You can get help on individual images through the `list` command. You can use the `list` command to return the available Wic images as follows:
+```
      $ wic list images
        mpc8315e-rdb                  		Create SD card image for MPC8315E-RDB
        genericx86                    		Create an EFI disk image for genericx86*
@@ -2662,29 +2671,29 @@ One additional level of help exists for Wic. You can get help on individual imag
        sdimage-bootpart              		Create SD card image with a boot partition
        directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
        directdisk-bootloader-config  		Create a 'pcbios' direct disk image with custom bootloader config
-                
-Once you know the list of available Wic images, you can use help with the command to get help on a particular image. For example, the following command returns help on the "beaglebone-yocto" image:
-
+```                
+Once you know the list of available Wic images, you can use `help` with the command to get help on a particular image. For example, the following command returns help on the "beaglebone-yocto" image:
+```
      $ wic list beaglebone-yocto help
 
 
      Creates a partitioned SD card image for Beaglebone.
      Boot files are located in the first vfat partition.
-
+```
 ### 3.16.4 Operational Modes
 You can use Wic in two different modes, depending on how much control you need for specifying the Openembedded build artifacts that are used for creating the image: Raw and Cooked:
 
-Raw Mode: You explicitly specify build artifacts through Wic command-line arguments.
++ ***Raw Mode***: You explicitly specify build artifacts through Wic command-line arguments.
 
-Cooked Mode: The current MACHINE setting and image name are used to automatically locate and provide the build artifacts. You just supply a kickstart file and the name of the image from which to use artifacts.
++ ***Cooked Mode***: The current `MACHINE` setting and image name are used to automatically locate and provide the build artifacts. You just supply a kickstart file and the name of the image from which to use artifacts.
 
 Regardless of the mode you use, you need to have the build artifacts ready and available.
 
 #### 3.16.4.1 Raw Mode
-Running Wic in raw mode allows you to specify all the partitions through the wic command line. The primary use for raw mode is if you have built your kernel outside of the Yocto Project Build Directory. In other words, you can point to arbitrary kernel, root filesystem locations, and so forth. Contrast this behavior with cooked mode where Wic looks in the Build Directory (e.g. tmp/deploy/images/machine).
+Running Wic in raw mode allows you to specify all the partitions through the `wic` command line. The primary use for raw mode is if you have built your kernel outside of the Yocto Project Build Directory. In other words, you can point to arbitrary kernel, root filesystem locations, and so forth. Contrast this behavior with cooked mode where Wic looks in the Build Directory (e.g. `tmp/deploy/images/machine`).
 
 The general form of the wic command in raw mode is:
-
+```
      $ wic create wks_file options ...
 
        Where:
@@ -2725,15 +2734,15 @@ The general form of the wic command in raw mode is:
                                   directory with <image>.env files that store bitbake
                                   variables
             -D, --debug           output debug information
-                    
-Note
-You do not need root privileges to run Wic. In fact, you should not run as root when using the utility.
+```                    
+> Note  
+> You do not need root privileges to run Wic. In fact, you should not run as root when using the utility.
 
 #### 3.16.4.2 Cooked Mode
-Running Wic in cooked mode leverages off artifacts in the Build Directory. In other words, you do not have to specify kernel or root filesystem locations as part of the command. All you need to provide is a kickstart file and the name of the image from which to use artifacts by using the "-e" option. Wic looks in the Build Directory (e.g. tmp/deploy/images/machine) for artifacts.
+Running Wic in cooked mode leverages off artifacts in the Build Directory. In other words, you do not have to specify kernel or root filesystem locations as part of the command. All you need to provide is a kickstart file and the name of the image from which to use artifacts by using the "-e" option. Wic looks in the Build Directory (e.g. `tmp/deploy/images/machine`) for artifacts.
 
 The general form of the wic command using Cooked Mode is as follows:
-
+```
      $ wic create wks_file -e IMAGE_NAME
 
        Where:
@@ -2748,15 +2757,15 @@ The general form of the wic command using Cooked Mode is as follows:
              -e IMAGE_NAME, --image-name IMAGE_NAME
                                   name of the image to use the artifacts from e.g. core-
                                   image-sato
-            
+```            
 ### 3.16.5 Using an Existing Kickstart File
 If you do not want to create your own kickstart file, you can use an existing file provided by the Wic installation. As shipped, kickstart files can be found in the Yocto Project Source Repositories in the following two locations:
-
+```
      poky/meta-yocto-bsp/wic
      poky/scripts/lib/wic/canned-wks
-                
+```                
 Use the following command to list the available kickstart files:
-
+```
      $ wic list images
        mpc8315e-rdb                  		Create SD card image for MPC8315E-RDB
        genericx86                    		Create an EFI disk image for genericx86*
@@ -2771,14 +2780,14 @@ Use the following command to list the available kickstart files:
        sdimage-bootpart              		Create SD card image with a boot partition
        directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
        directdisk-bootloader-config  		Create a 'pcbios' direct disk image with custom bootloader config
-                
-When you use an existing file, you do not have to use the .wks extension. Here is an example in Raw Mode that uses the directdisk file:
-
+```                
+When you use an existing file, you do not have to use the `.wks` extension. Here is an example in Raw Mode that uses the directdisk file:
+```
      $ wic create directdisk -r rootfs_dir -b bootimg_dir \
            -k kernel_dir -n native_sysroot
-                
-Here are the actual partition language commands used in the genericx86.wks file to generate an image:
-
+```                
+Here are the actual partition language commands used in the `genericx86.wks` file to generate an image:
+```
      # short-description: Create an EFI disk image for genericx86*
      # long-description: Creates a partitioned EFI disk image for genericx86* machines
      part /boot --source bootimg-efi --sourceparams="loader=grub-efi" --ondisk sda --label msdos --active --align 1024
@@ -2786,34 +2795,36 @@ Here are the actual partition language commands used in the genericx86.wks file 
      part swap --ondisk sda --size 44 --label swap1 --fstype=swap
 
      bootloader --ptable gpt --timeout=5 --append="rootfstype=ext4 console=ttyS0,115200 console=tty0"
-                
+```                
 ### 3.16.6 Using the Wic Plug-Ins Interface
 You can extend and specialize Wic functionality by using Wic plug-ins. This section explains the Wic plug-in interface.
 
-Note
-Wic plug-ins consist of "source" and "imager" plug-ins. Imager plug-ins are beyond the scope of this section.
-Source plug-ins provide a mechanism to customize partition content during the Wic image generation process. You can use source plug-ins to map values that you specify using --source commands in kickstart files (i.e. *.wks) to a plug-in implementation used to populate a given partition.
+> Note  
+> Wic plug-ins consist of "source" and "imager" plug-ins. Imager plug-ins are beyond the scope of this section.
 
-Note
-If you use plug-ins that have build-time dependencies (e.g. native tools, bootloaders, and so forth) when building a Wic image, you need to specify those dependencies using the WKS_FILE_DEPENDS variable.
+Source plug-ins provide a mechanism to customize partition content during the Wic image generation process. You can use source plug-ins to map values that you specify using `--source` commands in kickstart files (i.e. `*.wks`) to a plug-in implementation used to populate a given partition.
+
+> Note  
+> If you use plug-ins that have build-time dependencies (e.g. native tools, bootloaders, and so forth) when building a Wic image, you need to specify those dependencies using the WKS_FILE_DEPENDS variable.
+
 Source plug-ins are subclasses defined in plug-in files. As shipped, the Yocto Project provides several plug-in files. You can see the source plug-in files that ship with the Yocto Project here. Each of these plug-in files contains source plug-ins that are designed to populate a specific Wic image partition.
 
-Source plug-ins are subclasses of the SourcePlugin class, which is defined in the poky/scripts/lib/wic/pluginbase.py file. For example, the BootimgEFIPlugin source plug-in found in the bootimg-efi.py file is a subclass of the SourcePlugin class, which is found in the pluginbase.py file.
+Source plug-ins are subclasses of the ``SourcePlugin`` class, which is defined in the `poky/scripts/lib/wic/`pluginbase.py`` file. For example, the `BootimgEFIPlugin` source plug-in found in the `bootimg-efi.py` file is a subclass of the ``SourcePlugin`` class, which is found in the ``pluginbase.py`` file.
 
-You can also implement source plug-ins in a layer outside of the Source Repositories (external layer). To do so, be sure that your plug-in files are located in a directory whose path is scripts/lib/wic/plugins/source/ within your external layer. When the plug-in files are located there, the source plug-ins they contain are made available to Wic.
+You can also implement source plug-ins in a layer outside of the Source Repositories (external layer). To do so, be sure that your plug-in files are located in a directory whose path is `scripts/lib/wic/plugins/source/` within your external layer. When the plug-in files are located there, the source plug-ins they contain are made available to Wic.
 
-When the Wic implementation needs to invoke a partition-specific implementation, it looks for the plug-in with the same name as the --source parameter used in the kickstart file given to that partition. For example, if the partition is set up using the following command in a kickstart file:
-
+When the Wic implementation needs to invoke a partition-specific implementation, it looks for the plug-in with the same name as the `--source` parameter used in the kickstart file given to that partition. For example, if the partition is set up using the following command in a kickstart file:
+```
      part /boot --source bootimg-pcbios --ondisk sda --label boot --active --align 1024
-                
-The methods defined as class members of the matching source plug-in (i.e. bootimg-pcbios) in the bootimg-pcbios.py plug-in file are used.
+```                
+The methods defined as class members of the matching source plug-in (i.e. `bootimg-pcbios`) in the `bootimg-pcbios.py` plug-in file are used.
 
-To be more concrete, here is the corresponding plug-in definition from the bootimg-pcbios.py file for the previous command along with an example method called by the Wic implementation when it needs to prepare a partition using an implementation-specific function:
-
+To be more concrete, here is the corresponding plug-in definition from the `bootimg-pcbios.py` file for the previous command along with an example method called by the Wic implementation when it needs to prepare a partition using an implementation-specific function:
+```
                   .
                   .
                   .
-     class BootimgPcbiosPlugin(SourcePlugin):
+     class BootimgPcbiosPlugin(`SourcePlugin`):
          """
          Create MBR boot partition and install syslinux on it.
          """
@@ -2834,33 +2845,34 @@ To be more concrete, here is the corresponding plug-in definition from the booti
                   .
                   .
                   .
-                
-If a subclass (plug-in) itself does not implement a particular function, Wic locates and uses the default version in the superclass. It is for this reason that all source plug-ins are derived from the SourcePlugin class.
+```                
+If a subclass (plug-in) itself does not implement a particular function, Wic locates and uses the default version in the superclass. It is for this reason that all source plug-ins are derived from the `SourcePlugin` class.
 
-The SourcePlugin class defined in the pluginbase.py file defines a set of methods that source plug-ins can implement or override. Any plug-ins (subclass of SourcePlugin) that do not implement a particular method inherit the implementation of the method from the SourcePlugin class. For more information, see the SourcePlugin class in the pluginbase.py file for details:
+The `SourcePlugin` class defined in the `pluginbase.py` file defines a set of methods that source plug-ins can implement or override. Any plug-ins (subclass of `SourcePlugin`) that do not implement a particular method inherit the implementation of the method from the `SourcePlugin` class. For more information, see the `SourcePlugin` class in the `pluginbase.py` file for details:
 
-The following list describes the methods implemented in the SourcePlugin class:
+The following list describes the methods implemented in the `SourcePlugin` class:
 
-do_prepare_partition(): Called to populate a partition with actual content. In other words, the method prepares the final partition image that is incorporated into the disk image.
++ *do_prepare_partition()*: Called to populate a partition with actual content. In other words, the method prepares the final partition image that is incorporated into the disk image.
 
-do_configure_partition(): Called before do_prepare_partition() to create custom configuration files for a partition (e.g. syslinux or grub configuration files).
++ *do_configure_partition()*: Called before `do_prepare_partition()` to create custom configuration files for a partition (e.g. syslinux or grub configuration files).
 
-do_install_disk(): Called after all partitions have been prepared and assembled into a disk image. This method provides a hook to allow finalization of a disk image (e.g. writing an MBR).
++ *do_install_disk()*: Called after all partitions have been prepared and assembled into a disk image. This method provides a hook to allow finalization of a disk image (e.g. writing an MBR).
 
-do_stage_partition(): Special content-staging hook called before do_prepare_partition(). This method is normally empty.
++ *do_stage_partition()*: Special content-staging hook called before `do_prepare_partition()`. This method is normally empty.
 
-Typically, a partition just uses the passed-in parameters (e.g. the unmodified value of bootimg_dir). However, in some cases, things might need to be more tailored. As an example, certain files might additionally need to be taken from bootimg_dir + /boot. This hook allows those files to be staged in a customized fashion.
+Typically, a partition just uses the passed-in parameters (e.g. the unmodified value of `bootimg_dir`). However, in some cases, things might need to be more tailored. As an example, certain files might additionally need to be taken from `bootimg_dir + /boot`. This hook allows those files to be staged in a customized fashion.
 
-Note
-get_bitbake_var() allows you to access non-standard variables that you might want to use for this behavior.
-You can extend the source plug-in mechanism. To add more hooks, create more source plug-in methods within SourcePlugin and the corresponding derived subclasses. The code that calls the plug-in methods uses the plugin.get_source_plugin_methods() function to find the method or methods needed by the call. Retrieval of those methods is accomplished by filling up a dict with keys that contain the method names of interest. On success, these will be filled in with the actual methods. See the Wic implementation for examples and details.
+> Note  
+> `get_bitbake_var()` allows you to access non-standard variables that you might want to use for this behavior.
+
+You can extend the source plug-in mechanism. To add more hooks, create more source plug-in methods within `SourcePlugin` and the corresponding derived subclasses. The code that calls the plug-in methods uses the `plugin.get_source_plugin_methods()` function to find the method or methods needed by the call. Retrieval of those methods is accomplished by filling up a dict with keys that contain the method names of interest. On success, these will be filled in with the actual methods. See the Wic implementation for examples and details.
 
 ### 3.16.7 Examples
-This section provides several examples that show how to use the Wic utility. All the examples assume the list of requirements in the "Requirements" section have been met. The examples assume the previously generated image is core-image-minimal.
+This section provides several examples that show how to use the Wic utility. All the examples assume the list of requirements in the "Requirements" section have been met. The examples assume the previously generated image is `core-image-minimal`.
 
 #### 3.16.7.1 Generate an Image using an Existing Kickstart File
 This example runs in Cooked Mode and uses the mkefidisk kickstart file:
-
+```
      $ wic create mkefidisk -e core-image-minimal
      INFO: Building wic-tools...
                .
@@ -2877,43 +2889,44 @@ This example runs in Cooked Mode and uses the mkefidisk kickstart file:
 
      INFO: The image(s) were created using OE kickstart file:
        /home/stephano/build/master/openembedded-core/scripts/lib/wic/canned-wks/mkefidisk.wks
-                    
-The previous example shows the easiest way to create an image by running in cooked mode and supplying a kickstart file and the "-e" option to point to the existing build artifacts. Your local.conf file needs to have the MACHINE variable set to the machine you are using, which is "qemux86" in this example.
+```                    
+The previous example shows the easiest way to create an image by running in cooked mode and supplying a kickstart file and the "-e" option to point to the existing build artifacts. Your ``local.conf`` file needs to have the MACHINE variable set to the machine you are using, which is "qemux86" in this example.
 
 Once the image builds, the output provides image location, artifact use, and kickstart file information.
 
-Note
-You should always verify the details provided in the output to make sure that the image was indeed created exactly as expected.
-Continuing with the example, you can now write the image from the Build Directory onto a USB stick, or whatever media for which you built your image, and boot from the media. You can write the image by using bmaptool or dd:
+> Note  
+> You should always verify the details provided in the output to make sure that the image was indeed created exactly as expected.
 
+Continuing with the example, you can now write the image from the Build Directory onto a USB stick, or whatever media for which you built your image, and boot from the media. You can write the image by using `bmaptool` or `dd`:
+```
      $ oe-run-native bmaptool copy mkefidisk-201804191017-sda.direct /dev/sdX
-                    
+```                    
 or
-
+```
      $ sudo dd if=mkefidisk-201804191017-sda.direct of=/dev/sdX
-                    
-Note
-For more information on how to use the bmaptool to flash a device with an image, see the "Flashing Images Using bmaptool" section.
+```                    
+> Note  
+> For more information on how to use the `bmaptool` to flash a device with an image, see the "Flashing Images Using bmaptool" section.
 
 ### 3.16.7.2 Using a Modified Kickstart File
-Because partitioned image creation is driven by the kickstart file, it is easy to affect image creation by changing the parameters in the file. This next example demonstrates that through modification of the directdisk-gpt kickstart file.
+Because partitioned image creation is driven by the kickstart file, it is easy to affect image creation by changing the parameters in the file. This next example demonstrates that through modification of the `directdisk-gpt` kickstart file.
 
-As mentioned earlier, you can use the command wic list images to show the list of existing kickstart files. The directory in which the directdisk-gpt.wks file resides is scripts/lib/image/canned-wks/, which is located in the Source Directory (e.g. poky). Because available files reside in this directory, you can create and add your own custom files to the directory. Subsequent use of the wic list images command would then include your kickstart files.
+As mentioned earlier, you can use the command `wic list images` to show the list of existing kickstart files. The directory in which the `directdisk-gpt.wks` file resides is `scripts/lib/image/canned-wks/`, which is located in the Source Directory (e.g. poky). Because available files reside in this directory, you can create and add your own custom files to the directory. Subsequent use of the `wic list images` command would then include your kickstart files.
 
-In this example, the existing directdisk-gpt file already does most of what is needed. However, for the hardware in this example, the image will need to boot from sdb instead of sda, which is what the directdisk-gpt kickstart file uses.
+In this example, the existing `directdisk-gpt` file already does most of what is needed. However, for the hardware in this example, the image will need to boot from `sdb` instead of `sda`, which is what the `directdisk-gpt` kickstart file uses.
 
-The example begins by making a copy of the directdisk-gpt.wks file in the scripts/lib/image/canned-wks directory and then by changing the lines that specify the target disk from which to boot.
-
+The example begins by making a copy of the `directdisk-gpt.wks` file in the `scripts/lib/image/canned-wks` directory and then by changing the lines that specify the target disk from which to boot.
+```
      $ cp /home/stephano/poky/scripts/lib/wic/canned-wks/directdisk-gpt.wks \
           /home/stephano/poky/scripts/lib/wic/canned-wks/directdisksdb-gpt.wks
-                    
-Next, the example modifies the directdisksdb-gpt.wks file and changes all instances of "--ondisk sda" to "--ondisk sdb". The example changes the following two lines and leaves the remaining lines untouched:
-
+```                    
+Next, the example modifies the `directdisksdb-gpt.wks` file and changes all instances of "`--ondisk sda`" to "`--ondisk sdb`". The example changes the following two lines and leaves the remaining lines untouched:
+```
      part /boot --source bootimg-pcbios --ondisk sdb --label boot --active --align 1024
      part / --source rootfs --ondisk sdb --fstype=ext4 --label platform --align 1024 --use-uuid
-                    
-Once the lines are changed, the example generates the directdisksdb-gpt image. The command points the process at the core-image-minimal artifacts for the Next Unit of Computing (nuc) MACHINE the local.conf.
-
+```                    
+Once the lines are changed, the example generates the `directdisksdb-gpt` image. The command points the process at the `core-image-minimal` artifacts for the Next Unit of Computing (nuc) `MACHINE` the ``local.conf``.
+```
      $ wic create directdisksdb-gpt -e core-image-minimal
      INFO: Building wic-tools...
                 .
@@ -2936,19 +2949,19 @@ Once the lines are changed, the example generates the directdisksdb-gpt image. T
 
      INFO: The image(s) were created using OE kickstart file:
        /home/stephano/poky/scripts/lib/wic/canned-wks/directdisksdb-gpt.wks
-                    
-Continuing with the example, you can now directly dd the image to a USB stick, or whatever media for which you built your image, and boot the resulting media:
-
+```                    
+Continuing with the example, you can now directly `dd` the image to a USB stick, or whatever media for which you built your image, and boot the resulting media:
+```
      $ sudo dd if=directdisksdb-gpt-201710090938-sdb.direct of=/dev/sdb
      140966+0 records in
      140966+0 records out
      72174592 bytes (72 MB, 69 MiB) copied, 78.0282 s, 925 kB/s
      $ sudo eject /dev/sdb
-                    
+```                    
 
 #### 3.16.7.3 Using a Modified Kickstart File and Running in Raw Mode¶
-This next example manually specifies each build artifact (runs in Raw Mode) and uses a modified kickstart file. The example also uses the -o option to cause Wic to create the output somewhere other than the default output directory, which is the current directory:
-
+This next example manually specifies each build artifact (runs in Raw Mode) and uses a modified kickstart file. The example also uses the `-o` option to cause Wic to create the output somewhere other than the default output directory, which is the current directory:
+```
      $ wic create /home/stephano/my_yocto/test.wks -o /home/stephano/testwic \
           --rootfs-dir /home/stephano/build/master/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/rootfs \
           --bootimg-dir /home/stephano/build/master/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share \
@@ -2968,36 +2981,39 @@ This next example manually specifies each build artifact (runs in Raw Mode) and 
 
      INFO: The image(s) were created using OE kickstart file:
        /home/stephano/my_yocto/test.wks
-                    
-For this example, MACHINE did not have to be specified in the local.conf file since the artifact is manually specified.
+```                    
+For this example, `MACHINE` did not have to be specified in the ``local.conf`` file since the artifact is manually specified.
 
 #### 3.16.7.4. Using Wic to Manipulate an Image
 Wic image manipulation allows you to shorten turnaround time during image development. For example, you can use Wic to delete the kernel partition of a Wic image and then insert a newly built kernel. This saves you time from having to rebuild the entire image each time you modify the kernel.
 
-Note
-In order to use Wic to manipulate a Wic image as in this example, your development machine must have the mtools package installed.
+> Note  
+> In order to use Wic to manipulate a Wic image as in this example, your development machine must have the mtools package installed.
+
 The following example examines the contents of the Wic image, deletes the existing kernel, and then inserts a new kernel:
 
-List the Partitions: Use the wic ls command to list all the partitions in the Wic image:
-
+1. ***List the Partitions***: Use the wic ls command to list all the partitions in the Wic image:
+```
      $ wic ls tmp/deploy/images/qemux86/core-image-minimal-qemux86.wic
      Num     Start        End          Size      Fstype
       1       1048576     25041919     23993344  fat16
       2      25165824     72157183     46991360  ext4
-                            
-The previous output shows two partitions in the core-image-minimal-qemux86.wic image.
+```                            
+     The previous output shows two partitions in the `core-image-minimal-qemux86.wic` image.
 
-Examine a Particular Partition: Use the wic ls command again but in a different form to examine a particular partition.
+2. ***Examine a Particular Partition***: Use the `wic ls` command again but in a different form to examine a particular partition.
 
-Note
-You can get command usage on any Wic command using the following form:
-     $ wic help command
-                                
-For example, the following command shows you the various ways to use the wic ls command:
-     $ wic help ls
-                                
+> **Note**  
+> You can get command usage on any Wic command using the following form:
+> ```    
+>         $ wic help command
+> ```                               
+> For example, the following command shows you the various ways to use the `wic ls` command:
+> ```
+>      $ wic help ls
+> ```                                
 The following command shows what is in Partition one:
-
+```
      $ wic ls tmp/deploy/images/qemux86/core-image-minimal-qemux86.wic:1
      Volume in drive : is boot
       Volume Serial Number is E894-1809
@@ -3010,194 +3026,199 @@ The following command shows what is in Partition one:
      vmlinuz        6904608 2017-10-09  16:06
              5 files           7 142 580 bytes
                               16 582 656 bytes free
-                            
-The previous output shows five files, with the vmlinuz being the kernel.
+```                            
+The previous output shows five files, with the `vmlinuz` being the kernel.
 
-Note
-If you see the following error, you need to update or create a ~/.mtoolsrc file and be sure to have the line “mtools_skip_check=1“ in the file. Then, run the Wic command again:
-     ERROR: _exec_cmd: /usr/bin/mdir -i /tmp/wic-parttfokuwra ::/ returned '1' instead of 0
-      output: Total number of sectors (47824) not a multiple of sectors per track (32)!
-      Add mtools_skip_check=1 to your .mtoolsrc file to skip this test
+> Note  
+> If you see the following error, you need to update or create a ~/.mtoolsrc file and be sure to have the line “mtools_skip_check=1“ in the file. Then, run the Wic command again:  
+> ```
+>      ERROR: _exec_cmd: /usr/bin/mdir -i /tmp/wic-parttfokuwra ::/ returned '1' instead of 0  
+>       output: Total number of sectors (47824) not a multiple of sectors per track (32)!  
+>       Add mtools_skip_check=1 to your .mtoolsrc file to skip this test
+> ```
                                 
-Remove the Old Kernel: Use the wic rm command to remove the vmlinuz file (kernel):
-
+3. ***Remove the Old Kernel***: Use the `wic rm` command to remove the `vmlinuz` file (kernel):
+```
      $ wic rm tmp/deploy/images/qemux86/core-image-minimal-qemux86.wic:1/vmlinuz
-                             
-Add In the New Kernel: Use the wic cp command to add the updated kernel to the Wic image. Depending on how you built your kernel, it could be in different places. If you used devtool and an SDK to build your kernel, it resides in the tmp/work directory of the extensible SDK. If you used make to build the kernel, the kernel will be in the workspace/sources area.
+```                             
+4. ***Add In the New Kernel***: Use the `wic cp` command to add the updated kernel to the Wic image. Depending on how you built your kernel, it could be in different places. If you used `devtool` and an SDK to build your kernel, it resides in the `tmp/work` directory of the extensible SDK. If you used make to build the kernel, the kernel will be in the `workspace/sources` area.
 
 The following example assumes devtool was used to build the kernel:
-
+```
      cp ~/poky_sdk/tmp/work/qemux86-poky-linux/linux-yocto/4.12.12+git999-r0/linux-yocto-4.12.12+git999/arch/x86/boot/bzImage \
         ~/poky/build/tmp/deploy/images/qemux86/core-image-minimal-qemux86.wic:1/vmlinuz
-                             
-Once the new kernel is added back into the image, you can use the dd command or bmaptool to flash your wic image onto an SD card or USB stick and test your target.
+```                             
+Once the new kernel is added back into the image, you can use the `dd` command or `bmaptool` to flash your wic image onto an SD card or USB stick and test your target.
 
-Note
-Using bmaptool is generally 10 to 20 times faster than using dd.
+> **Note**  
+> Using `bmaptool` is generally 10 to 20 times faster than using `dd`.
 
-## 3.17 Flashing Images Using bmaptool
+## 3.17 Flashing Images Using `bmaptool`
 A fast and easy way to flash an image to a bootable device is to use Bmaptool, which is integrated into the OpenEmbedded build system. Bmaptool is a generic tool that creates a file's block map (bmap) and then uses that map to copy the file. As compared to traditional tools such as dd or cp, Bmaptool can copy (or flash) large files like raw system image files much faster.
 
-Notes
-If you are using Ubuntu or Debian distributions, you can install the bmap-tools package using the following command and then use the tool without specifying PATH even from the root account:
-
-     $ sudo apt-get install bmap-tools
-                        
-If you are unable to install the bmap-tools package, you will need to build Bmaptool before using it. Use the following command:
-
-     $ bitbake bmap-tools-native
-                        
+> **Notes**  
+> If you are using Ubuntu or Debian distributions, you can install the `bmap-tools` package using the following command and then use the tool without specifying `PATH` even from the root account:
+> ```
+>      $ sudo apt-get install bmap-tools
+> ```                        
+> If you are unable to install the bmap-tools package, you will need to build Bmaptool before using it. Use the following command:
+> ```
+>      $ bitbake bmap-tools-native
+> ```                        
 Following, is an example that shows how to flash a Wic image. Realize that while this example uses a Wic image, you can use Bmaptool to flash any type of image. Use these steps to flash an image using Bmaptool:
 
-Update your local.conf File: You need to have the following set in your local.conf file before building your image:
-
+1. ***Update your ``local.conf`` File***: You need to have the following set in your ``local.conf`` file before building your image:
+```
      IMAGE_FSTYPES += "wic wic.bmap"
-                    
-Get Your Image: Either have your image ready (pre-built with the IMAGE_FSTYPES setting previously mentioned) or take the step to build the image:
+```                    
+2. ***Get Your Image***: Either have your image ready (pre-built with the `IMAGE_FSTYPES` setting previously mentioned) or take the step to build the image:
 
      $ bitbake image
                     
-Flash the Device: Flash the device with the image by using Bmaptool depending on your particular setup. The following commands assume the image resides in the Build Directory's deploy/images/ area:
+3. ***Flash the Device***: Flash the device with the image by using Bmaptool depending on your particular setup. The following commands assume the image resides in the Build Directory's `deploy/images/` area:
 
-If you have write access to the media, use this command form:
-
-     $ oe-run-native bmap-tools-native bmaptool copy build-directory/tmp/deploy/images/machine/image.wic /dev/sdX
-                            
-If you do not have write access to the media, set your permissions first and then use the same command form:
-
-     $ sudo chmod 666 /dev/sdX
-     $ oe-run-native bmap-tools-native bmaptool copy build-directory/tmp/deploy/images/machine/image.wic /dev/sdX
-                            
-For help on the bmaptool command, use the following command:
-
+     + If you have write access to the media, use this command form:
+          ```
+          $ oe-run-native bmap-tools-native bmaptool copy build-directory/tmp/deploy/images/machine/image.wic /dev/sdX
+          ```                       
+     + If you do not have write access to the media, set your permissions first and then use the same command form:
+          ```
+          $ sudo chmod 666 /dev/sdX
+          $ oe-run-native bmap-tools-native bmaptool copy build-directory/tmp/deploy/images/machine/image.wic /dev/sdX
+          ```                       
+For help on the `bmaptool` command, use the following command:
+```
      $ bmaptool --help
-            
+```            
 ## 3.18 Making Images More Secure
 Security is of increasing concern for embedded devices. Consider the issues and problems discussed in just this sampling of work found across the Internet:
 
-"Security Risks of Embedded Systems" by Bruce Schneier
++ ***"Security Risks of Embedded Systems"*** by Bruce Schneier
 
-"Internet Census 2012" by Carna Botnet
++ ***"Internet Census 2012"*** by Carna Botnet
 
-"Security Issues for Embedded Devices" by Jake Edge
++ ***"Security Issues for Embedded Devices"*** by Jake Edge
 
 When securing your image is of concern, there are steps, tools, and variables that you can consider to help you reach the security goals you need for your particular device. Not all situations are identical when it comes to making an image secure. Consequently, this section provides some guidance and suggestions for consideration when you want to make your image more secure.
 
-Note
-Because the security requirements and risks are different for every type of device, this section cannot provide a complete reference on securing your custom OS. It is strongly recommended that you also consult other sources of information on embedded Linux system hardening and on security.
+> Note  
+> Because the security requirements and risks are different for every type of device, this section cannot provide a complete reference on securing your custom OS. It is strongly recommended that you also consult other sources of information on embedded Linux system hardening and on security.
 
 ### 3.18.1 General Considerations
 General considerations exist that help you create more secure images. You should consider the following suggestions to help make your device more secure:
 
-Scan additional code you are adding to the system (e.g. application code) by using static analysis tools. Look for buffer overflows and other potential security problems.
++ Scan additional code you are adding to the system (e.g. application code) by using static analysis tools. Look for buffer overflows and other potential security problems.
 
-Pay particular attention to the security for any web-based administration interface.
++ Pay particular attention to the security for any web-based administration interface.
 
-Web interfaces typically need to perform administrative functions and tend to need to run with elevated privileges. Thus, the consequences resulting from the interface's security becoming compromised can be serious. Look for common web vulnerabilities such as cross-site-scripting (XSS), unvalidated inputs, and so forth.
+     Web interfaces typically need to perform administrative functions and tend to need to run with elevated privileges. Thus, the consequences resulting from the interface's security becoming compromised can be serious. Look for common web vulnerabilities such as cross-site-scripting (XSS), unvalidated inputs, and so forth.
 
-As with system passwords, the default credentials for accessing a web-based interface should not be the same across all devices. This is particularly true if the interface is enabled by default as it can be assumed that many end-users will not change the credentials.
+     As with system passwords, the default credentials for accessing a web-based interface should not be the same across all devices. This is particularly true if the interface is enabled by default as it can be assumed that many end-users will not change the credentials.
 
-Ensure you can update the software on the device to mitigate vulnerabilities discovered in the future. This consideration especially applies when your device is network-enabled.
++ Ensure you can update the software on the device to mitigate vulnerabilities discovered in the future. This consideration especially applies when your device is network-enabled.
 
-Ensure you remove or disable debugging functionality before producing the final image. For information on how to do this, see the "Considerations Specific to the OpenEmbedded Build System" section.
++ Ensure you remove or disable debugging functionality before producing the final image. For information on how to do this, see the "Considerations Specific to the OpenEmbedded Build System" section.
 
-Ensure you have no network services listening that are not needed.
++ Ensure you have no network services listening that are not needed.
 
-Remove any software from the image that is not needed.
++ Remove any software from the image that is not needed.
 
-Enable hardware support for secure boot functionality when your device supports this functionality.
++ Enable hardware support for secure boot functionality when your device supports this functionality.
 
 ### 3.18.2. Security Flags
-The Yocto Project has security flags that you can enable that help make your build output more secure. The security flags are in the meta/conf/distro/include/security_flags.inc file in your Source Directory (e.g. poky).
+The Yocto Project has security flags that you can enable that help make your build output more secure. The security flags are in the `meta/conf/distro/include/security_flags.inc` file in your Source Directory (e.g. `poky`).
 
-Note
-Depending on the recipe, certain security flags are enabled and disabled by default.
-Use the following line in your local.conf file or in your custom distribution configuration file to enable the security compiler and linker flags for your build:
+> Note  
+> Depending on the recipe, certain security flags are enabled and disabled by default.
 
+Use the following line in your ``local.conf`` file or in your custom distribution configuration file to enable the security compiler and linker flags for your build:
+```
      require conf/distro/include/security_flags.inc
-
+```
 ### 3.18.3. Considerations Specific to the OpenEmbedded Build System¶
 You can take some steps that are specific to the OpenEmbedded build system to make your images more secure:
 
-Ensure "debug-tweaks" is not one of your selected IMAGE_FEATURES. When creating a new project, the default is to provide you with an initial local.conf file that enables this feature using the EXTRA_IMAGE_FEATURES variable with the line:
++ Ensure "debug-tweaks" is not one of your selected `IMAGE_FEATURES`. When creating a new project, the default is to provide you with an initial ``local.conf`` file that enables this feature using the `EXTRA_IMAGE_FEATURES` variable with the line:
+     ```
+          EXTRA_IMAGE_FEATURES = "debug-tweaks"
+     ```           
+     To disable that feature, simply comment out that line in your ``local.conf`` file, or make sure `IMAGE_FEATURES` does not contain "debug-tweaks" before producing your final image. Among other things, leaving this in place sets the root password as blank, which makes logging in for debugging or inspection easy during development but also means anyone can easily log in during production.
 
-     EXTRA_IMAGE_FEATURES = "debug-tweaks"
-                
-To disable that feature, simply comment out that line in your local.conf file, or make sure IMAGE_FEATURES does not contain "debug-tweaks" before producing your final image. Among other things, leaving this in place sets the root password as blank, which makes logging in for debugging or inspection easy during development but also means anyone can easily log in during production.
++ It is possible to set a root password for the image and also to set passwords for any extra users you might add (e.g. administrative or service type users). When you set up passwords for multiple images or users, you should not duplicate passwords.
 
-It is possible to set a root password for the image and also to set passwords for any extra users you might add (e.g. administrative or service type users). When you set up passwords for multiple images or users, you should not duplicate passwords.
+     To set up passwords, use the `extrausers` class, which is the preferred method. For an example on how to set up both root and user passwords, see the "`extrausers.bbclass`" section.
 
-To set up passwords, use the extrausers class, which is the preferred method. For an example on how to set up both root and user passwords, see the "extrausers.bbclass" section.
+     > Note  
+     > When adding extra user accounts or setting a root password, be cautious about setting the same password on every device. If you do this, and the password you have set is exposed, then every device is now potentially compromised. If you need this access but want to ensure security, consider setting a different, random password for each device. Typically, you do this as a separate step after you deploy the image onto the device.
 
-Note
-When adding extra user accounts or setting a root password, be cautious about setting the same password on every device. If you do this, and the password you have set is exposed, then every device is now potentially compromised. If you need this access but want to ensure security, consider setting a different, random password for each device. Typically, you do this as a separate step after you deploy the image onto the device.
-Consider enabling a Mandatory Access Control (MAC) framework such as SMACK or SELinux and tuning it appropriately for your device's usage. You can find more information in the meta-selinux layer.
++ Consider enabling a Mandatory Access Control (MAC) framework such as SMACK or SELinux and tuning it appropriately for your device's usage. You can find more information in the `meta-selinux` layer.
 
 ### 3.18.4. Tools for Hardening Your Image¶
-The Yocto Project provides tools for making your image more secure. You can find these tools in the meta-security layer of the Yocto Project Source Repositories.
+The Yocto Project provides tools for making your image more secure. You can find these tools in the `meta-security` layer of the Yocto Project Source Repositories.
 
 ## 3.19. Creating Your Own Distribution¶
 When you build an image using the Yocto Project and do not alter any distribution Metadata, you are creating a Poky distribution. If you wish to gain more control over package alternative selections, compile-time options, and other low-level configurations, you can create your own distribution.
 
 To create your own distribution, the basic steps consist of creating your own distribution layer, creating your own distribution configuration file, and then adding any needed code and Metadata to the layer. The following steps provide some more detail:
 
-Create a layer for your new distro: Create your distribution layer so that you can keep your Metadata and code for the distribution separate. It is strongly recommended that you create and use your own layer for configuration and code. Using your own layer as compared to just placing configurations in a local.conf configuration file makes it easier to reproduce the same build configuration when using multiple build machines. See the "Creating a General Layer Using the bitbake-layers Script" section for information on how to quickly set up a layer.
++ ***Create a layer for your new distro***: Create your distribution layer so that you can keep your Metadata and code for the distribution separate. It is strongly recommended that you create and use your own layer for configuration and code. Using your own layer as compared to just placing configurations in a ``local.conf`` configuration file makes it easier to reproduce the same build configuration when using multiple build machines. See the "Creating a General Layer Using the bitbake-layers Script" section for information on how to quickly set up a layer.
 
-Create the distribution configuration file: The distribution configuration file needs to be created in the conf/distro directory of your layer. You need to name it using your distribution name (e.g. mydistro.conf).
++ ***Create the distribution configuration file***: The distribution configuration file needs to be created in the `conf/distro` directory of your layer. You need to name it using your distribution name (e.g. `mydistro.conf`).
 
-Note
-The DISTRO variable in your local.conf file determines the name of your distribution.
-You can split out parts of your configuration file into include files and then "require" them from within your distribution configuration file. Be sure to place the include files in the conf/distro/include directory of your layer. A common example usage of include files would be to separate out the selection of desired version and revisions for individual recipes.
+     > Note  
+     > The DISTRO variable in your `local.conf` file determines the name of your distribution.
 
-Your configuration file needs to set the following required variables:
+     You can split out parts of your configuration file into include files and then "require" them from within your distribution configuration file. Be sure to place the include files in the conf/distro/include directory of your layer. A common example usage of include files would be to separate out the selection of desired version and revisions for individual recipes.
 
+     Your configuration file needs to set the following required variables:
+     ```
      DISTRO_NAME
      DISTRO_VERSION
-                    
-These following variables are optional and you typically set them from the distribution configuration file:
-
+     ```          
+     These following variables are optional and you typically set them from the distribution configuration file:
+     ```
      DISTRO_FEATURES
      DISTRO_EXTRA_RDEPENDS
      DISTRO_EXTRA_RRECOMMENDS
      TCLIBC
-                    
-Tip
-If you want to base your distribution configuration file on the very basic configuration from OE-Core, you can use conf/distro/defaultsetup.conf as a reference and just include variables that differ as compared to defaultsetup.conf. Alternatively, you can create a distribution configuration file from scratch using the defaultsetup.conf file or configuration files from other distributions such as Poky or Angstrom as references.
-Provide miscellaneous variables: Be sure to define any other variables for which you want to create a default or enforce as part of the distribution configuration. You can include nearly any variable from the local.conf file. The variables you use are not limited to the list in the previous bulleted item.
+     ```                    
+     > Tip  
+     > If you want to base your distribution configuration file on the very basic configuration from OE-Core, you can use `conf/distro/defaultsetup.conf` as a reference and just include variables that differ as compared to `defaultsetup.conf`. Alternatively, you can create a distribution configuration file from scratch using the `defaultsetup.conf` file or configuration files from other distributions such as Poky or Angstrom as references.
++ Provide miscellaneous variables: Be sure to define any other variables for which you want to create a default or enforce as part of the distribution configuration. You can include nearly any variable from the `local.conf` file. The variables you use are not limited to the list in the previous bulleted item.
 
-Point to Your distribution configuration file: In your local.conf file in the Build Directory, set your DISTRO variable to point to your distribution's configuration file. For example, if your distribution's configuration file is named mydistro.conf, then you point to it as follows:
-
++ Point to Your distribution configuration file: In your ``local.conf`` file in the Build Directory, set your `DISTRO` variable to point to your distribution's configuration file. For example, if your distribution's configuration file is named `mydistro.conf`, then you point to it as follows:
+```
      DISTRO = "mydistro"
-                    
-Add more to the layer if necessary: Use your layer to hold other information needed for the distribution:
+```                    
++ Add more to the layer if necessary: Use your layer to hold other information needed for the distribution:
 
-Add recipes for installing distro-specific configuration files that are not already installed by another recipe. If you have distro-specific configuration files that are included by an existing recipe, you should add an append file (.bbappend) for those. For general information and recommendations on how to add recipes to your layer, see the "Creating Your Own Layer" and "Following Best Practices When Creating Layers" sections.
+     + Add recipes for installing distro-specific configuration files that are not already installed by another recipe. If you have distro-specific configuration files that are included by an existing recipe, you should add an append file (.bbappend) for those. For general information and recommendations on how to add recipes to your layer, see the "Creating Your Own Layer" and "Following Best Practices When Creating Layers" sections.
 
-Add any image recipes that are specific to your distribution.
+     + Add any image recipes that are specific to your distribution.
 
-Add a psplash append file for a branded splash screen. For information on append files, see the "Using .bbappend Files in Your Layer" section.
+     + Add a `psplash` append file for a branded splash screen. For information on append files, see the "Using `.bbappend` files in Your Layer" section.
 
-Add any other append files to make custom changes that are specific to individual recipes.
+     + Add any other append files to make custom changes that are specific to individual recipes.
 
 ## 3.20. Creating a Custom Template Configuration Directory¶
-If you are producing your own customized version of the build system for use by other users, you might want to customize the message shown by the setup script or you might want to change the template configuration files (i.e. local.conf and bblayers.conf) that are created in a new build directory.
+If you are producing your own customized version of the build system for use by other users, you might want to customize the message shown by the setup script or you might want to change the template configuration files (i.e. `local.conf` and `bblayers.conf`) that are created in a new build directory.
 
 The OpenEmbedded build system uses the environment variable TEMPLATECONF to locate the directory from which it gathers configuration information that ultimately ends up in the Build Directory conf directory. By default, TEMPLATECONF is set as follows in the poky repository:
-
+```
      TEMPLATECONF=${TEMPLATECONF:-meta-poky/conf}
-            
-This is the directory used by the build system to find templates from which to build some key configuration files. If you look at this directory, you will see the bblayers.conf.sample, local.conf.sample, and conf-notes.txt files. The build system uses these files to form the respective bblayers.conf file, local.conf file, and display the list of BitBake targets when running the setup script.
+```            
+This is the directory used by the build system to find templates from which to build some key configuration files. If you look at this directory, you will see the `bblayers.conf.sample`, `local.conf.sample`, and conf-notes.txt files. The build system uses these files to form the respective `bblayers.conf` file, `local.conf` file, and display the list of BitBake targets when running the setup script.
 
-To override these default configuration files with configurations you want used within every new Build Directory, simply set the TEMPLATECONF variable to your directory. The TEMPLATECONF variable is set in the .templateconf file, which is in the top-level Source Directory folder (e.g. poky). Edit the .templateconf so that it can locate your directory.
+To override these default configuration files with configurations you want used within every new Build Directory, simply set the TEMPLATECONF variable to your directory. The TEMPLATECONF variable is set in the `.templateconf` file, which is in the top-level Source Directory folder (e.g. poky). Edit the `.templateconf` so that it can locate your directory.
 
-Best practices dictate that you should keep your template configuration directory in your custom distribution layer. For example, suppose you have a layer named meta-mylayer located in your home directory and you want your template configuration directory named myconf. Changing the .templateconf as follows causes the OpenEmbedded build system to look in your directory and base its configuration files on the *.sample configuration files it finds. The final configuration files (i.e. local.conf and bblayers.conf ultimately still end up in your Build Directory, but they are based on your *.sample files.
-
+Best practices dictate that you should keep your template configuration directory in your custom distribution layer. For example, suppose you have a layer named `meta-mylayer` located in your home directory and you want your template configuration directory named `myconf`. Changing the `.templateconf` as follows causes the OpenEmbedded build system to look in your directory and base its configuration files on the `*.sample` configuration files it finds. The final configuration files (i.e. `local.conf` and `bblayers.conf` ultimately still end up in your Build Directory, but they are based on your *.sample files.
+```
      TEMPLATECONF=${TEMPLATECONF:-meta-mylayer/myconf}
-            
-Aside from the *.sample configuration files, the conf-notes.txt also resides in the default meta-poky/conf directory. The script that sets up the build environment (i.e. oe-init-build-env) uses this file to display BitBake targets as part of the script output. Customizing this conf-notes.txt file is a good way to make sure your list of custom targets appears as part of the script's output.
+```            
+Aside from the `*.sample` configuration files, the conf-notes.txt also resides in the default `meta-poky/conf` directory. The script that sets up the build environment (i.e. `oe-init-build-env`) uses this file to display BitBake targets as part of the script output. Customizing this conf-notes.txt file is a good way to make sure your list of custom targets appears as part of the script's output.
 
 Here is the default list of targets displayed as a result of running either of the setup scripts:
-
+```
      You can now run 'bitbake <target>'
 
      Common targets are:
@@ -3205,37 +3226,37 @@ Here is the default list of targets displayed as a result of running either of t
          core-image-sato
          meta-toolchain
          meta-ide-support
-            
-Changing the listed common targets is as easy as editing your version of conf-notes.txt in your custom template configuration directory and making sure you have TEMPLATECONF set to your directory.
+```            
+Changing the listed common targets is as easy as editing your version of `conf-notes.txt` in your custom template configuration directory and making sure you have `TEMPLATECONF` set to your directory.
 
-## 3.21. Conserving Disk Space During Builds¶
-To help conserve disk space during builds, you can add the following statement to your project's local.conf configuration file found in the Build Directory:
-
+## 3.21. Conserving Disk Space During Builds
+To help conserve disk space during builds, you can add the following statement to your project's `local.conf` configuration file found in the Build Directory:
+```
      INHERIT += "rm_work"
-            
-Adding this statement deletes the work directory used for building a recipe once the recipe is built. For more information on "rm_work", see the rm_work class in the Yocto Project Reference Manual.
+```            
+Adding this statement deletes the work directory used for building a recipe once the recipe is built. For more information on "`rm_work`", see the rm_work class in the Yocto Project Reference Manual.
 
-## 3.22. Working with Packages¶
+## 3.22. Working with Packages
 This section describes a few tasks that involve packages:
 
-Excluding packages from an image
++ [Excluding packages from an image](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#excluding-packages-from-an-image)
 
-Incrementing a binary package version
++ [Incrementing a binary package version](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#incrementing-a-binary-package-version)
 
-Handling optional module packaging
++ [Handling optional module packaging](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#handling-optional-module-packaging)
 
-Using runtime package management
++ [Using runtime package management](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#using-runtime-package-management)
 
-Generating and using signed packages
++ [Generating and using signed packages](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#generating-and-using-signed-packages)
 
-Setting up and running package test (ptest)
++ [Setting up and running package test (ptest)](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#testing-packages-with-ptest)
 
-Creating node package manager (NPM) packages
++ [Creating node package manager (NPM) packages](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#creating-node-package-manager-npm-packages)
 
 ### 3.22.1. Excluding Packages from an Image¶
 You might find it necessary to prevent specific packages from being installed into an image. If so, you can use several variables to direct the build system to essentially ignore installing recommended packages or to not install a package at all.
 
-The following list introduces variables you can use to prevent packages from being installed into your image. Each of these variables only works with IPK and RPM package types. Support for Debian packages does not exist. Also, you can use these variables from your local.conf file or attach them to a specific image recipe by using a recipe name override. For more detail on the variables, see the descriptions in the Yocto Project Reference Manual's glossary chapter.
+The following list introduces variables you can use to prevent packages from being installed into your image. Each of these variables only works with IPK and RPM package types. Support for Debian packages does not exist. Also, you can use these variables from your `local.conf` file or attach them to a specific image recipe by using a recipe name override. For more detail on the variables, see the descriptions in the Yocto Project Reference Manual's glossary chapter.
 
 BAD_RECOMMENDATIONS: Use this variable to specify "recommended-only" packages that you do not want installed.
 
@@ -3289,7 +3310,7 @@ As implemented, the build system includes values from the PR Service into the PR
 
 By default, the PR Service is not enabled or running. Thus, the packages generated are just "self consistent". The build system adds and removes packages and there are no guarantees about upgrade paths but images will be consistent and correct with the latest changes.
 
-The simplest form for a PR Service is for it to exist for a single host development system that builds the package feed (building system). For this scenario, you can enable a local PR Service by setting PRSERV_HOST in your local.conf file in the Build Directory:
+The simplest form for a PR Service is for it to exist for a single host development system that builds the package feed (building system). For this scenario, you can enable a local PR Service by setting PRSERV_HOST in your `local.conf` file in the Build Directory:
 
      PRSERV_HOST = "localhost:0"
                     
@@ -3299,9 +3320,9 @@ If you have a more complex setup where multiple host development systems work ag
 
      bitbake-prserv --host ip --port port --start
                     
-In addition to hand-starting the service, you need to update the local.conf file of each building system as described earlier so each system points to the server and port.
+In addition to hand-starting the service, you need to update the `local.conf` file of each building system as described earlier so each system points to the server and port.
 
-It is also recommended you use build history, which adds some sanity checks to binary package versions, in conjunction with the server that is running the PR Service. To enable build history, add the following to each building system's local.conf file:
+It is also recommended you use build history, which adds some sanity checks to binary package versions, in conjunction with the server that is running the PR Service. To enable build history, add the following to each building system's `local.conf` file:
 
      # It is recommended to activate "buildhistory" for testing the PR service
      INHERIT += "buildhistory"
@@ -3436,7 +3457,7 @@ Following is a reference that shows do_split_packages mandatory and optional arg
         Extra runtime dependencies (RDEPENDS) to be
         set for all packages. The default value of None
         causes a dependency on the main package
-        (${PN}) - if you do not want this, pass empty
+        (`${PN}`) - if you do not want this, pass empty
         string '' for this parameter.
      aux_files_pattern
         Extra item(s) to be added to FILES for each
@@ -3501,7 +3522,7 @@ This section describes build considerations of which you need to be aware in ord
 
 When BitBake generates packages, it needs to know what format or formats to use. In your configuration, you use the PACKAGE_CLASSES variable to specify the format:
 
-Open the local.conf file inside your Build Directory (e.g. ~/poky/build/conf/local.conf).
+Open the `local.conf` file inside your Build Directory (e.g. ~/poky/build/conf/`local.conf`).
 
 Select the desired package format as follows:
 
@@ -3665,7 +3686,7 @@ Note
 A recipe is "ptest-enabled" if it inherits the ptest class.
 
 #### 3.22.6.1. Adding ptest to Your Build¶
-To add package testing to your build, add the DISTRO_FEATURES and EXTRA_IMAGE_FEATURES variables to your local.conf file, which is found in the Build Directory:
+To add package testing to your build, add the DISTRO_FEATURES and EXTRA_IMAGE_FEATURES variables to your `local.conf` file, which is found in the Build Directory:
 
      DISTRO_FEATURES_append = " ptest"
      EXTRA_IMAGE_FEATURES += "ptest-pkgs"
@@ -3690,7 +3711,7 @@ Create run-ptest: This script starts your test. Locate the script where you will
                             
 Ensure dependencies are met: If the test adds build or runtime dependencies that normally do not exist for the package (such as requiring "make" to run the test suite), use the DEPENDS and RDEPENDS variables in your recipe in order for the package to meet the dependencies. Here is an example where the package has a runtime dependency on "make":
 
-     RDEPENDS_${PN}-ptest += "make"
+     RDEPENDS_`${PN}`-ptest += "make"
                             
 Add a function to build the test suite: Not many packages support cross-compilation of their test suites. Consequently, you usually need to add a cross-compilation function to the package.
 
@@ -3722,7 +3743,7 @@ Of the two methods that you can use devtool to create NPM packages, the registry
 
 Be familiar with devtool.
 
-The NPM host tools need the native nodejs-npm package, which is part of the OpenEmbedded environment. You need to get the package by cloning the https://github.com/openembedded/meta-openembedded repository out of GitHub. Be sure to add the path to your local copy to your bblayers.conf file.
+The NPM host tools need the native nodejs-npm package, which is part of the OpenEmbedded environment. You need to get the package by cloning the https://github.com/openembedded/meta-openembedded repository out of GitHub. Be sure to add the path to your local copy to your `bblayers.conf` file.
 
 devtool cannot detect native libraries in module dependencies. Consequently, you must manually add packages to your recipe.
 
@@ -3754,22 +3775,22 @@ The devtool edit-recipe command lets you take a look at the recipe:
      $ devtool edit-recipe cute-files
      SUMMARY = "Turn any folder on your computer into a cute file browser, available on the local network."
      LICENSE = "BSD-3-Clause & Unknown & MIT & ISC"
-     LIC_FILES_CHKSUM = "file://LICENSE;md5=71d98c0a1db42956787b1909c74a86ca \
-                         file://node_modules/content-disposition/LICENSE;md5=c6e0ce1e688c5ff16db06b7259e9cd20 \
-                         file://node_modules/express/LICENSE;md5=5513c00a5c36cd361da863dd9aa8875d \
+     LIC_FILES_CHKSUM = "file://LICENSE;`md5`=71d98c0a1db42956787b1909c74a86ca \
+                         file://node_modules/content-disposition/LICENSE;`md5`=c6e0ce1e688c5ff16db06b7259e9cd20 \
+                         file://node_modules/express/LICENSE;`md5`=5513c00a5c36cd361da863dd9aa8875d \
                          ...
 
      SRC_URI = "npm://registry.npmjs.org;name=cute-files;version=${PV}"
-     NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
-     NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
+     NPM_SHRINKWRAP := "${THISDIR}/`${PN}`/npm-shrinkwrap.json"
+     NPM_LOCKDOWN := "${THISDIR}/`${PN}`/lockdown.json"
      inherit npm
      # Must be set after inherit npm since that itself sets S
      S = "${WORKDIR}/npmpkg"
 
-     LICENSE_${PN}-content-disposition = "MIT"
+     LICENSE_`${PN}`-content-disposition = "MIT"
      ...
-     LICENSE_${PN}-express = "MIT"
-     LICENSE_${PN} = "MIT"
+     LICENSE_`${PN}`-express = "MIT"
+     LICENSE_`${PN}` = "MIT"
                     
 Three key points exist in the previous example:
 
@@ -3828,7 +3849,7 @@ This section shows you how you can use mirrors to speed up fetching source files
 ### 3.23.1. Setting up Effective Mirrors¶
 A good deal that goes into a Yocto Project build is simply downloading all of the source tarballs. Maybe you have been working with another build system (OpenEmbedded or Angstrom) for which you have built up a sizable directory of source tarballs. Or, perhaps someone else has such a directory for which you have read access. If so, you can save time by adding statements to your configuration file so that the build process checks local directories first for existing tarballs before checking the Internet.
 
-Here is an efficient way to set it up in your local.conf file:
+Here is an efficient way to set it up in your `local.conf` file:
 
      SOURCE_MIRROR_URL ?= "file:///home/you/your-download-dir/"
      INHERIT += "own-mirrors"
@@ -3891,7 +3912,7 @@ To use the static method for device population, you need to set the USE_DEVFS va
 
      USE_DEVFS = "0"
                 
-The content of the resulting /dev directory is defined in a Device Table file. The IMAGE_DEVICE_TABLES variable defines the Device Table to use and should be set in the machine or distro configuration file. Alternatively, you can set this variable in your local.conf configuration file.
+The content of the resulting /dev directory is defined in a Device Table file. The IMAGE_DEVICE_TABLES variable defines the Device Table to use and should be set in the machine or distro configuration file. Alternatively, you can set this variable in your `local.conf` configuration file.
 
 If you do not define the IMAGE_DEVICE_TABLES variable, the default device_table-minimal.txt is used:
 
@@ -3908,7 +3929,7 @@ With this setting, the resulting /dev directory is populated by the kernel using
 
 All devices created by devtmpfs will be owned by root and have permissions 0600.
 
-To have more control over the device nodes, you can use a device manager like udev or busybox-mdev. You choose the device manager by defining the VIRTUAL-RUNTIME_dev_manager variable in your machine or distro configuration file. Alternatively, you can set this variable in your local.conf configuration file:
+To have more control over the device nodes, you can use a device manager like udev or busybox-mdev. You choose the device manager by defining the VIRTUAL-RUNTIME_dev_manager variable in your machine or distro configuration file. Alternatively, you can set this variable in your `local.conf` configuration file:
 
      VIRTUAL-RUNTIME_dev_manager = "udev"
 
@@ -3923,7 +3944,7 @@ To enable this behavior, the PV of the recipe needs to reference SRCPV. Here is 
 
      PV = "1.2.3+git${SRCPV}"
             
-Then, you can add the following to your local.conf:
+Then, you can add the following to your `local.conf`:
 
      SRCREV_pn-PN = "${AUTOREV}"
             
@@ -3971,7 +3992,7 @@ Note
 Supporting a read-only root filesystem requires that the system and applications do not try to write to the root filesystem. You must configure all parts of the target system to write elsewhere, or to gracefully fail in the event of attempting to write to the root filesystem.
 
 ### 3.27.1. Creating the Root Filesystem¶
-To create the read-only root filesystem, simply add the "read-only-rootfs" feature to your image. Using either of the following statements in your image recipe or from within the local.conf file found in the Build Directory causes the build system to create a read-only root filesystem:
+To create the read-only root filesystem, simply add the "read-only-rootfs" feature to your image. Using either of the following statements in your image recipe or from within the `local.conf` file found in the Build Directory causes the build system to create a read-only root filesystem:
 
      IMAGE_FEATURES = "read-only-rootfs"
                 
@@ -4011,7 +4032,7 @@ How to limit the information used for build history
 How to examine the build history from both a command-line and web interface
 
 ### 3.28.1. Enabling and Disabling Build History¶
-Build history is disabled by default. To enable it, add the following INHERIT statement and set the BUILDHISTORY_COMMIT variable to "1" at the end of your conf/local.conf file found in the Build Directory:
+Build history is disabled by default. To enable it, add the following INHERIT statement and set the BUILDHISTORY_COMMIT variable to "1" at the end of your conf/`local.conf` file found in the Build Directory:
 
      INHERIT += "buildhistory"
      BUILDHISTORY_COMMIT = "1"
@@ -4020,7 +4041,7 @@ Enabling build history as previously described causes the OpenEmbedded build sys
 
 Note
 Enabling build history increases your build times slightly, particularly for images, and increases the amount of disk space used during the build.
-You can disable build history by removing the previous statements from your conf/local.conf file.
+You can disable build history by removing the previous statements from your conf/`local.conf` file.
 
 ### 3.28.2. Understanding What the Build History Contains¶
 Build history information is kept in ${TOPDIR}/buildhistory in the Build Directory as defined by the BUILDHISTORY_DIR variable. The following is an example abbreviated listing:
@@ -4066,7 +4087,7 @@ Finally, for those recipes fetched from a version control system (e.g., Git), a 
      # SRCREV_meta = "a227f20eff056e511d504b2e490f3774ab260d6f"
      SRCREV_meta = "a227f20eff056e511d504b2e490f3774ab260d6f"
                     
-You can use the buildhistory-collect-srcrevs command with the -a option to collect the stored SRCREV values from build history and report them in a format suitable for use in global configuration (e.g., local.conf or a distro include file) to override floating AUTOREV values to a fixed set of revisions. Here is some example output from this command:
+You can use the buildhistory-collect-srcrevs command with the -a option to collect the stored SRCREV values from build history and report them in a format suitable for use in global configuration (e.g., `local.conf` or a distro include file) to override floating AUTOREV values to a fixed set of revisions. Here is some example output from this command:
 
      $ buildhistory-collect-srcrevs -a
      # i586-poky-linux
@@ -4141,7 +4162,7 @@ Here is an example of image-info.txt:
 Other than IMAGESIZE, which is the total size of the files in the image in Kbytes, the name-value pairs are variables that may have influenced the content of the image. This information is often useful when you are trying to determine why a change in the package or file listings has occurred.
 
 #### 3.28.2.3. Using Build History to Gather Image Information Only¶
-As you can see, build history produces image information, including dependency graphs, so you can see why something was pulled into the image. If you are just interested in this information and not interested in collecting specific package or SDK information, you can enable writing only image information without any history by adding the following to your conf/local.conf file found in the Build Directory:
+As you can see, build history produces image information, including dependency graphs, so you can see why something was pulled into the image. If you are just interested in this information and not interested in collecting specific package or SDK information, you can enable writing only image information without any history by adding the following to your conf/`local.conf` file found in the Build Directory:
 
      INHERIT += "buildhistory"
      BUILDHISTORY_COMMIT = "0"
@@ -4164,7 +4185,7 @@ sstate-package-sizes.txt: A text file containing name-value pairs with informati
 
 sdk-files: A folder that contains copies of the files mentioned in BUILDHISTORY_SDK_FILES if the files are present in the output. Additionally, the default value of BUILDHISTORY_SDK_FILES is specific to the extensible SDK although you can set it differently if you would like to pull in specific files from the standard SDK.
 
-The default files are conf/local.conf, conf/bblayers.conf, conf/auto.conf, conf/locked-sigs.inc, and conf/devtool.conf. Thus, for an extensible SDK, these files get copied into the sdk-files directory.
+The default files are conf/`local.conf`, conf/`bblayers.conf`, conf/auto.conf, conf/locked-sigs.inc, and conf/devtool.conf. Thus, for an extensible SDK, these files get copied into the sdk-files directory.
 
 The following information appears under each of the host and target directories for the portions of the SDK that run on the host and on the target, respectively:
 
@@ -4276,7 +4297,7 @@ A copy of the root filesystem is written to ${WORKDIR}/testimage.
 
 The image is booted under QEMU using the standard runqemu script.
 
-A default timeout of 500 seconds occurs to allow for the boot process to reach the login prompt. You can change the timeout period by setting TEST_QEMUBOOT_TIMEOUT in the local.conf file.
+A default timeout of 500 seconds occurs to allow for the boot process to reach the login prompt. You can change the timeout period by setting TEST_QEMUBOOT_TIMEOUT in the `local.conf` file.
 
 Once the boot process is reached and the login prompt appears, the tests run. The full boot log is written to ${WORKDIR}/testimage/qemu_boot_log.
 
@@ -4342,7 +4363,7 @@ Install image: Install the image that you just built on the target system.
 
 The final thing you need to do when setting TEST_TARGET to "SystemdbootTarget" is to set up the test image:
 
-Set up your local.conf file: Make sure you have the following statements in your local.conf file:
+Set up your `local.conf` file: Make sure you have the following statements in your `local.conf` file:
 
      IMAGE_FSTYPES += "tar.gz"
      INHERIT += "testimage"
@@ -4356,7 +4377,7 @@ Build your test image: Use BitBake to build the image:
 #### 3.29.1.4. Power Control¶
 For most hardware targets other than SimpleRemoteTarget, you can control power:
 
-You can use TEST_POWERCONTROL_CMD together with TEST_POWERCONTROL_EXTRA_ARGS as a command that runs on the host and does power cycling. The test code passes one argument to that command: off, on or cycle (off then on). Here is an example that could appear in your local.conf file:
+You can use TEST_POWERCONTROL_CMD together with TEST_POWERCONTROL_EXTRA_ARGS as a command that runs on the host and does power cycling. The test code passes one argument to that command: off, on or cycle (off then on). Here is an example that could appear in your `local.conf` file:
 
      TEST_POWERCONTROL_CMD = "powercontrol.exp test 10.11.12.1 nuc1"
                             
@@ -4389,7 +4410,7 @@ For local devices where the serial port device disappears when the device reboot
 ### 3.29.2. Running Tests¶
 You can start the tests automatically or manually:
 
-Automatically running tests: To run the tests automatically after the OpenEmbedded build system successfully creates an image, first set the TESTIMAGE_AUTO variable to "1" in your local.conf file in the Build Directory:
+Automatically running tests: To run the tests automatically after the OpenEmbedded build system successfully creates an image, first set the TESTIMAGE_AUTO variable to "1" in your `local.conf` file in the Build Directory:
 
      TESTIMAGE_AUTO = "1"
                         
@@ -4397,7 +4418,7 @@ Next, build your image. If the image successfully builds, the tests run:
 
      bitbake core-image-sato
                         
-Manually running tests: To manually run the tests, first globally inherit the testimage class by editing your local.conf file:
+Manually running tests: To manually run the tests, first globally inherit the testimage class by editing your `local.conf` file:
 
     INHERIT += "testimage"
                         
@@ -4407,11 +4428,11 @@ Next, use BitBake to run the tests:
                         
 All test files reside in meta/lib/oeqa/runtime in the Source Directory. A test name maps directly to a Python module. Each test module may contain a number of individual tests. Tests are usually grouped together by the area tested (e.g tests for systemd reside in meta/lib/oeqa/runtime/systemd.py).
 
-You can add tests to any layer provided you place them in the proper area and you extend BBPATH in the local.conf file as normal. Be sure that tests reside in layer/lib/oeqa/runtime.
+You can add tests to any layer provided you place them in the proper area and you extend BBPATH in the `local.conf` file as normal. Be sure that tests reside in layer/lib/oeqa/runtime.
 
 Note
 Be sure that module names do not collide with module names used in the default set of test modules in meta/lib/oeqa/runtime.
-You can change the set of tests run by appending or overriding TEST_SUITES variable in local.conf. Each name in TEST_SUITES represents a required test for the image. Test modules named within TEST_SUITES cannot be skipped even if a test is not suitable for an image (e.g. running the RPM tests on an image without rpm). Appending "auto" to TEST_SUITES causes the build system to try to run all tests that are suitable for the image (i.e. each test module may elect to skip itself).
+You can change the set of tests run by appending or overriding TEST_SUITES variable in `local.conf`. Each name in TEST_SUITES represents a required test for the image. Test modules named within TEST_SUITES cannot be skipped even if a test is not suitable for an image (e.g. running the RPM tests on an image without rpm). Appending "auto" to TEST_SUITES causes the build system to try to run all tests that are suitable for the image (i.e. each test module may elect to skip itself).
 
 The order you list tests in TEST_SUITES is important and influences test dependencies. Consequently, tests that depend on other tests should be added after the test on which they depend. For example, since the ssh test depends on the ping test, "ssh" needs to come after "ping" in the list. The test class provides no re-ordering or dependency handling.
 
@@ -4436,7 +4457,7 @@ Remember, order is important. Be sure to place a test that is dependent on anoth
 ### 3.29.3. Exporting Tests¶
 You can export tests so that they can run independently of the build system. Exporting tests is required if you want to be able to hand the test execution off to a scheduler. You can only export tests that are defined in TEST_SUITES.
 
-If your image is already built, make sure the following are set in your local.conf file:
+If your image is already built, make sure the following are set in your `local.conf` file:
 
      INHERIT +="testexport"
      TEST_TARGET_IP = "IP-address-for-the-test-target"
@@ -4469,7 +4490,7 @@ Run the tests outside of the build environment using the following:
      $ ./runexported.py testdata.json
 
 ### 3.29.4. Writing New Tests¶
-As mentioned previously, all new test files need to be in the proper place for the build system to find them. New tests for additional functionality outside of the core should be added to the layer that adds the functionality, in layer/lib/oeqa/runtime (as long as BBPATH is extended in the layer's layer.conf file as normal). Just remember the following:
+As mentioned previously, all new test files need to be in the proper place for the build system to find them. New tests for additional functionality outside of the core should be added to the layer that adds the functionality, in layer/lib/oeqa/runtime (as long as BBPATH is extended in the layer's `layer.conf` file as normal). Just remember the following:
 
 Filenames need to map directly to test (module) names.
 
@@ -4592,7 +4613,7 @@ log.do_taskname and run.do_taskname are actually symbolic links to log.do_taskna
 ### 3.30.2. Viewing Variable Values¶
 Sometimes you need to know the value of a variable as a result of BitBake's parsing step. This could be because some unexpected behavior occurred in your project. Perhaps an attempt to modify a variable did not work out as expected.
 
-BitBake's -e option is used to display variable values after parsing. The following command displays the variable values after the configuration files (i.e. local.conf, bblayers.conf, bitbake.conf and so forth) have been parsed:
+BitBake's -e option is used to display variable values after parsing. The following command displays the variable values after the configuration files (i.e. `local.conf`, `bblayers.conf`, bitbake.conf and so forth) have been parsed:
 
      $ bitbake -e
                 
@@ -4698,7 +4719,7 @@ Run bitbake-dumpsig on the sigdata or siginfo file. Here is an example:
                         
 In the output of the above command, you will find a line like the following, which lists all the (inferred) variable dependencies for the task. This list also includes indirect dependencies from variables depending on other variables, recursively.
 
-     Task dependencies: ['PV', 'SRCREV', 'SRC_URI', 'SRC_URI[md5sum]', 'SRC_URI[sha256sum]', 'base_do_fetch']
+     Task dependencies: ['PV', 'SRCREV', 'SRC_URI', 'SRC_URI[`md5`sum]', 'SRC_URI[`sha256`sum]', 'base_do_fetch']
                         
 Note
 Functions (e.g. base_do_fetch) also count as variable dependencies. These functions in turn depend on the variables they reference.
@@ -4940,7 +4961,7 @@ If you examine the output or the log file, you see the failure during make:
 #### 3.30.12.2. Reproducing the Error¶
 Because race conditions are intermittent, they do not manifest themselves every time you do the build. In fact, most times the build will complete without problems even though the potential race condition exists. Thus, once the error surfaces, you need a way to reproduce it.
 
-In this example, compiling the "neard" package is causing the problem. So the first thing to do is build "neard" locally. Before you start the build, set the PARALLEL_MAKE variable in your local.conf file to a high number (e.g. "-j 20"). Using a high value for PARALLEL_MAKE increases the chances of the race condition showing up:
+In this example, compiling the "neard" package is causing the problem. So the first thing to do is build "neard" locally. Before you start the build, set the PARALLEL_MAKE variable in your `local.conf` file to a high number (e.g. "-j 20"). Using a high value for PARALLEL_MAKE increases the chances of the race condition showing up:
 
      $ bitbake neard
                     
@@ -5039,7 +5060,7 @@ The following steps show you how to debug using the GNU project debugger.
 
 Configure your build system to construct the companion debug filesystem:
 
-In your local.conf file, set the following:
+In your `local.conf` file, set the following:
 
      IMAGE_GEN_DEBUGFS = "1"
      IMAGE_FSTYPES_DEBUGFS = "tar.bz2"
@@ -5050,7 +5071,7 @@ The companion debug filesystem is not a complete filesystem, but only contains t
 
 Configure the system to include gdbserver in the target filesystem:
 
-Make the following addition in either your local.conf file or in an image recipe:
+Make the following addition in either your `local.conf` file or in an image recipe:
 
      IMAGE_INSTALL_append = “ gdbserver"
                         
@@ -5156,7 +5177,7 @@ Alternatively, you can do the following to include all the debug symbols:
      IMAGE_FEATURES_append = " dbg-pkgs"
                         
 Note
-To improve the debug information accuracy, you can reduce the level of optimization used by the compiler. For example, when adding the following line to your local.conf file, you will reduce optimization from FULL_OPTIMIZATION of "-O2" to DEBUG_OPTIMIZATION of "-O -fno-omit-frame-pointer":
+To improve the debug information accuracy, you can reduce the level of optimization used by the compiler. For example, when adding the following line to your `local.conf` file, you will reduce optimization from FULL_OPTIMIZATION of "-O2" to DEBUG_OPTIMIZATION of "-O -fno-omit-frame-pointer":
      DEBUG_BUILD = "1"
                     
 Consider that this will reduce the application's performance and is recommended only for debugging purposes.
@@ -5407,9 +5428,9 @@ The license of an upstream project might change in the future. In order to preve
 #### 3.32.1.1. Specifying the LIC_FILES_CHKSUM Variable¶
 The LIC_FILES_CHKSUM variable contains checksums of the license text in the source code for the recipe. Following is an example of how to specify LIC_FILES_CHKSUM:
 
-     LIC_FILES_CHKSUM = "file://COPYING;md5=xxxx \
-                         file://licfile1.txt;beginline=5;endline=29;md5=yyyy \
-                         file://licfile2.txt;endline=50;md5=zzzz \
+     LIC_FILES_CHKSUM = "file://COPYING;`md5`=xxxx \
+                         file://licfile1.txt;beginline=5;endline=29;`md5`=yyyy \
+                         file://licfile2.txt;endline=50;`md5`=zzzz \
                          ..."
                     
 Notes
@@ -5422,8 +5443,8 @@ The build system uses the S variable as the default directory when searching fil
 Consider this next example:
 
      LIC_FILES_CHKSUM = "file://src/ls.c;beginline=5;endline=16;\
-                                         md5=bb14ed3c4cda583abc85401304b5cd4e"
-     LIC_FILES_CHKSUM = "file://${WORKDIR}/license.html;md5=5c94767cedb5d6987c902ac850ded2c6"
+                                         `md5`=bb14ed3c4cda583abc85401304b5cd4e"
+     LIC_FILES_CHKSUM = "file://${WORKDIR}/license.html;`md5`=5c94767cedb5d6987c902ac850ded2c6"
                     
 The first line locates a file in ${S}/src/ls.c and isolates lines five through 16 as license text. The second line refers to a file in WORKDIR.
 
@@ -5432,12 +5453,12 @@ Note that LIC_FILES_CHKSUM variable is mandatory for all recipes, unless the LIC
 #### 3.32.1.2. Explanation of Syntax¶
 As mentioned in the previous section, the LIC_FILES_CHKSUM variable lists all the important files that contain the license text for the source code. It is possible to specify a checksum for an entire file, or a specific section of a file (specified by beginning and ending line numbers with the "beginline" and "endline" parameters, respectively). The latter is useful for source files with a license notice header, README documents, and so forth. If you do not use the "beginline" parameter, then it is assumed that the text begins on the first line of the file. Similarly, if you do not use the "endline" parameter, it is assumed that the license text ends with the last line of the file.
 
-The "md5" parameter stores the md5 checksum of the license text. If the license text changes in any way as compared to this parameter then a mismatch occurs. This mismatch triggers a build failure and notifies the developer. Notification allows the developer to review and address the license text changes. Also note that if a mismatch occurs during the build, the correct md5 checksum is placed in the build log and can be easily copied to the recipe.
+The "`md5`" parameter stores the `md5` checksum of the license text. If the license text changes in any way as compared to this parameter then a mismatch occurs. This mismatch triggers a build failure and notifies the developer. Notification allows the developer to review and address the license text changes. Also note that if a mismatch occurs during the build, the correct `md5` checksum is placed in the build log and can be easily copied to the recipe.
 
 There is no limit to how many files you can specify using the LIC_FILES_CHKSUM variable. Generally, however, every project requires a few specifications for license tracking. Many projects have a "COPYING" file that stores the license information for all the source code files. This practice allows you to just track the "COPYING" file as long as it is kept up to date.
 
 Tips
-If you specify an empty or invalid "md5" parameter, BitBake returns an md5 mis-match error and displays the correct "md5" parameter value during the build. The correct parameter is also captured in the build log.
+If you specify an empty or invalid "`md5`" parameter, BitBake returns an `md5` mis-match error and displays the correct "`md5`" parameter value during the build. The correct parameter is also captured in the build log.
 
 If the whole file contains only license text, you do not need to use the "beginline" and "endline" parameters.
 
@@ -5448,13 +5469,13 @@ By default, the OpenEmbedded build system disables components that have commerci
                 
 Here is a slightly more complicated example that contains both an explicit recipe name and version (after variable expansion):
 
-     LICENSE_FLAGS = "license_${PN}_${PV}"
+     LICENSE_FLAGS = "license_`${PN}`_${PV}"
                 
-In order for a component restricted by a LICENSE_FLAGS definition to be enabled and included in an image, it needs to have a matching entry in the global LICENSE_FLAGS_WHITELIST variable, which is a variable typically defined in your local.conf file. For example, to enable the poky/meta/recipes-multimedia/gstreamer/gst-plugins-ugly package, you could add either the string "commercial_gst-plugins-ugly" or the more general string "commercial" to LICENSE_FLAGS_WHITELIST. See the "License Flag Matching" section for a full explanation of how LICENSE_FLAGS matching works. Here is the example:
+In order for a component restricted by a LICENSE_FLAGS definition to be enabled and included in an image, it needs to have a matching entry in the global LICENSE_FLAGS_WHITELIST variable, which is a variable typically defined in your `local.conf` file. For example, to enable the poky/meta/recipes-multimedia/gstreamer/gst-plugins-ugly package, you could add either the string "commercial_gst-plugins-ugly" or the more general string "commercial" to LICENSE_FLAGS_WHITELIST. See the "License Flag Matching" section for a full explanation of how LICENSE_FLAGS matching works. Here is the example:
 
      LICENSE_FLAGS_WHITELIST = "commercial_gst-plugins-ugly"
                 
-Likewise, to additionally enable the package built from the recipe containing LICENSE_FLAGS = "license_${PN}_${PV}", and assuming that the actual recipe name was emgd_1.10.bb, the following string would enable that package as well as the original gst-plugins-ugly package:
+Likewise, to additionally enable the package built from the recipe containing LICENSE_FLAGS = "license_`${PN}`_${PV}", and assuming that the actual recipe name was emgd_1.10.bb, the following string would enable that package as well as the original gst-plugins-ugly package:
 
      LICENSE_FLAGS_WHITELIST = "commercial_gst-plugins-ugly license_emgd_1.10"
                 
@@ -5467,7 +5488,7 @@ License flag matching allows you to control what recipes the OpenEmbedded build 
 
 In general, license flag matching is simple. However, understanding some concepts will help you correctly and effectively use matching.
 
-Before a flag defined by a particular recipe is tested against the contents of the whitelist, the expanded string _${PN} is appended to the flag. This expansion makes each LICENSE_FLAGS value recipe-specific. After expansion, the string is then matched against the whitelist. Thus, specifying LICENSE_FLAGS = "commercial" in recipe "foo", for example, results in the string "commercial_foo". And, to create a match, that string must appear in the whitelist.
+Before a flag defined by a particular recipe is tested against the contents of the whitelist, the expanded string _`${PN}` is appended to the flag. This expansion makes each LICENSE_FLAGS value recipe-specific. After expansion, the string is then matched against the whitelist. Thus, specifying LICENSE_FLAGS = "commercial" in recipe "foo", for example, results in the string "commercial_foo". And, to create a match, that string must appear in the whitelist.
 
 Judicious use of the LICENSE_FLAGS strings and the contents of the LICENSE_FLAGS_WHITELIST variable allows you a lot of flexibility for including or excluding recipes based on licensing. For example, you can broaden the matching capabilities by using license flags string subsets in the whitelist.
 
@@ -5479,7 +5500,7 @@ For example, simply specifying the string "commercial" in the whitelist matches 
                     
 Thus, you can choose to exhaustively enumerate each license flag in the whitelist and allow only specific recipes into the image, or you can use a string subset that causes a broader range of matches to allow a range of recipes into the image.
 
-This scheme works even if the LICENSE_FLAGS string already has _${PN} appended. For example, the build system turns the license flag "commercial_1.2_foo" into "commercial_1.2_foo_foo" and would match both the general "commercial" and the specific "commercial_1.2_foo" strings found in the whitelist, as expected.
+This scheme works even if the LICENSE_FLAGS string already has _`${PN}` appended. For example, the build system turns the license flag "commercial_1.2_foo" into "commercial_1.2_foo_foo" and would match both the general "commercial" and the specific "commercial_1.2_foo" strings found in the whitelist, as expected.
 
 Here are some other scenarios:
 
@@ -5495,7 +5516,7 @@ Other helpful variables related to commercial license handling exist and are def
      COMMERCIAL_AUDIO_PLUGINS ?= ""
      COMMERCIAL_VIDEO_PLUGINS ?= ""
                     
-If you want to enable these components, you can do so by making sure you have statements similar to the following in your local.conf configuration file:
+If you want to enable these components, you can do so by making sure you have statements similar to the following in your `local.conf` configuration file:
 
      COMMERCIAL_AUDIO_PLUGINS = "gst-plugins-ugly-mad \
         gst-plugins-ugly-mpegaudioparse"
@@ -5534,7 +5555,7 @@ One of the easiest ways to meet this requirement is to provide the entire DL_DIR
 
 Before you employ DL_DIR or the archiver class, you need to decide how you choose to provide source. The source archiver class can generate tarballs and SRPMs and can create them with various levels of compliance in mind.
 
-One way of doing this (but certainly not the only way) is to release just the source as a tarball. You can do this by adding the following to the local.conf file found in the Build Directory:
+One way of doing this (but certainly not the only way) is to release just the source as a tarball. You can do this by adding the following to the `local.conf` file found in the Build Directory:
 
      INHERIT += "archiver"
      ARCHIVER_MODE[src] = "original"
@@ -5570,7 +5591,7 @@ A way to help mitigate the size issue is to only release tarballs for licenses t
 At this point, you could create a tarball from the gpl_source_release directory and provide that to the end user. This method would be a step toward achieving compliance with section 3a of GPLv2 and with section 6 of GPLv3.
 
 #### 3.32.3.2. Providing License Text¶
-One requirement that is often overlooked is inclusion of license text. This requirement also needs to be dealt with prior to generating the final image. Some licenses require the license text to accompany the binary. You can achieve this by adding the following to your local.conf file:
+One requirement that is often overlooked is inclusion of license text. This requirement also needs to be dealt with prior to generating the final image. Some licenses require the license text to accompany the binary. You can achieve this by adding the following to your `local.conf` file:
 
      COPY_LIC_MANIFEST = "1"
      COPY_LIC_DIRS = "1"
@@ -5601,9 +5622,9 @@ If the deployment team has a BSP layer and a distro layer, and those those layer
      # clean up the .git repos
      $ find . -name ".git" -type d -exec rm -rf {} \;
                     
-One thing a development organization might want to consider for end-user convenience is to modify meta-poky/conf/bblayers.conf.sample to ensure that when the end user utilizes the released build system to build an image, the development organization's layers are included in the bblayers.conf file automatically:
+One thing a development organization might want to consider for end-user convenience is to modify meta-poky/conf/`bblayers.conf`.sample to ensure that when the end user utilizes the released build system to build an image, the development organization's layers are included in the `bblayers.conf` file automatically:
 
-     # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+     # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/`bblayers.conf`
      # changes incompatibly
      POKY_BBLAYERS_CONF_VERSION = "2"
 
@@ -5635,11 +5656,11 @@ Note
 If you send error reports to this server, the reports become publicly visible.
 
 ### 3.33.1. Enabling and Using the Tool¶
-By default, the error reporting tool is disabled. You can enable it by inheriting the report-error class by adding the following statement to the end of your local.conf file in your Build Directory.
+By default, the error reporting tool is disabled. You can enable it by inheriting the report-error class by adding the following statement to the end of your `local.conf` file in your Build Directory.
 
      INHERIT += "report-error"
                 
-By default, the error reporting feature stores information in ${LOG_DIR}/error-report. However, you can specify a directory to use by adding the following to your local.conf file:
+By default, the error reporting feature stores information in ${LOG_DIR}/error-report. However, you can specify a directory to use by adding the following to your `local.conf` file:
 
      ERR_REPORT_DIR = "path"
                 
@@ -5658,7 +5679,7 @@ When sending the error file, you are prompted to review the data being sent as w
 Following the link takes you to a web interface where you can browse, query the errors, and view statistics.
 
 ### 3.33.2. Disabling the Tool¶
-To disable the error reporting feature, simply remove or comment out the following statement from the end of your local.conf file in your Build Directory.
+To disable the error reporting feature, simply remove or comment out the following statement from the end of your `local.conf` file in your Build Directory.
 
      INHERIT += "report-error"
 
@@ -5680,7 +5701,7 @@ This section describes what you need to do to implement Wayland and use the West
 To enable Wayland, you need to enable it to be built and enable it to be included (installed) in the image.
 
 #### 3.34.1.1. Building¶
-To cause Mesa to build the wayland-egl platform and Weston to build Wayland with Kernel Mode Setting (KMS) support, include the "wayland" flag in the DISTRO_FEATURES statement in your local.conf file:
+To cause Mesa to build the wayland-egl platform and Weston to build Wayland with Kernel Mode Setting (KMS) support, include the "wayland" flag in the DISTRO_FEATURES statement in your `local.conf` file:
 
      DISTRO_FEATURES_append = " wayland"
                     
@@ -5688,7 +5709,7 @@ Note
 If X11 has been enabled elsewhere, Weston will build Wayland with X11 support
 
 #### 3.34.1.2. Installing¶
-To install the Wayland feature into an image, you must include the following CORE_IMAGE_EXTRA_INSTALL statement in your local.conf file:
+To install the Wayland feature into an image, you must include the following CORE_IMAGE_EXTRA_INSTALL statement in your `local.conf` file:
 
      CORE_IMAGE_EXTRA_INSTALL += "wayland weston"
 
