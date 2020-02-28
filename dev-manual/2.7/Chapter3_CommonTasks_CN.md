@@ -1,24 +1,24 @@
 # Chapter 3. 常见任务 <!-- omit in toc -->
 - [3.1 理解并创建Layer](#31-理解并创建layer)
-  - [3.1.1 Creating Your Own Layer](#311-creating-your-own-layer)
-  - [3.1.2 Following Best Practices When Creating Layers](#312-following-best-practices-when-creating-layers)
-  - [3.1.3 Making Sure Your Layer is Compatible With Yocto Project](#313-making-sure-your-layer-is-compatible-with-yocto-project)
-    - [3.1.3.1 Yocto Project Compatible Program Application](#3131-yocto-project-compatible-program-application)
-    - [3.1.3.2 yocto-check-layer Script](#3132-yocto-check-layer-script)
-  - [3.1.4 Enabling Your Layer](#314-enabling-your-layer)
-  - [3.1.5 Using `.bbappend` files in Your Layer](#315-using-bbappend-files-in-your-layer)
-  - [3.1.6 Prioritizing Your Layer](#316-prioritizing-your-layer)
-  - [3.1.7 Managing Layers](#317-managing-layers)
-  - [3.1.8 Creating a General Layer Using the `bitbake-layers` Script](#318-creating-a-general-layer-using-the-bitbake-layers-script)
-  - [3.1.9 Adding a Layer Using the `bitbake-layers` Script](#319-adding-a-layer-using-the-bitbake-layers-script)
-- [3.2. Customizing Images](#32-customizing-images)
-  - [3.2.1 Customizing Images Using ``local.conf``](#321-customizing-images-using-localconf)
-  - [3.2.2 Customizing Images Using Custom `IMAGE_FEATURES` and `EXTRA_IMAGE_FEATURES`](#322-customizing-images-using-custom-image_features-and-extra_image_features)
-  - [3.2.3 Customizing Images Using Custom `.bb` Files](#323-customizing-images-using-custom-bb-files)
-  - [3.2.4 Customizing Images Using Custom Package Groups](#324-customizing-images-using-custom-package-groups)
-  - [3.2.5 Customizing an Image Hostname](#325-customizing-an-image-hostname)
-- [3.3 Writing a New Recipe](#33-writing-a-new-recipe)
-  - [3.3.1 Overview](#331-overview)
+  - [3.1.1 创建你自己的Layer](#311-创建你自己的layer)
+  - [3.1.2 创建Layer的最佳实践](#312-创建layer的最佳实践)
+  - [3.1.3 确保你的Layer兼容Yocto Project](#313-确保你的layer兼容yocto-project)
+    - [3.1.3.1 Yocto Project兼容程序应用](#3131-yocto-project兼容程序应用)
+    - [3.1.3.2 `yocto-check-layer` 脚本](#3132-yocto-check-layer-脚本)
+  - [3.1.4 启用你的Layer](#314-启用你的layer)
+  - [3.1.5 在Layer中使用`.bbappend`文件](#315-在layer中使用bbappend文件)
+  - [3.1.6 设置优先级](#316-设置优先级)
+  - [3.1.7 管理Layers](#317-管理layers)
+  - [3.1.8 使用`bitbake-layers`脚本创建Layer](#318-使用bitbake-layers脚本创建layer)
+  - [3.1.9 使用`bitbake-layers`脚本添加Layer](#319-使用bitbake-layers脚本添加layer)
+- [3.2. 定制化镜像](#32-定制化镜像)
+  - [3.2.1 使用`local.conf`定制化镜像](#321-使用localconf定制化镜像)
+  - [3.2.2 使用自定义`IMAGE_FEATURES` 和 `EXTRA_IMAGE_FEATURES`定制化镜像](#322-使用自定义image_features-和-extra_image_features定制化镜像)
+  - [3.2.3 使用自定义`.bb`文件定制化镜像](#323-使用自定义bb文件定制化镜像)
+  - [3.2.4 使用自定义包合集定制化镜像](#324-使用自定义包合集定制化镜像)
+  - [3.2.5 自定义镜像主机名](#325-自定义镜像主机名)
+- [3.3 编写新Recipe](#33-编写新recipe)
+  - [3.3.1 概述](#331-概述)
   - [3.3.2 Locate or Automatically Create a Base Recipe](#332-locate-or-automatically-create-a-base-recipe)
     - [3.3.2.1 Creating the Base Recipe Using `devtool add`](#3321-creating-the-base-recipe-using-devtool-add)
     - [3.3.2.2 Creating the Base Recipe Using recipetool create](#3322-creating-the-base-recipe-using-recipetool-create)
@@ -232,33 +232,33 @@
 本章将介绍例如创建layer，新加软件包，扩展/定制化镜像，移植到新硬件等基础功能。使用Yocto Project时，你会发现你会经常处理这些任务。
 
 ## 3.1 理解并创建Layer
-The OpenEmbedded build system supports organizing Metadata into multiple layers. Layers allow you to isolate different types of customizations from each other. For introductory information on the Yocto Project Layer Model, see the "The Yocto Project Layer Model" section in the Yocto Project Overview and Concepts Manual.
+OpenEmbedded（译者注：后文以OE代替）构建系统支持管理多个layer的[元数据（Metadata）](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#metadata)。Layer允许你将不同类型的自定义设置独立开来。请阅读《Yocto Project Overview and Concepts Manual》的["The Yocto Project Layer Model"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#the-yocto-project-layer-model)章节以获取Layer Model的介绍信息。
 
-### 3.1.1 Creating Your Own Layer
-It is very easy to create your own layers to use with the OpenEmbedded build system. The Yocto Project ships with tools that speed up creating layers. This section describes the steps you perform by hand to create layers so that you can better understand them. For information about the layer-creation tools, see the "Creating a New BSP Layer Using the bitbake-layers Script" section in the Yocto Project Board Support Package (BSP) Developer's Guide and the "Creating a General Layer Using the bitbake-layers Script" section further down in this manual.
+### 3.1.1 创建你自己的Layer
+使用OE构建系统来创建你自己的Layer是很容易的一件事，Yocto Project提供了工具以快速创建Layer。本节将一步步的展示如何创建Layer，如此你能够更好得理解它们。请阅读《Yocto Project Board Support Package (BSP) Developer's Guide》的["Creating a New BSP Layer Using the bitbake-layers Script"](http://www.yoctoproject.org/docs/2.7/bsp-guide/bsp-guide.html#creating-a-new-bsp-layer-using-the-bitbake-layers-script)章节和本文档的"使用bitbake-layers脚本创建通用Layer"章节以了解更多Layer创建工具。
 
-Follow these general steps to create your layer without using tools:
+参照以下步骤，不使用工具来创建Layer:
 
-1. ***Check Existing Layers***: Before creating a new layer, you should be sure someone has not already created a layer containing the Metadata you need. You can see the OpenEmbedded Metadata Index for a list of layers from the OpenEmbedded community that can be used in the Yocto Project. You could find a layer that is identical or close to what you need.
+1. ***查看已有Layer***: 在创建一个新Layer之前，你需要确认下你需要的元数据并没有被包含于其他人创建的Layer中。你可以查看OE社区的[OpenEmbedded MEtadata Index](http://layers.openembedded.org/layerindex/layers/)中可以被用在Yocto Project里的Layer索引。你可以找到你想要的或是差不多的一个Layer。
 
-2. ***Create a Directory***: Create the directory for your layer. When you create the layer, be sure to create the directory in an area not associated with the Yocto Project Source Directory (e.g. the cloned poky repository).
+2. ***创建新目录***: 为你的Layer创建目录。创建Layer时，确保目录和Yocto Project代码目录(例如克隆下来的poky仓库)无关。
 
-While not strictly required, prepend the name of the directory with the string "meta-". For example:
-```
+     尽管没有强制要求，最好在目录名前加上"meta-"前缀，例如：
+     ```
      meta-mylayer
      meta-GUI_xyz
      meta-mymachine
-```                        
-With rare exceptions, a layer's name follows this form:
-```
+     ```                        
+     除例外情况，Layer名方方式如下：
+     ```
      meta-root_name
-```                        
-Following this layer naming convention can save you trouble later when tools, components, or variables "assume" your layer name begins with "meta-". A notable example is in configuration files as shown in the following step where layer names without the "meta-" string are appended to several variables used in the configuration.
+     ```                        
+     遵守这样的命名规范，你就不会遇到因工具，模块或者变量默认你的Layer名是以"meta-"前缀开始而产生的困扰。相关配置文件示例在后续步骤中有所展示，不带"Meta-"前缀的Layer名会自动加上这个前缀赋值给配置中的几个变量。
 
-3. ***Create a Layer Configuration File***: Inside your new layer folder, you need to create a `conf/`layer.conf`` file. It is easiest to take an existing layer configuration file and copy that to your layer's conf directory and then modify the file as needed.
+3. ***创建Layer配置文件***: 在新建的Layer文件夹中，你需要创建`conf/layer.conf`文件。最简单的方式是拷贝一份已有配置到你的Layer配置目录中，然后根据需要改动它。
 
-The `meta-yocto-bsp/conf/`layer.conf`` file in the Yocto Project Source Repositories demonstrates the required syntax. For your layer, you need to replace "yoctobsp" with a unique identifier for your layer (e.g. "machinexyz" for a layer named "meta-machinexyz"):
-```
+     Yocto Project代码仓库的`meta-yocto-bsp/conf/layer.conf`文件说明了其语法。你需要在你的配置文件中，将"yoctobsp"替换成一个唯一标识（例如Layer "meta-machinexyz"的名字"machinexyz"）：
+     ```
      # We have a conf and classes directory, add to BBPATH
      BBPATH .= ":${LAYERDIR}"
 
@@ -271,40 +271,40 @@ The `meta-yocto-bsp/conf/`layer.conf`` file in the Yocto Project Source Reposito
      BBFILE_PRIORITY_yoctobsp = "5"
      LAYERVERSION_yoctobsp = "4"
      LAYERSERIES_COMPAT_yoctobsp = "warrior"
-```                        
-Following is an explanation of the layer configuration file:
+     ```                        
+     以下是Layer配置文件说明：
 
-+ [BBPATH](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBPATH): Adds the layer's root directory to BitBake's search path. Through the use of the BBPATH variable, BitBake locates class files (.bbclass), configuration files, and files that are included with include and require statements. For these cases, BitBake uses the first file that matches the name found in BBPATH. This is similar to the way the PATH variable is used for binaries. It is recommended, therefore, that you use unique class and configuration filenames in your custom layer.
+   + [BBPATH](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBPATH): 将此Layer根目录添加到BitaBake搜索路径中。利用BBPATH变量，BitBake可以定位类文件（.bbclass），配置文件，和被include的文件。BitBake使用匹配BBPATH名字的第一个文件，这与给二进制文件使用的PATH变量类似。同样也推荐你为你的Layer中类文件和配置文件起一个唯一的名字。
 
-+ [BBFILES](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILES): Defines the location for all recipes in the layer.
+   + [BBFILES](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILES): 定义Layer中recipe的路径
 
-+ [BBFILE_COLLECTIONS](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_COLLECTIONS): Establishes the current layer through a unique identifier that is used throughout the OpenEmbedded build system to refer to the layer. In this example, the identifier "yoctobsp" is the representation for the container layer named "meta-yocto-bsp".
+   + [BBFILE_COLLECTIONS](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_COLLECTIONS): 创建唯一标识符以给OE构建系统参照。此示例中，标识符"yoctobsp"代表"meta-yocto-bsp"Layer。
 
-+ [BBFILE_PATTERN](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_PATTERN): Expands immediately during parsing to provide the directory of the layer.
+   + [BBFILE_PATTERN](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_PATTERN): 解析时提供Layer目录
 
-+ [BBFILE_PRIORITY](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_PRIORITY): Establishes a priority to use for recipes in the layer when the OpenEmbedded build finds recipes of the same name in different layers.
+   + [BBFILE_PRIORITY](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BBFILE_PRIORITY): OE构建系统在不同Layer找到相同名字recipe时所参考的使用优先级
 
-+ [LAYERVERSION](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-LAYERVERSION): Establishes a version number for the layer. You can use this version number to specify this exact version of the layer as a dependency when using the LAYERDEPENDS variable.
+   + [LAYERVERSION](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-LAYERVERSION): Layer的版本号。你可以通过LAYERDEPENDS变量指定使用特定版本号的Layer
 
-+ [LAYERSERIES_COMPAT](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-LAYERSERIES_COMPAT): Lists the Yocto Project releases for which the current version is compatible. This variable is a good way to indicate if your particular layer is current.
+   + [LAYERSERIES_COMPAT](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-LAYERSERIES_COMPAT): Lists the Yocto Project releases for which the current version is compatible. This variable is a good way to indicate if your particular layer is current.列出当前版本兼容的Yocto Project释放版本。它可以表示Layer是否有效。
 
-4. ***Add Content***: Depending on the type of layer, add the content. If the layer adds support for a machine, add the machine configuration in a `conf/machine/` file within the layer. If the layer adds distro policy, add the distro configuration in a conf/distro/ file within the layer. If the layer introduces new recipes, put the recipes you need in `recipes-*` subdirectories within the layer.
+4. ***添加内容***: Depending on the type of layer, add the content. If the layer adds support for a machine, add the machine configuration in a `conf/machine/` file within the layer. If the layer adds distro policy, add the distro configuration in a conf/distro/ file within the layer. If the layer introduces new recipes, put the recipes you need in `recipes-*` subdirectories within the layer.
 
      > Note  
      > For an explanation of layer hierarchy that is compliant with the Yocto Project, see the "Example Filesystem Layout" section in the Yocto Project Board Support Package (BSP) Developer's Guide.
 
-5. ***Optionally Test for Compatibility***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
+5. ***（可选）测试兼容性***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
 
-### 3.1.2 Following Best Practices When Creating Layers
+### 3.1.2 创建Layer的最佳实践
 To create layers that are easier to maintain and that will not impact builds for other machines, you should consider the information in the following list:
 
-+ ***Avoid "Overlaying" Entire Recipes from Other Layers in Your Configuration***: In other words, do not copy an entire recipe into your layer and then modify it. Rather, use an append file (`.bbappend`) to override only those parts of the original recipe you need to modify.
++ ***避免在你的配置中覆盖其他Layer的所有Recipe***: In other words, do not copy an entire recipe into your layer and then modify it. Rather, use an append file (`.bbappend`) to override only those parts of the original recipe you need to modify.
 
-+ ***Avoid Duplicating Include Files***: Use append files (`.bbappend`) for each recipe that uses an include file. Or, if you are introducing a new recipe that requires the included file, use the path relative to the original layer directory to refer to the file. For example, use `require recipes-core/package/file.inc` instead of `require file.inc`. If you're finding you have to overlay the include file, it could indicate a deficiency in the include file in the layer to which it originally belongs. If this is the case, you should try to address that deficiency instead of overlaying the include file. For example, you could address this by getting the maintainer of the include file to add a variable or variables to make it easy to override the parts needing to be overridden.
++ ***避免重复include文件***: Use append files (`.bbappend`) for each recipe that uses an include file. Or, if you are introducing a new recipe that requires the included file, use the path relative to the original layer directory to refer to the file. For example, use `require recipes-core/package/file.inc` instead of `require file.inc`. If you're finding you have to overlay the include file, it could indicate a deficiency in the include file in the layer to which it originally belongs. If this is the case, you should try to address that deficiency instead of overlaying the include file. For example, you could address this by getting the maintainer of the include file to add a variable or variables to make it easy to override the parts needing to be overridden.
 
-+ ***Structure Your Layers***: Proper use of overrides within append files and placement of machine-specific files within your layer can ensure that a build is not using the wrong Metadata and negatively impacting a build for a different machine. Following are some examples:
++ ***结构化Layer***: Proper use of overrides within append files and placement of machine-specific files within your layer can ensure that a build is not using the wrong Metadata and negatively impacting a build for a different machine. Following are some examples:
 
-  + ***Modify Variables to Support a Different Machine***: Suppose you have a layer named `meta-one` that adds support for building machine "one". To do so, you use an append file named `base-files.bbappend` and create a dependency on "foo" by altering the DEPENDS variable:
+  + ***修改变量以支持不同机器***: Suppose you have a layer named `meta-one` that adds support for building machine "one". To do so, you use an append file named `base-files.bbappend` and create a dependency on "foo" by altering the DEPENDS variable:
     ```
      DEPENDS = "foo"
     ```                                
@@ -325,7 +325,7 @@ To create layers that are easier to maintain and that will not impact builds for
     ```                                
     > Note  
     > Avoiding "+=" and "=+" and using machine-specific _append and _prepend operations is recommended as well.
-  + Place Machine-Specific Files in Machine-Specific Locations: When you have a base recipe, such as `base-files.bb`, that contains a SRC_URI statement to a file, you can use an append file to cause the build to use your own version of the file. For example, an append file in your layer at `meta-one/recipes-core/base-files/base-files.bbappend` could extend FILESPATH using FILESEXTRAPATHS as follows:
+  + ***在指定机器特定路径的地方设置机器特定文件***: When you have a base recipe, such as `base-files.bb`, that contains a SRC_URI statement to a file, you can use an append file to cause the build to use your own version of the file. For example, an append file in your layer at `meta-one/recipes-core/base-files/base-files.bbappend` could extend FILESPATH using FILESEXTRAPATHS as follows:
     ```
      FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
     ```                                
@@ -335,13 +335,13 @@ To create layers that are easier to maintain and that will not impact builds for
 
     In summary, you need to place all files referenced from `SRC_URI` in a machine-specific subdirectory within the layer in order to restrict those files to machine-specific builds.
 
-+ ***Perform Steps to Apply for Yocto Project Compatibility***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
++ ***兼容Yocto Project***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
 
-+ ***Follow the Layer Naming Convention***: Store custom layers in a Git repository that use the meta-layer_name format.
++ ***遵守Layer命名约定***: Store custom layers in a Git repository that use the meta-layer_name format.
 
-+ ***Group Your Layers Locally***: Clone your repository alongside other cloned meta directories from the Source Directory.
++ ***本地将Layer成组***: Clone your repository alongside other cloned meta directories from the Source Directory.
 
-### 3.1.3 Making Sure Your Layer is Compatible With Yocto Project
+### 3.1.3 确保你的Layer兼容Yocto Project
 When you create a layer used with the Yocto Project, it is advantageous to make sure that the layer interacts well with existing Yocto Project layers (i.e. the layer is compatible with the Yocto Project). Ensuring compatibility makes the layer easy to be consumed by others in the Yocto Project community and could allow you permission to use the Yocto Project Compatible Logo.
 
 > Note  
@@ -363,20 +363,20 @@ To be granted permission to use the logo, you need to satisfy the following:
 
 The remainder of this section presents information on the registration form and on the yocto-check-layer script.
 
-#### 3.1.3.1 Yocto Project Compatible Program Application
+#### 3.1.3.1 Yocto Project兼容程序应用
 Use the form to apply for your layer's approval. Upon successful application, you can use the Yocto Project Compatibility Logo with your layer and the application that uses your layer.
 
 To access the form, use this link: https://www.yoctoproject.org/webform/yocto-project-compatible-registration. Follow the instructions on the form to complete your application.
 
 The application consists of the following sections:
 
-+ ***Contact Information***: Provide your contact information as the fields require. Along with your information, provide the released versions of the Yocto Project for which your layer is compatible.
++ ***联系方式***: Provide your contact information as the fields require. Along with your information, provide the released versions of the Yocto Project for which your layer is compatible.
 
-+ ***Acceptance Criteria***: Provide "Yes" or "No" answers for each of the items in the checklist. Space exists at the bottom of the form for any explanations for items for which you answered "No".
++ ***验收标准***: Provide "Yes" or "No" answers for each of the items in the checklist. Space exists at the bottom of the form for any explanations for items for which you answered "No".
 
 + ***Recommendations***: Provide answers for the questions regarding Linux kernel use and build success.
 
-#### 3.1.3.2 yocto-check-layer Script
+#### 3.1.3.2 `yocto-check-layer` 脚本
 The `yocto-check-layer` script provides you a way to assess how compatible your layer is with the Yocto Project. You should run this script prior to using the form to apply for compatibility as described in the previous section. You need to achieve a "PASS" result in order to have your application form successfully processed.
 
 The script divides tests into three areas: COMMON, BSP, and DISTRO. For example, given a distribution layer (DISTRO), the layer must pass both the COMMON and DISTRO related tests. Furthermore, if your layer is a BSP layer, the layer must pass the COMMON and BSP set of tests.
@@ -406,8 +406,8 @@ Entering the command causes the script to determine the type of layer and then t
 
 + `distro.test_distro_no_set_distro`: Tests to ensure a DISTRO layer does not set the distribution when the layer is added.
 
-### 3.1.4 Enabling Your Layer
-Before the OpenEmbedded build system can use your new layer, you need to enable it. To enable your layer, simply add your layer's path to the BBLAYERS variable in your `conf/`bblayers.conf`` file, which is found in the Build Directory. The following example shows how to enable a layer named `meta-mylayer`:
+### 3.1.4 启用你的Layer
+Before the OpenEmbedded build system can use your new layer, you need to enable it. To enable your layer, simply add your layer's path to the BBLAYERS variable in your `conf/bblayers.conf` file, which is found in the Build Directory. The following example shows how to enable a layer named `meta-mylayer`:
 ```
      # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/`bblayers.conf`
      # changes incompatibly
@@ -425,7 +425,7 @@ Before the OpenEmbedded build system can use your new layer, you need to enable 
 ```                
 BitBake parses each `conf/`layer.conf`` file from the top down as specified in the `BBLAYERS` variable within the `conf/`bblayers.conf`` file. During the processing of each `conf/`layer.conf`` file, BitBake adds the recipes, classes and configurations contained within the particular layer to the source directory.
 
-### 3.1.5 Using `.bbappend` files in Your Layer
+### 3.1.5 在Layer中使用`.bbappend`文件
 A recipe that appends Metadata to another recipe is called a BitBake append file. A BitBake append file uses the `.bbappend` file type suffix, while the corresponding recipe to which Metadata is being appended uses the .bb file type suffix.
 
 You can use a `.bbappend` file in your layer to make additions or changes to the content of another layer's recipe without having to copy the other layer's recipe into your layer. Your `.bbappend` file resides in your layer, while the main `.bb` recipe file to which you are appending Metadata resides in a different layer.
@@ -473,7 +473,7 @@ Using the immediate expansion assignment operator := is important because of the
 > BitBake automatically defines the `THISDIR` variable. You should never set this variable yourself. Using "_prepend" as part of the `FILESEXTRAPATHS` ensures your path will be searched prior to other paths in the final list.  
 > Also, not all append files add extra files. Many append files simply exist to add build options (e.g. `systemd`). For these cases, your append file would not even use the `FILESEXTRAPATHS` statement.
 
-### 3.1.6 Prioritizing Your Layer
+### 3.1.6 设置优先级
 Each layer is assigned a priority value. Priority values control which layer takes precedence if there are recipe files with the same name in multiple layers. For these cases, the recipe file from the layer with a higher priority number takes precedence. Priority values also affect the order in which multiple `.bbappend` files for the same recipe are applied. You can either specify the priority manually, or allow the build system to calculate it based on the layer's dependencies.
 
 To specify the layer's priority manually, use the BBFILE_PRIORITY variable and append the layer's root name:
@@ -484,7 +484,7 @@ To specify the layer's priority manually, use the BBFILE_PRIORITY variable and a
 > It is possible for a recipe with a lower version number PV in a layer that has a higher priority to take precedence.  
 > Also, the layer priority does not currently affect the precedence order of `.conf` or `.bbclass` files. Future versions of BitBake might address this.
 
-### 3.1.7 Managing Layers
+### 3.1.7 管理Layers
 You can use the BitBake layer management tool bitbake-layers to provide a view into the structure of recipes across a multi-layer project. Being able to generate output that reports on configured layers with their paths and priorities and on `.bbappend` files and their applicable recipes can help to reveal potential problems.
 
 For help on the BitBake layer management tool, use the following command:
@@ -576,7 +576,7 @@ The following list describes the available commands:
 
 + ***create-layer***: Creates a basic layer.
 
-### 3.1.8 Creating a General Layer Using the `bitbake-layers` Script
+### 3.1.8 使用`bitbake-layers`脚本创建Layer
 The `bitbake-layers` script with the `create-layer` subcommand simplifies creating a new general layer.
 
 > Notes  
@@ -629,7 +629,7 @@ The easiest way to see how the `bitbake-layers` `create-layer` command works is 
                              Filename of the example recipe
 ```
 
-### 3.1.9 Adding a Layer Using the `bitbake-layers` Script
+### 3.1.9 使用`bitbake-layers`脚本添加Layer
 Once you create your general layer, you must add it to your ``bblayers.conf`` file. Adding the layer to this configuration file makes the OpenEmbedded build system aware of your layer so that it can search it for metadata.
 
 Add your layer by using the `bitbake-layers` `add-layer` command:
@@ -658,10 +658,10 @@ Adding the layer to this file enables the build system to locate the layer durin
 > During a build, the OpenEmbedded build system looks in the layers from the top of the list down to the bottom in that order.
 
 
-## 3.2. Customizing Images
+## 3.2. 定制化镜像
 You can customize images to satisfy particular requirements. This section describes several methods and provides guidelines for each.
 
-### 3.2.1 Customizing Images Using ``local.conf``
+### 3.2.1 使用`local.conf`定制化镜像
 Probably the easiest way to customize an image is to add a package by way of the ``local.conf`` configuration file. Because it is limited to local use, this method generally only allows you to add packages and is not as flexible as creating your own customized image. When you add packages using local variables this way, you need to realize that these variable changes are in effect for every build and consequently affect all images, which might not be what you require.
 
 To add a package to your image using the local configuration file, use the `IMAGE_INSTALL` variable with the `_append` operator:
@@ -680,7 +680,7 @@ This example adds `strace` to the `core-image-minimal` image only.
 
 You can add packages using a similar approach through the CORE_IMAGE_EXTRA_INSTALL variable. If you use this variable, only `core-image-*` images are affected.
 
-### 3.2.2 Customizing Images Using Custom `IMAGE_FEATURES` and `EXTRA_IMAGE_FEATURES`
+### 3.2.2 使用自定义`IMAGE_FEATURES` 和 `EXTRA_IMAGE_FEATURES`定制化镜像
 Another method for customizing your image is to enable or disable high-level image features by using the `IMAGE_FEATURES` and `EXTRA_IMAGE_FEATURES` variables. Although the functions for both variables are nearly equivalent, best practices dictate using `IMAGE_FEATURES` from within a recipe and using `EXTRA_IMAGE_FEATURES` from within your ``local.conf`` file, which is found in the Build Directory.
 
 To understand how these features work, the best reference is `meta/classes/core-image.bbclass`. This class lists out the available `IMAGE_FEATURES` of which most map to package groups while some, such as `debug-tweaks` and `read-only-rootfs`, resolve as general configuration settings.
@@ -696,7 +696,7 @@ You can customize your image and change these defaults. Edit the `IMAGE_FEATURES
 > Note  
 > See the "Images" section in the Yocto Project Reference Manual for a complete list of image features that ship with the Yocto Project.
 
-### 3.2.3 Customizing Images Using Custom `.bb` Files
+### 3.2.3 使用自定义`.bb`文件定制化镜像
 You can also customize an image by creating a custom recipe that defines additional software as part of the image. The following example shows the form for the two lines you need:
 ```
      IMAGE_INSTALL = "packagegroup-core-x11-base package1 package2"
@@ -710,7 +710,7 @@ The other method for creating a custom image is to base it on an existing image.
      IMAGE_INSTALL += "strace"
 ```
 
-### 3.2.4 Customizing Images Using Custom Package Groups
+### 3.2.4 使用自定义包合集定制化镜像
 For complex custom images, the best approach for customizing an image is to create a custom package group recipe that is used to build the image or images. A good example of a package group recipe is `meta/recipes-core/packagegroups/packagegroup-base.bb`.
 
 If you examine that recipe, you see that the `PACKAGES` variable lists the package group packages to produce. The `inherit packagegroup` statement sets appropriate default values and automatically adds `-dev`, `-dbg`, and `-ptest` complementary packages for each package specified in the `PACKAGES` statement.
@@ -746,7 +746,7 @@ Here is a short, fabricated example showing the same basic pieces:
 ```                
 In the previous example, two package group packages are created with their dependencies and their recommended package dependencies listed: `packagegroup-custom-apps`, and `packagegroup-custom-tools`. To build an image using these package group packages, you need to add `packagegroup-custom-apps` and/or `packagegroup-custom-tools` to `IMAGE_INSTALL`. For other forms of image dependencies see the other areas of this section.
 
-### 3.2.5 Customizing an Image Hostname
+### 3.2.5 自定义镜像主机名
 By default, the configured hostname (i.e. `/etc/hostname`) in an image is the same as the machine name. For example, if `MACHINE` equals "qemux86", the configured hostname written to `/etc/hostname` is "qemux86".
 
 You can customize this name by altering the value of the "hostname" variable in the `base-files` recipe using either an append file or a configuration file. Use the following in an append file:
@@ -765,13 +765,13 @@ Another point of interest is that if you unset the variable, the image will have
 ```                
 Having no default hostname in the filesystem is suitable for environments that use dynamic hostnames such as virtual machines.
 
-## 3.3 Writing a New Recipe
+## 3.3 编写新Recipe
 Recipes (`.bb` files) are fundamental components in the Yocto Project environment. Each software component built by the OpenEmbedded build system requires a recipe to define the component. This section describes how to create, write, and test a new recipe.
 
 > Note  
 > For information on variables that are useful for recipes and for information about recipe naming issues, see the "Required" section of the Yocto Project Reference Manual.
 
-### 3.3.1 Overview
+### 3.3.1 概述
 The following figure shows the basic process for creating a new recipe. The remainder of the section provides details for the steps.
 
 ![basic process for creating a new recipe](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/recipe-workflow.png "basic process for creating a new recipe")
@@ -3192,7 +3192,7 @@ When you build an image using the Yocto Project and do not alter any distributio
 
 To create your own distribution, the basic steps consist of creating your own distribution layer, creating your own distribution configuration file, and then adding any needed code and Metadata to the layer. The following steps provide some more detail:
 
-+ ***Create a layer for your new distro***: Create your distribution layer so that you can keep your Metadata and code for the distribution separate. It is strongly recommended that you create and use your own layer for configuration and code. Using your own layer as compared to just placing configurations in a ``local.conf`` configuration file makes it easier to reproduce the same build configuration when using multiple build machines. See the "Creating a General Layer Using the bitbake-layers Script" section for information on how to quickly set up a layer.
++ ***Create a layer for your new distro***: Create your distribution layer so that you can keep your Metadata and code for the distribution separate. It is strongly recommended that you create and use your own layer for configuration and code. Using your own layer as compared to just placing configurations in a ``local.conf`` configuration file makes it easier to reproduce the same build configuration when using multiple build machines. See the "使用bitbake-layers脚本创建通用Layer" section for information on how to quickly set up a layer.
 
 + ***Create the distribution configuration file***: The distribution configuration file needs to be created in the `conf/distro` directory of your layer. You need to name it using your distribution name (e.g. `mydistro.conf`).
 
