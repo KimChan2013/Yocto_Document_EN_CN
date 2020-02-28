@@ -408,7 +408,7 @@ Entering the command causes the script to determine the type of layer and then t
 + `distro.test_distro_no_set_distro`: Tests to ensure a DISTRO layer does not set the distribution when the layer is added.
 
 ### 3.1.4 启用你的Layer
-Before the OpenEmbedded build system can use your new layer, you need to enable it. To enable your layer, simply add your layer's path to the BBLAYERS variable in your `conf/bblayers.conf` file, which is found in the Build Directory. The following example shows how to enable a layer named `meta-mylayer`:
+B在OE构建系统能够使用你创建的新Layer前，你需要启用它。是需要将Layer路径添加到build目录下`conf/bblayers.conf`的BBLAYERS变量就能很容易的使它起效。以下时启用名为`meta-mylayer`的示例：
 ```
      # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/`bblayers.conf`
      # changes incompatibly
@@ -424,18 +424,18 @@ Before the OpenEmbedded build system can use your new layer, you need to enable 
        /home/user/poky/meta-mylayer \
        "
 ```                
-BitBake parses each `conf/`layer.conf`` file from the top down as specified in the `BBLAYERS` variable within the `conf/`bblayers.conf`` file. During the processing of each `conf/`layer.conf`` file, BitBake adds the recipes, classes and configurations contained within the particular layer to the source directory.
+BitBake自上而下解析`conf/bblayers.conf`文件中`BBLAYERS`变量设定的每一个`conf/layer.conf`文件。处理`conf/layer.conf`文件期间，BitBake会添加recipes，类文件喝配置文件到源目录。
 
 ### 3.1.5 在Layer中使用`.bbappend`文件
-A recipe that appends Metadata to another recipe is called a BitBake append file. A BitBake append file uses the `.bbappend` file type suffix, while the corresponding recipe to which Metadata is being appended uses the .bb file type suffix.
+在另外一个recipe上附加元数据的recipe被称为BitBake append文件。BitBake append文件使用`.bbappend`作为文件类型后缀，被附加元数据的recipe则使用`.bb`文件类型后缀。
 
-You can use a `.bbappend` file in your layer to make additions or changes to the content of another layer's recipe without having to copy the other layer's recipe into your layer. Your `.bbappend` file resides in your layer, while the main `.bb` recipe file to which you are appending Metadata resides in a different layer.
+使用`.bbappend`文件，你可以在无需拷贝另一个Layer的recipe到你的Layer中，就能增加或修改内容。`.bbappend`文件在你的Layer中，而被附加内容的`.bb`文件则在另一个Layer中。
 
-Being able to append information to an existing recipe not only avoids duplication, but also automatically applies recipe changes from a different layer into your layer. If you were copying recipes, you would have to manually merge changes as they occur.
+附加信息不仅仅能避免重复，也能将不同的Layer的改动自动应用到你的Layer中。如果你是拷贝recipe，当改动发生时你需要手动合并。
 
-When you create an append file, you must use the same root name as the corresponding recipe file. For example, the append file `someapp_2.7.bbappend` must apply to `someapp_2.7.bb`. This means the original recipe and append file names are version number-specific. If the corresponding recipe is renamed to update to a newer version, you must also rename and possibly update the corresponding `.bbappend` as well. During the build process, BitBake displays an error on starting if it detects a `.bbappend` file that does not have a corresponding recipe with a matching name. See the BB_DANGLINGAPPENDS_WARNONLY variable for information on how to handle this error.
+创建append文件时，必须使用对应recipe相同的名字。例如`someapp_2.7.bbappend`必须应用于`someapp_2.7.bb`，这意味着这两个文件是版本特定的。如果对应的recipe重命名升级了版本，你也需要同时改动`.bbappend`文件名。如果检测到`.bbappend`文件没有所匹配的recipe，BitBake会显示错误。阅读[BB_DANGLINGAPPENDS_WARNONLY](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BB_DANGLINGAPPENDS_WARNONLY)以了解更多如何处理此错误的信息。
 
-As an example, consider the main formfactor recipe and a corresponding formfactor append file both from the Source Directory. Here is the main formfactor recipe, which is named formfactor_0.0.bb and located in the "meta" layer at `meta/recipes-bsp/formfactor`:
+作为例子，以下是源目录formfactor的recipe和append文件。首先是"meta"Layer的`meta/recipes-bsp/formfactor`目录下的`formfactor_0.0.bb`文件：
 ```
      SUMMARY = "Device formfactor information"
      SECTION = "base"
@@ -458,21 +458,22 @@ As an example, consider the main formfactor recipe and a corresponding formfacto
 	     fi
      }
 ```                     
-In the main recipe, note the SRC_URI variable, which tells the OpenEmbedded build system where to find files during the build.
+注意recipe中的SRC_URI变量，它告诉OE构建系统在构建时从哪里取得文件。
 
-Following is the append file, which is named `formfactor_0.0.bbappend` and is from the Raspberry Pi BSP Layer named `meta-raspberrypi`. The file is in the layer at `recipes-bsp/formfactor`:
+以下是从树莓派BSP Layer`recipes-bsp/formfactor`下名为`formfactor_0.0.bbappend`的append文件：
 ```
      FILESEXTRAPATHS_prepend := "${THISDIR}/`${PN}`:"
 ```                
-By default, the build system uses the FILESPATH variable to locate files. This append file extends the locations by setting the FILESEXTRAPATHS variable. Setting this variable in the `.bbappend` file is the most reliable and recommended method for adding directories to the search path used by the build system to find files.
+默认地，构建系统会使用`FILESPATH`变量去定位文件，这个append文件通过设定`FILESEXTRAPATHS`变量扩展了文件路径。通过这样的方式是最可靠，最为推荐的方式来为构建系统增加搜索文件的搜索目录。
 
-The statement in this example extends the directories to include `${THISDIR}/`${PN}``, which resolves to a directory named `formfactor` in the same directory in which the append file resides (i.e. `meta-raspberrypi/recipes-bsp/formfactor`. This implies that you must have the supporting directory structure set up that will contain any files or patches you will be including from the layer.
+The statement in this example extends the directories to include `${THISDIR}/${PN}`, which resolves to a directory named `formfactor` in the same directory in which the append file resides (i.e. `meta-raspberrypi/recipes-bsp/formfactor`. This implies that you must have the supporting directory structure set up that will contain any files or patches you will be including from the layer.  
+示例中的语句，扩展了`${THISDIR}/${PN}`路径，这个路径解析为append文件所在目录（`meta-raspberrypi/recipes-bsp/formfactor`）。这表明你必须有对应的目录结构，存放着将会包含的文件或补丁。（译者注：待确认此段翻译）
 
-Using the immediate expansion assignment operator := is important because of the reference to THISDIR. The trailing colon character is important as it ensures that items in the list remain colon-separated.
+因为指向`THISDIR`，使用立即展开赋值操作符:=很重要，它保证列表中仍是按冒号分隔的。
 
-> Note  
-> BitBake automatically defines the `THISDIR` variable. You should never set this variable yourself. Using "_prepend" as part of the `FILESEXTRAPATHS` ensures your path will be searched prior to other paths in the final list.  
-> Also, not all append files add extra files. Many append files simply exist to add build options (e.g. `systemd`). For these cases, your append file would not even use the `FILESEXTRAPATHS` statement.
+> **注释**  
+> BitBake自动定义`THISDIR`变量，你不应该给它设定任何值。"_prepend"保证在最终列表里路径会优先于其他路径。
+> 不是所有的append文件都会追加文件，许多append文件仅仅用来添加构建选项（例如`systemd`）。这些情况下，你的append文件甚至都不需要用到`FILESEXTRAPATHS`语句。
 
 ### 3.1.6 设置优先级
 Each layer is assigned a priority value. Priority values control which layer takes precedence if there are recipe files with the same name in multiple layers. For these cases, the recipe file from the layer with a higher priority number takes precedence. Priority values also affect the order in which multiple `.bbappend` files for the same recipe are applied. You can either specify the priority manually, or allow the build system to calculate it based on the layer's dependencies.
