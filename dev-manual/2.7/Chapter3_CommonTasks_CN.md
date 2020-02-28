@@ -288,12 +288,12 @@ OpenEmbedded（译者注：后文以OE代替）构建系统支持管理多个lay
 
    + [LAYERSERIES_COMPAT](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-LAYERSERIES_COMPAT): Lists the Yocto Project releases for which the current version is compatible. This variable is a good way to indicate if your particular layer is current.列出当前版本兼容的Yocto Project释放版本。它可以表示Layer是否有效。
 
-4. ***添加内容***: Depending on the type of layer, add the content. If the layer adds support for a machine, add the machine configuration in a `conf/machine/` file within the layer. If the layer adds distro policy, add the distro configuration in a conf/distro/ file within the layer. If the layer introduces new recipes, put the recipes you need in `recipes-*` subdirectories within the layer.
+4. ***添加内容***: 根据Layer类型添加内容。如果这个Layer支持某一设备，在`conf/machine/`目录下的文件中添加此设备的配置。如果这个Layer新增发行版本策略，就在`conf/distro/`下文件添加发行版本配置。如果这个Layer引入新的recipe，把recipe放入`recipes-*`前缀的子目录中。
 
-     > Note  
-     > For an explanation of layer hierarchy that is compliant with the Yocto Project, see the "Example Filesystem Layout" section in the Yocto Project Board Support Package (BSP) Developer's Guide.
+     > **注释**  
+     > 请参考《Yocto Project Board Support Package (BSP) Developer's Guide》以阅读更多关于遵从Yocto Project的Layer层级的解释
 
-5. ***（可选）测试兼容性***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
+5. ***（可选）测试兼容性***: 如果你希望获得许可，以便在你的Layer或使用了你的Layer的应用中使用Yocto Project Compatibility Logo，请阅读[3.1.3 确保你的Layer兼容Yocto Project](#313-确保你的layer兼容yocto-project)章节以获得更多信息。
 
 ### 3.1.2 创建Layer的最佳实践
 To create layers that are easier to maintain and that will not impact builds for other machines, you should consider the information in the following list:
