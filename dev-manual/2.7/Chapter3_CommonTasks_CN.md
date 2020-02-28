@@ -296,35 +296,36 @@ OpenEmbedded（译者注：后文以OE代替）构建系统支持管理多个lay
 5. ***（可选）测试兼容性***: 如果你希望获得许可，以便在你的Layer或使用了你的Layer的应用中使用Yocto Project Compatibility Logo，请阅读[3.1.3 确保你的Layer兼容Yocto Project](#313-确保你的layer兼容yocto-project)章节以获得更多信息。
 
 ### 3.1.2 创建Layer的最佳实践
-To create layers that are easier to maintain and that will not impact builds for other machines, you should consider the information in the following list:
+T如果想创建易于维护并且不会影响其他设备的构建的Layer，你需要考虑一下列表的建议：
 
-+ ***避免在你的配置中覆盖其他Layer的所有Recipe***: In other words, do not copy an entire recipe into your layer and then modify it. Rather, use an append file (`.bbappend`) to override only those parts of the original recipe you need to modify.
++ ***避免在你的配置中覆盖其他Layer的所有Recipe***: 也就是说，不要拷贝整个recipe到你的Layer中然后修改它，而是应该使用`.bbappend`文件去重写那些你需要修改的部分。
 
-+ ***避免重复include文件***: Use append files (`.bbappend`) for each recipe that uses an include file. Or, if you are introducing a new recipe that requires the included file, use the path relative to the original layer directory to refer to the file. For example, use `require recipes-core/package/file.inc` instead of `require file.inc`. If you're finding you have to overlay the include file, it could indicate a deficiency in the include file in the layer to which it originally belongs. If this is the case, you should try to address that deficiency instead of overlaying the include file. For example, you could address this by getting the maintainer of the include file to add a variable or variables to make it easy to override the parts needing to be overridden.
++ ***避免重复include文件***: 给使用include文件的recipe使用`.bbappend`文件。或者，当你想要引入一个新的recipe而这个recipe需要include文件时，使用相对于原始Layer目录的路径去引入它。比如说，使用`require recipes-core/package/file.inc`这样的路径，而不是`require file.inc`。如果你发现你需要重写include文件，这可能意味着这个include文件是有问题的，这种情况下，你应该指出问题而不是直接重写它。例如，你可以与维护者取得联系，新加变量以使得可能被重写的部分更容易被修改。
 
-+ ***结构化Layer***: Proper use of overrides within append files and placement of machine-specific files within your layer can ensure that a build is not using the wrong Metadata and negatively impacting a build for a different machine. Following are some examples:
++ ***结构化Layer***: 正确使用append文件进行重写并在Layer中放置设备相关文件，可以确保构建不会使用错误的元数据并影响其他设备的构建。以下时一些示例：
 
-  + ***修改变量以支持不同机器***: Suppose you have a layer named `meta-one` that adds support for building machine "one". To do so, you use an append file named `base-files.bbappend` and create a dependency on "foo" by altering the DEPENDS variable:
+  + ***修改变量以支持不同机器***: 假设你有一个为支持构建"one"设备的`meta-one`Layer，你创建了`base-files.bbappend`文件并以修改DEPENDS变量的方式创建了"foo"依赖项：
     ```
      DEPENDS = "foo"
     ```                                
-    The dependency is created during any build that includes the layer `meta-one`. However, you might not want this dependency for all machines. For example, suppose you are building for machine "two" but your ``bblayers.conf`` file has the `meta-one` layer included. During the build, the `base-files` for machine "two" will also have the dependency on `foo`.
+    每当构建包含`meta-one`Layer时这个依赖就会被创建。然而，你可能不希望为所有设备添加此依赖。比如，你想为"two"设备进行构建，但`bblayers.conf`却包含了`meta-one`Layer，构建时，设备"two"的`base-files`也会有`foo`的依赖。
 
-    To make sure your changes apply only when building machine "one", use a machine override with the `DEPENDS` statement:
+    为了确保你的修改仅仅应用于设备"one"，用设备重写`DEPENDS`语句：
     ```
      DEPENDS_one = "foo"
     ```                                
-    You should follow the same strategy when using `_append` and `_prepend` operations:
+    使用`_append`和`_prepend`操作时同样遵守此策略：
     ```
      DEPENDS_append_one = " foo"
      DEPENDS_prepend_one = "foo "
     ```                                
-    As an actual example, here's a line from the recipe for gnutls, which adds dependencies on "argp-standalone" when building with the musl C library:
+    拿实际案例来说，如下是用`musl C`库构建gnutls时，添加的"argp-standalone"依赖：
     ```
      DEPENDS_append_libc-musl = " argp-standalone"
     ```                                
-    > Note  
-    > Avoiding "+=" and "=+" and using machine-specific _append and _prepend operations is recommended as well.
+    > **注释**  
+    > 使用指定设备的_append和_prepend操作时避免使用"+=""=+"
+
   + ***在指定机器特定路径的地方设置机器特定文件***: When you have a base recipe, such as `base-files.bb`, that contains a SRC_URI statement to a file, you can use an append file to cause the build to use your own version of the file. For example, an append file in your layer at `meta-one/recipes-core/base-files/base-files.bbappend` could extend FILESPATH using FILESEXTRAPATHS as follows:
     ```
      FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
@@ -335,9 +336,9 @@ To create layers that are easier to maintain and that will not impact builds for
 
     In summary, you need to place all files referenced from `SRC_URI` in a machine-specific subdirectory within the layer in order to restrict those files to machine-specific builds.
 
-+ ***兼容Yocto Project***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. See the "Making Sure Your Layer is Compatible With Yocto Project" section for more information.
++ ***兼容Yocto Project***: If you want permission to use the Yocto Project Compatibility logo with your layer or application that uses your layer, perform the steps to apply for compatibility. 请阅读[3.1.3 确保你的Layer兼容Yocto Project](#313-确保你的layer兼容yocto-project)章节以获得更多信息。
 
-+ ***遵守Layer命名约定***: Store custom layers in a Git repository that use the meta-layer_name format.
++ ***遵守Layer命名约定***: 使用`meta-layer_name`的命名格式将自定义Layer存储在Git仓库
 
 + ***本地将Layer成组***: Clone your repository alongside other cloned meta directories from the Source Directory.
 
