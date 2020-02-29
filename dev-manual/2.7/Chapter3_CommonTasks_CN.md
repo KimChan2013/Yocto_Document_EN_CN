@@ -476,20 +476,20 @@ The statement in this example extends the directories to include `${THISDIR}/${P
 > 不是所有的append文件都会追加文件，许多append文件仅仅用来添加构建选项（例如`systemd`）。这些情况下，你的append文件甚至都不需要用到`FILESEXTRAPATHS`语句。
 
 ### 3.1.6 设置优先级
-Each layer is assigned a priority value. Priority values control which layer takes precedence if there are recipe files with the same name in multiple layers. For these cases, the recipe file from the layer with a higher priority number takes precedence. Priority values also affect the order in which multiple `.bbappend` files for the same recipe are applied. You can either specify the priority manually, or allow the build system to calculate it based on the layer's dependencies.
+每个Layer都设定了优先值，当多个Layer有同名recipe时，优先值决定了哪一个Layer拥有更高的优先级。数字越大，代表优先级越高。优先值同样影响了扩展同一recipe的多个`.bbappend`的顺序。你可以手动指定优先值，也可以让构建系统根据Layer的依赖关系自动计算优先级。
 
-To specify the layer's priority manually, use the BBFILE_PRIORITY variable and append the layer's root name:
+手动设定优先值，需要使用`BBFILE_PRIORITY`加上layer名：
 ```
      BBFILE_PRIORITY_mylayer = "1"
 ```                
-> Note  
-> It is possible for a recipe with a lower version number PV in a layer that has a higher priority to take precedence.  
-> Also, the layer priority does not currently affect the precedence order of `.conf` or `.bbclass` files. Future versions of BitBake might address this.
+> **注释**  
+> 拥有低版本号`PV`但是更高优先级的recipe是可能存在的。 
+> 目前，Layer优先级不会影响`conf`或`.bbclass`文件的优先顺序，BitBake的未来版本可能会处理这一点。
 
 ### 3.1.7 管理Layers
-You can use the BitBake layer management tool bitbake-layers to provide a view into the structure of recipes across a multi-layer project. Being able to generate output that reports on configured layers with their paths and priorities and on `.bbappend` files and their applicable recipes can help to reveal potential problems.
+在多Layer的项目中，你可以使用BitBake Layer管理工具`bitbake-layers`显示recipe结构。它能够输出报告以获取已配置Layer的路径和优先级，以及`.bbappend`文件和它们应用的recipe文件，这个能够帮助展现潜在问题。
 
-For help on the BitBake layer management tool, use the following command:
+使用以下命令以获取BitBake Layer管理工具的帮助信息：
 ```
      $ bitbake-layers --help
      NOTE: Starting bitbake server...
@@ -526,23 +526,23 @@ For help on the BitBake layer management tool, use the following command:
 
      Use bitbake-layers <subcommand> --help to get help on a specific command
 ```                
-The following list describes the available commands:
+下列列表介绍了可用的命令：
 
-+ ***help***: Displays general help or help on a specified command.
++ ***help***: 显示通用帮助信息或者一个具体命令的帮助信息
 
-+ ***show-layers***: Shows the current configured layers.
++ ***show-layers***: 显示当前配置的Layer
 
-+ ***show-overlayed***: Lists overlayed recipes. A recipe is overlayed when a recipe with the same name exists in another layer that has a higher layer priority.
++ ***show-overlayed***: 列出被覆盖的recipe（另外一个Layer中有同名recipe，但优先级更高）
 
-+ ***show-recipes***: Lists available recipes and the layers that provide them.
++ ***show-recipes***: 列出有效recipe和提供这些recipe的Layer
 
-+ ***show-appends***: Lists `.bbappend` files and the recipe files to which they apply.
++ ***show-appends***: 列出`.bbappend`文件和它们所应用的recipe文件
 
-+ ***show-cross-depends***: Lists dependency relationships between recipes that cross layer boundaries.
++ ***show-cross-depends***: 列出跨Layer的recipe的依赖关系
 
-+ ***add-layer***: Adds a layer to ``bblayers.conf``.
++ ***add-layer***: 添加Layer至``bblayers.conf``.
 
-+ ***remove-layer***: Removes a layer from ``bblayers.conf``
++ ***remove-layer***: 从``bblayers.conf``移除Layer
 
 + ***flatten***: Flattens the layer configuration into a separate output directory. Flattening your layer configuration builds a "flattened" directory that contains the contents of all layers, with any overlayed recipes removed and any `.bbappend` files appended to the corresponding recipes. You might have to perform some manual cleanup of the flattened layer as follows:
 
@@ -572,45 +572,45 @@ The following list describes the available commands:
      ...
 
     ```
-+ ***layerindex-fetch***: Fetches a layer from a layer index, along with its dependent layers, and adds the layers to the `conf/`bblayers.conf`` file.
++ ***layerindex-fetch***: Fetches a layer from a layer index, along with its dependent layers, and adds the layers to the `conf/bblayers.conf` file.
 
 + ***layerindex-show-depends***: Finds layer dependencies from the layer index.
 
-+ ***create-layer***: Creates a basic layer.
++ ***create-layer***: 创建一个基础Layer
 
 ### 3.1.8 使用`bitbake-layers`脚本创建Layer
-The `bitbake-layers` script with the `create-layer` subcommand simplifies creating a new general layer.
+`bitbake-layers`脚本配上`create-layer`子命令，可以很简单地创建一个新Layer:
 
-> Notes  
-> + For information on BSP layers, see the "BSP Layers" section in the Yocto Project Board Specific (BSP) Developer's Guide.  
-> + In order to use a layer with the OpenEmbedded build system, you need to add the layer to your ``bblayers.conf`` configuration file. See the "Adding a Layer Using the bitbake-layers Script" section for more information.
+> **注释**  
+> + 阅读《Yocto Project Board Specific (BSP) Developer's Guide》["BSP Layers"](http://www.yoctoproject.org/docs/2.7/bsp-guide/bsp-guide.html#bsp-layers)章节以获得更多关于BSP Layer的信息
+> + 在OE构建系统中使用Layer，你需要添加至`bblayers.conf`配置文件中。阅读[3.1.9 使用`bitbake-layers`脚本添加Layer](#319-使用bitbake-layers脚本添加layer)以获得更多信息
 
-The default mode of the script's operation with this subcommand is to create a layer with the following:
+使用此命令，默认创建如下一个Layer：
 
-+ A layer priority of 6.
++ Layer优先级为6
 
-+ A `conf` subdirectory that contains a `layer.conf` file.
++ 包含`layer.conf`文件的`conf`子目录
 
-+ A `recipes-example` subdirectory that contains a further subdirectory named `example`, which contains an `example.bb` recipe file.
++ `recipes-example`子目录下名为`example`的子目录，并在其中有一个`example.bb`recipe文件
 
-+ A `COPYING.MIT`, which is the license statement for the layer. The script assumes you want to use the MIT license, which is typical for most layers, for the contents of the layer itself.
++ Layer的证书说明`COPYING.MIT`文件。脚本假定你使用大多数Layer都使用的MIT证书
 
-+ A `README` file, which is a file describing the contents of your new layer.
++ `README`文件，描述这个Layer的内容
 
-In its simplest form, you can use the following command form to create a layer. The command creates a layer whose name corresponds to *`your_layer_name`* in the current directory:
+以如下最简单的形式，你可以在当前目录下创建名为`your_layer_name`的Layer：
 ```
      $ bitbake-layers create-layer your_layer_name
 ```                
-As an example, the following command creates a layer named `meta-scottrif` in your home directory:
+作为示例，以下命令为你在home目录创建一个名为`meta-scottrif`的Layer：
 ```
      $ cd /usr/home
      $ bitbake-layers create-layer meta-scottrif
      NOTE: Starting bitbake server...
      Add your new layer with 'bitbake-layers add-layer meta-scottrif'
 ```                
-If you want to set the priority of the layer to other than the default value of "6", you can either use the `‐‐priority` option or you can edit the `BBFILE_PRIORITY` value in the `conf/layer.conf` after the script creates it. Furthermore, if you want to give the example recipe file some name other than the default, you can use the `‐‐example-recipe-name` option.
+如果你想自定义优先级，可以使用`‐‐priority`选项，或者创建后在`conf/layer.conf`里修改`BBFILE_PRIORITY`.你也可以通过`‐‐example-recipe-name`选项，给默认的example recipe起别名。
 
-The easiest way to see how the `bitbake-layers` `create-layer` command works is to experiment with the script. You can also read the usage information by entering the following:
+实际操作`bitbake-layers` `create-layer`命令可以更容易清楚它是如何工作的，你也可以通过以下方式查看使用帮助：
 ```
      $ bitbake-layers create-layer --help
      NOTE: Starting bitbake server...
@@ -632,13 +632,13 @@ The easiest way to see how the `bitbake-layers` `create-layer` command works is 
 ```
 
 ### 3.1.9 使用`bitbake-layers`脚本添加Layer
-Once you create your general layer, you must add it to your ``bblayers.conf`` file. Adding the layer to this configuration file makes the OpenEmbedded build system aware of your layer so that it can search it for metadata.
+当你创建Layer后，你必须将它添加至`bblayers.conf`中，添加后才能使OE购进系统意识到它的存在，并检索元数据。
 
-Add your layer by using the `bitbake-layers` `add-layer` command:
+使用`bitbake-layers` `add-layer`命令添加:
 ```
      $ bitbake-layers add-layer your_layer_name
 ```                
-Here is an example that adds a layer named `meta-scottrif` to the configuration file. Following the command that adds the layer is another `bitbake-layers` command that shows the layers that are in your ``bblayers.conf`` file:
+这里为你展示添加`meta-scottrif`Layer的示例。紧跟的命令可以展示`bblayers.conf`里已有Layer的列表：
 ```
      $ bitbake-layers add-layer meta-scottrif
      NOTE: Starting bitbake server...
@@ -654,10 +654,10 @@ Here is an example that adds a layer named `meta-scottrif` to the configuration 
      workspace             /home/scottrif/poky/build/workspace       99
      meta-scottrif         /home/scottrif/poky/build/meta-scottrif   6
 ```                
-Adding the layer to this file enables the build system to locate the layer during the build.
+添加这个Layer可以使构建系统在构建时定位Layer。
 
-> Note  
-> During a build, the OpenEmbedded build system looks in the layers from the top of the list down to the bottom in that order.
+> **注释**  
+> 构建时，OE构建系统根据此列表自上而下查找Layer。
 
 
 ## 3.2. 定制化镜像
