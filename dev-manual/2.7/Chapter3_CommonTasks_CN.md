@@ -661,68 +661,68 @@ The statement in this example extends the directories to include `${THISDIR}/${P
 
 
 ## 3.2. 定制化镜像
-You can customize images to satisfy particular requirements. This section describes several methods and provides guidelines for each.
+你可以定制化镜像以满足特定需求，本章将介绍几种方式以及每种方法的指导。
 
 ### 3.2.1 使用`local.conf`定制化镜像
-Probably the easiest way to customize an image is to add a package by way of the ``local.conf`` configuration file. Because it is limited to local use, this method generally only allows you to add packages and is not as flexible as creating your own customized image. When you add packages using local variables this way, you need to realize that these variable changes are in effect for every build and consequently affect all images, which might not be what you require.
+可能最简单的方式去定制化镜像，就是修改`local.conf`添加包。因为这仅限于本地使用，这个方法只允许你添加包，且不足够灵活以创建属于你自己的镜像。当你通过本地变量添加包，这意味着这些变量的修改会体现在每一次构建中，所有镜像都会受到影响，你可能不希望这样。
 
-To add a package to your image using the local configuration file, use the `IMAGE_INSTALL` variable with the `_append` operator:
+使用本地配置文件添加包，你需要使用带`_append`操作符的`IMAGE_INSTALL`变量：
 ```
      IMAGE_INSTALL_append = " strace"
 ```                
-Use of the syntax is important - specifically, the space between the quote and the package name, which is `strace` in this example. This space is required since the `_append` operator does not add the space.
+使用这样的语法非常重要，尤其是引号和包`strace`名字中间的空格。`_append`操作符不会添加空格，因此这个空格在这里是必须的。
 
-Furthermore, you must use `_append` instead of the += operator if you want to avoid ordering issues. The reason for this is because doing so unconditionally appends to the variable and avoids ordering problems due to the variable being set in image recipes and `.bbclass` files with operators like `?=.` Using `_append` ensures the operation takes affect.
+如果你希望避免产生顺序问题，你必须使用 `_append` 而不是`+=`操作符。这样做的理由是，无条件附加在变量后，避免因镜像recipe设定的变量和带例如`?=`操作符的`.bbclass`文件而导致的顺序问题。使用`_append`确保此操作生效。
 
-As shown in its simplest use, IMAGE_INSTALL_append affects all images. It is possible to extend the syntax so that the variable applies to a specific image only. Here is an example:
+如上所示，`IMAGE_INSTALL_append`会影响所有镜像。使用下列方式可以让变量只对特定镜像有效：
 ```
      IMAGE_INSTALL_append_pn-core-image-minimal = " strace"
 ```                
-This example adds `strace` to the `core-image-minimal` image only.
+这个示例仅仅向`core-image-minimal`添加`strace`
 
-You can add packages using a similar approach through the CORE_IMAGE_EXTRA_INSTALL variable. If you use this variable, only `core-image-*` images are affected.
+你也可以通过`CORE_IMAGE_EXTRA_INSTALL`变量来添加包，如果使用的话，只有`core-image-*`镜像会有影响。
 
 ### 3.2.2 使用自定义`IMAGE_FEATURES` 和 `EXTRA_IMAGE_FEATURES`定制化镜像
-Another method for customizing your image is to enable or disable high-level image features by using the `IMAGE_FEATURES` and `EXTRA_IMAGE_FEATURES` variables. Although the functions for both variables are nearly equivalent, best practices dictate using `IMAGE_FEATURES` from within a recipe and using `EXTRA_IMAGE_FEATURES` from within your ``local.conf`` file, which is found in the Build Directory.
+另外一种定制化镜像的方式是使用`IMAGE_FEATURES`和`EXTRA_IMAGE_FEATURES`开启或关闭high-level镜像功能。尽管两个变量的功能几乎相同，最佳实践是，在recipe中使用`IMAGE_FEATURES`，在Build目录下的`local.conf`使用`EXTRA_IMAGE_FEATURES`。
 
-To understand how these features work, the best reference is `meta/classes/core-image.bbclass`. This class lists out the available `IMAGE_FEATURES` of which most map to package groups while some, such as `debug-tweaks` and `read-only-rootfs`, resolve as general configuration settings.
+想要理解它们是怎么起效的，最好的参考就是`meta/classes/core-image.bbclass`，这个类列出了可用的`IMAGE_FEATURES`，大多数是包集合，也有一些诸如`debug-tweaks` 和 `read-only-rootfs`的通用配置设定。
 
-In summary, the file looks at the contents of the `IMAGE_FEATURES` variable and then maps or configures the feature accordingly. Based on this information, the build system automatically adds the appropriate packages or configurations to the `IMAGE_INSTALL` variable. Effectively, you are enabling extra features by extending the class or creating a custom class for use with specialized image `.bb` files.
+总之，这个文件会查看`IMAGE_FEATURES`变量的内容，然后映射或者配置功能。基于这个信息，构建系统自动添加合适的包或配置到`IMAGE_INSTALL`变量中。实际上，你是通过扩展类或创建自定义类的方式启用额外功能。
 
 Use the `EXTRA_IMAGE_FEATURES` variable from within your local configuration file. Using a separate area from which to enable features with this variable helps you avoid overwriting the features in the image recipe that are enabled with `IMAGE_FEATURES`. The value of `EXTRA_IMAGE_FEATURES` is added to `IMAGE_FEATURES` within `meta/conf/bitbake.conf`.
 
-To illustrate how you can use these variables to modify your image, consider an example that selects the SSH server. The Yocto Project ships with two SSH servers you can use with your images: Dropbear and OpenSSH. Dropbear is a minimal SSH server appropriate for resource-constrained environments, while OpenSSH is a well-known standard SSH server implementation. By default, the `core-image-sato` image is configured to use Dropbear. The `core-image-full-cmdline` and `core-image-lsb` images both include OpenSSH. The `core-image-minimal` image does not contain an SSH server.
+为了解释你是如何使用这些变量修改镜像，思考选择SSH服务器这个例子。Yocto Project为你的镜像提供两个SSH服务器：Dropbear和OpenSSH，Dropbear合适作为资源有限环境的最小化SSH服务器，而OpenSSH是众所周知的标准SSH服务器实现。默认地，`core-image-sato`配置使用Dropbear，`core-image-full-cmdline` 和 `core-image-lsb`使用OpenSSH，而`core-image-minimal`则不包含SSH服务器。
 
-You can customize your image and change these defaults. Edit the `IMAGE_FEATURES` variable in your recipe or use the `EXTRA_IMAGE_FEATURES` in your ``local.conf`` file so that it configures the image you are working with to include `ssh-server-dropbear` or `ssh-server-openssh`.
+你可以定制化你的镜像，修改默认值。在recipe中编辑`IMAGE_FEATURES`或者在`local.conf`使用EXTRA_IMAGE_FEATURES，如此你就可以让你地镜像包含`ssh-server-dropbear` 或 `ssh-server-openssh`
 
-> Note  
-> See the "Images" section in the Yocto Project Reference Manual for a complete list of image features that ship with the Yocto Project.
+> **注释**  
+> 阅读《Yocto Project Reference Manual》["Images"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#ref-images)章节以获取Yocto Project提供地完整镜像功能列表。
 
 ### 3.2.3 使用自定义`.bb`文件定制化镜像
-You can also customize an image by creating a custom recipe that defines additional software as part of the image. The following example shows the form for the two lines you need:
+你也可以通过创建自定义recipe的方式为你的镜像添加额外的软件。以下为示例格式：
 ```
      IMAGE_INSTALL = "packagegroup-core-x11-base package1 package2"
 
      inherit core-image
 ```                
-Defining the software using a custom recipe gives you total control over the contents of the image. It is important to use the correct names of packages in the `IMAGE_INSTALL` variable. You must use the OpenEmbedded notation and not the Debian notation for the names (e.g. `glibc-dev` instead of `libc6-dev`).
+Defining the software using a custom recipe gives you total control over the contents of the image. It is important to use the correct names of packages in the `IMAGE_INSTALL` variable. You must use the OpenEmbedded notation and not the Debian notation for the names (e.g. `glibc-dev` instead of `libc6-dev`).通过自定义recipe的方式定义软件有助于你完全掌控镜像的内容。在`IMAGE_INSTALL`变量中使用包的正确名字是非常重要的，你必须使用OE而不是Debian的命名方式(例如，使用 `glibc-dev` 而不是 `libc6-dev`)
 
-The other method for creating a custom image is to base it on an existing image. For example, if you want to create an image based on `core-image-sato` but add the additional package `strace` to the image, copy the `meta/recipes-sato/images/core-image-sato.bb` to a new `.bb` and add the following line to the end of the copy:
+另外一种方式就是基于已有镜像。比如说，如果你想在`core-image-sato`添加额外的`strace`包，复制`meta/recipes-sato/images/core-image-sato.bb`的内容到一个新的`.bb`文件中，然后将下方一行语句加到末尾：
 ```
      IMAGE_INSTALL += "strace"
 ```
 
 ### 3.2.4 使用自定义包合集定制化镜像
-For complex custom images, the best approach for customizing an image is to create a custom package group recipe that is used to build the image or images. A good example of a package group recipe is `meta/recipes-core/packagegroups/packagegroup-base.bb`.
+对于复杂的定制化，最好的方式是创建包集合recipe用来构建镜像，示例可参考`meta/recipes-core/packagegroups/packagegroup-base.bb`。
 
-If you examine that recipe, you see that the `PACKAGES` variable lists the package group packages to produce. The `inherit packagegroup` statement sets appropriate default values and automatically adds `-dev`, `-dbg`, and `-ptest` complementary packages for each package specified in the `PACKAGES` statement.
+如果你查看这个recipe，你会看到`PACKAGES`变量列出了要生产的包集合。`inherit packagegroup`语句设定合适的默认值，并且自动为`PACKAGES`语句列出的包加上`-dev`, `-dbg`, 和 `-ptest`补充包。
 
-> Note  
-> The `inherit packages` should be located near the top of the recipe, certainly before the `PACKAGES` statement.
+> **注释**  
+> inherit packages`应该在recipe几乎起始位置，必须在`PACKAGES`前面。
 
-For each package you specify in `PACKAGES`, you can use `RDEPENDS` and `RRECOMMENDS` entries to provide a list of packages the parent task package should contain. You can see examples of these further down in the `packagegroup-base.bb` recipe.
+`PACKAGES`所列出的包，你可以使用`RDEPENDS` 和 `RRECOMMENDS`入口提供父任务包应该包含的包列表。你可以参考如下`packagegroup-base.bb`。
 
-Here is a short, fabricated example showing the same basic pieces:
+这里有一段简短的示例：
 ```conf
      DESCRIPTION = "My Custom Package Groups"
 
@@ -746,26 +746,26 @@ Here is a short, fabricated example showing the same basic pieces:
      RRECOMMENDS_packagegroup-custom-tools = "\
          kernel-module-oprofile"
 ```                
-In the previous example, two package group packages are created with their dependencies and their recommended package dependencies listed: `packagegroup-custom-apps`, and `packagegroup-custom-tools`. To build an image using these package group packages, you need to add `packagegroup-custom-apps` and/or `packagegroup-custom-tools` to `IMAGE_INSTALL`. For other forms of image dependencies see the other areas of this section.
+示例中，`packagegroup-custom-apps`, and `packagegroup-custom-tools`两个包集合被创建，同时还有它们的依赖和推荐包依赖。构建时使用这些包集合，你需要将`packagegroup-custom-apps` 和/或 `packagegroup-custom-tools`加入到`IMAGE_INSTALL`变量。其他镜像依赖的格式，请参考本节其他部分。
 
 ### 3.2.5 自定义镜像主机名
-By default, the configured hostname (i.e. `/etc/hostname`) in an image is the same as the machine name. For example, if `MACHINE` equals "qemux86", the configured hostname written to `/etc/hostname` is "qemux86".
+默认地，配置的主机名(即 `/etc/hostname`)就是设备名，例如，`MACHINE` 设定为 "qemux86"，被写入`/etc/hostname`的就是"qemux86"。
 
-You can customize this name by altering the value of the "hostname" variable in the `base-files` recipe using either an append file or a configuration file. Use the following in an append file:
+你可以通过使用append文件或配置文件的方式修改`base-files`recipe中"hostname"变量值。append文件需如下使用：
 ```
      hostname="myhostname"
 ```                
-Use the following in a configuration file:
+配置文件需如下使用：
 ```
      hostname_pn-base-files = "myhostname"
 ```                
-Changing the default value of the variable "hostname" can be useful in certain situations. For example, suppose you need to do extensive testing on an image and you would like to easily identify the image under test from existing images with typical default hostnames. In this situation, you could change the default hostname to "testme", which results in all the images using the name "testme". Once testing is complete and you do not need to rebuild the image for test any longer, you can easily reset the default hostname.
+有些情况下，改变"hostname"默认值是很有用的，例如，假设你需要对镜像做大量测试，希望能轻易地在使用默认主机名的镜像中识别你要做测试的镜像，你可以把默认主机名改为"testme"，结果是镜像会使用"testme"这个名字。一旦测试完成，你不需要再次构建镜像作为测试，你可以重置主机名。
 
-Another point of interest is that if you unset the variable, the image will have no default hostname in the filesystem. Here is an example that unsets the variable in a configuration file:
+另外一点是，如果你unset这个变量，镜像文件系统中就会没有默认主机名。这里是一个示例：
 ```
      hostname_pn-base-files = ""
 ```                
-Having no default hostname in the filesystem is suitable for environments that use dynamic hostnames such as virtual machines.
+文件系统没有默认主机名对于例如虚拟机使用动态主机名的环境，是适宜的。
 
 ## 3.3 编写新Recipe
 Recipes (`.bb` files) are fundamental components in the Yocto Project environment. Each software component built by the OpenEmbedded build system requires a recipe to define the component. This section describes how to create, write, and test a new recipe.
