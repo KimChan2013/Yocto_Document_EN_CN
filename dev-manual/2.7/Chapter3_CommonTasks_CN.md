@@ -19,12 +19,12 @@
   - [3.2.5 自定义镜像主机名](#325-自定义镜像主机名)
 - [3.3 编写新Recipe](#33-编写新recipe)
   - [3.3.1 概述](#331-概述)
-  - [3.3.2 Locate or Automatically Create a Base Recipe](#332-locate-or-automatically-create-a-base-recipe)
-    - [3.3.2.1 Creating the Base Recipe Using `devtool add`](#3321-creating-the-base-recipe-using-devtool-add)
-    - [3.3.2.2 Creating the Base Recipe Using recipetool create](#3322-creating-the-base-recipe-using-recipetool-create)
-    - [3.3.2.3 Locating and Using a Similar Recipe](#3323-locating-and-using-a-similar-recipe)
-  - [3.3.3 Storing and Naming the Recipe](#333-storing-and-naming-the-recipe)
-  - [3.3.4 Running a Build on the Recipe](#334-running-a-build-on-the-recipe)
+  - [3.3.2 手动/自动创建基本Recipe](#332-手动自动创建基本recipe)
+    - [3.3.2.1 使用`devtool add`创建基本Recipe](#3321-使用devtool-add创建基本recipe)
+    - [3.3.2.2 使用`recipetool create`创建基本Recipe](#3322-使用recipetool-create创建基本recipe)
+    - [3.3.2.3 找到并使用近似的recipe](#3323-找到并使用近似的recipe)
+  - [3.3.3 保存并为recipe命名](#333-保存并为recipe命名)
+  - [3.3.4 使用Recipe运行构建](#334-使用recipe运行构建)
   - [3.3.5. Fetching Code](#335-fetching-code)
   - [3.3.6 Unpacking Code](#336-unpacking-code)
   - [3.3.7 Patching Code](#337-patching-code)
@@ -48,7 +48,7 @@
     - [3.3.21.4 Splitting an Application into Multiple Packages](#33214-splitting-an-application-into-multiple-packages)
   - [3.3.21.5 Packaging Externally Produced Binaries](#33215-packaging-externally-produced-binaries)
   - [3.3.22 Following Recipe Style Guidelines](#3322-following-recipe-style-guidelines)
-  - [3.3.23 Recipe Syntax](#3323-recipe-syntax)
+  - [3.3.23 Recipe语法](#3323-recipe语法)
 - [3.4 Adding a New Machine](#34-adding-a-new-machine)
   - [3.4.1 Adding the Machine Configuration File](#341-adding-the-machine-configuration-file)
   - [3.4.2 Adding a Kernel for the Machine](#342-adding-a-kernel-for-the-machine)
@@ -768,37 +768,37 @@ Defining the software using a custom recipe gives you total control over the con
 文件系统没有默认主机名对于例如虚拟机使用动态主机名的环境，是适宜的。
 
 ## 3.3 编写新Recipe
-Recipes (`.bb` files) are fundamental components in the Yocto Project environment. Each software component built by the OpenEmbedded build system requires a recipe to define the component. This section describes how to create, write, and test a new recipe.
+Recipe(`.bb`文件)是Yocto Project环境基本组件，每一个OE构建系统构建的软件组件都需要recipe定义这个组件。本节描述如何创建，编写，测试一个新Recipe。
 
-> Note  
-> For information on variables that are useful for recipes and for information about recipe naming issues, see the "Required" section of the Yocto Project Reference Manual.
+> **注释**  
+> 更多recipe有用的变量和recipe命名问题，请阅读《Yocto Project Reference Manual》["Required"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#ref-varlocality-recipe-required)章节
 
 ### 3.3.1 概述
-The following figure shows the basic process for creating a new recipe. The remainder of the section provides details for the steps.
+下图展示了创建新recipe的基本过程，后面的内容会详细介绍这些步骤。
 
 ![basic process for creating a new recipe](https://www.yoctoproject.org/docs/2.7/dev-manual/figures/recipe-workflow.png "basic process for creating a new recipe")
 
-### 3.3.2 Locate or Automatically Create a Base Recipe
-You can always write a recipe from scratch. However, three choices exist that can help you quickly get a start on a new recipe:
+### 3.3.2 手动/自动创建基本Recipe
+你可以完全从零编写Recipe，然而，这些选择可以帮助你快速开始一个新的recipe：
 
-+ `devtool add`: A command that assists in creating a recipe and an environment conducive to development.
++ `devtool add`: 帮助创建recipe和有助于开发的环境的命令
 
-+ `recipetool create`: A command provided by the Yocto Project that automates creation of a base recipe based on the source files.
++ `recipetool create`: Yocto Project提供，自动根据代码文件创建基本recipe的命令
 
-+ ***Existing Recipes***: Location and modification of an existing recipe that is similar in function to the recipe you need.
++ ***已有recipe***: 定位并改造一个功能和你需要的类似的recipe
 
-> Note  
-> For information on recipe syntax, see the "Recipe Syntax" section.
+> **注释**  
+> 阅读[3.3.23 Recipe语法](#3323-recipe语法)关于Recipe语法的信息。
 
-#### 3.3.2.1 Creating the Base Recipe Using `devtool add`
-The `devtool add` command uses the same logic for auto-creating the recipe as `recipetool create`, which is listed below. Additionally, however, `devtool add` sets up an environment that makes it easy for you to patch the source and to make changes to the recipe as is often necessary when adding a recipe to build a new piece of software to be included in a build.
+#### 3.3.2.1 使用`devtool add`创建基本Recipe
+`devtool add`命令使用与`recipetool create`同样的逻辑自动创建recipe。此外，然而，`devtool add`准备了一套环境，当你新加recipe以构建时构建新软件，你可以更容易地为代码打补丁，或者修改recipe。
 
-You can find a complete description of the `devtool add` command in the "A Closer Look at devtool add" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual.
+你可以再《Yocto Project Application Development and the Extensible Software Development Kit (eSDK)》["A Closer Look at devtool add"](http://www.yoctoproject.org/docs/2.7/sdk-manual/sdk-manual.html#sdk-a-closer-look-at-devtool-add)找到`devtool add`命令的完整描述。
 
-#### 3.3.2.2 Creating the Base Recipe Using recipetool create
-`recipetool create` automates creation of a base recipe given a set of source code files. As long as you can extract or point to the source files, the tool will construct a recipe and automatically configure all pre-build information into the recipe. For example, suppose you have an application that builds using Autotools. Creating the base recipe using `recipetool` results in a recipe that has the pre-build dependencies, license requirements, and checksums configured.
+#### 3.3.2.2 使用`recipetool create`创建基本Recipe
+`recipetool create`自动创建给定一组代码文件的基本recipe。只要你能解压或者指向源代码文件，这个工具会自动创建recipe并自动将所有pre-build信息配置再recipe中。例如，假定你使用Autotools构建一个应用，使用`recipetool`创建recipe，会让你得到配置好pre-build依赖，证书要求，校验码的recipe。
 
-To run the tool, you just need to be in your Build Directory and have sourced the build environment setup script (i.e. `oe-init-build-env`). To get help on the tool, use the following command:
+运行这个工具，你只需要在Build目录并运行构建环境搭建脚本（即`oe-init-build-env`）。更多帮助，请参考以下命令:
 ```
      $ recipetool -h
      NOTE: Starting bitbake server...
@@ -822,31 +822,31 @@ To run the tool, you just need to be in your Build Directory and have sourced th
        appendsrcfile   Create/update a bbappend to add or replace a source file
      Use recipetool <subcommand> --help to get help on a specific command
 ```                    
-Running `recipetool create -o OUTFILE` creates the base recipe and locates it properly in the layer that contains your source files. Following are some syntax examples:
+`recipetool create -o OUTFILE`在包含你的代码文件的Layer创建一个基本recipe，以下是一些语法示例：
 
-Use this syntax to generate a recipe based on `source`. Once generated, the recipe resides in the existing source code layer:
+使用这个语法基于`source`生成recipe，一旦生成，recipe将存在于此代码Layer中。
 ```
      recipetool create -o OUTFILE source
 ```                    
-Use this syntax to generate a recipe using code that you extract from `source`. The extracted code is placed in its own layer defined by `EXTERNALSRC`.
+使用这个语法使用你从`source`解压的代码生成recipe，解压缩的代码路径由`EXTERNALSRC`定义：
 ```
      recipetool create -o OUTFILE -x EXTERNALSRC source
 ```                    
-Use this syntax to generate a recipe based on `source`. The options direct `recipetool` to generate debugging information. Once generated, the recipe resides in the existing source code layer:
+使用这个语法基于`source`生成recipe，这个选项使`recipetool`生成调试信息，一旦生成，recipe存在于已有代码Layer：
 ```
      recipetool create -d -o OUTFILE source
 ```
 
-#### 3.3.2.3 Locating and Using a Similar Recipe
-Before writing a recipe from scratch, it is often useful to discover whether someone else has already written one that meets (or comes close to meeting) your needs. The Yocto Project and OpenEmbedded communities maintain many recipes that might be candidates for what you are doing. You can find a good central index of these recipes in the OpenEmbedded Layer Index.
+#### 3.3.2.3 找到并使用近似的recipe
+从零开始编写recipe前，寻找是否有一个已有且满足（或近似满足）需求的recipe是很有帮助的一件事。Yocto Project 和 OE 社区维护着很多可能你用得上的recipe。你可以在[OpenEmbedded Layer Index](http://layers.openembedded.org/)找到索引。
 
-Working from an existing recipe or a skeleton recipe is the best way to get started. Here are some points on both methods:
+基于已有recipe或recipe提纲开始工作是最有效的方式，这里有一些你需要注意的地方：
 
-+ ***Locate and modify a recipe that is close to what you want to do***: This method works when you are familiar with the current recipe space. The method does not work so well for those new to the Yocto Project or writing recipes.
++ ***找到并修改近似于你想要的recipe***: 如果你对当前的recipe空间很熟悉，这个方法会很有效，对于初学Yocto Project编写recipe的人来说可能不太友好。
 
-Some risks associated with this method are using a recipe that has areas totally unrelated to what you are trying to accomplish with your recipe, not recognizing areas of the recipe that you might have to add from scratch, and so forth. All these risks stem from unfamiliarity with the existing recipe space.
+     这个方法的风险是，可能recipe中有完全无关的内容，亦或是有些部分你还是需要从零开始，等等。这些风险因对不熟悉已有recipe空间而产生。
 
-+ ***Use and modify the following skeleton recipe***: If for some reason you do not want to use `recipetool` and you cannot find an existing recipe that is close to meeting your needs, you can use the following structure to provide the fundamental areas of a new recipe.
++ ***使用并修改如下recipe提纲***: 如果某些原因你不想使用`recipetool`，你也找不到类似满足需求的recipe，你可以使用下方提供了基本结构的recipe开始：
 ```
      DESCRIPTION = ""
      HOMEPAGE = ""
@@ -858,52 +858,52 @@ Some risks associated with this method are using a recipe that has areas totally
      SRC_URI = ""
 ```
 
-### 3.3.3 Storing and Naming the Recipe
-Once you have your base recipe, you should put it in your own layer and name it appropriately. Locating it correctly ensures that the OpenEmbedded build system can find it when you use BitBake to process the recipe.
+### 3.3.3 保存并为recipe命名
+当你有了基本recipe后，你应该放到你自己的layer中并为它命名。将它放置正确保证OE构建系统可以在你使用BitBake处理recipe时找得到它。
 
-+ ***Storing Your Recipe***: The OpenEmbedded build system locates your recipe through the layer's `conf/layer.conf` file and the `BBFILES` variable. This variable sets up a path from which the build system can locate recipes. Here is the typical use:
++ ***保存Recipe***: OE构建系统通过Layer的`conf/layer.conf`中`BBFILES`变量定位recipe，这里是典型的应用：
      ```
      BBFILES += "${LAYERDIR}/recipes-*/*/*.bb \
                  ${LAYERDIR}/recipes-*/*/*.bbappend"
      ```                    
-     Consequently, you need to be sure you locate your new recipe inside your layer such that it can be found.
+     因此，你需要保证你的recipe能被找到。
 
-     You can find more information on how layers are structured in the "Understanding and Creating Layers" section.
+     你可以在[3.1 理解并创建Layer](#31-理解并创建layer)找到更多关于Layer结构的信息。
 
-+ ***Naming Your Recipe***: When you name your recipe, you need to follow this naming convention:
++ ***为Recipe命名***: 你需要按照以下约定命名recipe：
      ```
      basename_version.bb
      ```                    
-     Use lower-cased characters and do not include the reserved suffixes `-native`, `-cross`, `-initial`, or `-dev` casually (i.e. do not use them as part of your recipe name unless the string applies). Here are some examples:
+     使用小写字母，不要随意包含保留后缀`-native`, `-cross`, `-initial`, or `-dev` casually (即，除非后缀适用，不要将它们作为recipe名字的一部分). 示例如下:
      ```
      cups_1.7.0.bb
      gawk_4.0.2.bb
      irssi_0.8.16-rc1.bb
      ```
 
-### 3.3.4 Running a Build on the Recipe
-Creating a new recipe is usually an iterative process that requires using BitBake to process the recipe multiple times in order to progressively discover and add information to the recipe file.
+### 3.3.4 使用Recipe运行构建
+创建新recipe，通常是一个迭代的过程，需要使用BitBake多次处理这个recipe以逐渐发现并向recipe中加入更多信息。
 
-Assuming you have sourced the build environment setup script (i.e. `oe-init-build-env`) and you are in the Build Directory, use BitBake to process your recipe. All you need to provide is the `basename` of the recipe as described in the previous section:
+假定你已经运行了构建环境搭建脚本（即`oe-init-build-env`）并且你在Build目录下，使用BitaBkae去处理你的recipe。你只需要提供前面章节介绍过的recipe的`basename`：
 ```
      $ bitbake basename
 ```                
-During the build, the OpenEmbedded build system creates a temporary work directory for each recipe (`${WORKDIR}`) where it keeps extracted source files, log files, intermediate compilation and packaging files, and so forth.
+构建时，OE构建系统为每个recipe创建一个临时工作目录（`${WORKDIR}`)），保存解压缩后的源文件，日志文件，编译中间文件和打包文件等等。
 
-The path to the per-recipe temporary work directory depends on the context in which it is being built. The quickest way to find this path is to have BitBake return it by running the following:
+临时工作目录取决于正在所处的构建环境，最快知晓它的方式是使用BitBake返回它的值：
 ```
      $ bitbake -e basename | grep ^WORKDIR=
 ```                
-As an example, assume a Source Directory top-level folder named `poky`, a default Build Directory at `poky/build`, and a `qemux86-poky-linux` machine target system. Furthermore, suppose your recipe is named `foo_1.3.0.bb`. In this case, the work directory the build system uses to build the package would be as follows:
+作为示例，假定代码目录最上层文件夹名为`poky`，默认构建目录是`poky/build`，设备目标系统是`qemux86-poky-linux`。假定你的recipe名叫`foo_1.3.0.bb`，这种情况下，构建系统使用的工作目录是：
 ```
      poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
 ```                
-Inside this directory you can find sub-directories such as `image`, `packages-split`, and `temp`. After the build, you can examine these to determine how well the build went.
+这个目录下你可以找到诸如`image`，`packages-split`，`temp`等子文件夹，构建后，你可以通过检查它们了解构建是否正常。
 
-> Note  
-> You can find log files for each task in the recipe's `temp` directory (e.g. `poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0/temp`). Log files are named `log.taskname` (e.g. `log.do_configure`, `log.do_fetch`, and `log.do_compile`).
+> **注释**  
+> 你可以在`temp`目录找到每一个任务的日志文件 (例如 `poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0/temp`). 日志文件命名为`log.taskname` (例如 `log.do_configure`, `log.do_fetch`, 和 `log.do_compile`).
 
-You can find more information about the build process in "The Yocto Project Development Environment" chapter of the Yocto Project Overview and Concepts Manual.
+你可以在《Yocto Project Overview and Concepts Manual》["The Yocto Project Development Environment"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#overview-development-environment)阅读到更多构建过程的信息。
 
 ### 3.3.5. Fetching Code
 The first thing your recipe must do is specify how to fetch the source files. Fetching is controlled mainly through the `SRC_URI` variable. Your recipe must have a `SRC_URI` variable that points to where the source is located. For a graphical representation of source locations, see the "Sources" section in the Yocto Project Overview and Concepts Manual.
@@ -1387,7 +1387,7 @@ When writing recipes, it is good to conform to existing style guidelines. The Op
 
 It is common for existing recipes to deviate a bit from this style. However, aiming for at least a consistent style is a good idea. Some practices, such as omitting spaces around = operators in assignments or ordering recipe components in an erratic way, are widely seen as poor style.
 
-### 3.3.23 Recipe Syntax
+### 3.3.23 Recipe语法
 Understanding recipe file syntax is important for writing recipes. The following list overviews the basic items that make up a BitBake recipe file. For more complete BitBake syntax descriptions, see the "Syntax and Operators" chapter of the BitBake User Manual.
 
 + ***Variable Assignments and Manipulations***: Variable assignments allow a value to be assigned to a variable. The assignment can be static text or might include the contents of other variables. In addition to the assignment, appending and prepending operations are also supported.
@@ -1423,7 +1423,7 @@ The following example shows the use of some of these keywords:
 ```
      # This is a comment
 ```                        
-This next list summarizes the most important and most commonly used parts of the recipe syntax. For more information on these parts of the syntax, you can reference the Syntax and Operators chapter in the BitBake User Manual.
+This next list summarizes the most important and most commonly used parts of the Recipe语法. For more information on these parts of the syntax, you can reference the Syntax and Operators chapter in the BitBake User Manual.
 
 + ***Line Continuation (\)***: Use the backward slash (\) character to split a statement over multiple lines. Place the slash character at the end of the line that is to be continued on the next line:
 ```
