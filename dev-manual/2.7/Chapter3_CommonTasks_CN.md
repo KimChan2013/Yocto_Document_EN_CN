@@ -25,11 +25,11 @@
     - [3.3.2.3 找到并使用近似的recipe](#3323-找到并使用近似的recipe)
   - [3.3.3 保存并为recipe命名](#333-保存并为recipe命名)
   - [3.3.4 使用Recipe运行构建](#334-使用recipe运行构建)
-  - [3.3.5. Fetching Code](#335-fetching-code)
-  - [3.3.6 Unpacking Code](#336-unpacking-code)
-  - [3.3.7 Patching Code](#337-patching-code)
-  - [3.3.8 Licensing](#338-licensing)
-  - [3.3.9 Dependencies](#339-dependencies)
+  - [3.3.5. 获取代码](#335-获取代码)
+  - [3.3.6 升级代码](#336-升级代码)
+  - [3.3.7 打补丁](#337-打补丁)
+  - [3.3.8 许可证书](#338-许可证书)
+  - [3.3.9 依赖](#339-依赖)
   - [3.3.10 Configuring the Recipe](#3310-configuring-the-recipe)
   - [3.3.11 Using Headers to Interface with Devices](#3311-using-headers-to-interface-with-devices)
   - [3.3.12 Compilation](#3312-compilation)
@@ -208,7 +208,7 @@
     - [3.31.2.1. Using Scripts to Push a Change Upstream and Request a Pull](#33121-using-scripts-to-push-a-change-upstream-and-request-a-pull)
     - [3.31.2.2. Using Email to Submit a Patch](#33122-using-email-to-submit-a-patch)
 - [3.32. Working With Licenses](#332-working-with-licenses)
-  - [3.32.1. Tracking License Changes](#3321-tracking-license-changes)
+  - [3.32.1. 跟踪LICENING改动](#3321-跟踪licening改动)
     - [3.32.1.1. Specifying the `LIC_FILES_CHKSUM` Variable](#33211-specifying-the-lic_files_chksum-variable)
     - [3.32.1.2. Explanation of Syntax](#33212-explanation-of-syntax)
   - [3.32.2. Enabling Commercially Licensed Recipes](#3322-enabling-commercially-licensed-recipes)
@@ -905,20 +905,20 @@ Recipe(`.bb`文件)是Yocto Project环境基本组件，每一个OE构建系统�
 
 你可以在《Yocto Project Overview and Concepts Manual》["The Yocto Project Development Environment"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#overview-development-environment)阅读到更多构建过程的信息。
 
-### 3.3.5. Fetching Code
-The first thing your recipe must do is specify how to fetch the source files. Fetching is controlled mainly through the `SRC_URI` variable. Your recipe must have a `SRC_URI` variable that points to where the source is located. For a graphical representation of source locations, see the "Sources" section in the Yocto Project Overview and Concepts Manual.
+### 3.3.5. 获取代码
+Recipe第一件必须做的事就是，说明如何获取代码文件。获取过程主要由`SRC_URI`控制，你的recipe必须有`SRC_URI`变量指出代码位置。阅读《Yocto Project Overview and Concepts Manual》["Sources"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#sources-dev-environment)章节以获得图形说明。
 
-The `do_fetch` task uses the prefix of each entry in the `SRC_URI` variable value to determine which fetcher to use to get your source files. It is the `SRC_URI` variable that triggers the fetcher. The `do_patch` task uses the variable after source is fetched to apply patches. The OpenEmbedded build system uses FILESOVERRIDES for scanning directory locations for local files in `SRC_URI`.
+`do_fetch`任务根据`SRC_URI`每个入口的前缀决定使用哪个fetcher获取源代码，`SRC_URI`变量触发fetcher。获取代码后，`do_patch`任务用这个变量应用补丁。OE构建系统使用`FILESOVERRIDES`检索`SRC_URI`中本地文件目录路径。
 
-The `SRC_URI` variable in your recipe must define each unique location for your source files. It is good practice to not hard-code pathnames in an URL used in `SRC_URI`. Rather than hard-code these paths, use `${PV}`, which causes the fetch process to use the version specified in the recipe filename. Specifying the version in this manner means that upgrading the recipe to a future version is as simple as renaming the recipe to match the new version.
+Recipe中`SRC_URI`变量必须为各源码文件定义唯一路径。最佳实践是不要在`SRC_URI`中使用硬代码路径，而应该使用`${PV}`让获取过程使用recipe文件名指定的版本。这样指定意味着，升级recipe到新版本时，匹配新版本简单地就像重命名recipe名字一样。
 
-Here is a simple example from the `meta/recipes-devtools/cdrtools/cdrtools-native_3.01a20.bb` recipe where the source comes from a single tarball. Notice the use of the `PV` variable:
+这里是`meta/recipes-devtools/cdrtools/cdrtools-native_3.01a20.bb`的示例，代码从一个tar包获取，留意`PV`这个变量：
 ```
      SRC_URI = "ftp://ftp.berlios.de/pub/cdrecord/alpha/cdrtools-${PV}.tar.bz2"
 ```                
-Files mentioned in `SRC_URI` whose names end in a typical archive extension (e.g. `.tar`, `.tar.gz`, `.tar.bz2`, `.zip`, and so forth), are automatically extracted during the `do_unpack` task. For another example that specifies these types of files, see the "Autotooled Package" section.
+`SRC_URI`里提及的以文件扩展名结尾的文件（例如`.tar`, `.tar.gz`, `.tar.bz2`, `.zip`等等），在`do_unpack`任务中会被自动解压。阅读[3.3.21.2 Autotooled Package](#33212-autotooled-package)以了解更多关于这些类型文件的示例。
 
-Another way of specifying source is from an SCM. For Git repositories, you must specify `SRCREV` and you should specify `PV` to include the revision with SRCPV. Here is an example from the recipe `meta/recipes-kernel/blktrace/blktrace_git.bb`:
+Another way of specifying source is from an SCM. For Git repositories, you must specify `SRCREV` and you should specify `PV` to include the revision with SRCPV. Here is an example from the recipe `meta/recipes-kernel/blktrace/blktrace_git.bb`:另一个指定代码的方式是通过SCM(代码控制管理)。对于Git仓库，你必须指定`SRCREV`
 ```
      SRCREV = "d6918c8832793b4205ed3bfede78c2f915c23385"
 
@@ -928,9 +928,9 @@ Another way of specifying source is from an SCM. For Git repositories, you must 
      SRC_URI = "git://git.kernel.dk/blktrace.git \
                 file://ldflags.patch"
 ```                
-If your `SRC_URI` statement includes URLs pointing to individual files fetched from a remote server other than a version control system, BitBake attempts to verify the files against checksums defined in your recipe to ensure they have not been tampered with or otherwise modified since the recipe was written. Two checksums are used: `SRC_URI[`md5`sum]` and `SRC_URI[`sha256`sum]`.
+如果`SRC_URI`包含指向非版本管理系统的远程服务器获取的独立文件，BitBake尝试使用recipe中设定的校验值确保recipe编写后它们没有被篡改，否则就是被更改过。被使用的两种校验值为：`SRC_URI[md5sum]` 和 `SRC_URI[sha256sum]`
 
-If your `SRC_URI` variable points to more than a single URL (excluding SCM URLs), you need to provide the ``md5`` and ``sha256`` checksums for each URL. For these cases, you provide a name for each URL as part of the `SRC_URI` and then reference that name in the subsequent checksum statements. Here is an example:
+如果`SRC_URI`指向多个URL（不包括SCM URL），你需要为每一个URL提供`md5` and `sha256`，这种情况下，你需要为每个URL起名，在校验值语句中指向它们：
 ```
      SRC_URI = "${DEBIAN_MIRROR}/main/a/apmd/apmd_3.2.2.orig.tar.gz;name=tarball \
                 ${DEBIAN_MIRROR}/main/a/apmd/apmd_${PV}.diff.gz;name=patch"
@@ -941,60 +941,60 @@ If your `SRC_URI` variable points to more than a single URL (excluding SCM URLs)
      SRC_URI[patch.`md5`sum] = "57e1b689264ea80f78353519eece0c92"
      SRC_URI[patch.`sha256`sum] = "7905ff96be93d725544d0040e425c42f9c05580db3c272f11cff75b9aa89d430"
 ```                
-Proper values for `md5` and `sha256` checksums might be available with other signatures on the download page for the upstream source (e.g. `md5`, `sha1`, `sha256`, `GPG`, and so forth). Because the OpenEmbedded build system only deals with `sha256`sum and `md5`sum, you should verify all the signatures you find by hand.
+正确的`md5` and `sha256`值应该能在代码下载页面，和其他签名在一起能被找到(例如 `md5`, `sha1`, `sha256`, `GPG`,等等)。由于OE构建系统仅支持`sha256sum` and `md5sum`，你应该自行验证所有签名。
 
-If no `SRC_URI` checksums are specified when you attempt to build the recipe, or you provide an incorrect checksum, the build will produce an error for each missing or incorrect checksum. As part of the error message, the build system provides the checksum string corresponding to the fetched file. Once you have the correct checksums, you can copy and paste them into your recipe and then run the build again to continue.
+如果构建时没有提供`SRC_URI`校验值，或者提供的校验值是错的，会产生缺失或不正确校验值的错误。构建系统在错误信息中会提供获取文件对应的校验值，当你有了正确的校验值后，你可以将他们粘贴到recipe中，重新构建以继续。
 
-> Note  
-> As mentioned, if the upstream source provides signatures for verifying the downloaded source code, you should verify those manually before setting the checksum values in the recipe and continuing with the build.
+> **注释**  
+> 如果上游代码提供验证下载代码的签名，你应该在设置recipe前手动验证它们，然后再继续构建。
 
-This final example is a bit more complicated and is from the `meta/recipes-sato/rxvt-unicode/rxvt-unicode_9.20.bb` recipe. The example's `SRC_URI` statement identifies multiple files as the source files for the recipe: a tarball, a patch file, a desktop file, and an icon.
+最后一个示例有点复杂，它来自`meta/recipes-sato/rxvt-unicode/rxvt-unicode_9.20.bb`，它包含了几种文件作为源文件：tar包，补丁文件，桌面文件，和一个图标。
 ```
      SRC_URI = "http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-${PV}.tar.bz2 \
                 file://xwc.patch \
                 file://rxvt.desktop \
                 file://rxvt.png"
 ```                
-When you specify local files using the `file://` URI protocol, the build system fetches files from the local machine. The path is relative to the `FILESPATH` variable and searches specific directories in a certain order: `${BP}`, `${BPN}`, and `files`. The directories are assumed to be subdirectories of the directory in which the recipe or append file resides. For another example that specifies these types of files, see the "Single .c File Package (Hello World!)" section.
+当你使用`file://`指定本地文件时，构建系统从本地获取文件。这个路径相对于`FILESPATH`变量值，根据特定顺序寻找文件：`${BP}`, `${BPN}`, 和 `files`。目录默认时recipe或append文件所在目录的子目录。阅读[3.3.21.1 Single .c File Package (Hello World!)]关于指定这些类型的文件的示例。
 
-The previous example also specifies a patch file. Patch files are files whose names usually end in `.patch` or `.diff` but can end with compressed suffixes such as `diff.gz` and `patch.bz2`, for example. The build system automatically applies patches as described in the "Patching Code" section.
+上面这个示例也指定了补丁文件，补丁文件通常以`.patch` 或 `.diff`结尾，但也能以`diff.gz` 和 `patch.bz2`这样的压缩格式结尾。例如，构建系统可以自动应用补丁，请阅读[3.3.7 打补丁](#337-打补丁)。
 
-### 3.3.6 Unpacking Code
-During the build, the `do_unpack` task unpacks the source with `${S}` pointing to where it is unpacked.
+### 3.3.6 升级代码
+构建时，`do_unpack`将代码解包到`${S}`。
 
-If you are fetching your source files from an upstream source archived tarball and the tarball's internal structure matches the common convention of a top-level subdirectory named `${BPN}-${PV}`, then you do not need to set `S`. However, if `SRC_URI` specifies to fetch source from an archive that does not use this convention, or from an SCM like Git or Subversion, your recipe needs to define `S`.
+如果你是从上行代码tar包获取的代码，tar包内部结构匹配顶层子目录常用约定`${BPN}-${PV}`，那么就不需要设定`S`。然而，如果`SRC_URI`指向的包不遵从此约定，或是从Git或Subversion这样的SCM获取的，你的recipe需要定义`S`。
 
-If processing your recipe using BitBake successfully unpacks the source files, you need to be sure that the directory pointed to by `${S}` matches the structure of the source.
+如果BitBake解包过程顺利，你需要保证`${S}`指向的目录匹配代码结构。
 
-### 3.3.7 Patching Code
-Sometimes it is necessary to patch code after it has been fetched. Any files mentioned in `SRC_URI` whose names end in `.patch` or `.diff` or compressed versions of these suffixes (e.g. `diff.gz` are treated as patches. The `do_patch` task automatically applies these patches.
+### 3.3.7 打补丁
+有时候，需要在代码获取后给它打补丁，在`SRC_URI`中提到的任何以`.patch` ，`.diff`结尾，或是压缩格式(例如`diff.gz`)结尾的文件，都会被当作补丁文件。`do_patch`任务自动应用这些补丁。
 
 The build system should be able to apply patches with the "-p1" option (i.e. one directory level in the path will be stripped off). If your patch needs to have more directory levels stripped off, specify the number of levels using the "striplevel" option in the `SRC_URI` entry for the patch. Alternatively, if your patch needs to be applied in a specific subdirectory that is not specified in the patch file, use the "patchdir" option in the entry.
 
 As with all local files referenced in `SRC_URI` using `file://`, you should place patch files in a directory next to the recipe either named the same as the base name of the recipe (`BP` and `BPN`) or "files".
 
-### 3.3.8 Licensing
-Your recipe needs to have both the LICENSE and LIC_FILES_CHKSUM variables:
+### 3.3.8 许可证书
+Recipe需要有`LICENSE`和`LIC_FILES_CHKSUM`变量:
 
-+ ***LICENSE***: This variable specifies the license for the software. If you do not know the license under which the software you are building is distributed, you should go to the source code and look for that information. Typical files containing this information include `COPYING`, `LICENSE`, and `README` files. You could also find the information near the top of a source file. For example, given a piece of software licensed under the GNU General Public License version 2, you would set `LICENSE` as follows:
++ ***LICENSE***: 这个变量指定软件证书。如果你不知道软件基于何种许可证书分发，你可以到源代码中找到更多信息。包含这类信息的典型文件包括`COPYING`, `LICENSE`, 和 `README`文件，你也可以在代码顶端找到这个信息。例如，对于一个基于GNU General Public License version 2许可的软件，你会这样设置`LICENSE`：
 ```
      LICENSE = "GPLv2"
 ```                        
-The licenses you specify within LICENSE can have any name as long as you do not use spaces, since spaces are used as separators between license names. For standard licenses, use the names of the files in `meta/files/common-licenses/` or the `SPDXLICENSEMAP` flag names defined in `meta/conf/licenses.conf`.
+如果不使用空格，LICENSE名字可以很长，空格用来作为不同license名字的分隔符。对于标准license，使用`meta/files/common-licenses/`或`meta/conf/licenses.conf`中`SPDXLICENSEMAP`定义的名字。
 
-+ ***LIC_FILES_CHKSUM***: The OpenEmbedded build system uses this variable to make sure the license text has not changed. If it has, the build produces an error and it affords you the chance to figure it out and correct the problem.
++ ***LIC_FILES_CHKSUM***: OE构建系统使用这个变量确保license文本没有被改动。如果有改动，构建过程会产生错误，让你能够找出问题并改正他。
 
-You need to specify all applicable licensing files for the software. At the end of the configuration step, the build process will compare the checksums of the files to be sure the text has not changed. Any differences result in an error with the message containing the current checksum. For more explanation and examples of how to set the `LIC_FILES_CHKSUM` variable, see the "Tracking License Changes" section.
+你需要为软件指明所有适用的许可文件。配置步骤的最后，构建过程会对比文件的校验值以确保内容没有被修改，阅读[3.32.1. 跟踪LICENING改动](#3321-跟踪licening改动)更多关于`LIC_FILES_CHKSUM`的解释和示例。
 
-To determine the correct checksum string, you can list the appropriate files in the `LIC_FILES_CHKSUM` variable with incorrect `md5` strings, attempt to build the software, and then note the resulting error messages that will report the correct `md5` strings. See the "Fetching Code" section for additional information.
+你可以在`LIC_FILES_CHKSUM`变量中指定对应文件和一个错误的`md5`字符串，尝试构建，留意错误信息中报告的正确`md5`值，来决定正确的校验值。阅读[3.3.5. 获取代码](#335-获取代码)了解更多信息。
 
-Here is an example that assumes the software has a `COPYING` file:
+以下示例假定软件有`COPYING`文件：
 
-     LIC_FILES_CHKSUM = "file://COPYING;`md5`=xxx"
+     LIC_FILES_CHKSUM = "file://COPYING;md5=xxx"
                         
-When you try to build the software, the build system will produce an error and give you the correct string that you can substitute into the recipe file for a subsequent build.
+尝试构建软件时，构建系统会产生错误，给你正确值，你可以用它来替换进去，继续构建。
 
-### 3.3.9 Dependencies
+### 3.3.9 依赖
 Most software packages have a short list of other packages that they require, which are called dependencies. These dependencies fall into two main categories: build-time dependencies, which are required when the software is built; and runtime dependencies, which are required to be installed on the target in order for the software to run.
 
 Within a recipe, you specify build-time dependencies using the `DEPENDS` variable. Although nuances exist, items specified in `DEPENDS` should be names of other recipes. It is important that you specify all build-time dependencies explicitly. If you do not, due to the parallel nature of BitBake's execution, you can end up with a race condition where the dependency is present for one task of a recipe (e.g. `do_configure`) and then gone when the next task runs (e.g. `do_compile`).
@@ -5503,7 +5503,7 @@ Here is the general procedure on how to submit a patch through email without usi
 ## 3.32. Working With Licenses
 As mentioned in the "Licensing" section in the Yocto Project Overview and Concepts Manual, open source projects are open to the public and they consequently have different licensing structures in place. This section describes the mechanism by which the OpenEmbedded build system tracks changes to licensing text and covers how to maintain open source license compliance during your project's lifecycle. The section also describes how to enable commercially licensed recipes, which by default are disabled.
 
-### 3.32.1. Tracking License Changes
+### 3.32.1. 跟踪LICENING改动
 The license of an upstream project might change in the future. In order to prevent these changes going unnoticed, the LIC_FILES_CHKSUM variable tracks changes to the license text. The checksums are validated at the end of the configure step, and if the checksums do not match, the build will fail.
 
 #### 3.32.1.1. Specifying the `LIC_FILES_CHKSUM` Variable
