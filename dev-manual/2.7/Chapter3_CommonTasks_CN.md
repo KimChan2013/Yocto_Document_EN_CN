@@ -30,9 +30,9 @@
   - [3.3.7 打补丁](#337-打补丁)
   - [3.3.8 许可证书](#338-许可证书)
   - [3.3.9 依赖](#339-依赖)
-  - [3.3.10 Configuring the Recipe](#3310-configuring-the-recipe)
-  - [3.3.11 Using Headers to Interface with Devices](#3311-using-headers-to-interface-with-devices)
-  - [3.3.12 Compilation](#3312-compilation)
+  - [3.3.10 配置recipe](#3310-配置recipe)
+  - [3.3.11 使用Headers与设备连接](#3311-使用headers与设备连接)
+  - [3.3.12 编译](#3312-编译)
   - [3.3.13 Installing](#3313-installing)
   - [3.3.14 Enabling System Services](#3314-enabling-system-services)
   - [3.3.15 Packaging](#3315-packaging)
@@ -995,35 +995,35 @@ Recipe需要有`LICENSE`和`LIC_FILES_CHKSUM`变量:
 尝试构建软件时，构建系统会产生错误，给你正确值，你可以用它来替换进去，继续构建。
 
 ### 3.3.9 依赖
-Most software packages have a short list of other packages that they require, which are called dependencies. These dependencies fall into two main categories: build-time dependencies, which are required when the software is built; and runtime dependencies, which are required to be installed on the target in order for the software to run.
+大多数软件包都有它们必须拥有的其他包的列表，被称之为依赖。依赖主要有两部分：软件构建时需要的构建时依赖，以及需要安装到目标上以便运行软件的运行时依赖。
 
-Within a recipe, you specify build-time dependencies using the `DEPENDS` variable. Although nuances exist, items specified in `DEPENDS` should be names of other recipes. It is important that you specify all build-time dependencies explicitly. If you do not, due to the parallel nature of BitBake's execution, you can end up with a race condition where the dependency is present for one task of a recipe (e.g. `do_configure`) and then gone when the next task runs (e.g. `do_compile`).
+在recipe中，使用`DEPENDS`变量指定构建时依赖。尽管有些细微差别，`DEPENDS`指定的项应该是其他recipe的名字。清楚地指明所有构建时依赖是非常重要的，如果不这么做，由于BitBake并行执行的特性，你可能会遇到这样的竞争情况，recipe中某一任务（例如`do_configure`）有依赖，然后执行下一个任务（例如`do_compile`）时没有了。
 
-Another consideration is that configure scripts might automatically check for optional dependencies and enable corresponding functionality if those dependencies are found. This behavior means that to ensure deterministic results and thus avoid more race conditions, you need to either explicitly specify these dependencies as well, or tell the configure script explicitly to disable the functionality. If you wish to make a recipe that is more generally useful (e.g. publish the recipe in a layer for others to use), instead of hard-disabling the functionality, you can use the `PACKAGECONFIG` variable to allow functionality and the corresponding dependencies to be enabled and disabled easily by other users of the recipe.
+需要考虑的另外一点是，配置脚本可能会自动检查可选依赖，如果依赖存在，启用对应的功能。这意味着，想要确保确定的结果并避免冲突，你也需要显式指明这些依赖，或者显示告诉配置脚本不要开启这个功能。如果你想创建一个更通用的recipe(例如，发布Layer中的recipe给其他人用)，而不是直接关闭这个功能，你可以使用`PACKAGECONFIG`变量来允许他人使用recipe时可以轻而易举地开启或关闭这个功能和对应地依赖。
 
-Similar to build-time dependencies, you specify runtime dependencies through a variable - `RDEPENDS`, which is package-specific. All variables that are package-specific need to have the name of the package added to the end as an override. Since the main package for a recipe has the same name as the recipe, and the recipe's name can be found through the ``${PN}`` variable, then you specify the dependencies for the main package by setting `RDEPENDS_`${PN}``. If the package were named ``${PN}`-tools`, then you would set `RDEPENDS_`${PN}`-tools`, and so forth.
+和构建时依赖类似，你需要通过`RDEPENDS`变量指定基于包的运行时依赖。所有基于包的变量需要将包名字加到最后作为重写。因为recipe主包和recipe拥有相同名字，recipe的名字可以通过`${PN}`找到，因此你需要为主包设定`RDEPENDS_${PN}`指明依赖。如果包名为`${PN}-tools`，你可以设置为`RDEPENDS_${PN}-tools`。
 
-Some runtime dependencies will be set automatically at packaging time. These dependencies include any shared library dependencies (i.e. if a package "example" contains "libexample" and another package "mypackage" contains a binary that links to "libexample" then the OpenEmbedded build system will automatically add a runtime dependency to "mypackage" on "example"). See the "Automatically Added Runtime Dependencies" section in the Yocto Project Overview and Concepts Manual for further details.
+有的运行时依赖在打包时会被自动设置，包括共享库依赖（例如"example"包包含"libexample"，另外一个"mypackage"包包含的二进制链接到了"libexample"，OE构建系统会自动添加"mypackage"对于"example"的依赖）。阅读《Yocto Project Overview and Concepts Manual》的["Automatically Added Runtime Dependencies"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#automatically-added-runtime-dependencies)章节了解更多信息。
 
-### 3.3.10 Configuring the Recipe
-Most software provides some means of setting build-time configuration options before compilation. Typically, setting these options is accomplished by running a configure script with some options, or by modifying a build configuration file.
+### 3.3.10 配置recipe
+大多数软件提供编译前不同的设置构建时配置选项的方法，一般来说，设定这些选项通过运行带参数的配置脚本，或者修改构建配置文件来完成。
 
-> Note  
-As of Yocto Project Release 1.7, some of the core recipes that package binary configuration scripts now disable the scripts due to the scripts previously requiring error-prone path substitution. The OpenEmbedded build system uses `pkg-config` now, which is much more robust. You can find a list of the `*-config` scripts that are disabled list in the "Binary Configuration Scripts Disabled" section in the Yocto Project Reference Manual.
+> **注释**  
+> As of Yocto Project Release 1.7, some of the core recipes that package binary configuration scripts now disable the scripts due to the scripts previously requiring error-prone path substitution. The OpenEmbedded build system uses `pkg-config` now, which is much more robust. You can find a list of the `*-config` scripts that are disabled list in the "Binary Configuration Scripts Disabled" section in the Yocto Project Reference Manual.
 
-A major part of build-time configuration is about checking for build-time dependencies and possibly enabling optional functionality as a result. You need to specify any build-time dependencies for the software you are building in your recipe's `DEPENDS` value, in terms of other recipes that satisfy those dependencies. You can often find build-time or runtime dependencies described in the software's documentation.
+构建时配置的主要部分，就是检查构建时依赖，可能需要启用哪些可选功能。依据其他满足这些依赖的recipe，你需要在`DEPENDS`指定你构建的软件的构建时依赖。一般你可以在软件文档中找到构建时依赖和运行时依赖的说明。
 
-The following list provides configuration items of note based on how your software is built:
+以下列表根据软件构建方式提供配置项目：
 
-+ ***Autotools***: If your source files have a `configure.ac` file, then your software is built using Autotools. If this is the case, you just need to worry about modifying the configuration.
++ ***Autotools***: 如果源文件有`configure.ac`文件，那么你的软件是通过Autotools构建的，这种情况下，你只需要考虑修改配置。
 
-When using Autotools, your recipe needs to inherit the `autotools` class and your recipe does not have to contain a `do_configure` task. However, you might still want to make some adjustments. For example, you can set `EXTRA_OECONF` or `PACKAGECONFIG_CONFARGS` to pass any needed configure options that are specific to the recipe.
+使用Autotools时，recipe需要继承`autotools`类，也不需要包含`do_configure`任务。然而，你可能想做一些调整，比如，你可以设置`EXTRA_OECONF`或`PACKAGECONFIG_CONFARGS`来传递需要的配置选项。
 
-+ ***CMake***: If your source files have a `CMakeLists.txt` file, then your software is built using CMake. If this is the case, you just need to worry about modifying the configuration.
++ ***CMake***: 如果源文件有`CMakeLists.txt`文件，那么你的软件时使用CMake构建的，这种情况下，你只需要考虑修改配置。
 
-When you use CMake, your recipe needs to inherit the `cmake` class and your recipe does not have to contain a `do_configure` task. You can make some adjustments by setting `EXTRA_OECMAKE` to pass any needed configure options that are specific to the recipe.
+使用CMake时，recipe需要继承`cmake`类，也不需要包含`do_configure`任务。你可以通过设定`EXTRA_OECMAKE`的方式传递必要的配置选项。
 
-+ ***Other***: If your source files do not have a `configure.ac` or `CMakeLists.txt` file, then your software is built using some method other than Autotools or CMake. If this is the case, you normally need to provide a `do_configure` task in your recipe unless, of course, there is nothing to configure.
++ ***Other***: I如果源文件没有`configure.ac` 或 `CMakeLists.txt`，你的软件是由其他方法构建的，这种情况下，你通常需要提供`do_configure`任务。当然，如果没什么需要配置的，就不需要了。
 
 Even if your software is not being built by Autotools or CMake, you still might not need to deal with any configuration issues. You need to determine if configuration is even a required step. You might need to modify a Makefile or some configuration file used for the build to specify necessary build options. Or, perhaps you might need to run a provided, custom configure script with the appropriate options.
 
@@ -1031,11 +1031,11 @@ For the case involving a custom configure script, you would run `./configure --h
 
 Once configuration succeeds, it is always good practice to look at the `log.do_configure` file to ensure that the appropriate options have been enabled and no additional build-time dependencies need to be added to `DEPENDS`. For example, if the configure script reports that it found something not mentioned in `DEPENDS`, or that it did not find something that it needed for some desired optional functionality, then you would need to add those to `DEPENDS`. Looking at the log might also reveal items being checked for, enabled, or both that you do not want, or items not being found that are in `DEPENDS`, in which case you would need to look at passing extra options to the configure script as needed. For reference information on configure options specific to the software you are building, you can consult the output of the `./configure --help` command within `${S}` or consult the software's upstream documentation.
 
-### 3.3.11 Using Headers to Interface with Devices
+### 3.3.11 使用Headers与设备连接
 If your recipe builds an application that needs to communicate with some device or needs an API into a custom kernel, you will need to provide appropriate header files. Under no circumstances should you ever modify the existing `meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc` file. These headers are used to build `libc` and must not be compromised with custom or machine-specific header information. If you customize `libc` through modified headers all other applications that use `libc` thus become affected.
 
-> Warning  
-> Never copy and customize the `libc` header file (i.e. `meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc`).
+> **警告**  
+> 不要复制或者修改 `libc` 头文件 (即 `meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc`).
 
 The correct way to interface to a device or custom kernel is to use a separate package that provides the additional headers for the driver or other unique interfaces. When doing so, your application also becomes responsible for creating a dependency on that specific provider.
 
@@ -1057,7 +1057,7 @@ When you use custom kernel headers you need to get them from `STAGING_KERNEL_DIR
      do_configure[depends] += "virtual/kernel:do_shared_workdir"
 ```
 
-### 3.3.12 Compilation
+### 3.3.12 编译
 During a build, the `do_compile` task happens after source is fetched, unpacked, and configured. If the recipe passes through `do_compile` successfully, nothing needs to be done.
 
 However, if the compile step fails, you need to diagnose the failure. Here are some common issues that cause failures.
