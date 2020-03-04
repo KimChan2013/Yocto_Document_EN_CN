@@ -33,9 +33,9 @@
   - [3.3.10 配置recipe](#3310-配置recipe)
   - [3.3.11 使用Headers与设备连接](#3311-使用headers与设备连接)
   - [3.3.12 编译](#3312-编译)
-  - [3.3.13 Installing](#3313-installing)
-  - [3.3.14 Enabling System Services](#3314-enabling-system-services)
-  - [3.3.15 Packaging](#3315-packaging)
+  - [3.3.13 安装](#3313-安装)
+  - [3.3.14 启用系统服务](#3314-启用系统服务)
+  - [3.3.15 打包](#3315-打包)
   - [3.3.16 Sharing Files Between Recipes](#3316-sharing-files-between-recipes)
   - [3.3.17 Using Virtual Providers](#3317-using-virtual-providers)
   - [3.3.18 Properly Versioning Pre-Release Recipes](#3318-properly-versioning-pre-release-recipes)
@@ -194,7 +194,7 @@
   - [3.30.11. Recipe Logging Mechanisms](#33011-recipe-logging-mechanisms)
     - [3.30.11.1. Logging With Python](#330111-logging-with-python)
     - [3.30.11.2. Logging With Bash](#330112-logging-with-bash)
-  - [3.30.12. Debugging Parallel Make Races](#33012-debugging-parallel-make-races)
+  - [3.30.12. 调试并行Make冲突](#33012-调试并行make冲突)
     - [3.30.12.1. The Failure](#330121-the-failure)
     - [3.30.12.2. Reproducing the Error](#330122-reproducing-the-error)
     - [3.30.12.3. Creating a Patch for the Fix](#330123-creating-a-patch-for-the-fix)
@@ -1032,22 +1032,22 @@ For the case involving a custom configure script, you would run `./configure --h
 Once configuration succeeds, it is always good practice to look at the `log.do_configure` file to ensure that the appropriate options have been enabled and no additional build-time dependencies need to be added to `DEPENDS`. For example, if the configure script reports that it found something not mentioned in `DEPENDS`, or that it did not find something that it needed for some desired optional functionality, then you would need to add those to `DEPENDS`. Looking at the log might also reveal items being checked for, enabled, or both that you do not want, or items not being found that are in `DEPENDS`, in which case you would need to look at passing extra options to the configure script as needed. For reference information on configure options specific to the software you are building, you can consult the output of the `./configure --help` command within `${S}` or consult the software's upstream documentation.
 
 ### 3.3.11 使用Headers与设备连接
-If your recipe builds an application that needs to communicate with some device or needs an API into a custom kernel, you will need to provide appropriate header files. Under no circumstances should you ever modify the existing `meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc` file. These headers are used to build `libc` and must not be compromised with custom or machine-specific header information. If you customize `libc` through modified headers all other applications that use `libc` thus become affected.
+如果recipe构建一个需要和设备通讯，或是需要API访问自定义kernel的应用，你需要提供适当的头文件。你不应当改动已有的`meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc`文件。这些头文件用来构建`libc`，不能被自定义或者设备特定的头文件信息改动。如果你通过修改头文件的方式改动了`libc`，所有其他用到`libc`的应用程序都会收到影响。
 
 > **警告**  
 > 不要复制或者修改 `libc` 头文件 (即 `meta/recipes-kernel/linux-libc-headers/linux-libc-headers.inc`).
 
-The correct way to interface to a device or custom kernel is to use a separate package that provides the additional headers for the driver or other unique interfaces. When doing so, your application also becomes responsible for creating a dependency on that specific provider.
+访问设备或自定义kernel的正确方式是，使用一个提供设备额外头文件或者接口的包。这么做的话，应用也需要建立特定提供者的依赖。
 
-Consider the following:
+考虑以下事情:
 
-+ Never modify `linux-libc-headers.inc`. Consider that file to be part of the `libc` system, and not something you use to access the kernel directly. You should access `libc` through specific `libc` calls.
++ 不要改动 `linux-libc-headers.inc`. 这个文件是`libc`系统的一部分，不是你用来直接访问kernel的东西，你需要通过`libc`调用访问`libc`。
 
-+ Applications that must talk directly to devices should either provide necessary headers themselves, or establish a dependency on a special headers package that is specific to that driver.
++ 需要直接访问设备的应用，需要提供必要的头文件，或者建立起基于特定设备头文件包的依赖。
 
-For example, suppose you want to modify an existing header that adds I/O control or network support. If the modifications are used by a small number programs, providing a unique version of a header is easy and has little impact. When doing so, bear in mind the guidelines in the previous list.
+For example, suppose you want to modify an existing header that adds I/O control or network support. If the modifications are used by a small number programs, providing a unique version of a header is easy and has little impact. When doing so, bear in mind the guidelines in the previous list.例如，你想修改已有头文件添加I/O控制或者网络支持的功能，如果这个修改被一小部分程序使用，提供一个专有版本的头文件是一个简单的方式，影响很小。这样做的时候，牢记上文提到的指南。
 
-> Note  
+> **注释**  
 > If for some reason your changes need to modify the behavior of the `libc`, and subsequently all other applications on the system, use a `.bbappend` to modify the `linux-kernel-headers.inc` file. However, take care to not make the changes machine specific.
 
 Consider a case where your kernel is older and you need an older `libc` ABI. The headers installed by your recipe should still be a standard mainline kernel, not your own custom one.
@@ -1058,47 +1058,47 @@ When you use custom kernel headers you need to get them from `STAGING_KERNEL_DIR
 ```
 
 ### 3.3.12 编译
-During a build, the `do_compile` task happens after source is fetched, unpacked, and configured. If the recipe passes through `do_compile` successfully, nothing needs to be done.
+构建时，获取代码，解包，配置后，开始执行`do_compile`任务。如果recipe成功执行`do_compile`，那么什么也不需要做。
 
-However, if the compile step fails, you need to diagnose the failure. Here are some common issues that cause failures.
+然而，如果编译失败，你需要诊察失败，这里有一些普遍原因：
 
-> Note  
-> For cases where improper paths are detected for configuration files or for when libraries/headers cannot be found, be sure you are using the more robust `pkg-config`. See the note in section "Configuring the Recipe" for additional information.
+> **注释**  
+> 配置文件中有不正确的路径，或是库/头文件无法找到，确保你使用的是更robust的`pkg-config`。阅读[3.3.10 配置recipe](#3310-配置recipe)获得更多信息。
 
-+ ***Parallel build failures***: These failures manifest themselves as intermittent errors, or errors reporting that a file or directory that should be created by some other part of the build process could not be found. This type of failure can occur even if, upon inspection, the file or directory does exist after the build has failed, because that part of the build process happened in the wrong order.
++ ***并行构建失败***: 这些失败表明它们是偶发性错误，或者错误报告应当由其他部分创建的文件或者目录无法找到。进一步检查，甚至会发现构建失败时这个文件或目录依旧不存在，这是因为构建过程执行顺序出了问题。
 
-To fix the problem, you need to either satisfy the missing dependency in the Makefile or whatever script produced the Makefile, or (as a workaround) set PARALLEL_MAKE to an empty string:
+修复这类问题，你需要在Makefile或生成Makefile的脚本中添加缺失的依赖，或者（作为变通），将`PARALLEL_MAKE`设为空值：
 ```
      PARALLEL_MAKE = ""
 ```                        
-For information on parallel Makefile issues, see the "Debugging Parallel Make Races" section.
+阅读[3.30.12. 调试并行Make冲突](#33012-调试并行make冲突)以获取更多关于并行Makefile问题的信息。
 
-+ ***Improper host path usage***: This failure applies to recipes building for the target or `nativesdk` only. The failure occurs when the compilation process uses improper headers, libraries, or other files from the host system when cross-compiling for the target.
++ ***错误使用主机路径***: 这类失败仅在构建目标镜像或`nativesdk`时出现，当错误使用主机系统的头文件，库文件或者其他文件而又为目标设备交叉编译时，编译过程会出现此类失败。
 
-To fix the problem, examine the `log.do_compile` file to identify the host paths being used (e.g. `/usr/include`, `/usr/lib`, and so forth) and then either add configure options, apply a patch, or do both.
+To fix the problem, examine the `log.do_compile` file to identify the host paths being used (e.g. `/usr/include`, `/usr/lib`, and so forth) and then either add configure options, apply a patch, or do both.修复这类问题，检查`log.do_compile`是否存在使用主机路径的情况（例如`/usr/include`, `/usr/lib`等），然后添加配置选项和/或应用补丁。
 
-+ ***Failure to find required libraries/headers***: If a build-time dependency is missing because it has not been declared in `DEPENDS`, or because the dependency exists but the path used by the build process to find the file is incorrect and the configure step did not detect it, the compilation process could fail. For either of these failures, the compilation process notes that files could not be found. In these cases, you need to go back and add additional options to the configure script as well as possibly add additional build-time dependencies to `DEPENDS`.
++ ***无法找到需要的库/头文件***: 如果构建时依赖因为没有定义在`DEPENDS`中，或是构建过程使用的查询路径不正确，配置过程也没有检测到这点而导致构建时依赖缺失，编译过程会失败。无论哪种，编译过程都会提示文件无法找到。这种情况下，你需要在配置脚本中添加选项，也可能需要添加构建时依赖到`DEPENDS`中。
 
-Occasionally, it is necessary to apply a patch to the source to ensure the correct paths are used. If you need to specify paths to find files staged into the sysroot from other recipes, use the variables that the OpenEmbedded build system provides (e.g. `STAGING_BINDIR`, `STAGING_INCDIR`, `STAGING_DATADIR`, and so forth).
+有些时候，也需要打补丁保证使用了正确路径。你需要指定路径已找到其他recipe stage到systoor中的文件，使用OE构建系统提供的变量（例如`STAGING_BINDIR`, `STAGING_INCDIR`, `STAGING_DATADIR`等）。
 
-### 3.3.13 Installing
-During `do_install`, the task copies the built files along with their hierarchy to locations that would mirror their locations on the target device. The installation process copies files from the `${S}`, `${B}`, and `${WORKDIR}` directories to the `${D}` directory to create the structure as it should appear on the target system.
+### 3.3.13 安装
+`do_install`任务将构建好的文件以及它们的层级复制到它们在目标设备上的路径。安装过程将`${S}`, `${B}`, and `${WORKDIR}`的文件复制到`${D}`目录，创建出它们在目标系统上应该所有的结构。
 
-How your software is built affects what you must do to be sure your software is installed correctly. The following list describes what you must do for installation depending on the type of build system used by the software being built:
+软件是如何构建的，影响着你需要做些什么来保证软件被正确安装。以下列表描述了根据构建的软件所使用的构建系统的类型，你必须做的事情：
 
-+ ***Autotools and CMake***: If the software your recipe is building uses Autotools or CMake, the OpenEmbedded build system understands how to install the software. Consequently, you do not have to have a `do_install` task as part of your recipe. You just need to make sure the install portion of the build completes with no issues. However, if you wish to install additional files not already being installed by `make install`, you should do this using a `do_install_append` function using the install command as described in the "Manual" bulleted item later in this list.
++ ***Autotools 和 CMake***: 如果使用Autotools或CMake构建，OE构建系统知道如何安装。也就是说在recipe中你不需要有`do_install`任务，你只需要保证构建过程的安装部分顺利完成。然而，如果你希望安装还没有被`make install`安装的额外文件，你应当使用`do_install_append`来完成安装命令，下文“手动”部分有介绍。
 
-+ ***Other (using make install)***: You need to define a `do_install` function in your recipe. The function should call `oe_runmake install` and will likely need to pass in the destination directory as well. How you pass that path is dependent on how the `Makefile` being run is written (e.g. `DESTDIR=${D}`, `PREFIX=${D}`, `INSTALLROOT=${D}`, and so forth).
++ ***其他 (使用 make install)***: 你需要在recipe中定义`do_install`功能，这个功能会调用`oe_runmake install`，也需要传入目标目录。如何传入，依赖于运行的`Makefile`是如何写的（例如`DESTDIR=${D}`, `PREFIX=${D}`, `INSTALLROOT=${D}`等）
 
-For an example recipe using `make install`, see the "Makefile-Based Package" section.
+阅读[3.3.21.3 Makefile-Based Package](#33213-makefile-based-package)关于使用`make install`的示例。
 
-+ ***Manual***: You need to define a `do_install` function in your recipe. The function must first use `install -d` to create the directories under `${D}`. Once the directories exist, your function can use `install` to manually install the built software into the directories.
++ ***手动***: 你需要在recipe中定义`do_install`功能。这个功能首先必须使用`install -d`在`${D}`下创建目录。一旦目录存在，这个功能可以使用`install`手动安装构建好的软件到目录中。
 
-You can find more information on `install` at http://www.gnu.org/software/coreutils/manual/html_node/install-invocation.html.
+你可以在这里找到更多关于 `install` 的信息： http://www.gnu.org/software/coreutils/manual/html_node/install-invocation.html.
 
 For the scenarios that do not use Autotools or CMake, you need to track the installation and diagnose and fix any issues until everything installs correctly. You need to look in the default location of `${D}`, which is `${WORKDIR}/image`, to be sure your files have been installed correctly.
 
-> Notes  
+> **注释**  
 > During the installation process, you might need to modify some of the installed files to suit the target layout. For example, you might need to replace hard-coded paths in an initscript with values of variables provided by the build system, such as replacing `/usr/bin/` with `${bindir}`. If you do perform such modifications during `do_install`, be sure to modify the destination file after copying rather than before copying. Modifying after copying ensures that the build system can re-execute `do_install` if needed.  
 > `oe_runmake install`, which can be run directly or can be run indirectly by the `autotools` and `cmake` classes, runs `make install` in parallel. Sometimes, a Makefile can have missing dependencies between targets that can result in race conditions. If you experience intermittent failures during `do_install`, you might be able to work around them by disabling parallel Makefile installs by adding the following to the recipe:
 > ```
@@ -1106,26 +1106,26 @@ For the scenarios that do not use Autotools or CMake, you need to track the inst
 > ```                       
 > See PARALLEL_MAKEINST for additional information.
 
-### 3.3.14 Enabling System Services
-If you want to install a service, which is a process that usually starts on boot and runs in the background, then you must include some additional definitions in your recipe.
+### 3.3.14 启用系统服务
+如果你想安装一个服务，即一般在启动时开启，后台运行的处理，那么你必须在recipe中增加一些定义。
 
-If you are adding services and the service initialization script or the service file itself is not installed, you must provide for that installation in your recipe using a `do_install_append` function. If your recipe already has a `do_install` function, update the function near its end rather than adding an additional `do_install_append function`.
+如果你要添加服务，并且服务安装脚本或服务本身没有被安装，你需要在recipe中提供`do_install_append`功能。如果recipe已经有`do_install`功能，在末尾更新它，而不用添加`do_install_append function`。
 
-When you create the installation for your services, you need to accomplish what is normally done by `make install`. In other words, make sure your installation arranges the output similar to how it is arranged on the target system.
+当你为服务创建安装时，你需要完成通常`make install`需要完成的事情。也就是说，确保安装过程按照目标系统上的方式放置你的输出文件。
 
-The OpenEmbedded build system provides support for starting services two different ways:
+OE构建系统提供两种方式来支持启动服务：
 
-+ ***SysVinit***: SysVinit is a system and service manager that manages the init system used to control the very basic functions of your system. The init program is the first program started by the Linux kernel when the system boots. Init then controls the startup, running and shutdown of all other programs.
++ ***SysVinit***: SysVinit是系统和服务管理器，管理着用来控制系统最基本功能的初始化系统。初始化程序是系统启动时被Linux内核最先自动的第一个程序，初始化后控制所有其他程序的启动，运行和关闭。
 
-To enable a service using SysVinit, your recipe needs to inherit the `update-rc.d` class. The class helps facilitate safely installing the package on the target.
+启用SysVinit服务，recipe需要继承`update-rc.d`类，这个类帮助安全在目标系统上安装包。
 
-You will need to set the `INITSCRIPT_PACKAGES`, `INITSCRIPT_NAME`, and `INITSCRIPT_PARAMS` variables within your recipe.
+你需要设定 `INITSCRIPT_PACKAGES`, `INITSCRIPT_NAME`, 和 `INITSCRIPT_PARAMS` 变量。
 
-+ ***systemd***: System Management Daemon (systemd) was designed to replace SysVinit and to provide enhanced management of services. For more information on systemd, see the systemd homepage at http://freedesktop.org/wiki/Software/systemd/.
++ ***systemd***: 系统管理守护进程(systemd)被设计用来取代SysVinit，提供加强的服务管理。阅读[systemd主页](http://freedesktop.org/wiki/Software/systemd/)获取更多信息。
 
-To enable a service using systemd, your recipe needs to inherit the `systemd` class. See the `systemd.bbclass` file located in your Source Directory. section for more information.
+启用systemd服务，recipe需要继承`systemd`类。在[Source Directory](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#source-directory)中查看`systemd.bbclass`文件以获取更多信息。
 
-### 3.3.15 Packaging
+### 3.3.15 打包
 Successful packaging is a combination of automated processes performed by the OpenEmbedded build system and some specific steps you need to take. The following list describes the process:
 
 + ***Splitting Files***: The `do_package` task splits the files produced by the recipe into logical components. Even software that produces a single binary might still have debug symbols, documentation, and other logical components that should be split out. The `do_package` task ensures that files are split up and packaged correctly.
@@ -4946,7 +4946,7 @@ Following is an example written in Bash. The code logs the progress of the do_my
          bbdebug 2 "Completed do_my_function"
      }
 ```
-### 3.30.12. Debugging Parallel Make Races
+### 3.30.12. 调试并行Make冲突
 A parallel make race occurs when the build consists of several parts that are run simultaneously and a situation occurs when the output or result of one part is not ready for use with a different part of the build that depends on that output. Parallel make races are annoying and can sometimes be difficult to reproduce and fix. However, some simple tips and tricks exist that can help you debug and fix them. This section presents a real-world example of an error encountered on the Yocto Project autobuilder and the process used to fix it.
 
 > Note  
