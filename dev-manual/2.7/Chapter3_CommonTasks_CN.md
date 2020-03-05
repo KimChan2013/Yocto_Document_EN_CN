@@ -43,8 +43,8 @@
   - [3.3.20 测试](#3320-测试)
   - [3.3.21 示例](#3321-示例)
   - [3.3.21.1 Single .c File Package (Hello World!)](#33211-single-c-file-package-hello-world)
-  - [3.3.21.2 Autotooled Package](#33212-autotooled-package)
-    - [3.3.21.3 Makefile-Based Package](#33213-makefile-based-package)
+  - [3.3.21.2 Autotool构建的包](#33212-autotool构建的包)
+    - [3.3.21.3 基于Makefile的包](#33213-基于makefile的包)
     - [3.3.21.4 将应用分割成多个包](#33214-将应用分割成多个包)
   - [3.3.21.5 Packaging Externally Produced Binaries](#33215-packaging-externally-produced-binaries)
   - [3.3.22 Following Recipe Style Guidelines](#3322-following-recipe-style-guidelines)
@@ -1255,7 +1255,7 @@ If you have recipes that use `pkg_postinst` function and they require the use of
 + 将二进制文件加到镜像
 
 ### 3.3.21.1 Single .c File Package (Hello World!)
-Building an application from a single file that is stored locally (e.g. under `files`) requires a recipe that has the file listed in the `SRC_URI` variable. Additionally, you need to manually write the `do_compile` and `do_install` tasks. The `S` variable defines the directory containing the source code, which is set to `WORKDIR` in this case - the directory BitBake uses for the build.
+由本地的单文件（例如`files`目录下）构建应用，recipe需要将文件列在`SRC_URI`中，另外，你需要手动编写`do_compile`和`do_install`任务。`S`变量定义了包含源代码的目录，这个示例中是`WORKDIR`，也是BitBake用作构建的目录。
 ```
      SUMMARY = "Simple helloworld application"
      SECTION = "examples"
@@ -1275,9 +1275,9 @@ Building an application from a single file that is stored locally (e.g. under `f
      	install -m 0755 helloworld ${D}${bindir}
      }
 ```                    
-By default, the `helloworld`, `helloworld-dbg`, and `helloworld-dev` packages are built. For information on how to customize the packaging process, see the "Splitting an Application into Multiple Packages" section.
+默认地`helloworld`, `helloworld-dbg`, and `helloworld-dev`包被构建出来，关于更多如何自定义打包过程的信息，请阅读[3.3.21.4 将应用分割成多个包](#33214-将应用分割成多个包)。
 
-### 3.3.21.2 Autotooled Package
+### 3.3.21.2 Autotool构建的包
 Applications that use Autotools such as `autoconf` and `automake` require a recipe that has a source archive listed in `SRC_URI` and also inherit the `autotools` class, which contains the definitions of all the steps needed to build an Autotool-based application. The result of the build is automatically packaged. And, if the application uses NLS for localization, packages with local information are generated (one package per language). Following is one example: (`hello_2.3.bb`)
 ```
      SUMMARY = "GNU Helloworld application"
@@ -1291,7 +1291,7 @@ Applications that use Autotools such as `autoconf` and `automake` require a reci
 ```                     
 The variable `LIC_FILES_CHKSUM` is used to track source license changes as described in the "Tracking License Changes" section in the Yocto Project Overview and Concepts Manual. You can quickly create Autotool-based recipes in a manner similar to the previous example.
 
-#### 3.3.21.3 Makefile-Based Package
+#### 3.3.21.3 基于Makefile的包
 Applications that use GNU make also require a recipe that has the source archive listed in `SRC_URI`. You do not need to add a `do_compile` step since by default BitBake starts the `make` command to compile the application. If you need additional `make` options, you should store them in the `EXTRA_OEMAKE` or `PACKAGECONFIG_CONFARGS` variables. BitBake passes these options into the GNU make invocation. Note that a `do_install` task is still required. Otherwise, BitBake runs an empty `do_install` task by default.
 
 Some applications might require extra parameters to be passed to the compiler. For example, the application might need an additional header path. You can accomplish this by adding to the `CFLAGS` variable. The following example shows this:
@@ -1388,19 +1388,19 @@ When writing recipes, it is good to conform to existing style guidelines. The Op
 It is common for existing recipes to deviate a bit from this style. However, aiming for at least a consistent style is a good idea. Some practices, such as omitting spaces around = operators in assignments or ordering recipe components in an erratic way, are widely seen as poor style.
 
 ### 3.3.23 Recipe语法
-Understanding recipe file syntax is important for writing recipes. The following list overviews the basic items that make up a BitBake recipe file. For more complete BitBake syntax descriptions, see the "Syntax and Operators" chapter of the BitBake User Manual.
+理解recipe文件语法对于编写recipe来说是很重要的，以下列表列举了组成BitBake recipe文件的基本项，阅读《BitBake User Manual》["Syntax and Operators"](http://www.yoctoproject.org/docs/2.7/bitbake-user-manual/bitbake-user-manual.html#bitbake-user-manual-metadata)了解完整的BitBake语法描述。
 
-+ ***Variable Assignments and Manipulations***: Variable assignments allow a value to be assigned to a variable. The assignment can be static text or might include the contents of other variables. In addition to the assignment, appending and prepending operations are also supported.
++ ***变量的赋值与处理***: 变量赋值允许给变量赋值，可以是静态文本或包含其他变量内容。额外地，也支持append和prepend操作。
 
-The following example shows some of the ways you can use variables in recipes:
+下方示例展示了几种使用变量的方式：
 ```
      S = "${WORKDIR}/postfix-${PV}"
      CFLAGS += "-DNO_ASM"
      SRC_URI_append = " file://fixup.patch"
 ```                        
-+ ***Functions***: Functions provide a series of actions to be performed. You usually use functions to override the default implementation of a task function or to complement a default function (i.e. append or prepend to an existing function). Standard functions use sh shell syntax, although access to OpenEmbedded variables and internal methods are also available.
++ ***函数***: 函数提供一系列可执行的动作。一般使用函数重写默认任务函数的实现（即对已有函数的append或prepend）。标准函数使用sh shell语法，尽管访问OE变量和内部方法仍然是可行的。
 
-The following is an example function from the `sed` recipe:
+下方是`sed`recipe中的函数示例：
 ```
      do_install () {
          autotools_do_install
@@ -1409,35 +1409,35 @@ The following is an example function from the `sed` recipe:
          rmdir ${D}${bindir}/
      }
 ```                        
-It is also possible to implement new functions that are called between existing tasks as long as the new functions are not replacing or complementing the default functions. You can implement functions in Python instead of shell. Both of these options are not seen in the majority of recipes.
+实现新函数调用已有任务也是可以的，只要没有替换或补足默认函数。你可以用python而不是shell实现函数，Both of these options are not seen in the majority of recipes.
 
-+ ***Keywords***: BitBake recipes use only a few keywords. You use keywords to include common functions (`inherit`), load parts of a recipe from other files (`include` and `require`) and export variables to the environment (`export`).
++ ***关键字***: BitBake recipe只使用几个关键字，`inherit`用来包含常用函数，`include`和`require`用来加载其他文件recipe内容，`export`用来导出变量到环境中。
 
-The following example shows the use of some of these keywords:
+下方示例展示这些关键字的使用：
 ```
      export POSTCONF = "${STAGING_BINDIR}/postconf"
      inherit autoconf
      require otherfile.inc
 ```                        
-+ ***Comments (#)***: Any lines that begin with the hash character (`#`) are treated as comment lines and are ignored:
++ ***注释 (#)***: `#`开头的行被视作为注释行，被忽略：
 ```
      # This is a comment
 ```                        
-This next list summarizes the most important and most commonly used parts of the Recipe语法. For more information on these parts of the syntax, you can reference the Syntax and Operators chapter in the BitBake User Manual.
+接下来的列表总结了最重要的和最常用的recipe语法，你可以参考《BitBake User Manual》[Syntax and Operators](http://www.yoctoproject.org/docs/2.7/bitbake-user-manual/bitbake-user-manual.html#bitbake-user-manual-metadata)了解更多语法信息。
 
-+ ***Line Continuation (\)***: Use the backward slash (\) character to split a statement over multiple lines. Place the slash character at the end of the line that is to be continued on the next line:
++ ***行连接符 (`\`)***: 使用反斜线`\`分割一条语句的多行，在需要接续下一行的行末尾加上斜线：
 ```
      VAR = "A really long \
             line"
 ```                       
-> Note  
-> You cannot have any characters including spaces or tabs after the slash character.
+> **注释**  
+> 你不能在斜线后输入任何空格或tab
 
-+ ***Using Variables (${VARNAME})***: Use the ${VARNAME} syntax to access the contents of a variable:
++ ***使用变量 (`${VARNAME}`)***: 使用 ${VARNAME} 语法获取变量内容:
 ```
      SRC_URI = "${SOURCEFORGE_MIRROR}/libpng/zlib-${PV}.tar.gz"
 ```                        
-> Note  
+> **注释**  
 > It is important to understand that the value of a variable expressed in this form does not get substituted automatically.   
 > The expansion of these expressions happens on-demand later (e.g. usually when a function that makes reference to the variable executes). This behavior ensures that the values are most appropriate for the context in which they are finally used. On the rare occasion that you do need the variable expression to be expanded immediately, you can use the := operator instead of = when you make the assignment, but this is not generally needed.
 + Quote All Assignments ("value"): Use double quotes around values in all variable assignments (e.g. "value"). Following is an example:
@@ -1445,71 +1445,71 @@ This next list summarizes the most important and most commonly used parts of the
      VAR1 = "${OTHERVAR}"
      VAR2 = "The version is ${PV}"
                         
-+ **Conditional Assignment (?=)**: Conditional assignment is used to assign a value to a variable, but only when the variable is currently unset. Use the question mark followed by the equal sign (?=) to make a "soft" assignment used for conditional assignment. Typically, "soft" assignments are used in the ``local.conf`` file for variables that are allowed to come through from the external environment.
++ **条件赋值 (?=)**: 条件赋值用来给一个变量赋值，仅当变量还未被赋值时。使用`?=`作为‘软’赋值用来条件复制，典型地，‘软’赋值在`local.conf`文件中给允许从外部环境传值得变量使用。
 
-Here is an example where `VAR1` is set to "New value" if it is currently empty. However, if `VAR1` has already been set, it remains unchanged:
+如果`VAR1`当前未被设值，就会被设值为"New value"：
 
      VAR1 ?= "New value"
                         
-In this next example, VAR1 is left with the value "Original value":
+这个示例中，VAR1得值仍是"Original value"：
 ```
      VAR1 = "Original value"
      VAR1 ?= "New value"
 ```                        
-+ ***Appending (+=)***: Use the plus character followed by the equals sign (+=) to append values to existing variables.
++ ***附加Appending (+=)***: 使用`+=`符号将值附加到变量中：
 
-> Note  
-> This operator adds a space between the existing content of the variable and the new content.
+> **注释**  
+> 操作符会在已有内容和新内容之间增加一个空格
 
-Here is an example:
+示例：
 ```
      SRC_URI += "file://fix-makefile.patch"
 ```                        
-+ ***Prepending (=+)***: Use the equals sign followed by the plus character (=+) to prepend values to existing variables.
++ ***预附加Prepending (=+)***: U使用`=+`符号将值预附加到变量中。
 
-> Note  
-> This operator adds a space between the new content and the existing content of the variable.
+> **注释**  
+> 操作符在新内容和已有内容之间增加一个空格
 
-Here is an example:
+示例：
 ```
      VAR =+ "Starts"
 ```                        
-+ ***Appending (_append)***: Use the `_append` operator to append values to existing variables. This operator does not add any additional space. Also, the operator is applied after all the +=, and =+ operators have been applied and after all = assignments have occurred.
++ ***附加Appending (_append)***: 使用`_append`操作符将值附加到变量中，操作符不会添加空格。并且这个操作符实在所有`+=`,`=+`起效，所有`=`赋值发生后才执行。
 
-The following example shows the space being explicitly added to the start to ensure the appended value is not merged with the existing value:
+下方是列展示内容最前方显示添加得空格，保证附加值不会合并到已有值上：
 ```
      SRC_URI_append = " file://fix-makefile.patch"
 ```                        
-You can also use the _append operator with overrides, which results in the actions only being performed for the specified target or machine:
+你也可以这么使用，仅对特定目标或机器起效：
 ```
      SRC_URI_append_sh4 = " file://fix-makefile.patch"
 ```                        
-+ ***Prepending (_prepend)***: Use the `_prepend` operator to prepend values to existing variables. This operator does not add any additional space. Also, the operator is applied after all the +=, and =+ operators have been applied and after all = assignments have occurred.
++ ***预附加Prepending (_prepend)***: 使用`_preppend`操作符将值附加到变量中，操作符不会添加空格。并且这个操作符实在所有`+=`,`=+`起效，所有`=`赋值发生后才执行。
 
-The following example shows the space being explicitly added to the end to ensure the prepended value is not merged with the existing value:
+下方是列展示内容最后方显示添加得空格，保证附加值不会合并到已有值上：
 ```
      CFLAGS_prepend = "-I${S}/myincludes "
 ```                        
-You can also use the _prepend operator with overrides, which results in the actions only being performed for the specified target or machine:
+你也可以这么使用，仅对特定目标或机器起效：
 ```
      CFLAGS_prepend_sh4 = "-I${S}/myincludes "
 ```                        
-+ ***Overrides***: You can use overrides to set a value conditionally, typically based on how the recipe is being built. For example, to set the `KBRANCH` variable's value to "standard/base" for any target `MACHINE`, except for qemuarm where it should be set to "standard/arm-versatile-926ejs", you would do the following:
++ ***重载Overrides***: 你可以使用重载的方式根据recipe如果被构建地，按条件设值。例如，给`KBRANCH`变量设值为"standard/base",只有当qemuarm设备时被设值为"standard/arm-versatile-926ejs"：
 ```
      KBRANCH = "standard/base"
      KBRANCH_qemuarm  = "standard/arm-versatile-926ejs"
 ```                        
 Overrides are also used to separate alternate values of a variable in other situations. For example, when setting variables such as `FILES` and `RDEPENDS` that are specific to individual packages produced by a recipe, you should always use an override that specifies the name of the package.
 
-+ ***Indentation***: Use spaces for indentation rather than than tabs. For shell functions, both currently work. However, it is a policy decision of the Yocto Project to use tabs in shell functions. Realize that some layers have a policy to use spaces for all indentation.
++ ***缩进***: 使用空格，而不要使用tab进行缩进。对于shell函数，它们都没问题。然而，Yocto Project约定在shell函数中使用tab。需要意识到地是，有的layer只允许用空格。
 
-+ ***Using Python for Complex Operations***: For more advanced processing, it is possible to use Python code during variable assignments (e.g. search and replacement on a variable).
++ ***复杂操作时使用Python***: 对于更复杂地处理，可以用python代码进行赋值（例如，寻找并替换变量值）。
 
-You indicate Python code using the `${@python_code}` syntax for the variable assignment:
+使用`${@python_code}`语法指明使用python代码进行变量赋值：
 ```
      SRC_URI = "ftp://ftp.info-zip.org/pub/infozip/src/zip${@d.getVar('PV',1).replace('.', '')}.tgz
 ```                        
-+ ***Shell Function Syntax***: Write shell functions as if you were writing a shell script when you describe a list of actions to take. You should ensure that your script works with a generic sh and that it does not require any `bash` or other shell-specific functionality. The same considerations apply to various system utilities (e.g. `sed`, `grep`, `awk`, and so forth) that you might wish to use. If in doubt, you should check with multiple implementations - including those from BusyBox.
++ ***Shell函数语法***: 如当你描述一系列需要执行的动作时编写shell脚本一样，写shell函数。你应该保证脚本可以使用通用的sh，不必需要`bash`或其他shell指定的功能。对于其他系统工具(例如 `sed`, `grep`, `awk`, 等)来说同样需要考虑到这点。If in doubt, you should check with multiple implementations - including those from BusyBox.
 
 ## 3.4 Adding a New Machine
 Adding a new machine to the Yocto Project is a straightforward process. This section describes how to add machines that are similar to those that the Yocto Project already supports.
