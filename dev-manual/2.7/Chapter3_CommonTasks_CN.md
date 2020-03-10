@@ -49,12 +49,12 @@
   - [3.3.21.5 Packaging Externally Produced Binaries](#33215-packaging-externally-produced-binaries)
   - [3.3.22 Following Recipe Style Guidelines](#3322-following-recipe-style-guidelines)
   - [3.3.23 Recipe语法](#3323-recipe语法)
-- [3.4 Adding a New Machine](#34-adding-a-new-machine)
-  - [3.4.1 Adding the Machine Configuration File](#341-adding-the-machine-configuration-file)
-  - [3.4.2 Adding a Kernel for the Machine](#342-adding-a-kernel-for-the-machine)
+- [3.4 增加一个新的机器](#34-增加一个新的机器)
+  - [3.4.1 新增机器配置文件](#341-新增机器配置文件)
+  - [3.4.2 为机器增加Kernel](#342-为机器增加kernel)
   - [3.4.3 Adding a Formfactor Configuration File](#343-adding-a-formfactor-configuration-file)
-- [3.5 Upgrading Recipes](#35-upgrading-recipes)
-  - [3.5.1 Using the Auto Upgrade Helper (AUH)](#351-using-the-auto-upgrade-helper-auh)
+- [3.5 升级Recipe](#35-升级recipe)
+  - [3.5.1 使用 Auto Upgrade Helper (AUH)](#351-使用-auto-upgrade-helper-auh)
   - [3.5.2 Using `devtool upgrade`](#352-using-devtool-upgrade)
   - [3.5.3 Manually Upgrading a Recipe](#353-manually-upgrading-a-recipe)
 - [3.6 Finding Temporary Source Code](#36-finding-temporary-source-code)
@@ -705,7 +705,7 @@ Use the `EXTRA_IMAGE_FEATURES` variable from within your local configuration fil
 
      inherit core-image
 ```                
-Defining the software using a custom recipe gives you total control over the contents of the image. It is important to use the correct names of packages in the `IMAGE_INSTALL` variable. You must use the OpenEmbedded notation and not the Debian notation for the names (e.g. `glibc-dev` instead of `libc6-dev`).通过自定义recipe的方式定义软件有助于你完全掌控镜像的内容。在`IMAGE_INSTALL`变量中使用包的正确名字是非常重要的，你必须使用OE而不是Debian的命名方式(例如，使用 `glibc-dev` 而不是 `libc6-dev`)
+Defining the software using a custom recipe gives you total control over the contents of the image. It is important to use the correct names of packages in the `IMAGE_INSTALL` variable. You must use the OpenEmbedded notation and not the Debian notation for the names (例如 `glibc-dev` instead of `libc6-dev`).通过自定义recipe的方式定义软件有助于你完全掌控镜像的内容。在`IMAGE_INSTALL`变量中使用包的正确名字是非常重要的，你必须使用OE而不是Debian的命名方式(例如，使用 `glibc-dev` 而不是 `libc6-dev`)
 
 另外一种方式就是基于已有镜像。比如说，如果你想在`core-image-sato`添加额外的`strace`包，复制`meta/recipes-sato/images/core-image-sato.bb`的内容到一个新的`.bb`文件中，然后将下方一行语句加到末尾：
 ```
@@ -1075,7 +1075,7 @@ When you use custom kernel headers you need to get them from `STAGING_KERNEL_DIR
 
 + ***错误使用主机路径***: 这类失败仅在构建目标镜像或`nativesdk`时出现，当错误使用主机系统的头文件，库文件或者其他文件而又为目标设备交叉编译时，编译过程会出现此类失败。
 
-To fix the problem, examine the `log.do_compile` file to identify the host paths being used (e.g. `/usr/include`, `/usr/lib`, and so forth) and then either add configure options, apply a patch, or do both.修复这类问题，检查`log.do_compile`是否存在使用主机路径的情况（例如`/usr/include`, `/usr/lib`等），然后添加配置选项和/或应用补丁。
+To fix the problem, examine the `log.do_compile` file to identify the host paths being used (例如 `/usr/include`, `/usr/lib`, and so forth) and then either add configure options, apply a patch, or do both.修复这类问题，检查`log.do_compile`是否存在使用主机路径的情况（例如`/usr/include`, `/usr/lib`等），然后添加配置选项和/或应用补丁。
 
 + ***无法找到需要的库/头文件***: 如果构建时依赖因为没有定义在`DEPENDS`中，或是构建过程使用的查询路径不正确，配置过程也没有检测到这点而导致构建时依赖缺失，编译过程会失败。无论哪种，编译过程都会提示文件无法找到。这种情况下，你需要在配置脚本中添加选项，也可能需要添加构建时依赖到`DEPENDS`中。
 
@@ -1439,8 +1439,8 @@ It is common for existing recipes to deviate a bit from this style. However, aim
 ```                        
 > **注释**  
 > It is important to understand that the value of a variable expressed in this form does not get substituted automatically.   
-> The expansion of these expressions happens on-demand later (e.g. usually when a function that makes reference to the variable executes). This behavior ensures that the values are most appropriate for the context in which they are finally used. On the rare occasion that you do need the variable expression to be expanded immediately, you can use the := operator instead of = when you make the assignment, but this is not generally needed.
-+ Quote All Assignments ("value"): Use double quotes around values in all variable assignments (e.g. "value"). Following is an example:
+> The expansion of these expressions happens on-demand later (例如 usually when a function that makes reference to the variable executes). This behavior ensures that the values are most appropriate for the context in which they are finally used. On the rare occasion that you do need the variable expression to be expanded immediately, you can use the := operator instead of = when you make the assignment, but this is not generally needed.
++ Quote All Assignments ("value"): Use double quotes around values in all variable assignments (例如 "value"). Following is an example:
 
      VAR1 = "${OTHERVAR}"
      VAR2 = "The version is ${PV}"
@@ -1511,47 +1511,47 @@ Overrides are also used to separate alternate values of a variable in other situ
 ```                        
 + ***Shell函数语法***: 如当你描述一系列需要执行的动作时编写shell脚本一样，写shell函数。你应该保证脚本可以使用通用的sh，不必需要`bash`或其他shell指定的功能。对于其他系统工具(例如 `sed`, `grep`, `awk`, 等)来说同样需要考虑到这点。If in doubt, you should check with multiple implementations - including those from BusyBox.
 
-## 3.4 Adding a New Machine
-Adding a new machine to the Yocto Project is a straightforward process. This section describes how to add machines that are similar to those that the Yocto Project already supports.
+## 3.4 增加一个新的机器
+向Yocto Project中添加一个新的机器很简单，本节介绍如何添加与Yocto Project已经支持机器相近的机器。
 
-> Note  
-> Although well within the capabilities of the Yocto Project, adding a totally new architecture might require changes to `gcc/glibc` and to the site information, which is beyond the scope of this manual.
+> **注释**  
+> 尽管Yocto Project完全有这个能力，增加一个全新架构可能需要修改`gcc/glibc`和site information，这个不在本手册讨论范围内。
 
-For a complete example that shows how to add a new machine, see the "Creating a New BSP Layer Using the bitbake-layers Script" section in the Yocto Project Board Support Package (BSP) Developer's Guide.
+如何增加一个新机器的完整示例，请阅读《Yocto Project Board Support Package (BSP) Developer's Guide》的["Creating a New BSP Layer Using the bitbake-layers Script"](http://www.yoctoproject.org/docs/2.7/bsp-guide/bsp-guide.html#creating-a-new-bsp-layer-using-the-bitbake-layers-script)章节。
 
-### 3.4.1 Adding the Machine Configuration File
-To add a new machine, you need to add a new machine configuration file to the layer's `conf/machine` directory. This configuration file provides details about the device you are adding.
+### 3.4.1 新增机器配置文件
+增加新机器，你需要在layer的`conf/machine`目录下增加机器配置文件。这个文件提供你新增设备的细节。
 
-The OpenEmbedded build system uses the root name of the machine configuration file to reference the new machine. For example, given a machine configuration file named crownbay.conf, the build system recognizes the machine as "crownbay".
+OE构建系统使用机器配置文件的根名字指向新机器。比如说，给定名为`crownbay.conf`的机器配置文件，构建系统将认为机器名为"crownbay"。
 
-The most important variables you must set in your machine configuration file or include from a lower-level configuration file are as follows:
+机器配置文件中最重要的变量，你需要设置或者从下层配置文件include进来：
 
-+ TARGET_ARCH (e.g. "arm")
++ TARGET_ARCH (例如 "arm")
 
 + PREFERRED_PROVIDER_`virtual/kernel`
 
-+ MACHINE_FEATURES (e.g. "apm screen wifi")
++ MACHINE_FEATURES (例如 "apm screen wifi")
 
-You might also need these variables:
+你也可能需要使用这些变量：
 
-+ SERIAL_CONSOLES (e.g. "115200;ttyS0 115200;ttyS1")
++ SERIAL_CONSOLES (例如 "115200;ttyS0 115200;ttyS1")
 
-+ KERNEL_IMAGETYPE (e.g. "zImage")
++ KERNEL_IMAGETYPE (例如 "zImage")
 
-+ IMAGE_FSTYPES (e.g. "tar.gz jffs2")
++ IMAGE_FSTYPES (例如 "tar.gz jffs2")
 
-You can find full details on these variables in the reference section. You can leverage existing machine `.conf` files from `meta-yocto-bsp/conf/machine/`.
+你可以在参考章节找到变量的所有细节，你可以利用`meta-yocto-bsp/conf/machine/`的`.conf`文件。
 
-### 3.4.2 Adding a Kernel for the Machine
-The OpenEmbedded build system needs to be able to build a kernel for the machine. You need to either create a new kernel recipe for this machine, or extend an existing kernel recipe. You can find several kernel recipe examples in the Source Directory at `meta/recipes-kernel/linux` that you can use as references.
+### 3.4.2 为机器增加Kernel
+OE构建系统需要能够为机器构建kernel。你可以为机器新建一个新kernel，或者扩展已有的kernel recipe。你可以在`meta/recipes-kernel/linux`目录找到几个recipe示例作为参考。
 
-If you are creating a new kernel recipe, normal recipe-writing rules apply for setting up a `SRC_URI`. Thus, you need to specify any necessary patches and set S to point at the source code. You need to create a `do_configure` task that configures the unpacked kernel with a `defconfig` file. You can do this by using a `make defconfig` command or, more commonly, by copying in a suitable `defconfig` file and then running `make oldconfig`. By making use of `inherit kernel` and potentially some of the `linux-*.inc` files, most other functionality is centralized and the defaults of the class normally work well.
+如果你准备新建一个kernel recipe，通常的规则同样使用于`SRC_URI`。因此，你需要指定必须的补丁文件，将`S`指向源代码，你需要创建`do_configure`任务使用`defconfig`文件配置解包好的kernel，你可以使用`make defconfig`命令，或者更常见地，拷贝一个合适地`defconfg`文件然后运行`make oldconfig`。利用`inherit kernel`和部分`linux-*.inc`文件，大多数其他功能都几种了起来，类默认提供地功能通常也能工作地很好。
 
-If you are extending an existing kernel recipe, it is usually a matter of adding a suitable `defconfig` file. The file needs to be added into a location similar to `defconfig` files used for other machines in a given kernel recipe. A possible way to do this is by listing the file in the `SRC_URI` and adding the machine to the expression in `COMPATIBLE_MACHINE`:
+如果你是扩展kernel recipe，通常就是需要新增一个合适地`defconifg`文件，这个文件需要添加的路径和其他已有的近似。一个可行的方式是在`SRC_URI`中列举这些文件，在`COMPATIBLE_MACHINE`中添加机器：
 
      COMPATIBLE_MACHINE = '(qemux86|qemumips)'
                 
-For more information on `defconfig` files, see the "Changing the Configuration" section in the Yocto Project Linux Kernel Development Manual.
+更多有关`defconfig`文件的信息，请阅读《Yocto Project Linux Kernel Development Manual》的["Changing the Configuration"](http://www.yoctoproject.org/docs/2.7/kernel-dev/kernel-dev.html#changing-the-configuration)章节。
 
 ### 3.4.3 Adding a Formfactor Configuration File
 A formfactor configuration file provides information about the target hardware for which the image is being built and information that the build system cannot obtain from other sources such as the kernel. Some examples of information contained in a formfactor configuration file include framebuffer orientation, whether or not the system has a keyboard, the positioning of the keyboard in relation to the screen, and the screen resolution.
@@ -1571,14 +1571,14 @@ Following is an example for "qemuarm" machine:
      DISPLAY_DPI=150
      DISPLAY_SUBPIXEL_ORDER=vrgb
 
-## 3.5 Upgrading Recipes
-Over time, upstream developers publish new versions for software built by layer recipes. It is recommended to keep recipes up-to-date with upstream version releases.
+## 3.5 升级Recipe
+上游开发者将layer recipe构建的新版本软件发布出来。推荐你保持recipe更新至上游最新发布的版本。
 
-While several methods exist that allow you upgrade a recipe, you might consider checking on the upgrade status of a recipe first. You can do so using the `devtool check-upgrade-status` command. See the "Checking on the Upgrade Status of a Recipe" section in the Yocto Project Reference Manual for more information.
+当存在几种升级方式时，你可能会考虑先检查recipe升级状态，你可以使用`devtool check-upgrade-status`命令。阅读《Yocto Project Reference Manual》的["Checking on the Upgrade Status of a Recipe"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#devtool-checking-on-the-upgrade-status-of-a-recipe)以了解更多。
 
-The remainder of this section describes three ways you can upgrade a recipe. You can use the Automated Upgrade Helper (AUH) to set up automatic version upgrades. Alternatively, you can use `devtool upgrade` to set up semi-automatic version upgrades. Finally, you can manually upgrade a recipe by editing the recipe itself.
+本节介绍三种升级recipe的方式，你可以使用Automated Upgrade Helper (AUH)配置自动升级，你也可以使用`devtool upgrade`的方式配置半自动升级，当然，你也可以通过编辑recipe手动升级。
 
-### 3.5.1 Using the Auto Upgrade Helper (AUH)
+### 3.5.1 使用 Auto Upgrade Helper (AUH)
 The AUH utility works in conjunction with the OpenEmbedded build system in order to automatically generate upgrades for recipes based on new versions being published upstream. Use AUH when you want to create a service that performs the upgrades automatically and optionally sends you an email with the results.
 
 AUH allows you to update several recipes with a single use. You can also optionally perform build and integration tests using images with the results saved to your hard drive and emails of results optionally sent to recipe maintainers. Finally, AUH creates Git commits with appropriate commit messages in the layer's tree for the changes made to recipes.
@@ -1902,7 +1902,7 @@ For spawned terminals, the following occurs:
 
 Within this environment, you can run configure or compile commands as if they were being run by the OpenEmbedded build system itself. As noted earlier, the working directory also automatically changes to the Source Directory (`S`).
 
-To manually run a specific task using `devshell`, run the corresponding `run.*` script in the `${WORKDIR}/temp` directory (e.g., `run.do_configure.pid`). If a task's script does not exist, which would be the case if the task was skipped by way of the sstate cache, you can create the task by first running it outside of the `devshell`:
+To manually run a specific task using `devshell`, run the corresponding `run.*` script in the `${WORKDIR}/temp` directory (例如, `run.do_configure.pid`). If a task's script does not exist, which would be the case if the task was skipped by way of the sstate cache, you can create the task by first running it outside of the `devshell`:
 
      $ bitbake -c task
             
@@ -2056,7 +2056,7 @@ In this case, BitBake must create the `core-image-minimal` image for the "arm" b
 Because "x86" and "arm" are enabled for multiple configuration builds and have separate configuration files, BitBake places the artifacts for each build in the respective temporary build directories (i.e. `TMPDIR`).
 
 ### 3.10.3 Building an Initial RAM Filesystem (initramfs) Image
-An initial RAM filesystem (initramfs) image provides a temporary root filesystem used for early system initialization (e.g. loading of modules needed to locate and mount the "real" root filesystem).
+An initial RAM filesystem (initramfs) image provides a temporary root filesystem used for early system initialization (例如 loading of modules needed to locate and mount the "real" root filesystem).
 
 > Note  
 > The initramfs image is the successor of initial RAM disk (initrd). It is a "copy in and out" (cpio) archive of the initial filesystem that gets loaded into memory during the Linux startup process. Because Linux uses the contents of the archive during initialization, the initramfs image needs to contain all of the device drivers and tools needed to mount the final root filesystem.
@@ -2104,7 +2104,7 @@ The following list presents the overall steps you need to consider and perform t
 ### 3.10.4.2 Goals and Guiding Principles
 Before you can reach your destination, you need to know where you are going. Here is an example list that you can use as a guide when creating very small distributions:
 
-+ Determine how much space you need (e.g. a kernel that is 1 Mbyte or less and a root filesystem that is 3 Mbytes or less).
++ Determine how much space you need (例如 a kernel that is 1 Mbyte or less and a root filesystem that is 3 Mbytes or less).
 
 + Find the areas that are currently taking 90% of the space and concentrate on reducing those areas.
 
@@ -2185,7 +2185,7 @@ To examine, or drill down, into any particular area, use the `-d` option with th
 
      $ ksize.py -d > ksize.log
                     
-Using this option breaks out the individual file information for each area of the kernel (e.g. drivers, networking, and so forth).
+Using this option breaks out the individual file information for each area of the kernel (例如 drivers, networking, and so forth).
 
 Use your log file to see what you can eliminate from the kernel based on features you can let go. For example, if you are not going to need sound, you do not need any drivers that support sound.
 
@@ -2219,7 +2219,7 @@ If you have not reached your goals on system size, you need to iterate on the pr
 Depending on your system, a good place to look might be Busybox, which provides a stripped down version of Unix tools in a single, executable file. You might be able to drop virtual terminal services or perhaps ipv6.
 
 ### 3.10.5 Building Images for More than One Machine
-A common scenario developers face is creating images for several different machines that use the same software environment. In this situation, it is tempting to set the tunings and optimization flags for each build specifically for the targeted hardware (i.e. "maxing out" the tunings). Doing so can considerably add to build times and package feed maintenance collectively for the machines. For example, selecting tunes that are extremely specific to a CPU core used in a system might enable some micro optimizations in GCC for that particular system but would otherwise not gain you much of a performance difference across the other systems as compared to using a more general tuning across all the builds (e.g. setting `DEFAULTTUNE` specifically for each machine's build). Rather than "max out" each build's tunings, you can take steps that cause the OpenEmbedded build system to reuse software across the various machines where it makes sense.
+A common scenario developers face is creating images for several different machines that use the same software environment. In this situation, it is tempting to set the tunings and optimization flags for each build specifically for the targeted hardware (i.e. "maxing out" the tunings). Doing so can considerably add to build times and package feed maintenance collectively for the machines. For example, selecting tunes that are extremely specific to a CPU core used in a system might enable some micro optimizations in GCC for that particular system but would otherwise not gain you much of a performance difference across the other systems as compared to using a more general tuning across all the builds (例如 setting `DEFAULTTUNE` specifically for each machine's build). Rather than "max out" each build's tunings, you can take steps that cause the OpenEmbedded build system to reuse software across the various machines where it makes sense.
 
 If build speed and package feed maintenance are considerations, you should consider the points in this section that can help you optimize your tunings to best consider build times and package feed maintenance.
 
@@ -2240,7 +2240,7 @@ If build speed and package feed maintenance are considerations, you should consi
      ```
         PACKAGE_ARCH = "${TUNE_PKGARCH}"
      ```                   
-+ ***Choose a Generic Tuning File if Possible***: Some tunes are more generic and can run on multiple targets (e.g. an `armv5` set of packages could run on `armv6` and `armv7` processors in most cases). Similarly, `i486` binaries could work on `i586` and higher processors. You should realize, however, that advances on newer processor versions would not be used.
++ ***Choose a Generic Tuning File if Possible***: Some tunes are more generic and can run on multiple targets (例如 an `armv5` set of packages could run on `armv6` and `armv7` processors in most cases). Similarly, `i486` binaries could work on `i586` and higher processors. You should realize, however, that advances on newer processor versions would not be used.
 
      If you select the same tune for several different machines, the OpenEmbedded build system reuses software previously built, thus speeding up the overall build time. Realize that even though a new sysroot for each machine is generated, the software is not recompiled and only one package feed exists.
 
@@ -2255,7 +2255,7 @@ If build speed and package feed maintenance are considerations, you should consi
 
     + *sstate-diff-machines.sh*: You can find this tool in the `scripts` directory of the Source Repositories. See the comments in the script for information on how to use the tool.
 
-    + ***BitBake's "-S printdiff" Option***: Using this option causes BitBake to try to establish the closest signature match it can (e.g. in the shared state cache) and then run `bitbake-diffsigs` over the matches to determine the stamps and delta where these two stamp trees diverge.
+    + ***BitBake's "-S printdiff" Option***: Using this option causes BitBake to try to establish the closest signature match it can (例如 in the shared state cache) and then run `bitbake-diffsigs` over the matches to determine the stamps and delta where these two stamp trees diverge.
 
 ### 3.10.6 Building Software from an External Source
 By default, the OpenEmbedded build system uses the Build Directory when building source code. The build process involves fetching the source files, unpacking them, and then patching them if necessary before the build takes place.
@@ -2372,7 +2372,7 @@ Aside from the previous list, you should keep some trade offs in mind that can h
      EXTRA_OECONF += "${STATICLIBCONF}"
      ```                    
      > **Notes**  
-     > Some recipes need static libraries in order to work correctly (e.g. `pseudo-native` needs `sqlite3-native`). Overrides, as in the previous example, account for these kinds of exceptions.  
+     > Some recipes need static libraries in order to work correctly (例如 `pseudo-native` needs `sqlite3-native`). Overrides, as in the previous example, account for these kinds of exceptions.  
      > Some packages have packaging code that assumes the presence of the static libraries. If so, you might need to exclude them as well.
 
 ## 3.12 Working With Libraries
@@ -2449,7 +2449,7 @@ User-specific requirements drive the Multilib feature. Consequently, there is no
 
 In order to enable Multilib, you first need to ensure your recipe is extended to support multiple libraries. Many standard recipes are already extended and support multiple libraries. You can check in the `meta/conf/multilib.conf` configuration file in the Source Directory to see how this is done using the `BBCLASSEXTEND` variable. Eventually, all recipes will be covered and this list will not be needed.
 
-For the most part, the Multilib class extension works automatically to extend the package name from ``${PN}`` to `${MLPREFIX}`${PN}``, where `MLPREFIX` is the particular multilib (e.g. "lib32-" or "lib64-"). Standard variables such as `DEPENDS`, `RDEPENDS`, `RPROVIDES`, `RRECOMMENDS`, `PACKAGES`, and `PACKAGES_DYNAMIC` are automatically extended by the system. If you are extending any manual code in the recipe, you can use the `${MLPREFIX}` variable to ensure those names are extended correctly. This automatic extension code resides in `multilib.bbclass`.
+For the most part, the Multilib class extension works automatically to extend the package name from ``${PN}`` to `${MLPREFIX}`${PN}``, where `MLPREFIX` is the particular multilib (例如 "lib32-" or "lib64-"). Standard variables such as `DEPENDS`, `RDEPENDS`, `RPROVIDES`, `RRECOMMENDS`, `PACKAGES`, and `PACKAGES_DYNAMIC` are automatically extended by the system. If you are extending any manual code in the recipe, you can use the `${MLPREFIX}` variable to ensure those names are extended correctly. This automatic extension code resides in `multilib.bbclass`.
 
 #### 3.12.2.2 Using Multilib
 After you have set up the recipes, you need to define the actual combination of multiple libraries you want to build. You accomplish this through your ``local.conf`` configuration file in the Build Directory. An example configuration would be as follows:
@@ -2475,7 +2475,7 @@ Generic implementation details as well as details that are specific to package m
 
 + The typical convention used for the class extension code as used by Multilib assumes that all package names specified in `PACKAGES` that contain `${PN}` have `${PN}` at the start of the name. When that convention is not followed and `${PN}` appears at the middle or the end of a name, problems occur.
 
-+ The `TARGET_VENDOR` value under Multilib will be extended to "-vendormlmultilib" (e.g. "-pokymllib32" for a "lib32" Multilib with Poky). The reason for this slightly unwieldy contraction is that any "-" characters in the vendor string presently break Autoconf's `config.sub`, and other separators are problematic for different reasons.
++ The `TARGET_VENDOR` value under Multilib will be extended to "-vendormlmultilib" (例如 "-pokymllib32" for a "lib32" Multilib with Poky). The reason for this slightly unwieldy contraction is that any "-" characters in the vendor string presently break Autoconf's `config.sub`, and other separators are problematic for different reasons.
 
 For the RPM Package Management System, the following implementation details exist:
 
@@ -2498,7 +2498,7 @@ For the IPK Package Management System, the following implementation details exis
 ### 3.12.3 Installing Multiple Versions of the Same Library
 Situations can exist where you need to install and use multiple versions of the same library on the same system at the same time. These situations almost always exist when a library API changes and you have multiple pieces of software that depend on the separate versions of the library. To accommodate these situations, you can install multiple versions of the same library in parallel on the same system.
 
-The process is straightforward as long as the libraries use proper versioning. With properly versioned libraries, all you need to do to individually specify the libraries is create separate, appropriately named recipes where the `PN` part of the name includes a portion that differentiates each library version (e.g.the major part of the version number). Thus, instead of having a single recipe that loads one version of a library (e.g. `clutter`), you provide multiple recipes that result in different versions of the libraries you want. As an example, the following two recipes would allow the two separate versions of the clutter library to co-exist on the same system:
+The process is straightforward as long as the libraries use proper versioning. With properly versioned libraries, all you need to do to individually specify the libraries is create separate, appropriately named recipes where the `PN` part of the name includes a portion that differentiates each library version (例如the major part of the version number). Thus, instead of having a single recipe that loads one version of a library (例如 `clutter`), you provide multiple recipes that result in different versions of the libraries you want. As an example, the following two recipes would allow the two separate versions of the clutter library to co-exist on the same system:
 ```
      clutter-1.6_1.6.20.bb
      clutter-1.8_1.8.4.bb
@@ -2610,7 +2610,7 @@ The following know issues exist for GObject Introspection Support:
 
 + musl causes transient GLib binaries to crash on assertion failures. Consequently, generating introspection data is disabled.
 
-+ Because QEMU is not able to run the binaries correctly, introspection is disabled for some specific packages under specific architectures (e.g. `gcr`, `libsecret`, and `webkit`).
++ Because QEMU is not able to run the binaries correctly, introspection is disabled for some specific packages under specific architectures (例如 `gcr`, `libsecret`, and `webkit`).
 
 + QEMU usermode might not work properly when running 64-bit binaries under 32-bit host machines. In particular, "qemumips64" is known to not work under i686.
 
@@ -2655,7 +2655,7 @@ In order to use the Wic utility with the OpenEmbedded Build system, your system 
 
 + You must have sourced the build environment setup script (i.e. `oe-init-build-env`) found in the Build Directory.
 
-+ You need to have the build artifacts already available, which typically means that you must have already created an image using the Openembedded build system (e.g. `core-image-minimal`). While it might seem redundant to generate an image in order to create an image using Wic, the current version of Wic requires the artifacts in the form generated by the OpenEmbedded build system.
++ You need to have the build artifacts already available, which typically means that you must have already created an image using the Openembedded build system (例如 `core-image-minimal`). While it might seem redundant to generate an image in order to create an image using Wic, the current version of Wic requires the artifacts in the form generated by the OpenEmbedded build system.
 
 + You must build several native tools, which are built to run on the build system:
 ```
@@ -2723,7 +2723,7 @@ You can use Wic in two different modes, depending on how much control you need f
 Regardless of the mode you use, you need to have the build artifacts ready and available.
 
 #### 3.16.4.1 Raw Mode
-Running Wic in raw mode allows you to specify all the partitions through the `wic` command line. The primary use for raw mode is if you have built your kernel outside of the Yocto Project Build Directory. In other words, you can point to arbitrary kernel, root filesystem locations, and so forth. Contrast this behavior with cooked mode where Wic looks in the Build Directory (e.g. `tmp/deploy/images/machine`).
+Running Wic in raw mode allows you to specify all the partitions through the `wic` command line. The primary use for raw mode is if you have built your kernel outside of the Yocto Project Build Directory. In other words, you can point to arbitrary kernel, root filesystem locations, and so forth. Contrast this behavior with cooked mode where Wic looks in the Build Directory (例如 `tmp/deploy/images/machine`).
 
 The general form of the wic command in raw mode is:
 ```
@@ -2741,13 +2741,13 @@ The general form of the wic command in raw mode is:
             -o OUTDIR, --outdir OUTDIR
                                   name of directory to create image in
             -e IMAGE_NAME, --image-name IMAGE_NAME
-                                  name of the image to use the artifacts from e.g. core-
+                                  name of the image to use the artifacts from 例如 core-
                                   image-sato
             -r ROOTFS_DIR, --rootfs-dir ROOTFS_DIR
                                   path to the /rootfs dir to use as the .wks rootfs
                                   source
             -b BOOTIMG_DIR, --bootimg-dir BOOTIMG_DIR
-                                  path to the dir containing the boot artifacts (e.g.
+                                  path to the dir containing the boot artifacts (例如
                                   /EFI or /syslinux dirs) to use as the .wks bootimg
                                   source
             -k KERNEL_DIR, --kernel-dir KERNEL_DIR
@@ -2772,7 +2772,7 @@ The general form of the wic command in raw mode is:
 > You do not need root privileges to run Wic. In fact, you should not run as root when using the utility.
 
 #### 3.16.4.2 Cooked Mode
-Running Wic in cooked mode leverages off artifacts in the Build Directory. In other words, you do not have to specify kernel or root filesystem locations as part of the command. All you need to provide is a kickstart file and the name of the image from which to use artifacts by using the "-e" option. Wic looks in the Build Directory (e.g. `tmp/deploy/images/machine`) for artifacts.
+Running Wic in cooked mode leverages off artifacts in the Build Directory. In other words, you do not have to specify kernel or root filesystem locations as part of the command. All you need to provide is a kickstart file and the name of the image from which to use artifacts by using the "-e" option. Wic looks in the Build Directory (例如 `tmp/deploy/images/machine`) for artifacts.
 
 The general form of the wic command using Cooked Mode is as follows:
 ```
@@ -2788,7 +2788,7 @@ The general form of the wic command using Cooked Mode is as follows:
 
           required argument:
              -e IMAGE_NAME, --image-name IMAGE_NAME
-                                  name of the image to use the artifacts from e.g. core-
+                                  name of the image to use the artifacts from 例如 core-
                                   image-sato
 ```            
 ### 3.16.5 Using an Existing Kickstart File
@@ -2838,7 +2838,7 @@ You can extend and specialize Wic functionality by using Wic plug-ins. This sect
 Source plug-ins provide a mechanism to customize partition content during the Wic image generation process. You can use source plug-ins to map values that you specify using `--source` commands in kickstart files (i.e. `*.wks`) to a plug-in implementation used to populate a given partition.
 
 > Note  
-> If you use plug-ins that have build-time dependencies (e.g. native tools, bootloaders, and so forth) when building a Wic image, you need to specify those dependencies using the WKS_FILE_DEPENDS variable.
+> If you use plug-ins that have build-time dependencies (例如 native tools, bootloaders, and so forth) when building a Wic image, you need to specify those dependencies using the WKS_FILE_DEPENDS variable.
 
 Source plug-ins are subclasses defined in plug-in files. As shipped, the Yocto Project provides several plug-in files. You can see the source plug-in files that ship with the Yocto Project here. Each of these plug-in files contains source plug-ins that are designed to populate a specific Wic image partition.
 
@@ -2887,13 +2887,13 @@ The following list describes the methods implemented in the `SourcePlugin` class
 
 + *do_prepare_partition()*: Called to populate a partition with actual content. In other words, the method prepares the final partition image that is incorporated into the disk image.
 
-+ *do_configure_partition()*: Called before `do_prepare_partition()` to create custom configuration files for a partition (e.g. syslinux or grub configuration files).
++ *do_configure_partition()*: Called before `do_prepare_partition()` to create custom configuration files for a partition (例如 syslinux or grub configuration files).
 
-+ *do_install_disk()*: Called after all partitions have been prepared and assembled into a disk image. This method provides a hook to allow finalization of a disk image (e.g. writing an MBR).
++ *do_install_disk()*: Called after all partitions have been prepared and assembled into a disk image. This method provides a hook to allow finalization of a disk image (例如 writing an MBR).
 
 + *do_stage_partition()*: Special content-staging hook called before `do_prepare_partition()`. This method is normally empty.
 
-Typically, a partition just uses the passed-in parameters (e.g. the unmodified value of `bootimg_dir`). However, in some cases, things might need to be more tailored. As an example, certain files might additionally need to be taken from `bootimg_dir + /boot`. This hook allows those files to be staged in a customized fashion.
+Typically, a partition just uses the passed-in parameters (例如 the unmodified value of `bootimg_dir`). However, in some cases, things might need to be more tailored. As an example, certain files might additionally need to be taken from `bootimg_dir + /boot`. This hook allows those files to be staged in a customized fashion.
 
 > Note  
 > `get_bitbake_var()` allows you to access non-standard variables that you might want to use for this behavior.
@@ -2944,7 +2944,7 @@ or
 ### 3.16.7.2 Using a Modified Kickstart File
 Because partitioned image creation is driven by the kickstart file, it is easy to affect image creation by changing the parameters in the file. This next example demonstrates that through modification of the `directdisk-gpt` kickstart file.
 
-As mentioned earlier, you can use the command `wic list images` to show the list of existing kickstart files. The directory in which the `directdisk-gpt.wks` file resides is `scripts/lib/image/canned-wks/`, which is located in the Source Directory (e.g. poky). Because available files reside in this directory, you can create and add your own custom files to the directory. Subsequent use of the `wic list images` command would then include your kickstart files.
+As mentioned earlier, you can use the command `wic list images` to show the list of existing kickstart files. The directory in which the `directdisk-gpt.wks` file resides is `scripts/lib/image/canned-wks/`, which is located in the Source Directory (例如 poky). Because available files reside in this directory, you can create and add your own custom files to the directory. Subsequent use of the `wic list images` command would then include your kickstart files.
 
 In this example, the existing `directdisk-gpt` file already does most of what is needed. However, for the hardware in this example, the image will need to boot from `sdb` instead of `sda`, which is what the `directdisk-gpt` kickstart file uses.
 
@@ -3140,7 +3140,7 @@ When securing your image is of concern, there are steps, tools, and variables th
 ### 3.18.1 General Considerations
 General considerations exist that help you create more secure images. You should consider the following suggestions to help make your device more secure:
 
-+ Scan additional code you are adding to the system (e.g. application code) by using static analysis tools. Look for buffer overflows and other potential security problems.
++ Scan additional code you are adding to the system (例如 application code) by using static analysis tools. Look for buffer overflows and other potential security problems.
 
 + Pay particular attention to the security for any web-based administration interface.
 
@@ -3159,7 +3159,7 @@ General considerations exist that help you create more secure images. You should
 + Enable hardware support for secure boot functionality when your device supports this functionality.
 
 ### 3.18.2. Security Flags
-The Yocto Project has security flags that you can enable that help make your build output more secure. The security flags are in the `meta/conf/distro/include/security_flags.inc` file in your Source Directory (e.g. `poky`).
+The Yocto Project has security flags that you can enable that help make your build output more secure. The security flags are in the `meta/conf/distro/include/security_flags.inc` file in your Source Directory (例如 `poky`).
 
 > Note  
 > Depending on the recipe, certain security flags are enabled and disabled by default.
@@ -3177,7 +3177,7 @@ You can take some steps that are specific to the OpenEmbedded build system to ma
      ```           
      To disable that feature, simply comment out that line in your ``local.conf`` file, or make sure `IMAGE_FEATURES` does not contain "debug-tweaks" before producing your final image. Among other things, leaving this in place sets the root password as blank, which makes logging in for debugging or inspection easy during development but also means anyone can easily log in during production.
 
-+ It is possible to set a root password for the image and also to set passwords for any extra users you might add (e.g. administrative or service type users). When you set up passwords for multiple images or users, you should not duplicate passwords.
++ It is possible to set a root password for the image and also to set passwords for any extra users you might add (例如 administrative or service type users). When you set up passwords for multiple images or users, you should not duplicate passwords.
 
      To set up passwords, use the `extrausers` class, which is the preferred method. For an example on how to set up both root and user passwords, see the "`extrausers.bbclass`" section.
 
@@ -3196,7 +3196,7 @@ To create your own distribution, the basic steps consist of creating your own di
 
 + ***Create a layer for your new distro***: Create your distribution layer so that you can keep your Metadata and code for the distribution separate. It is strongly recommended that you create and use your own layer for configuration and code. Using your own layer as compared to just placing configurations in a ``local.conf`` configuration file makes it easier to reproduce the same build configuration when using multiple build machines. See the "使用bitbake-layers脚本创建通用Layer" section for information on how to quickly set up a layer.
 
-+ ***Create the distribution configuration file***: The distribution configuration file needs to be created in the `conf/distro` directory of your layer. You need to name it using your distribution name (e.g. `mydistro.conf`).
++ ***Create the distribution configuration file***: The distribution configuration file needs to be created in the `conf/distro` directory of your layer. You need to name it using your distribution name (例如 `mydistro.conf`).
 
      > Note  
      > The DISTRO variable in your `local.conf` file determines the name of your distribution.
@@ -3242,7 +3242,7 @@ The OpenEmbedded build system uses the environment variable TEMPLATECONF to loca
 ```            
 This is the directory used by the build system to find templates from which to build some key configuration files. If you look at this directory, you will see the `bblayers.conf.sample`, `local.conf.sample`, and conf-notes.txt files. The build system uses these files to form the respective `bblayers.conf` file, `local.conf` file, and display the list of BitBake targets when running the setup script.
 
-To override these default configuration files with configurations you want used within every new Build Directory, simply set the TEMPLATECONF variable to your directory. The TEMPLATECONF variable is set in the `.templateconf` file, which is in the top-level Source Directory folder (e.g. poky). Edit the `.templateconf` so that it can locate your directory.
+To override these default configuration files with configurations you want used within every new Build Directory, simply set the TEMPLATECONF variable to your directory. The TEMPLATECONF variable is set in the `.templateconf` file, which is in the top-level Source Directory folder (例如 poky). Edit the `.templateconf` so that it can locate your directory.
 
 Best practices dictate that you should keep your template configuration directory in your custom distribution layer. For example, suppose you have a layer named `meta-mylayer` located in your home directory and you want your template configuration directory named `myconf`. Changing the `.templateconf` as follows causes the OpenEmbedded build system to look in your directory and base its configuration files on the `*.sample` configuration files it finds. The final configuration files (i.e. `local.conf` and `bblayers.conf` ultimately still end up in your Build Directory, but they are based on your *.sample files.
 ```
@@ -3531,11 +3531,11 @@ The second part for handling optional module packaging is to ensure that any dep
 The name specified in the regular expression can of course be anything. In this example, it is `lighttpd-module-` and is specified as the prefix to ensure that any `RDEPENDS` and `RRECOMMENDS` on a package name starting with the prefix are satisfied during build time. If you are using `do_split_packages` as described in the previous section, the value you put in `PACKAGES_DYNAMIC` should correspond to the name pattern specified in the call to `do_split_packages`.
 
 ### 3.22.4. Using Runtime Package Management
-During a build, BitBake always transforms a recipe into one or more packages. For example, BitBake takes the bash recipe and produces a number of packages (e.g. `bash`, `bash-bashbug`, `bash-completion`, `bash-completion-dbg`, `bash-completion-dev`, `bash-completion-extra`, `bash-dbg`, and so forth). Not all generated packages are included in an image.
+During a build, BitBake always transforms a recipe into one or more packages. For example, BitBake takes the bash recipe and produces a number of packages (例如 `bash`, `bash-bashbug`, `bash-completion`, `bash-completion-dbg`, `bash-completion-dev`, `bash-completion-extra`, `bash-dbg`, and so forth). Not all generated packages are included in an image.
 
 In several situations, you might need to update, add, remove, or query the packages on a target device at runtime (i.e. without having to generate a new image). Examples of such situations include:
 
-+ You want to provide in-the-field updates to deployed devices (e.g. security updates).
++ You want to provide in-the-field updates to deployed devices (例如 security updates).
 
 + You want to have a fast turn-around development cycle for one or more applications that run on your device.
 
@@ -3545,7 +3545,7 @@ In several situations, you might need to update, add, remove, or query the packa
 
 In all these situations, you have something similar to a more traditional Linux distribution in that in-field devices are able to receive pre-compiled packages from a server for installation or update. Being able to install these packages on a running, in-field device is what is termed "runtime package management".
 
-In order to use runtime package management, you need a host or server machine that serves up the pre-compiled packages plus the required metadata. You also need package manipulation tools on the target. The build machine is a likely candidate to act as the server. However, that machine does not necessarily have to be the package server. The build machine could push its artifacts to another machine that acts as the server (e.g. Internet-facing). In fact, doing so is advantageous for a production environment as getting the packages away from the development system's build directory prevents accidental overwrites.
+In order to use runtime package management, you need a host or server machine that serves up the pre-compiled packages plus the required metadata. You also need package manipulation tools on the target. The build machine is a likely candidate to act as the server. However, that machine does not necessarily have to be the package server. The build machine could push its artifacts to another machine that acts as the server (例如 Internet-facing). In fact, doing so is advantageous for a production environment as getting the packages away from the development system's build directory prevents accidental overwrites.
 
 A simple build that targets just one device produces more than one package database. In other words, the packages produced by a build are separated out into a couple of different package groupings based on criteria such as the target's CPU architecture, the target board, or the C library used on the target. For example, a build targeting the qemux86 device produces the following three package databases: `noarch`, `i586`, and `qemux86`. If you wanted your `qemux86` device to be aware of all the packages that were available to it, you would need to point it to each of these databases individually. In a similar way, a traditional Linux distribution usually is configured to be aware of a number of software repositories from which it retrieves packages.
 
@@ -3556,7 +3556,7 @@ This section describes build considerations of which you need to be aware in ord
 
 When BitBake generates packages, it needs to know what format or formats to use. In your configuration, you use the PACKAGE_CLASSES variable to specify the format:
 
-1. Open the `local.conf` file inside your Build Directory (e.g. `~/poky/build/conf/local.conf`).
+1. Open the `local.conf` file inside your Build Directory (例如 `~/poky/build/conf/local.conf`).
 
 2. Select the desired package format as follows:
 
@@ -3586,7 +3586,7 @@ When your build is complete, your packages reside in the `${TMPDIR}/deploy/packa
 #### 3.22.4.2. Host or Server Machine Setup
 Although other protocols are possible, a server using HTTP typically serves packages. If you want to use HTTP, then set up and configure a web server such as Apache 2, lighttpd, or SimpleHTTPServer on the machine serving the packages.
 
-To keep things simple, this section describes how to set up a SimpleHTTPServer web server to share package feeds from the developer's machine. Although this server might not be the best for a production environment, the setup is simple and straight forward. Should you want to use a different server more suited for production (e.g. Apache 2, Lighttpd, or Nginx), take the appropriate steps to do so.
+To keep things simple, this section describes how to set up a SimpleHTTPServer web server to share package feeds from the developer's machine. Although this server might not be the best for a production environment, the setup is simple and straight forward. Should you want to use a different server more suited for production (例如 Apache 2, Lighttpd, or Nginx), take the appropriate steps to do so.
 
 From within the build directory where you have built an image based on your packaging choice (i.e. the `PACKAGE_CLASSES` setting), simply start the server. The following example assumes a build directory of `~/poky/build/tmp/deploy/rpm` and a `PACKAGE_CLASSES` setting of "package_rpm":
 ```
@@ -3639,7 +3639,7 @@ The `opkg` application performs runtime package management of IPK packages. You 
 
 The `opkg` application uses configuration files to find available package databases. Thus, you need to create a configuration file inside the `/etc/opkg/` direction, which informs `opkg` of any repository you want to use.
 
-As an example, suppose you are serving packages from a `ipk/` directory containing the `i586`, `all`, and `qemux86` databases through an HTTP server named `my.server`. On the target, create a configuration file (e.g. `my_repo.conf`) inside the `/etc/opkg/` directory containing the following:
+As an example, suppose you are serving packages from a `ipk/` directory containing the `i586`, `all`, and `qemux86` databases through an HTTP server named `my.server`. On the target, create a configuration file (例如 `my_repo.conf`) inside the `/etc/opkg/` directory containing the following:
 ```
      src/gz all http://my.server/ipk/all
      src/gz i586 http://my.server/ipk/i586
@@ -3654,7 +3654,7 @@ The `opkg` application is now able to find, install, and upgrade packages from t
 ##### 3.22.4.3.3. Using DEB
 The `apt` application performs runtime package management of DEB packages. This application uses a source list file to find available package databases. You must perform an initial setup for `apt` on the target machine if the `PACKAGE_FEED_ARCHS`, `PACKAGE_FEED_BASE_PATHS`, and `PACKAGE_FEED_URIS` variables have not been set or the target image was built before the variables were set.
 
-To inform apt of the repository you want to use, you might create a list file (e.g. `my_repo.list`) inside the `/etc/apt/sources.list.d/` directory. As an example, suppose you are serving packages from a `deb/` directory containing the `i586`, `all`, and `qemux86` databases through an HTTP server named `my.server`. The list file should contain:
+To inform apt of the repository you want to use, you might create a list file (例如 `my_repo.list`) inside the `/etc/apt/sources.list.d/` directory. As an example, suppose you are serving packages from a `deb/` directory containing the `i586`, `all`, and `qemux86` databases through an HTTP server named `my.server`. The list file should contain:
 ```
      deb http://my.server/deb/all ./
      deb http://my.server/deb/i586 ./
@@ -3786,7 +3786,7 @@ You need to be aware of the following before using `devtool` to create NPM packa
 
 + devtool cannot detect native libraries in module dependencies. Consequently, you must manually add packages to your recipe.
 
-+ While deploying NPM packages, `devtool` cannot determine which dependent packages are missing on the target (e.g. the node runtime nodejs). Consequently, you need to find out what files are missing and be sure they are on the target.
++ While deploying NPM packages, `devtool` cannot determine which dependent packages are missing on the target (例如 the node runtime nodejs). Consequently, you need to find out what files are missing and be sure they are on the target.
 
 + Although you might not need NPM to run your node package, it is useful to have NPM on your target. The NPM package name is nodejs-npm.
 
@@ -4048,7 +4048,7 @@ For more information on how to use these variables, see the "Customizing Images 
 ### 3.27.2. Post-Installation Scripts
 It is very important that you make sure all post-Installation (`pkg_postinst`) scripts for packages that are installed into the image can be run at the time when the root filesystem is created during the build on the host system. These scripts cannot attempt to run during first-boot on the target device. With the "read-only-rootfs" feature enabled, the build system checks during root filesystem creation to make sure all post-installation scripts succeed. If any of these scripts still need to be run after the root filesystem is created, the build immediately fails. These build-time checks ensure that the build fails rather than the target device fails later during its initial boot operation.
 
-Most of the common post-installation scripts generated by the build system for the out-of-the-box Yocto Project are engineered so that they can run during root filesystem creation (e.g. post-installation scripts for caching fonts). However, if you create and add custom scripts, you need to be sure they can be run during this file system creation.
+Most of the common post-installation scripts generated by the build system for the out-of-the-box Yocto Project are engineered so that they can run during root filesystem creation (例如 post-installation scripts for caching fonts). However, if you create and add custom scripts, you need to be sure they can be run during this file system creation.
 
 Here are some common problems that prevent post-installation scripts from running during root filesystem creation:
 
@@ -4057,7 +4057,7 @@ Here are some common problems that prevent post-installation scripts from runnin
 + ***Attempting to run processes that are specific to or dependent on the target architecture***: You can work around these attempts by using native tools, which run on the host system, to accomplish the same tasks, or by alternatively running the processes under QEMU, which has the `qemu_run_binary` function. For more information, see the `qemu` class.
 
 ### 3.27.3. Areas With Write Access
-With the "read-only-rootfs" feature enabled, any attempt by the target to write to the root filesystem at runtime fails. Consequently, you must make sure that you configure processes and applications that attempt these types of writes do so to directories with write access (e.g. `/tmp` or `/var/run`).
+With the "read-only-rootfs" feature enabled, any attempt by the target to write to the root filesystem at runtime fails. Consequently, you must make sure that you configure processes and applications that attempt these types of writes do so to directories with write access (例如 `/tmp` or `/var/run`).
 
 ## 3.28. Maintaining Build Output Quality
 Many factors can influence the quality of a build. For example, if you upgrade a recipe to use a new version of an upstream software package or you experiment with some new configuration options, subtle changes can occur that you might not detect until later. Consider the case where your recipe is using a newer version of an upstream package. In this case, a new version of a piece of software might introduce an optional dependency on another library, which is auto-detected. If that library has already been built when the software is building, the software will link to the built library and that library will be pulled into your image along with the new software even if you did not want the library.
@@ -4113,7 +4113,7 @@ The history for each package contains a text file that has name-value pairs with
 ```                    
 Most of these name-value pairs correspond to variables used to produce the package. The exceptions are `FILELIST`, which is the actual list of files in the package, and `PKGSIZE`, which is the total size of files in the package in bytes.
 
-A file also exists that corresponds to the recipe from which the package came (e.g. `buildhistory/packages/i586-poky-linux/busybox/latest`):
+A file also exists that corresponds to the recipe from which the package came (例如 `buildhistory/packages/i586-poky-linux/busybox/latest`):
 ```
      PV = 1.22.1
      PR = r32
@@ -4124,14 +4124,14 @@ A file also exists that corresponds to the recipe from which the package came (e
         busybox-syslog busybox-mdev busybox-hwclock busybox-dbg \
         busybox-staticdev busybox-dev busybox-doc busybox-locale busybox
 ```                    
-Finally, for those recipes fetched from a version control system (e.g., Git), a file exists that lists source revisions that are specified in the recipe and lists the actual revisions used during the build. Listed and actual revisions might differ when SRCREV is set to ${AUTOREV}. Here is an example assuming `buildhistory/packages/qemux86-poky-linux/linux-yocto/latest_srcrev`):
+Finally, for those recipes fetched from a version control system (例如, Git), a file exists that lists source revisions that are specified in the recipe and lists the actual revisions used during the build. Listed and actual revisions might differ when SRCREV is set to ${AUTOREV}. Here is an example assuming `buildhistory/packages/qemux86-poky-linux/linux-yocto/latest_srcrev`):
 ```
      # SRCREV_machine = "38cd560d5022ed2dbd1ab0dca9642e47c98a0aa1"
      SRCREV_machine = "38cd560d5022ed2dbd1ab0dca9642e47c98a0aa1"
      # SRCREV_meta = "a227f20eff056e511d504b2e490f3774ab260d6f"
      SRCREV_meta = "a227f20eff056e511d504b2e490f3774ab260d6f"
 ```                    
-You can use the buildhistory-collect-srcrevs command with the -a option to collect the stored SRCREV values from build history and report them in a format suitable for use in global configuration (e.g., `local.conf` or a distro include file) to override floating AUTOREV values to a fixed set of revisions. Here is some example output from this command:
+You can use the buildhistory-collect-srcrevs command with the -a option to collect the stored SRCREV values from build history and report them in a format suitable for use in global configuration (例如, `local.conf` or a distro include file) to override floating AUTOREV values to a fixed set of revisions. Here is some example output from this command:
 ```
      $ buildhistory-collect-srcrevs -a
      # i586-poky-linux
@@ -4161,7 +4161,7 @@ You can use the buildhistory-collect-srcrevs command with the -a option to colle
 > 
 > + The output statements might not have any effect if overrides are applied elsewhere in the build system configuration. Use the -f option to add the forcevariable override to each output line if you need to work around this restriction.
 > 
-> + The script does apply special handling when building for multiple machines. However, the script does place a comment before each set of values that specifies which triplet to which they belong as previously shown (e.g., i586-poky-linux).
+> + The script does apply special handling when building for multiple machines. However, the script does place a comment before each set of values that specifies which triplet to which they belong as previously shown (例如, i586-poky-linux).
 
 #### 3.28.2.2. Build History Image Information
 The files produced for each image are as follows:
@@ -4216,7 +4216,7 @@ As you can see, build history produces image information, including dependency g
 Here, you set the BUILDHISTORY_FEATURES variable to use the image feature only.
 
 #### 3.28.2.4. Build History SDK Information
-Build history collects similar information on the contents of SDKs (e.g. `bitbake -c populate_sdk imagename`) as compared to information it collects for images. Furthermore, this information differs depending on whether an extensible or standard SDK is being produced.
+Build history collects similar information on the contents of SDKs (例如 `bitbake -c populate_sdk imagename`) as compared to information it collects for images. Furthermore, this information differs depending on whether an extensible or standard SDK is being produced.
 
 The following list shows the files produced for SDKs:
 
@@ -4224,7 +4224,7 @@ The following list shows the files produced for SDKs:
 
 + `sdk-info.txt`: A text file containing name-value pairs with information about the SDK. See the following listing example for more information.
 
-+ `sstate-task-sizes.txt`: A text file containing name-value pairs with information about task group sizes (e.g. do_populate_sysroot tasks have a total size). The sstate-task-sizes.txt file exists only when an extensible SDK is created.
++ `sstate-task-sizes.txt`: A text file containing name-value pairs with information about task group sizes (例如 do_populate_sysroot tasks have a total size). The sstate-task-sizes.txt file exists only when an extensible SDK is created.
 
 + `sstate-package-sizes.txt`: A text file containing name-value pairs with information for the shared-state packages and sizes in the SDK. The sstate-package-sizes.txt file exists only when an extensible SDK is created.
 
@@ -4265,7 +4265,7 @@ To see any changes that have occurred (assuming you have BUILDHISTORY_COMMIT = "
 ```
       $ git log -p
 ```                    
-You need to realize, however, that this method does show changes that are not significant (e.g. a package's size changing by a few bytes).
+You need to realize, however, that this method does show changes that are not significant (例如 a package's size changing by a few bytes).
 
 A command-line tool called buildhistory-diff does exist, though, that queries the Git repository and prints just the differences that might be significant in human-readable form. Here is an example:
 ```
@@ -4289,7 +4289,7 @@ A command-line tool called buildhistory-diff does exist, though, that queries th
 > ```
 >    $ pip3 install GitPython --user
 > ```                        
-> Alternatively, you can install `python3-git` using the appropriate distribution package manager (e.g. `apt-get`, `dnf`, or `zipper`).
+> Alternatively, you can install `python3-git` using the appropriate distribution package manager (例如 `apt-get`, `dnf`, or `zipper`).
 
 To see changes to the build history using a web interface, follow the instruction in the README file here. http://git.yoctoproject.org/cgit/cgit.cgi/buildhistory-web/.
 
@@ -4327,7 +4327,7 @@ In order to run tests, you need to do the following:
      >     $ bitbake qemu-helper-native
      > ```
 
-+ Set the DISPLAY variable: You need to set this variable so that you have an X server available (e.g. start vncserver for a headless machine).
++ Set the DISPLAY variable: You need to set this variable so that you have an X server available (例如 start vncserver for a headless machine).
 
 + Be sure your host's firewall accepts incoming connections from 192.168.7.0/24: Some of the tests (in particular DNF tests) start an HTTP server on a random high number port, which is used to serve files to the target. The DNF module serves ${WORKDIR}/oe-rootfs-repo so it can run DNF channel commands. That means your host's firewall must accept incoming connections from 192.168.7.0/24, which is the default IP range used for tap devices by runqemu.
 
@@ -4399,7 +4399,7 @@ If you did set TEST_TARGET to "SystemdbootTarget", you also need to perform a on
 
    + Inherits core-image so that kernel modules are installed.
 
-   + Installs normal linux utilities not busybox ones (e.g. bash, coreutils, tar, gzip, and kmod).
+   + Installs normal linux utilities not busybox ones (例如 bash, coreutils, tar, gzip, and kmod).
 
    + Uses a custom Initial RAM Disk (initramfs) image with a custom installer. A normal image that you can install usually creates a single rootfs partition. This image uses another installer that creates a specific partition layout. Not all Board Support Packages (BSPs) can use an installer. For such cases, you need to manually create the following partition layout on the target:
 
@@ -4447,7 +4447,7 @@ If you have no hardware to automatically perform power control but still wish to
      TEST_POWERCONTROL_CMD = "${COREBASE}/scripts/contrib/dialog-power-control"
 ```
 #### 3.29.1.5. Serial Console Connection
-For test target classes requiring a serial console to interact with the bootloader (e.g. BeagleBoneTarget, EdgeRouterTarget, and GrubTarget), you need to specify a command to use to connect to the serial console of the target machine by using the TEST_SERIALCONTROL_CMD variable and optionally the TEST_SERIALCONTROL_EXTRA_ARGS variable.
+For test target classes requiring a serial console to interact with the bootloader (例如 BeagleBoneTarget, EdgeRouterTarget, and GrubTarget), you need to specify a command to use to connect to the serial console of the target machine by using the TEST_SERIALCONTROL_CMD variable and optionally the TEST_SERIALCONTROL_EXTRA_ARGS variable.
 
 These cases could be a serial terminal program if the machine is connected to a local serial port, or a `telnet` or `ssh` command connecting to a remote console server. Regardless of the case, the command simply needs to connect to the serial console and forward that connection to standard input and output as any normal terminal program does. For example, to use the picocom terminal program on serial device `/dev/ttyUSB0` at 115200bps, you would set the variable as follows:
 ```
@@ -4484,7 +4484,7 @@ You can add tests to any layer provided you place them in the proper area and yo
 > Note  
 > Be sure that module names do not collide with module names used in the default set of test modules in `meta/lib/oeqa/runtime`.
 
-You can change the set of tests run by appending or overriding TEST_SUITES variable in `local.conf`. Each name in TEST_SUITES represents a required test for the image. Test modules named within TEST_SUITES cannot be skipped even if a test is not suitable for an image (e.g. running the RPM tests on an image without `rpm`). Appending "auto" to TEST_SUITES causes the build system to try to run all tests that are suitable for the image (i.e. each test module may elect to skip itself).
+You can change the set of tests run by appending or overriding TEST_SUITES variable in `local.conf`. Each name in TEST_SUITES represents a required test for the image. Test modules named within TEST_SUITES cannot be skipped even if a test is not suitable for an image (例如 running the RPM tests on an image without `rpm`). Appending "auto" to TEST_SUITES causes the build system to try to run all tests that are suitable for the image (i.e. each test module may elect to skip itself).
 
 The order you list tests in TEST_SUITES is important and influences test dependencies. Consequently, tests that depend on other tests should be added after the test on which they depend. For example, since the `ssh` test depends on the `ping` test, "ssh" needs to come after "ping" in the list. The test class provides no re-ordering or dependency handling.
 
@@ -4551,7 +4551,7 @@ As mentioned previously, all new test files need to be in the proper place for t
 
 + Minimally, an empty `__init__.py` file must exist in the runtime directory.
 
-To create a new test, start by copying an existing module (e.g. `syslog.py` or `gcc.py` are good ones to use). Test modules can use code from `meta/lib/oeqa/utils`, which are helper classes.
+To create a new test, start by copying an existing module (例如 `syslog.py` or `gcc.py` are good ones to use). Test modules can use code from `meta/lib/oeqa/utils`, which are helper classes.
 
 > Note  
 > Structure shell commands such that you rely on them and they return a single code for success. Be aware that sometimes you will need to parse the output. See the `df.py` and `date.py` modules for examples.
@@ -4578,7 +4578,7 @@ Class attributes are as follows:
 
      + filesdir: The absolute path to `meta/lib/oeqa/runtime/files`, which contains helper files for tests meant for copying on the target such as small files written in C for compilation.
 
-     + target: The target controller object used to deploy and start an image on a particular target (e.g. QemuTarget, SimpleRemote, and SystemdbootTarget). Tests usually use the following:
+     + target: The target controller object used to deploy and start an image on a particular target (例如 QemuTarget, SimpleRemote, and SystemdbootTarget). Tests usually use the following:
 
           + ip: The target's IP address.
 
@@ -4645,7 +4645,7 @@ The following list shows the debugging topics in the remainder of this section:
 
 + "Viewing Task Variable Dependencies" describes how to use the bitbake-dumpsig command in conjunction with key subdirectories in the Build Directory to determine variable dependencies.
 
-+ "Running Specific Tasks" describes how to use several BitBake options (e.g. -c, -C, and -f) to run specific tasks in the build chain. It can be useful to run tasks "out-of-order" when trying isolate build issues.
++ "Running Specific Tasks" describes how to use several BitBake options (例如 -c, -C, and -f) to run specific tasks in the build chain. It can be useful to run tasks "out-of-order" when trying isolate build issues.
 
 + "General BitBake Problems" describes how to use BitBake's -D debug output option to reveal more about what BitBake is doing during the build.
 
@@ -4736,10 +4736,10 @@ This command writes the following files in the current directory:
 
 + task-depends.dot: A graph showing dependencies between tasks.
 
-     The graphs are in DOT format and can be converted to images (e.g. using the dot tool from Graphviz).
+     The graphs are in DOT format and can be converted to images (例如 using the dot tool from Graphviz).
 
      > Notes  
-     > + DOT files use a plain text format. The graphs generated using the bitbake -g command are often so large as to be difficult to read without special pruning (e.g. with Bitbake's -I option) and processing. Despite the form and size of the graphs, the corresponding .dot files can still be possible to read and provide useful information.
+     > + DOT files use a plain text format. The graphs generated using the bitbake -g command are often so large as to be difficult to read without special pruning (例如 with Bitbake's -I option) and processing. Despite the form and size of the graphs, the corresponding .dot files can still be possible to read and provide useful information.
      > 
      > As an example, the task-depends.dot file contains lines such as the following:
      > ```
@@ -4779,7 +4779,7 @@ If you are unsure whether a variable dependency is being picked up automatically
      Task dependencies: ['PV', 'SRCREV', 'SRC_URI', 'SRC_URI[`md5`sum]', 'SRC_URI[`sha256`sum]', 'base_do_fetch']
      ```                   
      > Note  
-     > Functions (e.g. base_do_fetch) also count as variable dependencies. These functions in turn depend on the variables they reference.
+     > Functions (例如 base_do_fetch) also count as variable dependencies. These functions in turn depend on the variables they reference.
      
      The output of bitbake-dumpsig also includes the value each variable had, a list of dependencies for each variable, and BB_HASHBASE_WHITELIST information.
 
@@ -4819,7 +4819,7 @@ Any given recipe consists of a set of tasks. The standard BitBake behavior in mo
 ```                
 The -c option respects task dependencies, which means that all other tasks (including tasks from other recipes) that the specified task depends on will be run before the task. Even when you manually specify a task to run with -c, BitBake will only run the task if it considers it "out of date". See the "Stamp Files and the Rerunning of Tasks" section in the Yocto Project Overview and Concepts Manual for how BitBake determines whether a task is "out of date".
 
-If you want to force an up-to-date task to be rerun (e.g. because you made manual modifications to the recipe's WORKDIR that you want to try out), then you can use the -f option.
+If you want to force an up-to-date task to be rerun (例如 because you made manual modifications to the recipe's WORKDIR that you want to try out), then you can use the -f option.
 
 > Note  
 > The reason -f is never required when running the do_devshell task is because the [nostamp] variable flag is already set for the task.
@@ -5028,7 +5028,7 @@ If you examine the output or the log file, you see the failure during make:
 #### 3.30.12.2. Reproducing the Error
 Because race conditions are intermittent, they do not manifest themselves every time you do the build. In fact, most times the build will complete without problems even though the potential race condition exists. Thus, once the error surfaces, you need a way to reproduce it.
 
-In this example, compiling the "neard" package is causing the problem. So the first thing to do is build "neard" locally. Before you start the build, set the PARALLEL_MAKE variable in your `local.conf` file to a high number (e.g. "-j 20"). Using a high value for PARALLEL_MAKE increases the chances of the race condition showing up:
+In this example, compiling the "neard" package is causing the problem. So the first thing to do is build "neard" locally. Before you start the build, set the PARALLEL_MAKE variable in your `local.conf` file to a high number (例如 "-j 20"). Using a high value for PARALLEL_MAKE increases the chances of the race condition showing up:
 ```
      $ bitbake neard
 ```                    
@@ -5166,7 +5166,7 @@ The following steps show you how to debug using the GNU project debugger.
      Doing so produces a temporary copy of cross-gdb you can use for debugging during development. While this is the quickest approach, the two previous methods in this step are better when considering long-term maintenance strategies.
 
      > Note  
-     > If you run bitbake gdb-cross, the OpenEmbedded build system suggests the actual image (e.g. gdb-cross-i586). The suggestion is usually the actual name you want to use.
+     > If you run bitbake gdb-cross, the OpenEmbedded build system suggests the actual image (例如 gdb-cross-i586). The suggestion is usually the actual name you want to use.
 
 4. Set up the debugfs
 
@@ -5257,7 +5257,7 @@ Here are some other tips that you might find useful:
 
 + When adding new packages, it is worth watching for undesirable items making their way into compiler command lines. For example, you do not want references to local system files like /usr/lib/ or /usr/include/.
 
-+ If you want to remove the psplash boot splashscreen, add psplash=false to the kernel command line. Doing so prevents psplash from loading and thus allows you to see the console. It is also possible to switch out of the splashscreen by switching the virtual console (e.g. Fn+Left or Fn+Right on a Zaurus).
++ If you want to remove the psplash boot splashscreen, add psplash=false to the kernel command line. Doing so prevents psplash from loading and thus allows you to see the console. It is also possible to switch out of the splashscreen by switching the virtual console (例如 Fn+Left or Fn+Right on a Zaurus).
 
 + Removing TMPDIR (usually tmp/, within the Build Directory) can often fix temporary build issues. Removing TMPDIR is usually a relatively cheap operation, because task output will be cached in SSTATE_DIR (usually sstate-cache/, which is also in the Build Directory).
 
@@ -5283,12 +5283,12 @@ Following are some usage examples:
 ```
      $ g FOO    # Search recursively for "FOO"
      $ g -i foo # Search recursively for "foo", ignoring case
-     $ g -w FOO # Search recursively for "FOO" as a word, ignoring e.g. "FOOBAR"
+     $ g -w FOO # Search recursively for "FOO" as a word, ignoring 例如 "FOOBAR"
 ```                        
 If figuring out how some feature works requires a lot of searching, it might indicate that the documentation should be extended or improved. In such cases, consider filing a documentation bug using the Yocto Project implementation of Bugzilla. For information on how to submit a bug against the Yocto Project, see the Yocto Project Bugzilla wiki page and the "Submitting a Defect Against the Yocto Project" section.
 
 > Note  
-> The manuals might not be the right place to document variables that are purely internal and have a limited scope (e.g. internal variables used to implement a single .bbclass file).
+> The manuals might not be the right place to document variables that are purely internal and have a limited scope (例如 internal variables used to implement a single .bbclass file).
 
 ## 3.31. Making Changes to the Yocto Project
 Because the Yocto Project is an open-source, community-based project, you can effect changes to the project. This section presents procedures that show you how to submit a defect against the project and how to submit a change.
@@ -5304,7 +5304,7 @@ Use the following general steps to submit a bug"
 
 3. Choose the appropriate "Classification", "Product", and "Component" for which the bug was found. Bugs for the Yocto Project fall into one of several classifications, which in turn break down into several products and components. For example, for a bug against the meta-intel layer, you would choose "Build System, Metadata & Runtime", "BSPs", and "bsps-meta-intel", respectively.
 
-4. Choose the "Version" of the Yocto Project for which you found the bug (e.g. 2.7).
+4. Choose the "Version" of the Yocto Project for which you found the bug (例如 2.7).
 
 5. Determine and select the "Severity" of the bug. The severity indicates how the bug impacted your work.
 
@@ -5320,16 +5320,16 @@ Use the following general steps to submit a bug"
 
 11. Click the "Submit Bug" button submit the bug. A new Bugzilla number is assigned to the bug and the defect is logged in the bug tracking system.
 
-Once you file a bug, the bug is processed by the Yocto Project Bug Triage Team and further details concerning the bug are assigned (e.g. priority and owner). You are the "Submitter" of the bug and any further categorization, progress, or comments on the bug result in Bugzilla sending you an automated email concerning the particular change or progress to the bug.
+Once you file a bug, the bug is processed by the Yocto Project Bug Triage Team and further details concerning the bug are assigned (例如 priority and owner). You are the "Submitter" of the bug and any further categorization, progress, or comments on the bug result in Bugzilla sending you an automated email concerning the particular change or progress to the bug.
 
 ### 3.31.2. Submitting a Change to the Yocto Project
 Contributions to the Yocto Project and OpenEmbedded are very welcome. Because the system is extremely configurable and flexible, we recognize that developers will want to extend, configure or optimize it for their specific uses.
 
-The Yocto Project uses a mailing list and a patch-based workflow that is similar to the Linux kernel but contains important differences. In general, a mailing list exists through which you can submit patches. You should send patches to the appropriate mailing list so that they can be reviewed and merged by the appropriate maintainer. The specific mailing list you need to use depends on the location of the code you are changing. Each component (e.g. layer) should have a README file that indicates where to send the changes and which process to follow.
+The Yocto Project uses a mailing list and a patch-based workflow that is similar to the Linux kernel but contains important differences. In general, a mailing list exists through which you can submit patches. You should send patches to the appropriate mailing list so that they can be reviewed and merged by the appropriate maintainer. The specific mailing list you need to use depends on the location of the code you are changing. Each component (例如 layer) should have a README file that indicates where to send the changes and which process to follow.
 
 You can send the patch to the mailing list using whichever approach you feel comfortable with to generate the patch. Once sent, the patch is usually reviewed by the community at large. If somebody has concerns with the patch, they will usually voice their concern over the mailing list. If a patch does not receive any negative reviews, the maintainer of the affected layer typically takes the patch, tests it, and then based on successful testing, merges the patch.
 
-The "poky" repository, which is the Yocto Project's reference build environment, is a hybrid repository that contains several individual pieces (e.g. BitBake, Metadata, documentation, and so forth) built using the combo-layer tool. The upstream location used for submitting changes varies by component:
+The "poky" repository, which is the Yocto Project's reference build environment, is a hybrid repository that contains several individual pieces (例如 BitBake, Metadata, documentation, and so forth) built using the combo-layer tool. The upstream location used for submitting changes varies by component:
 
 + ***Core Metadata***: Send your patch to the openembedded-core mailing list. For example, a change to anything under the meta or scripts directories should be sent to this mailing list.
 
@@ -5342,7 +5342,7 @@ The "poky" repository, which is the Yocto Project's reference build environment,
      > Note  
      > Sometimes a layer's documentation specifies to use a particular mailing list. If so, use that list.
 
-     For additional recipes that do not fit into the core Metadata, you should determine which layer the recipe should go into and submit the change in the manner recommended by the documentation (e.g. the README file) supplied with the layer. If in doubt, please ask on the Yocto general mailing list or on the openembedded-devel mailing list.
+     For additional recipes that do not fit into the core Metadata, you should determine which layer the recipe should go into and submit the change in the manner recommended by the documentation (例如 the README file) supplied with the layer. If in doubt, please ask on the Yocto general mailing list or on the openembedded-devel mailing list.
 
      You can also push a change upstream and request a maintainer to pull the change into the component's upstream repository. You do this by pushing to a contribution repository that is upstream. See the "Git Workflows and the Yocto Project" section in the Yocto Project Overview and Concepts Manual for additional concepts on working in the Yocto Project development environment.
 
@@ -5438,7 +5438,7 @@ Follow this procedure to push a change to an upstream "contrib" Git repository:
 
      + Make a Pull Request: Notify the maintainer or the mailing list that you have pushed a change by making a pull request.
 
-     The Yocto Project provides two scripts that conveniently let you generate and send pull requests to the Yocto Project. These scripts are create-pull-request and send-pull-request. You can find these scripts in the scripts directory within the Source Directory (e.g. ~/poky/scripts).
+     The Yocto Project provides two scripts that conveniently let you generate and send pull requests to the Yocto Project. These scripts are create-pull-request and send-pull-request. You can find these scripts in the scripts directory within the Source Directory (例如 ~/poky/scripts).
 
      Using these scripts correctly formats the requests without introducing any whitespace or HTML formatting. The maintainer that receives your patches either directly or through the mailing list needs to be able to save and apply them directly from your emails. Using these scripts is the preferred method for sending patches.
 
@@ -5574,7 +5574,7 @@ Before a flag defined by a particular recipe is tested against the contents of t
 Judicious use of the LICENSE_FLAGS strings and the contents of the LICENSE_FLAGS_WHITELIST variable allows you a lot of flexibility for including or excluding recipes based on licensing. For example, you can broaden the matching capabilities by using license flags string subsets in the whitelist.
 
 > Note  
-> When using a string subset, be sure to use the part of the expanded string that precedes the appended underscore character (e.g. usethispart_1.3, usethispart_1.4, and so forth).
+> When using a string subset, be sure to use the part of the expanded string that precedes the appended underscore character (例如 usethispart_1.3, usethispart_1.4, and so forth).
 
 For example, simply specifying the string "commercial" in the whitelist matches any expanded LICENSE_FLAGS definition that starts with the string "commercial" such as "commercial_foo" and "commercial_bar", which are the strings the build system automatically generates for hypothetical recipes named "foo" and "bar" assuming those recipes simply specify the following:
 ```
@@ -5590,7 +5590,7 @@ Here are some other scenarios:
 
 + Under the same circumstances, you can use "commercial_foo" in the whitelist and the build system not only matches "commercial_foo_1.2" but also matches any license flag with the string "commercial_foo", regardless of the version.
 
-+ You can be very specific and use both the package and version parts in the whitelist (e.g. "commercial_foo_1.2") to specifically match a versioned recipe.
++ You can be very specific and use both the package and version parts in the whitelist (例如 "commercial_foo_1.2") to specifically match a versioned recipe.
 
 #### 3.32.2.2. Other Variables Related to Commercial Licenses
 Other helpful variables related to commercial license handling exist and are defined in the poky/meta/conf/distro/include/default-distrovars.inc file:
@@ -5623,7 +5623,7 @@ With hundreds of different open source licenses that the Yocto Project tracks, i
 
 + Compilation scripts and modifications to the source code must be provided.
 
-There are other requirements beyond the scope of these three and the methods described in this section (e.g. the mechanism through which source code is distributed).
+There are other requirements beyond the scope of these three and the methods described in this section (例如 the mechanism through which source code is distributed).
 
 As different organizations have different methods of complying with open source licensing, this section is not meant to imply that there is only one single way to meet your compliance obligations, but rather to describe one method of achieving compliance. The remainder of this section describes methods supported to meet the previously mentioned three requirements. Once you take steps to meet these requirements, and prior to releasing images, sources, and the build system, you should audit all artifacts to ensure completeness.
 
@@ -5730,7 +5730,7 @@ The following is an example that uses the LICENSE.Abilis.txt file as the license
      NO_GENERIC_LICENSE[Firmware-Abilis] = "LICENSE.Abilis.txt"
 ```
 ## 3.33. Using the Error Reporting Tool
-The error reporting tool allows you to submit errors encountered during builds to a central database. Outside of the build environment, you can use a web interface to browse errors, view statistics, and query for errors. The tool works using a client-server system where the client portion is integrated with the installed Yocto Project Source Directory (e.g. poky). The server receives the information collected and saves it in a database.
+The error reporting tool allows you to submit errors encountered during builds to a central database. Outside of the build environment, you can use a web interface to browse errors, view statistics, and query for errors. The tool works using a client-server system where the client portion is integrated with the installed Yocto Project Source Directory (例如 poky). The server receives the information collected and saves it in a database.
 
 A live instance of the error reporting server exists at http://errors.yoctoproject.org. This server exists so that when you want to get help with build failures, you can submit all of the information on the failure easily and then point to the URL in your bug report or send an email to the mailing list.
 
