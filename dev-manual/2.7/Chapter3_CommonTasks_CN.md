@@ -55,39 +55,39 @@
   - [3.4.3 Adding a Formfactor Configuration File](#343-adding-a-formfactor-configuration-file)
 - [3.5 升级Recipe](#35-升级recipe)
   - [3.5.1 使用 Auto Upgrade Helper (AUH)](#351-使用-auto-upgrade-helper-auh)
-  - [3.5.2 Using `devtool upgrade`](#352-using-devtool-upgrade)
-  - [3.5.3 Manually Upgrading a Recipe](#353-manually-upgrading-a-recipe)
-- [3.6 Finding Temporary Source Code](#36-finding-temporary-source-code)
-- [3.7 Using Quilt in Your Workflow](#37-using-quilt-in-your-workflow)
-- [3.8 Using a Development Shell](#38-using-a-development-shell)
-- [3.9 Using a Development Python Shell](#39-using-a-development-python-shell)
-- [3.10 Building](#310-building)
-  - [3.10.1 Building a Simple Image](#3101-building-a-simple-image)
-  - [3.10.2 Building Images for Multiple Targets Using Multiple Configurations](#3102-building-images-for-multiple-targets-using-multiple-configurations)
-    - [3.10.2.1 Setting Up and Running a Multiple Configuration Build](#31021-setting-up-and-running-a-multiple-configuration-build)
-    - [3.10.2.2 Enabling Multiple Configuration Build Dependencies](#31022-enabling-multiple-configuration-build-dependencies)
-  - [3.10.3 Building an Initial RAM Filesystem (initramfs) Image](#3103-building-an-initial-ram-filesystem-initramfs-image)
-  - [3.10.4 Building a Tiny System](#3104-building-a-tiny-system)
-    - [3.10.4.1. Overview](#31041-overview)
-  - [3.10.4.2 Goals and Guiding Principles](#31042-goals-and-guiding-principles)
-    - [3.10.4.3 Understand What Contributes to Your Image Size](#31043-understand-what-contributes-to-your-image-size)
-    - [3.10.4.4 Trim the Root Filesystem](#31044-trim-the-root-filesystem)
-    - [3.10.4.5 Trim the Kernel](#31045-trim-the-kernel)
-    - [3.10.4.6 Remove Package Management Requirements](#31046-remove-package-management-requirements)
-    - [3.10.4.7 Look for Other Ways to Minimize Size](#31047-look-for-other-ways-to-minimize-size)
-    - [3.10.4.8 Iterate on the Process](#31048-iterate-on-the-process)
-  - [3.10.5 Building Images for More than One Machine](#3105-building-images-for-more-than-one-machine)
-  - [3.10.6 Building Software from an External Source](#3106-building-software-from-an-external-source)
-  - [3.10.7 Replicating a Build Offline](#3107-replicating-a-build-offline)
-- [3.11 Speeding Up a Build](#311-speeding-up-a-build)
-- [3.12 Working With Libraries](#312-working-with-libraries)
-  - [3.12.1 Including Static Library Files](#3121-including-static-library-files)
-  - [3.12.2 Combining Multiple Versions of Library Files into One Image](#3122-combining-multiple-versions-of-library-files-into-one-image)
-    - [3.12.2.1 Preparing to Use Multilib](#31221-preparing-to-use-multilib)
-    - [3.12.2.2 Using Multilib](#31222-using-multilib)
-    - [3.12.2.3 Additional Implementation Details](#31223-additional-implementation-details)
-  - [3.12.3 Installing Multiple Versions of the Same Library](#3123-installing-multiple-versions-of-the-same-library)
-- [3.13. Using x32 psABI](#313-using-x32-psabi)
+  - [3.5.2 使用 `devtool upgrade`](#352-使用-devtool-upgrade)
+  - [3.5.3 手动升级Recipe](#353-手动升级recipe)
+- [3.6 寻找临时源代码](#36-寻找临时源代码)
+- [3.7 在工作流中使用Quilt](#37-在工作流中使用quilt)
+- [3.8 使用devShell](#38-使用devshell)
+- [3.9 使用`devpyshell`](#39-使用devpyshell)
+- [3.10 构建](#310-构建)
+  - [3.10.1 构建一个简单的镜像](#3101-构建一个简单的镜像)
+  - [3.10.2 使用多配置文件为多个目标设备构建镜像](#3102-使用多配置文件为多个目标设备构建镜像)
+    - [3.10.2.1 开始并运行多配置构建](#31021-开始并运行多配置构建)
+    - [3.10.2.2 启用多配置构建依赖](#31022-启用多配置构建依赖)
+  - [3.10.3 构建初始化内存文件系统 (initramfs) 镜像](#3103-构建初始化内存文件系统-initramfs-镜像)
+  - [3.10.4 构建一个小的系统](#3104-构建一个小的系统)
+    - [3.10.4.1. 概述](#31041-概述)
+  - [3.10.4.2 目标和指导原则](#31042-目标和指导原则)
+    - [3.10.4.3 理解镜像大小的构成](#31043-理解镜像大小的构成)
+    - [3.10.4.4 调整根文件系统](#31044-调整根文件系统)
+    - [3.10.4.5 调整Kernel](#31045-调整kernel)
+    - [3.10.4.6 移除包管理需求](#31046-移除包管理需求)
+    - [3.10.4.7 其他减小体积的办法](#31047-其他减小体积的办法)
+    - [3.10.4.8 重复步骤](#31048-重复步骤)
+  - [3.10.5 为多设备构建镜像](#3105-为多设备构建镜像)
+  - [3.10.6 构建外部代码的软件](#3106-构建外部代码的软件)
+  - [3.10.7 离线重复构建](#3107-离线重复构建)
+- [3.11 加速构建](#311-加速构建)
+- [3.12 使用库文件](#312-使用库文件)
+  - [3.12.1 包含静态库文件](#3121-包含静态库文件)
+  - [3.12.2 将不同版本的库文件组合到一个镜像中](#3122-将不同版本的库文件组合到一个镜像中)
+    - [3.12.2.1 准备使用Multilib](#31221-准备使用multilib)
+    - [3.12.2.2 使用Multilib](#31222-使用multilib)
+    - [3.12.2.3 其他实现细节](#31223-其他实现细节)
+  - [3.12.3 安装同一库的多个版本](#3123-安装同一库的多个版本)
+- [3.13. 使用 x32 psABI](#313-使用-x32-psabi)
 - [3.14 Enabling GObject Introspection Support](#314-enabling-gobject-introspection-support)
   - [3.14.1 Enabling the Generation of Introspection Data](#3141-enabling-the-generation-of-introspection-data)
   - [3.14.2 Disabling the Generation of Introspection Data](#3142-disabling-the-generation-of-introspection-data)
@@ -95,15 +95,15 @@
   - [3.14.4 Known Issues](#3144-known-issues)
 - [3.15 Optionally Using an External Toolchain](#315-optionally-using-an-external-toolchain)
 - [3.16 Creating Partitioned Images Using Wic](#316-creating-partitioned-images-using-wic)
-  - [3.16.1 Background](#3161-background)
-  - [3.16.2 Requirements](#3162-requirements)
-  - [3.16.3 Getting Help](#3163-getting-help)
-  - [3.16.4 Operational Modes](#3164-operational-modes)
+  - [3.16.1 背景](#3161-背景)
+  - [3.16.2 需求](#3162-需求)
+  - [3.16.3 获取帮助](#3163-获取帮助)
+  - [3.16.4 操作模式](#3164-操作模式)
     - [3.16.4.1 Raw Mode](#31641-raw-mode)
     - [3.16.4.2 Cooked Mode](#31642-cooked-mode)
   - [3.16.5 Using an Existing Kickstart File](#3165-using-an-existing-kickstart-file)
   - [3.16.6 Using the Wic Plug-Ins Interface](#3166-using-the-wic-plug-ins-interface)
-  - [3.16.7 Examples](#3167-examples)
+  - [3.16.7 示例](#3167-示例)
     - [3.16.7.1 Generate an Image using an Existing Kickstart File](#31671-generate-an-image-using-an-existing-kickstart-file)
   - [3.16.7.2 Using a Modified Kickstart File](#31672-using-a-modified-kickstart-file)
     - [3.16.7.3 Using a Modified Kickstart File and Running in Raw Mode](#31673-using-a-modified-kickstart-file-and-running-in-raw-mode)
@@ -1579,29 +1579,29 @@ Following is an example for "qemuarm" machine:
 本节介绍三种升级recipe的方式，你可以使用Automated Upgrade Helper (AUH)配置自动升级，你也可以使用`devtool upgrade`的方式配置半自动升级，当然，你也可以通过编辑recipe手动升级。
 
 ### 3.5.1 使用 Auto Upgrade Helper (AUH)
-The AUH utility works in conjunction with the OpenEmbedded build system in order to automatically generate upgrades for recipes based on new versions being published upstream. Use AUH when you want to create a service that performs the upgrades automatically and optionally sends you an email with the results.
+AUH工具和OE构建系统共同工作，根据上游发布的新版本自动更新recipe。如果你想创建一个服务自动执行升级，使用AUH就可以了，你还可以选择是否将升级结果以邮件形式发送给你。
 
-AUH allows you to update several recipes with a single use. You can also optionally perform build and integration tests using images with the results saved to your hard drive and emails of results optionally sent to recipe maintainers. Finally, AUH creates Git commits with appropriate commit messages in the layer's tree for the changes made to recipes.
+AUH允许你一次性升级多个recipe，你也可以选择执行构建并在硬件上做集成测试，并将结果邮件给recipe维护者。最后，AUH也可以为recipe地改动创建Git提交以及合适的提交信息。
 
-> Note  
-> Conditions do exist when you should not use AUH to upgrade recipes and you should instead use either `devtool upgrade` or upgrade your recipes manually:  
-> + When AUH cannot complete the upgrade sequence. This situation usually results because custom patches carried by the recipe cannot be automatically rebased to the new version. In this case, `devtool upgrade` allows you to manually resolve conflicts.  
-> + When for any reason you want fuller control over the upgrade process. For example, when you want special arrangements for testing.
+> **注释**  
+> 也存在你不应该使用AUH进行升级情况，这时候你应该使用`devtool upgrade`或者手动升级： 
+> + AUH不能完成升级，这种情况通常是由于自定义补丁无法自动rebase到新版本。这时候`devtool upgrade`允许你手动解决冲突。
+> + 当你想完全控制升级过程时（例如你有特殊的测试安排）
 
-The following steps describe how to set up the AUH utility:
+搭建AUH工具步骤如下：
 
-1. ***Be Sure the Development Host is Set Up***: You need to be sure that your development host is set up to use the Yocto Project. For information on how to set up your host, see the "Preparing the Build Host" section.
+1. ***开发主机已搭建***: 确保使用Yocto Project的开发主机已搭建。关于如何搭建，请阅读"Preparing the Build Host"
 
-2. ***Make Sure Git is Configured***: The AUH utility requires Git to be configured because AUH uses Git to save upgrades. Thus, you must have Git user and email configured. The following command shows your configurations:
+2. ***已配置***: AUH使用Git保存升级，因此你必须设置Git用户和邮箱：
 
      $ git config --list
                         
-If you do not have the user and email configured, you can use the following commands to do so:
+     如果还没有配置，用以下命令配置：
 
      $ git config --global user.name some_name
      $ git config --global user.email username@domain.com
                         
-3. ***Clone the AUH Repository***: To use AUH, you must clone the repository onto your development host. The following command uses Git to create a local copy of the repository on your system:
+3. ***克隆AUH仓库***: 使用以下命令用Git创建本地仓库拷贝：
 
      $ git clone git://git.yoctoproject.org/auto-upgrade-helper
      Cloning into 'auto-upgrade-helper'...
@@ -1612,68 +1612,68 @@ If you do not have the user and email configured, you can use the following comm
      Resolving deltas: 100% (499/499), done.
      Checking connectivity... done.
                         
-AUH is not part of the OpenEmbedded-Core (OE-Core) or Poky repositories.
+     AUH不是OE-Core或Poky仓库的一部分。
 
-4. ***Create a Dedicated Build Directory:*** Run the `oe-init-build-env` script to create a fresh build directory that you use exclusively for running the AUH utility:
+4. ***创建专用构建目录*** 使用以下`oe-init-build-env`脚本创建新的构建目录，给运行AUH工具使用：
 
      $ cd ~/poky
      $ source oe-init-build-env your_AUH_build_directory
                         
-Re-using an existing build directory and its configurations is not recommended as existing settings could cause AUH to fail or behave undesirably.
+     不推荐使用已有的构建目录，其设定可能导致AUH失败或出现非预期现象。
 
-5. ***Make Configurations in Your Local Configuration File***: Several settings need to exist in the ``local.conf`` file in the build directory you just created for AUH. Make these following configurations:
+5. ***配置本地配置文件***: 刚刚创建的构建目录下修改`local.conf`文件：
 
-   + If you want to enable Build History, which is optional, you need the following lines in the `conf/`local.conf`` file:
+   +  如果你想启用可选择性的构建历史功能，需要在`conf/local.conf`中增加以下配置：
 
      INHERIT =+ "buildhistory"
      BUILDHISTORY_COMMIT = "1"
                                 
-    With this configuration and a successful upgrade, a build history "diff" file appears in the `upgrade-helper/work/recipe/buildhistory-diff.txt` file found in your build directory.
+    使用这个配置成功升级后，构建历史"diff"文件会在构建目录下出现`upgrade-helper/work/recipe/buildhistory-diff.txt`文件。
 
-    + If you want to enable testing through the testimage class, which is optional, you need to have the following set in your `conf/`local.conf`` file:
+    + 如果你想启用可选择性的使用testimage类测试的功能，你需要在`conf/local.conf`中增加以下配置：
 
      INHERIT += "testimage"
                                 
-    > Note  
+    > **注释**  
     > If your distro does not enable by default ptest, which Poky does, you need the following in your ``local.conf`` file:  
     > ```
     >    DISTRO_FEATURES_append = " ptest"
     > ```
                                     
-6. ***Optionally Start a vncserver***: If you are running in a server without an X11 session, you need to start a vncserver:
+6. ***（可选）启动vncserver***: 如果你想运行一个没有X11的服务器，你需要启动vncserver：
 
      $ vncserver :1
      $ export DISPLAY=:1
                         
-7. ***Create and Edit an AUH Configuration File***: You need to have the `upgrade-helper/upgrade-helper.conf` configuration file in your build directory. You can find a sample configuration file in the AUH source repository.
+7. ***创建并编辑AUH配置文件***: You need to have the `upgrade-helper/upgrade-helper.conf` configuration file in your build directory. You can find a sample configuration file in the AUH source repository.
 
-Read through the sample file and make configurations as needed. For example, if you enabled build history in your ``local.conf`` as described earlier, you must enable it in `upgrade-helper.conf`.
+     Read through the sample file and make configurations as needed. For example, if you enabled build history in your ``local.conf`` as described earlier, you must enable it in `upgrade-helper.conf`.
 
-Also, if you are using the default `maintainers.inc` file supplied with Poky and located in `meta-yocto` and you do not set a "maintainers_whitelist" or "global_maintainer_override" in the `upgrade-helper.conf` configuration, and you specify "-e all" on the AUH command-line, the utility automatically sends out emails to all the default maintainers. Please avoid this.
+     Also, if you are using the default `maintainers.inc` file supplied with Poky and located in `meta-yocto` and you do not set a "maintainers_whitelist" or "global_maintainer_override" in the `upgrade-helper.conf` configuration, and you specify "-e all" on the AUH command-line, the utility automatically sends out emails to all the default maintainers. Please avoid this.
 
-This next set of examples describes how to use the AUH:
+     This next set of examples describes how to use the AUH:
 
-+ ***Upgrading a Specific Recipe***: To upgrade a specific recipe, use the following form:
++ ***升级特定的Recipe***: To upgrade a specific recipe, use the following form:
 
      $ upgrade-helper.py recipe_name
                         
-For example, this command upgrades the xmodmap recipe:
+     For example, this command upgrades the xmodmap recipe:
 
      $ upgrade-helper.py xmodmap
                         
-+ ***Upgrading a Specific Recipe to a Particular Version***: To upgrade a specific recipe to a particular version, use the following form:
++ ***将特定recipe升级到特定版本***: To upgrade a specific recipe to a particular version, use the following form:
 
      $ upgrade-helper.py recipe_name -t version
                         
-For example, this command upgrades the xmodmap recipe to version 1.2.3:
+     For example, this command upgrades the xmodmap recipe to version 1.2.3:
 
      $ upgrade-helper.py xmodmap -t 1.2.3
                         
-+ ***Upgrading all Recipes to the Latest Versions and Suppressing Email Notifications***: To upgrade all recipes to their most recent versions and suppress the email notifications, use the following command:
++ ***升级所有recipe到最新版本，但不发送邮件提醒***: To upgrade all recipes to their most recent versions and suppress the email notifications, use the following command:
 
      $ upgrade-helper.py all
                         
-+ ***Upgrading all Recipes to the Latest Versions and Send Email Notifications***: To upgrade all recipes to their most recent versions and send email messages to maintainers for each attempted recipe as well as a status email, use the following command:
++ ***升级所有recipe到最新版本，并发送邮件提醒***: To upgrade all recipes to their most recent versions and send email messages to maintainers for each attempted recipe as well as a status email, use the following command:
 
      $ upgrade-helper.py -e all
                         
@@ -1685,7 +1685,7 @@ The AUH utility also creates recipe update commits from successful upgrade attem
 
 You can easily set up to run the AUH utility on a regular basis by using a cron job. See the `weeklyjob.sh` file distributed with the utility for an example.
 
-### 3.5.2 Using `devtool upgrade`
+### 3.5.2 使用 `devtool upgrade`
 As mentioned earlier, an alternative method for upgrading recipes to newer versions is to use `devtool upgrade`. You can read about `devtool upgrade` in general in the "Use devtool upgrade to Create a Version of the Recipe that Supports a Newer Version of the Software" section in the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) Manual.
 
 To see all the command-line options available with devtool upgrade, use the following help command:
@@ -1773,7 +1773,7 @@ Once the tree is clean, you can clean things up in this example with the followi
                 
 Using the `devtool finish` command cleans up the workspace and creates a patch file based on your commits. The tool puts all patch files back into the source directory in a sub-directory named `nano` in this case.
 
-### 3.5.3 Manually Upgrading a Recipe
+### 3.5.3 手动升级Recipe
 If for some reason you choose not to upgrade recipes using the Auto Upgrade Helper (AUH) or by using `devtool upgrade`, you can manually edit the recipe files to upgrade the versions.
 
 > **Caution**  
@@ -1802,7 +1802,7 @@ To manually upgrade recipe versions, follow these general steps:
 
 7. **Create a Commit with the Change in the Layer Repository**: After all builds work and any testing is successful, you can create commits for any changes in the layer holding your upgraded recipe.
 
-## 3.6 Finding Temporary Source Code
+## 3.6 寻找临时源代码
 You might find it helpful during development to modify the temporary source code used by recipes to build packages. For example, suppose you are developing a patch and you need to experiment a bit to figure out your solution. After you have initially built the package, you can iteratively tweak the source code, which is located in the Build Directory, and then you can force a re-compile and quickly test your altered code. Once you settle on a solution, you can then preserve your changes in the form of patches.
 
 During a build, the unpacked temporary source code used by recipes to build packages is available in the Build Directory as defined by the `S` variable. Below is the default value for the S variable as defined in the `meta/conf/bitbake.conf` configuration file in the Source Directory:
@@ -1839,7 +1839,7 @@ As an example, assume a Source Directory top-level folder named `poky`, a defaul
 
      poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
 
-## 3.7 Using Quilt in Your Workflow
+## 3.7 在工作流中使用Quilt
 Quilt is a powerful tool that allows you to capture source code changes without having a clean source tree. This section outlines the typical workflow you can use to modify source code, test changes, and then preserve the changes in the form of a patch all using Quilt.
 
 > Tip  
@@ -1883,7 +1883,7 @@ Follow these general steps:
      SRC_URI += "file://my_changes.patch"
      ```
 
-## 3.8 Using a Development Shell
+## 3.8 使用devShell
 When debugging certain commands or even when just editing packages, `devshell` can be a useful tool. When you invoke `devshell`, all tasks up to and including `do_patch` are run for the specified target. Then, a new terminal is opened and you are placed in `${S}`, the source directory. In the new terminal, all the OpenEmbedded build-related environment variables are still defined so you can use commands such as `configure` and `make`. The commands execute just as if the OpenEmbedded build system were executing them. Consequently, working this way can be helpful when debugging a build or preparing software to be used with the OpenEmbedded build system.
 
 Following is an example that uses `devshell` on a target named `matchbox-desktop`:
@@ -1918,7 +1918,7 @@ When you are finished using `devshell`, exit the shell or close the terminal win
 > + It is worth remembering that when using `devshell` you need to use the full compiler name such as `arm-poky-linux-gnueabi-gcc` instead of just using `gcc`. The same applies to other applications such as `binutils`, `libtool` and so forth. BitBake sets up environment variables such as `CC` to assist applications, such as `make` to find the correct tools.
 > + It is also worth noting that `devshell` still works over X11 forwarding and similar situations.      
 
-## 3.9 Using a Development Python Shell
+## 3.9 使用`devpyshell`
 Similar to working within a development shell as described in the previous section, you can also spawn and work within an interactive Python development shell. When debugging certain commands or even when just editing packages, `devpyshell` can be a useful tool. When you invoke `devpyshell`, all tasks up to and including `do_patch` are run for the specified target. Then a new terminal is opened. Additionally, key Python objects and code are available in the same way they are to BitBake tasks, in particular, the data store 'd'. So, commands such as the following are useful when exploring the data store and running functions:
 
      pydevshell> d.getVar("STAGING_DIR")
@@ -1944,10 +1944,10 @@ This command spawns a terminal and places you in an interactive Python interpret
 When you are finished using `devpyshell`, you can exit the shell either by using Ctrl+d or closing the terminal window.
 
 
-## 3.10 Building
+## 3.10 构建
 This section describes various build procedures. For example, the steps needed for a simple build, a target that uses multiple configurations, building an image for more than one machine, and so forth.
 
-### 3.10.1 Building a Simple Image
+### 3.10.1 构建一个简单的镜像
 In the development environment, you need to build an image whenever you change hardware support, add or change system libraries, or add or change services that have dependencies. Several methods exist that allow you to build an image within the Yocto Project. This section presents the basic steps you need to build a simple image using BitBake from a build host running Linux.
 
 > Notes  
@@ -1989,12 +1989,12 @@ The following figure and list overviews the build process:
 
      Once an image has been built, it often needs to be installed. The images and kernels built by the OpenEmbedded build system are placed in the Build Directory in `tmp/deploy/images`. For information on how to run pre-built images such as `qemux86` and `qemuarm`, see the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual. For information about how to install these images, see the documentation for your particular board or machine.
 
-### 3.10.2 Building Images for Multiple Targets Using Multiple Configurations
+### 3.10.2 使用多配置文件为多个目标设备构建镜像
 You can use a single `bitbake` command to build multiple images or packages for different targets where each image or package requires a different configuration (multiple configuration builds). The builds, in this scenario, are sometimes referred to as "multiconfigs", and this section uses that term throughout.
 
 This section describes how to set up for multiple configuration builds and how to account for cross-build dependencies between the multiconfigs.
 
-#### 3.10.2.1 Setting Up and Running a Multiple Configuration Build
+#### 3.10.2.1 开始并运行多配置构建
 To accomplish a multiple configuration build, you must define each target's configuration separately using a parallel configuration file in the Build Directory, and you must follow a required file hierarchy. Additionally, you must enable the multiple configuration builds in your ``local.conf`` file.
 
 Follow these steps to set up and execute multiple configuration builds:
@@ -2028,7 +2028,7 @@ The reason for this required file hierarchy is because the BBPATH variable is no
      > **Note**  
      > Support for multiple configuration builds in the Yocto Project 2.7 (Warrior) Release does not include Shared State (sstate) optimizations. Consequently, if a build uses the same object twice in, for example, two different `TMPDIR` directories, the build either loads from an existing sstate cache for that build at the start or builds the object fresh.
 
-#### 3.10.2.2 Enabling Multiple Configuration Build Dependencies
+#### 3.10.2.2 启用多配置构建依赖
 Sometimes dependencies can exist between targets (multiconfigs) in a multiple configuration build. For example, suppose that in order to build a `core-image-sato` image for an "x86" multiconfig, the root filesystem of an "arm" multiconfig must exist. This dependency is essentially that the `do_image` task in the `core-image-sato` recipe depends on the completion of the `do_rootfs` task of the `core-image-minimal` recipe.
 
 To enable dependencies in a multiple configuration build, you must declare the dependencies in the recipe using the following statement form:
@@ -2055,7 +2055,7 @@ In this case, BitBake must create the `core-image-minimal` image for the "arm" b
 
 Because "x86" and "arm" are enabled for multiple configuration builds and have separate configuration files, BitBake places the artifacts for each build in the respective temporary build directories (i.e. `TMPDIR`).
 
-### 3.10.3 Building an Initial RAM Filesystem (initramfs) Image
+### 3.10.3 构建初始化内存文件系统 (initramfs) 镜像
 An initial RAM filesystem (initramfs) image provides a temporary root filesystem used for early system initialization (例如 loading of modules needed to locate and mount the "real" root filesystem).
 
 > Note  
@@ -2079,12 +2079,12 @@ Follow these steps to create an initramfs image:
 
 4. **Build the Kernel Image and the initramfs Image**: Build your kernel image using BitBake. Because the initramfs image recipe is a dependency of the kernel image, the initramfs image is built as well and bundled with the kernel image if you used the `INITRAMFS_IMAGE_BUNDLE` variable described earlier.
 
-### 3.10.4 Building a Tiny System
+### 3.10.4 构建一个小的系统
 Very small distributions have some significant advantages such as requiring less on-die or in-package memory (cheaper), better performance through efficient cache usage, lower power requirements due to less memory, faster boot times, and reduced development overhead. Some real-world examples where a very small distribution gives you distinct advantages are digital cameras, medical devices, and small headless systems.
 
 This section presents information that shows you how you can trim your distribution to even smaller sizes than the `poky-tiny` distribution, which is around 5 Mbytes, that can be built out-of-the-box using the Yocto Project.
 
-#### 3.10.4.1. Overview
+#### 3.10.4.1. 概述
 The following list presents the overall steps you need to consider and perform to create distributions with smaller root filesystems, achieve faster boot times, maintain your critical functionality, and avoid initial RAM disks:
 
 + [Determine your goals and guiding principles](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#goals-and-guiding-principles).
@@ -2101,7 +2101,7 @@ The following list presents the overall steps you need to consider and perform t
 
 + [Iterate on the process](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#iterate-on-the-process).
 
-### 3.10.4.2 Goals and Guiding Principles
+### 3.10.4.2 目标和指导原则
 Before you can reach your destination, you need to know where you are going. Here is an example list that you can use as a guide when creating very small distributions:
 
 + Determine how much space you need (例如 a kernel that is 1 Mbyte or less and a root filesystem that is 3 Mbytes or less).
@@ -2114,7 +2114,7 @@ Before you can reach your destination, you need to know where you are going. Her
 
 + Work in a separate layer so that you keep changes isolated. For information on how to create layers, see the "Understanding and Creating Layers" section.
 
-#### 3.10.4.3 Understand What Contributes to Your Image Size
+#### 3.10.4.3 理解镜像大小的构成
 It is easiest to have something to start with when creating your own distribution. You can use the Yocto Project out-of-the-box to create the poky-tiny distribution. Ultimately, you will want to make changes in your own distribution that are likely modeled after poky-tiny.
 
 > Note  
@@ -2138,7 +2138,7 @@ For more information on configuration fragments, see the "Creating Configuration
 
 + `bitbake -u taskexp -g bitbake_target`: Using the BitBake command with these options brings up a Dependency Explorer from which you can view file dependencies. Understanding these dependencies allows you to make informed decisions when cutting out various pieces of the kernel and root filesystem.
 
-#### 3.10.4.4 Trim the Root Filesystem
+#### 3.10.4.4 调整根文件系统
 The root filesystem is made up of packages for booting, libraries, and applications. To change things, you can configure how the packaging happens, which changes the way you build them. You can also modify the filesystem itself or select a different filesystem.
 
 First, find out what is hogging your root filesystem by running the `dirsize.py` script from your root directory:
@@ -2167,7 +2167,7 @@ Finally, you should consider exactly the type of root filesystem you need to mee
 > Note  
 > After each round of elimination, you need to rebuild your system and then use the tools to see the effects of your reductions.
 
-#### 3.10.4.5 Trim the Kernel
+#### 3.10.4.5 调整Kernel
 The kernel is built by including policies for hardware-independent aspects. What subsystems do you enable? For what architecture are you building? Which drivers do you build by default?
 
 > Note  
@@ -2193,12 +2193,12 @@ After figuring out what to eliminate, you need to reconfigure the kernel to refl
 
 Each time you make configuration changes, you need to rebuild the kernel and check to see what impact your changes had on the overall size.
 
-#### 3.10.4.6 Remove Package Management Requirements
+#### 3.10.4.6 移除包管理需求
 Packaging requirements add size to the image. One way to reduce the size of the image is to remove all the packaging requirements from the image. This reduction includes both removing the package manager and its unique dependencies as well as removing the package management data itself.
 
 To eliminate all the packaging requirements for an image, be sure that "package-management" is not part of your `IMAGE_FEATURES` statement for the image. When you remove this feature, you are removing the package manager as well as its dependencies from the root filesystem.
 
-#### 3.10.4.7 Look for Other Ways to Minimize Size
+#### 3.10.4.7 其他减小体积的办法
 Depending on your particular circumstances, other areas that you can trim likely exist. The key to finding these areas is through tools and methods described here combined with experimentation and iteration. Here are a couple of areas to experiment with:
 
 + `glibc`: In general, follow this process:
@@ -2213,12 +2213,12 @@ Depending on your particular circumstances, other areas that you can trim likely
 
 + `busybox`: For BusyBox, use a process similar as described for `glibc`. A difference is you will need to boot the resulting system to see if you are able to do everything you expect from the running system. You need to be sure to integrate configuration fragments into Busybox because BusyBox handles its own core features and then allows you to add configuration fragments on top.
 
-#### 3.10.4.8 Iterate on the Process
+#### 3.10.4.8 重复步骤
 If you have not reached your goals on system size, you need to iterate on the process. The process is the same. Use the tools and see just what is taking up 90% of the root filesystem and the kernel. Decide what you can eliminate without limiting your device beyond what you need.
 
 Depending on your system, a good place to look might be Busybox, which provides a stripped down version of Unix tools in a single, executable file. You might be able to drop virtual terminal services or perhaps ipv6.
 
-### 3.10.5 Building Images for More than One Machine
+### 3.10.5 为多设备构建镜像
 A common scenario developers face is creating images for several different machines that use the same software environment. In this situation, it is tempting to set the tunings and optimization flags for each build specifically for the targeted hardware (i.e. "maxing out" the tunings). Doing so can considerably add to build times and package feed maintenance collectively for the machines. For example, selecting tunes that are extremely specific to a CPU core used in a system might enable some micro optimizations in GCC for that particular system but would otherwise not gain you much of a performance difference across the other systems as compared to using a more general tuning across all the builds (例如 setting `DEFAULTTUNE` specifically for each machine's build). Rather than "max out" each build's tunings, you can take steps that cause the OpenEmbedded build system to reuse software across the various machines where it makes sense.
 
 If build speed and package feed maintenance are considerations, you should consider the points in this section that can help you optimize your tunings to best consider build times and package feed maintenance.
@@ -2257,7 +2257,7 @@ If build speed and package feed maintenance are considerations, you should consi
 
     + ***BitBake's "-S printdiff" Option***: Using this option causes BitBake to try to establish the closest signature match it can (例如 in the shared state cache) and then run `bitbake-diffsigs` over the matches to determine the stamps and delta where these two stamp trees diverge.
 
-### 3.10.6 Building Software from an External Source
+### 3.10.6 构建外部代码的软件
 By default, the OpenEmbedded build system uses the Build Directory when building source code. The build process involves fetching the source files, unpacking them, and then patching them if necessary before the build takes place.
 
 Situations exist where you might want to build software from source files that are external to and thus outside of the OpenEmbedded build system. For example, suppose you have a project that includes a new BSP with a heavily customized kernel. And, you want to minimize exposing the build system to the development team so that they can focus on their project and maintain everyone's workflow as much as possible. In this case, you want a kernel source directory on the development machine where the development occurs. You want the recipe's `SRC_URI` variable to point to the external directory and use it as is, not copy it.
@@ -2279,7 +2279,7 @@ By default, `externalsrc.bbclass` builds the source code in a directory separate
 ```
      EXTERNALSRC_BUILD_pn-myrecipe = "path-to-your-source-tree"
 ```
-### 3.10.7 Replicating a Build Offline
+### 3.10.7 离线重复构建
 It can be useful to take a "snapshot" of upstream sources used in a build and then use that "snapshot" later to replicate the build offline. To do so, you need to first prepare and populate your downloads directory your "snapshot" of files. Once your downloads directory is ready, you can use it at any time and from any machine to replicate your build.
 
 Follow these steps to populate your Downloads directory:
@@ -2332,7 +2332,7 @@ The `SOURCE_MIRROR_URL` and `own-mirror` class set up the system to use the down
     > b. Use the `buildhistory-collect-srcrevs` command to collect the stored `SRCREV` values from the build's history. For more information on collecting these values, see the "Build History Package Information" section.  
     > c. Once you have the correct source revisions, you can modify those recipes to to set `SRCREV` to specific versions of the software.
 
-## 3.11 Speeding Up a Build
+## 3.11 加速构建
 Build time can be an issue. By default, the build system uses simple controls to try and maximize build efficiency. In general, the default settings for all the following variables result in the most efficient build times when dealing with single socket systems (i.e. a single CPU). If you have multiple CPUs, you might try increasing the default values to gain more speed. See the descriptions in the glossary for each variable for more information:
 
 + [`BB_NUMBER_THREADS`](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-BB_NUMBER_THREADS): The maximum number of threads BitBake simultaneously executes.
@@ -2375,7 +2375,7 @@ Aside from the previous list, you should keep some trade offs in mind that can h
      > Some recipes need static libraries in order to work correctly (例如 `pseudo-native` needs `sqlite3-native`). Overrides, as in the previous example, account for these kinds of exceptions.  
      > Some packages have packaging code that assumes the presence of the static libraries. If so, you might need to exclude them as well.
 
-## 3.12 Working With Libraries
+## 3.12 使用库文件
 Libraries are an integral part of your system. This section describes some common practices you might find helpful when working with libraries to build your system:
 
 + [How to include static library files](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#including-static-library-files)
@@ -2384,7 +2384,7 @@ Libraries are an integral part of your system. This section describes some commo
 
 + [How to install multiple versions of the same library in parallel on the same system](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#installing-multiple-versions-of-the-same-library)
 
-### 3.12.1 Including Static Library Files
+### 3.12.1 包含静态库文件
 If you are building a library and the library offers static linking, you can control which static library files (`*.a` files) get included in the built library.
 
 The `PACKAGES` and `FILES_*` variables in the `meta/conf/bitbake.conf` configuration file define how files installed by the `do_install` task are packaged. By default, the `PACKAGES` variable includes ``${PN}`-staticdev`, which represents all static library files.
@@ -2429,7 +2429,7 @@ Following is part of the BitBake configuration file, where you can see how the s
      RDEPENDS_`${PN}`-staticdev = "`${PN}`-dev (= ${EXTENDPKGV})"
 ```
 
-### 3.12.2 Combining Multiple Versions of Library Files into One Image
+### 3.12.2 将不同版本的库文件组合到一个镜像中
 The build system offers the ability to build libraries with different target optimizations or architecture formats and combine these together into one system image. You can link different binaries in the image against the different libraries as needed for specific use cases. This feature is called "Multilib."
 
 An example would be where you have most of a system compiled in 32-bit mode using 32-bit libraries, but you have something large, like a database engine, that needs to be a 64-bit application and uses 64-bit libraries. Multilib allows you to get the best of both 32-bit and 64-bit libraries.
@@ -2444,14 +2444,14 @@ Several examples exist in the `meta-skeleton` layer found in the Source Director
 
 + `recipes-multilib/images/core-image-multilib-example.bb` recipe
 
-#### 3.12.2.1 Preparing to Use Multilib
+#### 3.12.2.1 准备使用Multilib
 User-specific requirements drive the Multilib feature. Consequently, there is no one "out-of-the-box" configuration that likely exists to meet your needs.
 
 In order to enable Multilib, you first need to ensure your recipe is extended to support multiple libraries. Many standard recipes are already extended and support multiple libraries. You can check in the `meta/conf/multilib.conf` configuration file in the Source Directory to see how this is done using the `BBCLASSEXTEND` variable. Eventually, all recipes will be covered and this list will not be needed.
 
 For the most part, the Multilib class extension works automatically to extend the package name from ``${PN}`` to `${MLPREFIX}`${PN}``, where `MLPREFIX` is the particular multilib (例如 "lib32-" or "lib64-"). Standard variables such as `DEPENDS`, `RDEPENDS`, `RPROVIDES`, `RRECOMMENDS`, `PACKAGES`, and `PACKAGES_DYNAMIC` are automatically extended by the system. If you are extending any manual code in the recipe, you can use the `${MLPREFIX}` variable to ensure those names are extended correctly. This automatic extension code resides in `multilib.bbclass`.
 
-#### 3.12.2.2 Using Multilib
+#### 3.12.2.2 使用Multilib
 After you have set up the recipes, you need to define the actual combination of multiple libraries you want to build. You accomplish this through your ``local.conf`` configuration file in the Build Directory. An example configuration would be as follows:
 ```
      MACHINE = "qemux86-64"
@@ -2470,7 +2470,7 @@ You can also build Multilib packages specifically with a command like this:
 ```
      $ bitbake lib32-glib-2.0
 ```
-#### 3.12.2.3 Additional Implementation Details
+#### 3.12.2.3 其他实现细节
 Generic implementation details as well as details that are specific to package management systems exist. Following are implementation details that exist regardless of the package management system:
 
 + The typical convention used for the class extension code as used by Multilib assumes that all package names specified in `PACKAGES` that contain `${PN}` have `${PN}` at the start of the name. When that convention is not followed and `${PN}` appears at the middle or the end of a name, problems occur.
@@ -2495,7 +2495,7 @@ For the IPK Package Management System, the following implementation details exis
 
 + IPK defines a sanity check for Multilib installation using certain rules for file comparison, overridden, etc.
 
-### 3.12.3 Installing Multiple Versions of the Same Library
+### 3.12.3 安装同一库的多个版本
 Situations can exist where you need to install and use multiple versions of the same library on the same system at the same time. These situations almost always exist when a library API changes and you have multiple pieces of software that depend on the separate versions of the library. To accommodate these situations, you can install multiple versions of the same library in parallel on the same system.
 
 The process is straightforward as long as the libraries use proper versioning. With properly versioned libraries, all you need to do to individually specify the libraries is create separate, appropriately named recipes where the `PN` part of the name includes a portion that differentiates each library version (例如the major part of the version number). Thus, instead of having a single recipe that loads one version of a library (例如 `clutter`), you provide multiple recipes that result in different versions of the libraries you want. As an example, the following two recipes would allow the two separate versions of the clutter library to co-exist on the same system:
@@ -2507,7 +2507,7 @@ Additionally, if you have other recipes that depend on a given library, you need
 ```
      DEPENDS = "clutter-1.8"
 ```
-## 3.13. Using x32 psABI
+## 3.13. 使用 x32 psABI
 x32 processor-specific Application Binary Interface (x32 psABI) is a native 32-bit processor-specific ABI for Intel® 64 (x86-64) architectures. An ABI defines the calling conventions between functions in a processing environment. The interface determines what registers are used and what the sizes are for various C data types.
 
 Some processing environments prefer using 32-bit applications even when running on Intel 64-bit platforms. Consider the i386 psABI, which is a very old 32-bit ABI for Intel 64-bit platforms. The i386 psABI does not provide efficient use and access of the Intel 64-bit processor resources, leaving the system underutilized. Now consider the x86_64 psABI. This ABI is newer and uses 64-bits for data sizes and program pointers. The extra bits increase the footprint size of the programs, libraries, and also increases the memory and file system size requirements. Executing under the x32 psABI enables user programs to utilize CPU and system resources more efficiently while keeping the memory footprint of the applications low. Extra bits are used for registers but not for addressing mechanisms.
@@ -2637,7 +2637,7 @@ The `wic` command and the infrastructure it is based on is by definition incompl
 
 This section provides some background information on Wic, describes what you need to have in place to run the tool, provides instruction on how to use the Wic utility, provides information on using the Wic plug-ins interface, and provides several examples that show how to use Wic.
 
-### 3.16.1 Background
+### 3.16.1 背景
 This section provides some background on the Wic utility. While none of this information is required to use Wic, you might find it interesting.
 
 + The name "Wic" is derived from OpenEmbedded Image Creator (oeic). The "oe" diphthong in "oeic" was promoted to the letter "w", because "oeic" is both difficult to remember and to pronounce.
@@ -2646,7 +2646,7 @@ This section provides some background on the Wic utility. While none of this inf
 
 + Wic is a completely independent standalone utility that initially provides easier-to-use and more flexible replacements for an existing functionality in OE-Core's `image-live` class. The difference between Wic and those examples is that with Wic the functionality of those scripts is implemented by a general-purpose partitioning language, which is based on Redhat kickstart syntax.
 
-### 3.16.2 Requirements
+### 3.16.2 需求
 In order to use the Wic utility with the OpenEmbedded Build system, your system needs to meet the following requirements:
 
 + The Linux distribution on your development host must support the Yocto Project. See the "Supported Linux Distributions" section in the Yocto Project Reference Manual for the list of distributions that support the Yocto Project.
@@ -2665,7 +2665,7 @@ In order to use the Wic utility with the OpenEmbedded Build system, your system 
 
 + Include the name of the wic kickstart file as part of the `WKS_FILE` variable
 
-### 3.16.3 Getting Help
+### 3.16.3 获取帮助
 You can get general help for the `wic` command by entering the `wic` command by itself or by entering the command with a help argument as follows:
 ```
      $ wic -h
@@ -2713,7 +2713,7 @@ Once you know the list of available Wic images, you can use `help` with the comm
      Creates a partitioned SD card image for Beaglebone.
      Boot files are located in the first vfat partition.
 ```
-### 3.16.4 Operational Modes
+### 3.16.4 操作模式
 You can use Wic in two different modes, depending on how much control you need for specifying the Openembedded build artifacts that are used for creating the image: Raw and Cooked:
 
 + ***Raw Mode***: You explicitly specify build artifacts through Wic command-line arguments.
@@ -2900,7 +2900,7 @@ Typically, a partition just uses the passed-in parameters (例如 the unmodified
 
 You can extend the source plug-in mechanism. To add more hooks, create more source plug-in methods within `SourcePlugin` and the corresponding derived subclasses. The code that calls the plug-in methods uses the `plugin.get_source_plugin_methods()` function to find the method or methods needed by the call. Retrieval of those methods is accomplished by filling up a dict with keys that contain the method names of interest. On success, these will be filled in with the actual methods. See the Wic implementation for examples and details.
 
-### 3.16.7 Examples
+### 3.16.7 示例
 This section provides several examples that show how to use the Wic utility. All the examples assume the list of requirements in the "Requirements" section have been met. The examples assume the previously generated image is `core-image-minimal`.
 
 #### 3.16.7.1 Generate an Image using an Existing Kickstart File
