@@ -1,26 +1,26 @@
 ## Chapter 2. 准备使用Yocto Project  <!-- omit in toc -->
 
-- [2.1 新建团队开发环境](#21-%e6%96%b0%e5%bb%ba%e5%9b%a2%e9%98%9f%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83)
-- [2.2 准备构建主机](#22-%e5%87%86%e5%a4%87%e6%9e%84%e5%bb%ba%e4%b8%bb%e6%9c%ba)
-  - [2.2.1 准备原生Linux主机](#221-%e5%87%86%e5%a4%87%e5%8e%9f%e7%94%9flinux%e4%b8%bb%e6%9c%ba)
-  - [2.2.2 使用CROss PlatformS (CROPS)](#222-%e4%bd%bf%e7%94%a8cross-platforms-crops)
-- [2.3 定位Yocto Project源文件](#23-%e5%ae%9a%e4%bd%8dyocto-project%e6%ba%90%e6%96%87%e4%bb%b6)
-  - [2.3.1 访问代码仓库](#231-%e8%ae%bf%e9%97%ae%e4%bb%a3%e7%a0%81%e4%bb%93%e5%ba%93)
-  - [2.3.2 访问发布索引](#232-%e8%ae%bf%e9%97%ae%e5%8f%91%e5%b8%83%e7%b4%a2%e5%bc%95)
-  - [2.3.3 使用下载页面](#233-%e4%bd%bf%e7%94%a8%e4%b8%8b%e8%bd%bd%e9%a1%b5%e9%9d%a2)
-  - [2.3.4 访问Nightly Builds](#234-%e8%ae%bf%e9%97%aenightly-builds)
-- [2.4 克隆并切换到分支](#24-%e5%85%8b%e9%9a%86%e5%b9%b6%e5%88%87%e6%8d%a2%e5%88%b0%e5%88%86%e6%94%af)
-  - [2.4.1 克隆Poky仓库](#241-%e5%85%8b%e9%9a%86poky%e4%bb%93%e5%ba%93)
-  - [2.4.2 切换Poky分支](#242-%e5%88%87%e6%8d%a2poky%e5%88%86%e6%94%af)
-  - [2.4.3 根据Tag切换Tag分支](#243-%e6%a0%b9%e6%8d%aetag%e5%88%87%e6%8d%a2tag%e5%88%86%e6%94%af)
+- [2.1 新建团队开发环境](#21-新建团队开发环境)
+- [2.2 准备构建主机](#22-准备构建主机)
+  - [2.2.1 准备原生Linux主机](#221-准备原生linux主机)
+  - [2.2.2 使用CROss PlatformS (CROPS)](#222-使用cross-platforms-crops)
+- [2.3 定位Yocto Project源文件](#23-定位yocto-project源文件)
+  - [2.3.1 访问代码仓库](#231-访问代码仓库)
+  - [2.3.2 访问发布索引](#232-访问发布索引)
+  - [2.3.3 使用下载页面](#233-使用下载页面)
+  - [2.3.4 访问Nightly Builds（每日构建）](#234-访问nightly-builds每日构建)
+- [2.4 克隆并切换到分支](#24-克隆并切换到分支)
+  - [2.4.1 克隆Poky仓库](#241-克隆poky仓库)
+  - [2.4.2 切换Poky分支](#242-切换poky分支)
+  - [2.4.3 根据Tag切换Tag分支](#243-根据tag切换tag分支)
 
-本章将介绍相关步骤以准备开始使用Yocto Project。你将学习到创建使用Yocto Project进行开发的团队环境，如何搭建构建主机，如何定位Yocto Project代码仓库，以及如何创建本地Git仓库。
+本章将介绍如何开始搭建和使用Yocto Project的相关步骤。你将学习到创建如何使用Yocto Project进行开发的团队环境，如何搭建构建主机，如何定位Yocto Project代码仓库，以及如何创建本地Git仓库。
 
 ## 2.1 新建团队开发环境
-你可能无法立即明白你可以怎么在团队开发环境中使用Yocto Project，或是如何为一个大型开发团队规模化它（scale it）。Yocto Project优势之一就是，它非常的灵活。因此，你可以将它适用于不同的应用案例和场景。然而，如果你旨在创建一个能够在大型团队使用的环境，灵活性同样可能让你遇到很多困难。
-为了帮助你理解如何创建这样的环境，本节展示了一个工作流程。这个high level流程提供了一些过去成功的经验，实践，解决方案以及可用的技术。请记住，以下只是起点，你完全可以为特定的工作环境定制化这些步骤。
+你可能无法在项目的开始就知道你将如何在团队开发环境中使用Yocto Project，或是如何调整Yocto Project使它适应一个大型开发团队。然而，Yocto Project优势之一就是，它非常的灵活。因此，你可以将它适用于不同的应用案例和场景。当然，如果你旨在创建一个适合大型团队使用的开发环境，Yocto的灵活性同样可能会让你遇到很多困难。
+为了帮助你理解如何创建这样的环境，本节展示了一个工作流程。这个概括性的流程提供了一些过去成功的经验，实践，解决方案以及可用的技术。请记住，以下只是起点，你完全可以为特定的工作环境定制化这些步骤。
 
-1. ***谁会进行开发呢***: 你需要明白谁会工作在Yocto Project中并且定义他们的角色。为了完成步骤二、三以准备硬件并搭建开发环境的硬件拓扑，你必须做出这样的决定。
+1. ***谁会进行开发呢***: 首先，你需要明白谁会从事Yocto Project工作，并确定他们在工作中的角色。完成这一步对于完成第二步(准备硬件)和第三步(理解硬件架构和环境)至关重要。
 
 有如下角色:
 
@@ -32,121 +32,121 @@
 
 + ***测试工程师***: 测试工程师创建并管理自动测试，确保所有应用以及核心系统开发达到了期望的质量标准。
 
-2. ***获取硬件***: 根据团队规模以及构成，完成硬件的准备。理想状况是，任何开发者，构建或测试工程师都能使用运行所支持的Linux分发版本的系统。这些系统原则上应该是高性能的。(例如，双六核Xeons CPU，24GB RAM，足够的硬盘空间). 对于使用于测试或运行Autobuilder的机器，越是高性能越可以保证效率。
+2. ***获取硬件***: 根据团队规模以及构成，完成硬件的准备。理想状况是，任何开发者，构建或测试工程师都能使用支持Yocto Project的Linux发行版。这些系统原则上应该是高性能的。(例如，双六核Xeons CPU，24GB RAM，足够的硬盘空间). 对于使用于测试或运行Autobuilder的机器，越是高性能越可以保证效率。
 
-3. ***了解硬件拓扑***: 一旦明白硬件信息以及团队构成，你就可以明白开发环境的硬件拓扑。你可以图形化展示开发环境中的机器以及他们的角色。
+3. ***了解硬件拓扑***: 一旦明白硬件信息以及团队构成，你就可以明白开发环境的硬件拓扑，更直观地了解硬件及其角色。
 
-4. ***使用Git作为代码控制管理(SCM)***: 建议将你的元数据（例如recipes，配置文件，类等）和任何你再开发的软件保存在兼容OpenEmbedded构建系统的控制管理工具中。Yocto Project团队强烈建议使用Gti。Git是分布式系统，易于备份，也支持离线工作，然后再链接回远程仓库。
+4. ***使用Git作为源代码管理工具***: 建议将你的元数据（例如recipes，配置文件，类等）和任何你在开发的软件保存在兼容OpenEmbedded构建系统的控制管理工具中。Yocto Project团队强烈建议使用Git。Git是分布式系统，易于备份，也支持离线工作，然后再链接回远程仓库。
 
-> **Note**  
-> 更多BitBake相关内容请参考《BitBake用户手册》
+    > **注释**  
+    > 更多BitBake相关内容请参考[BitBake用户手册](http://www.yoctoproject.org/docs/2.7/bitbake-user-manual/bitbake-user-manual.html)
 
-搭建Git服务，像http://git.yoctoproject.org是容易的，它使用gitolite服务器端软件，并使用cgit生成网页端接口，让你查看仓库。gitolite使用SSH key验证用户，允许通过控制分支的方式让你能够一点一点的改动仓库。
+    搭建一个像[http://git.yoctoproject.org](http://git.yoctoproject.org)那样的服务是很容易的，它基于gitolite并使用cgit生成网页，方便你查看仓库。gitolite使用SSH key验证用户，允许通过控制分支的方式让你能够一点一点的改动仓库。
 
-> **Note**  
-> 搭建这些服务不在本手册讨论范围内。然而，以下网站可以帮助到你：  
-> [*Git documentation*](http://git-scm.com/book/ch4-8.html): 如何在服务器端安装gitolite  
-> [*Gitolite*](http://gitolite.com/): gitolite相关  
-> [*Interfaces, frontends, and tools*](https://git.wiki.kernel.org/index.php/Interfaces,_frontends,_and_tools): 如何创建Git接口和前端
+    > **注释**  
+    > 搭建这些服务不在本手册讨论范围内。然而，以下网站可以帮助到你：  
+    > [*Git documentation*](http://git-scm.com/book/ch4-8.html): 如何在服务器端安装gitolite  
+    > [*Gitolite*](http://gitolite.com/): gitolite相关  
+    > [*Interfaces, frontends, and tools*](https://git.wiki.kernel.org/index.php/Interfaces,_frontends,_and_tools): 如何创建Git接口和前端
 
-5. ***搭建应用开发机器***: 如前文所说，应用开发者在已有软件栈上开发应用。搭建应用开发机器有以下最佳实践:
+5. ***搭建应用开发机器***: 如前文所说，应用开发者在已有软件栈上开发应用。针对搭建应用开发机器有以下建议做法:
 
-+ 使用包含软件栈并且已构建好的工具链。然后，在软件栈上开发应用。这个方法适用于少量的相对独立的应用开发过程。
+   + 使用包含软件栈并且已构建好的工具链，然后在软件栈上开发应用。这个方法适用于少量且相互之间相对独立的应用开发。
 
-+ 保持更新你的交叉开发工具栏。你可以通过下载新的工具链或者通过opkg包管理系统来更新你已有的工具链。具体方案依赖于本地策略。
+   + 保持更新你的交叉开发工具链。你可以通过下载新的工具链或者通过opkg包管理系统来更新你已有的工具链。具体方案依赖于本地策略。
 
-+ 在本地不同路径安装多份工具链以开发不同版本的应用
+   + 在本地不同路径安装多份工具链以开发不同版本的应用
 
-6. ***搭建核心开发机器***: 如前文所说，核心开发者开发操作系统内容。搭建开发image的机器有一下最佳实践:
+6. ***搭建核心开发机器***: 如前文所说，核心开发者开发操作系统内容。搭建开发image的机器有以下最佳实践:
 
-+ 本地需要有OpenEmbedded构建系统，这样开发者可以在本地构建软件栈
+   + 本地需要有[OpenEmbedded构建系统](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#build-system-term)，这样开发者可以在本地构建软件栈
 
-+ 尽量不要改动核心系统，在核心系统上创建layer以完成你的工作。这样可以尽可能地在更新核心系统或者板卡支持包（BSP）时拥有可移植性。
+   + 尽量不要改动核心系统，而是在核心系统上创建layer以完成你的工作。这样可以让你的系统在更新核心系统或者板级支持包（BSP）时拥有更高的可移植性。
 
-+ Share layers amongst the developers of a particular project and contain the policy configuration that defines the project.
+   + 将项目中的layer和策略配置共享给其他开发者。
 
-7. ***搭建Autobuilder***: Autobuilders往往是开发中的核心部分。它获取各个开发者的改动在一起，并测试。基于自动化构建和测试环境，可以决定是否发布。Autobuilders同样允许“持续集成”以测试软件组件和回归识别及追溯。
+7. ***搭建Autobuilder***: Autobuilders往往是开发中的核心部分。它获取各个开发者的改动，并进行集中测试。基于自动化构建和测试结果，你可以决定是否发布你的产品。Autobuilder还允许对软件组件,回归识别和追踪进行“持续集成”式的测试。
 
-参考["Yocto Project Autobuilder"](http://autobuilder.yoctoproject.org/)已阅读更多Autobuilders和buildbot相关信息。Yocto Project团队认为这份文档很合适，例子就是Yocto Project Autobuilders, Yocto Project团队用它测试项目的整体健康状况。
+    参考["Yocto Project Autobuilder"](http://autobuilder.yoctoproject.org/)以阅读更多关于Autobuilders和buildbot的相关信息。Yocto Project团队使用Yocto Project Autobuilders测试项目的整体健康状况。
 
-这个系统的特点有:
+    以下是这个系统的特点:
 
-+ 当提交使构建失败时，突出显示
+   + 高亮显示导致构建失败的提交
 
-+ 填充sstate缓存，开发者可以直接获取缓存，而无需本地构建
+   + 将数据存入[sstate缓存](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#shared-state-cache)，开发者可以直接获取缓存，而无需本地构建
 
-+ 允许提交触发钩子，以触发新的构建任务
+   + 允许提交触发新的构建任务
 
-+ 允许触发在QEMU中的镜像自动启动和测试
+   + 允许触发在QEMU中的镜像自动启动和测试
 
-+ 同时支持增量构建和重新构建
+   + 同时支持增量构建和重新构建
 
-+ 共享输出，允许开发者测试（developer testing）和历史回归调查（historical regression investigation）
+   + 共享输出，允许开发者测试（developer testing）和历史回归调查（historical regression investigation）
 
-+ 创建可以用来发布的输出
+   + 构建的结果可以用来发布
 
-+ 允许构建schedule以高效利用资源
+   + 允许对构建过程和时间进行规划安排，以更有效地利用（硬件）资源
 
-8. ***搭建测试机器***: 少数共用，高性能的系统用作测试。开发可以使用这些机器进行更多测试，同时仍可以使用自己的开发环境进行本地开发。
+8. ***搭建测试机器***: 使用少数共享的、高性能的系统来进行测试。开发可以使用这些机器进行更多测试，同时仍可以使用自己的开发环境进行本地开发。
 
-9. ***将策略和流程文档化***: Yocto Project使用层级结构和pull model。脚本可以和用来创建并发送Pull Request(i.e. create-pull-request and send-pull-request). Pull model和其他开源项目一样，各个维护者只需要对项目特定部分负责，最终由单一维护者处理最终的合并。
+9. ***将策略和流程文档化***: Yocto Project使用层级结构和pull model。脚本可以和用来创建并发送Pull Request(例如 create-pull-request 和 send-pull-request). Pull model和其他开源项目一样，各个维护者只需要对项目特定部分负责，最终的合并(合并到主分支)由某个维护者进行处理。
 
-> **Note**  
-> 你也可以使用push model（collective?），gitolite软件同时支持push model和pull model。
+    > **注释**  
+    > 你也可以使用push model（译者注：原文的collective不清楚是什么特性），gitolite软件同时支持push model和pull model。
 
-和任何开发环境一样，将策略文档化，作为项目指导以便所有人理解，是非常重要的。在项目指导中，有良好的结构化提交信息也是一个不错的主意。好的提交信息对于任何时候来回看并理解改动，是非常必要的。
+    和任何开发环境一样，将使用的策略和主要项目的指南记录在文档中，以便所有人理解，是非常重要的。建议开发者将提交信息(commit message)结构化，格式化， 这对项目指导也有积极的意义。好的提交信息对于修改的追溯和理解是非常必要的。
 
-如果你发现必须改动核心层的代码时，尽快与社区分享是很值得的。当你发现有需要改动的地方时，可能社区的其他人正需要这个改动。
+    如果你发现必须改动核心层的代码时，尽快与社区分享是很值得的。当你发现有需要改动的地方时，可能社区的其他人正需要这个改动。
 
-10.   ***开发环境总结***: 除开上述步骤以外，Yocto Project开发环境还有以下最佳实践：
+10. ***开发环境总结***: 除开上述步骤以外，Yocto Project开发环境还有以下最佳实践：
 
-+ 使用Git作为代码控制系统
+    + 使用Git作为代码控制系统
 
-+ 在Layer中维护你的元数据。阅读Yocto Project概述及概念手册中的["The Yocto Project Layer Model" section](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#the-yocto-project-layer-model)章节，以及["Understanding and Creating Layers"](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#understanding-and-creating-layers)章节以了解更多关于layer的信息。
+    + 在Layer中维护你的元数据。阅读Yocto Project概述及概念手册中的[Yocto Project Layer模型](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#the-yocto-project-layer-model)章节，以及[理解并创建Layer](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#understanding-and-creating-layers)章节以了解更多关于layer的信息。
 
-+ 使用不同的Git仓库以区分离目元数据和代码。阅读Yocto Project概述及概念手册中的["Yocto Project Source Repositories"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#yocto-project-repositories)章节以了解更多关于这些仓库的信息。阅读["Locating Yocto Project Source Files"](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#locating-yocto-project-source-files)章节以了解如何在本地创建相关的Yocto Project Git仓库。
+    + 使用不同的Git仓库分离项目目元数据和代码，yocto的源代码就是按照功能分成了一个个单独的仓库。阅读Yocto项目总览和术语手册中的[Yocto Project代码仓库](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#yocto-project-repositories)章节以了解更多关于这些仓库的信息。阅读[定位Yocto Project代码文件](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#locating-yocto-project-source-files)章节以了解如何在本地创建相关的Yocto Project Git仓库。
 
-+ 在需要的地方创建shared state cache([SSTATE_DIR](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-SSTATE_DIR))目录。例如，在同一组织中开发者所使用的系统上创建sstate cache，共享同样的代码目录。
+    + 在需要的地方创建[shared state cache缓存目录](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#var-SSTATE_DIR)。例如，在一个组织的开发系统上创建sstate cache缓存目录，然后让所有的开发者共享这个目录。
 
-+ 搭建AutobuilderSet，填充sstate cache和代码目录。
+    + 搭建Autobuilder，并使用它来将代码获取到本地目录，构建时向sstate cache缓存目录填充共享数据。
 
-+ Yocto Project社区鼓励你发送补丁以修复bug或者增加功能。如果你想提交补丁，请遵循提交指南["Submitting a Change to the Yocto Project"](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#how-to-submit-a-change)以编辑良好的提交信息。
+    + Yocto Project社区鼓励你发送补丁以修复bug或者增加功能。如果你想提交补丁，请遵循提交指南[向Yocto Project提交改动](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#how-to-submit-a-change)以编辑良好的提交信息。
 
-+ 尽可能早的将改动发送过来，因为其他人很可能会遇到相同的问题。发送方式请参考["Submitting a Change to the Yocto Project"](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#how-to-submit-a-change)。邮件地址可参考Yocto Project参考文档中的["Mailing Lists"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#resources-mailinglist)章节。
+    + 对于OE-core部分的修改，请尽可能早的将其提交给上游，因为其他人很可能会遇到相同的问题。提交代码改动的方式请参考[向Yocto Project提交改动](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#how-to-submit-a-change)。现在可用的邮件地址及其说明，可参考Yocto Project参考文档中的[邮件列表](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#resources-mailinglist)章节。
 
 ## 2.2 准备构建主机
-本节介绍如何为[构建主机](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#hardware-build-system-term)搭建系统，以使用Yocto Project进行开发。推荐使用原生Linux机器，或者也可以在主机（Linux, Mac, Windows）上使用能利用Docker容器的[CROPS](https://git.yoctoproject.org/cgit/cgit.cgi/crops/about/)。
+本节介绍如何为[构建主机](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#hardware-build-system-term)搭建系统，以使用Yocto Project进行开发。推荐使用原生Linux机器，或者也可以在其他类型的主机（Linux, Mac, Windows）上使用[CROPS](https://git.yoctoproject.org/cgit/cgit.cgi/crops/about/)(利用了[Docker容器](https://www.docker.com/)技术)进行开发。
 
-> **Note**  
-> 不支持Windows Subsystem for Linux(WSL)。Yocto Project不兼容WSL。
+> **注释**  
+> 不支持在[Windows Subsystem for Linux(WSL)](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)中使用Yocto Project。Yocto Project不兼容WSL。
 
-为了使用Yocto Project，构建主机准备好之后，根据具体需求，你还需要完成一些步骤。以下是关于如何为开发BSP和内核开发所需准备的参考信息：
+一旦你的构建主机完成设置能使用yocto项目了，根据具体需求，你还需要完成一些步骤。以下参考信息将告诉你进行BSP开发和内核开发要做哪些准备：
 
-+ ***BSP开发***: 请参考Yocto Project Board Support Package (BSP) Developer's Guide中的["Preparing Your Build Host to Work With BSP Layers"](http://www.yoctoproject.org/docs/2.7/bsp-guide/bsp-guide.html#preparing-your-build-host-to-work-with-bsp-layers) 章节。
++ ***BSP开发***: 请参考Yocto Project BSP开发者手册中的[使用构建主机开发BSP](http://www.yoctoproject.org/docs/2.7/bsp-guide/bsp-guide.html#preparing-your-build-host-to-work-with-bsp-layers) 章节。
 
-+ ***内核开发***: 请参考Yocto Project Linux Kernel Development Manual的["Preparing the Build Host to Work on the Kernel"](http://www.yoctoproject.org/docs/2.7/kernel-dev/kernel-dev.html#preparing-the-build-host-to-work-on-the-kernel)章节。
++ ***内核开发***: 请参考Yocto Project Linux内核开发手册中的[使用构建主机开发Linux内核](http://www.yoctoproject.org/docs/2.7/kernel-dev/kernel-dev.html#preparing-the-build-host-to-work-on-the-kernel)章节。
 
 ### 2.2.1 准备原生Linux主机
-完成以下步骤为Yocto Project构建主机准备原生Linux机器：
+请按照以下步骤准备你的Linux机器作为Yocto项目的构建主机：
 
-1. ***使用一个被支持的Linux版本***: 你应当有一个基于Linux的主机系统。你可以选用Fedora, OpenSUSE, Debian, Ubuntu, 或者CentOS，他们经常被验证于Yocto Project，官方支持。参考《Yocto Project参考文档》的["Supported Linux Distributions"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#detailed-supported-distros)以及[Distribution Support](https://wiki.yoctoproject.org/wiki/Distribution_Support)，你可以了解到被验证的发行版本以及状态。
+1. ***使用一个被支持的Linux版本***: 你应当有一个基于Linux的主机系统。你可以选用Fedora, OpenSUSE, Debian, Ubuntu, 或者CentOS，这些都是Yocto反复测试并且官方支持的发行版。参考Yocto Project参考文档的[被支持的Linux发行版](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#detailed-supported-distros)以及[发行版支持](https://wiki.yoctoproject.org/wiki/Distribution_Support)，你可以了解到这些被Yocto验证的Linux发行版的受支持状况。
 
-2. ***足够的空间Have Enough Free Memory***: 系统至少需要50GB的空间以构建镜像。
+2. ***足够的空间***: 系统至少需要50GB的空间以构建镜像。
 
-3. ***工具版本最低需求***: OpenEmbedded构建系统需要满足以下版本要求才能运行：
+3. ***满足最低的版本需求***: 建主机需要含有以下版本的软件，OpenEmbedded构建系统才能在上面正常运行：
 
-+ Git 1.8.3.1 或以上
+   + Git 1.8.3.1 或以上
 
-+ tar 1.27 或以上
+   + tar 1.27 或以上
 
-+ Python 3.4.0 或以上
+   + Python 3.4.0 或以上
 
-如果主机不满足以上任一版本需求，你需要一些步骤以继续使用Yocto Project。请参考《Yocto Project参考手册》的["Required Git, tar, and Python Versions"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-git-tar-and-python-versions)。
+    如果主机上这些软件中任何一个不满足以上的版本需求，你需要一些步骤以继续使用Yocto Project。请参考《Yocto Project参考手册》的["Required Git, tar, and Python Versions"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-git-tar-and-python-versions)。
 
-4. ***安装开发主机包***: 根据使用Yocto Project完成的目标的不同，需要的开发主机包也不一样。总体来说，如果你想覆盖所有案例，包的总量会很大。  
-所需包列表，请参考《Yocto Project参考手册》["Required Packages for the Build Host"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-packages-for-the-build-host)
+4. ***安装开发主机包***: 根据需求的不同，需要的开发主机包也不一样。总体来说，如果你想覆盖所有案例，包的总量会很大。  
+所需的包列表，请参考《Yocto Project参考手册》["Required Packages for the Build Host"](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-packages-for-the-build-host)
 
-完成以上步骤后，你可以准备在Linux机器上准备开发路径了。如果你打算使用BitBake, 请参考["Cloning the poky Repository"](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#cloning-the-poky-repository)。如果你打算使用eSDK，请参考《Yocto Project应用开发和eSDK手册》["Using the Extensible SDK"](http://www.yoctoproject.org/docs/2.7/sdk-manual/sdk-manual.html#sdk-extensible)。如果你工作和内核有关，请参考[《Yocto Project Linux内核开发手册》](http://www.yoctoproject.org/docs/2.7/kernel-dev/kernel-dev.html)。如果你准备使用Toaster，请参考《Toaster用户手册》["Setting Up and Using Toaster"](http://www.yoctoproject.org/docs/2.7/toaster-manual/toaster-manual.html#toaster-manual-setup-and-use)章节。 
+完成以上步骤后，你可以在Linux机器上使用开发目录继续工作了。如果你打算使用BitBake, 请参考[克隆Poky仓库](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#cloning-the-poky-repository)。如果你打算使用eSDK，请参考《Yocto Project应用开发和eSDK手册》[使用eSDK](http://www.yoctoproject.org/docs/2.7/sdk-manual/sdk-manual.html#sdk-extensible)。如果你工作和内核有关，请参考[《Yocto Project Linux内核开发手册》](http://www.yoctoproject.org/docs/2.7/kernel-dev/kernel-dev.html)。如果你准备使用Toaster，请参考《Toaster用户手册》[搭建并使用Toaster](http://www.yoctoproject.org/docs/2.7/toaster-manual/toaster-manual.html#toaster-manual-setup-and-use)章节。 
 
 ### 2.2.2 使用CROss PlatformS (CROPS)
 使用CROPS，你就可以创建与操作系统无关的Yocto Project开发环境。你可以在Windows, Mac 或者Linux机器上使用容器，进行Yocto Project开发。
@@ -155,37 +155,37 @@
 
 1. ***决定构建主机需求***: 你需要在主机上安装Docker。你可能还需要安装其他软件以支持Docker容器。请参考[Docker安装页面](https://docs.docker.com/install/#supported-platforms)以了解需求。
 
-2. ***选择哪些需要安装***: 根据是否满足系统要求，你需要安装Docker CE Stable或者Docker Toobox。大多数情况是安装Docker CE。然而，如果主机不满足需求（Windows10之前的版本或者Windows10家庭版），你需要安装的则是Docker Toolbox。
+2. ***选择哪些需要安装***: 如果构建主机满足系统要求，你需要安装Docker CE。如果主机不满足需求（Windows10之前的版本或者Windows10家庭版），你需要安装的则是Docker Toolbox。
 
-3. ***浏览安装页面***: 点击使用于主机原生系统的Docer版本。[Docker安装页面](https://docs.docker.com/install/#supported-platforms)
+3. ***浏览安装页面***: 浏览[Docker安装页面](https://docs.docker.com/install/#supported-platforms)，找到与你的操作系统对应的Docker软件，点击链接进行下载。
 
-4. ***安装软件***: 一旦你理解了所有前提需求，你可以下载并安装对应软件。根据对应机器和软件类型进行下载安装：
+4. ***安装软件***: 一旦你了解了所有前提需求，你可以下载并安装对应软件。根据对应机器和所需的软件类型进行下载安装：
 
-+ [Docker CE for Windows](https://docs.docker.com/docker-for-windows/install/#install-docker-for-windows-desktop-app)
+   + [Docker CE for Windows](https://docs.docker.com/docker-for-windows/install/#install-docker-for-windows-desktop-app)
 
-+ [Docker CE for Macs](https://docs.docker.com/docker-for-mac/install/#install-and-run-docker-for-mac)
+   + [Docker CE for Macs](https://docs.docker.com/docker-for-mac/install/#install-and-run-docker-for-mac)
 
-+ [Docker Toolbox for Windows](https://docs.docker.com/toolbox/toolbox_install_windows/) (不符要求的Windows版本)
+   + [Docker Toolbox for Windows](https://docs.docker.com/toolbox/toolbox_install_windows/) (不符要求的Windows版本)
 
-+ [Docker Toolbox for MacOS](https://docs.docker.com/toolbox/toolbox_install_mac/) (不符要求的Mac版本)
+   + [Docker Toolbox for MacOS](https://docs.docker.com/toolbox/toolbox_install_mac/) (不符要求的Mac版本)
 
-+ [Docker CE for CentOS](https://docs.docker.com/install/linux/docker-ce/centos/)
+   + [Docker CE for CentOS](https://docs.docker.com/install/linux/docker-ce/centos/)
 
-+ [Docker CE for Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
+   + [Docker CE for Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
 
-+ [Docker CE for Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
+   + [Docker CE for Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
 
-+ [Docker CE for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+   + [Docker CE for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
 5. ***（可选）了解Docker***: 如果你还不甚了解Docker和容器概念，你可以在这里学习更多 - https://docs.docker.com/get-started/.
 
 6. ***启动Docker或者Docker Toolbox***: 你可以启动Docker或者Docker Toolbox，开发主机上会有一个终端出现。
 
-7. ***启动容器，使用Yocto Project***: 访问https://github.com/crops/docker-win-mac-docs/wiki 以了解对应主机系统(i.e. Linux, Mac, or Windows)更多信息。
+7. ***启动容器，使用Yocto Project***: 访问https://github.com/crops/docker-win-mac-docs/wiki 以了解如何在对应主机系统上(例如Linux, Mac, 或 Windows)配置你的Docker容器来使用Yocto项目。
 
-完成这些步骤后，你就有了Poky, Extensible SDK, Toaster容器。你可以点击链接以了解如果使用这些容器。
+完成这些步骤后，你就有了Poky, Extensible SDK, Toaster容器。你可以点击本文中相应的链接以了解如何使用这些容器。
 
-当你启动容器后，你就好像是在原生Linux机器上开发一样。
+当你启动容器后，你就好像是在原生Linux机器上开发一样。关于如何使用这些容器，请参考： 
 [Poky容器](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#cloning-the-poky-repository)
 [Extensible SDK容器](http://www.yoctoproject.org/docs/2.7/sdk-manual/sdk-manual.html#sdk-extensible)
 [Toaster容器](http://www.yoctoproject.org/docs/2.7/toaster-manual/toaster-manual.html#toaster-manual-setup-and-use)
@@ -198,77 +198,78 @@
 > + Yocto Project代码仓库信息请阅读《Yocto Project概述及概念手册》["Yocto Project Source Repositories"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#yocto-project-repositories)
 
 ### 2.3.1 访问代码仓库
-Working from a copy of the upstream Yocto Project Source Repositories is the preferred method for obtaining and using a Yocto Project release. You can view the Yocto Project Source Repositories at http://git.yoctoproject.org. In particular, you can find the poky repository at http://git.yoctoproject.org/cgit/cgit.cgi/poky/.
+我们推荐使用[上游Yocto Project代码仓库](http://www.yoctoproject.org/docs/2.7.2/overview-manual/overview-manual.html#source-repositories)，来进行Yocto Project发布的获取和使用。你可以在[http://git.yoctoproject.org](http://git.yoctoproject.org)浏览Yocto Project代码仓库。需要特别说明的是，你可以在[http://git.yoctoproject.org/cgit/cgit.cgi/poky/](http://git.yoctoproject.org/cgit/cgit.cgi/poky/)找到poky仓库。
 
-Use the following procedure to locate the latest upstream copy of the poky Git repository:
+使用以下步骤定位最新的上游poky Git仓库拷贝：
 
-1. ***访问仓库***: Open a browser and go to http://git.yoctoproject.org to access the GUI-based interface into the Yocto Project source repositories.
+1. ***访问仓库***: 打开浏览器输入[http://git.yoctoproject.org](http://git.yoctoproject.org)，访问Yocto Project代码仓库的图形化界面。
 
-2. ***选择仓库***: Click on the repository in which you are interested (e.g. poky).
+2. ***选择仓库***: 点击你感兴趣的仓库（例如poky）。
 
-3. ***找到用以克隆的链接***: At the bottom of the page, note the URL used to clone that repository (e.g. http://git.yoctoproject.org/poky).
+3. ***找到用以克隆仓库的链接***: 在页面底部有用来克隆的仓库地址（例如[http://git.yoctoproject.org/poky](http://git.yoctoproject.org/poky)）。
 
-> **Note**  
-> For information on cloning a repository, see the "Cloning the poky Repository" section.
+> **注释**  
+> 请参考[克隆Poky仓库](https://www.yoctoproject.org/docs/2.7/dev-manual/dev-manual.html#cloning-the-poky-repository)了解更多关于克隆仓库的信息。
 
 ### 2.3.2 访问发布索引
-Yocto Project maintains an Index of Releases area that contains related files that contribute to the Yocto Project. Rather than Git repositories, these files are tarballs that represent snapshots in time of a given component.
+Yocto Project维护发布索引列表，它包含对Yocto Project有贡献的相关文件。与Git仓库不同，这些文件是某个组件快照的tar包。
 
-> **Tip**  
-> The recommended method for accessing Yocto Project components is to use Git to clone the upstream repository and work from within that locally cloned repository. The procedure in this section exists should you desire a tarball snapshot of any given component.
+> **提示**  
+> 推荐使用Git克隆上游仓库以获取Yocto Project组件，并在本地克隆好的仓库中进行你的工作。本节介绍这些步骤的目的，是为了在你的开发过程中要用到tar包的时候能有所参考。
 
-Follow these steps to locate and download a particular tarball:
+参考以下步骤定位并下载一个特定的tar包：
 
-1. ***访问发布索引***: Open a browser and go to http://downloads.yoctoproject.org/releases to access the Index of Releases. The list represents released components (e.g. bitbake, sato, and so on).
+1. ***访问发布索引***: 打开浏览器输入http://downloads.yoctoproject.org/releases 访问发布索引列表，包括bitbake，sato等。
 
-> **Note**  
-> The yocto directory contains the full array of released Poky tarballs. The poky directory in the Index of Releases was historically used for very early releases and exists now only for retroactive completeness.
-Select a Component: Click on any released component in which you are interested (e.g. yocto).
+    > **注释**  
+    > Yocto目录包含发布的Poky tar包的完整列表，发布索引里的poky目录是早期发布的poky版本(译者注：上一次修改时间是2012年)，存在的目的仅仅是为了追溯完整性。
 
-2. ***找到Tar包***: Drill down to find the associated tarball. For example, click on yocto-2.7 to view files associated with the Yocto Project 2.7 release (e.g. poky-warrior-21.0.0.tar.bz2, which is the released Poky tarball).
+2. ***选择组件***: 点击你感兴趣的发布组件（例如yocto）。
 
-3. ***下载Tar包***: Click the tarball to download and save a snapshot of the given component.
+3. ***找到Tar包***: 向下展开，找到相关tar包。例如，点击yocto-2.7,查看Yocto Project 2.7发布版本的相关文件（例如poky-warrior-21.0.0.tar.bz2，它是发布的Poky tar包）。
+
+4. ***下载Tar包***: 点击tar包，下载组件的快照。
 
 ### 2.3.3 使用下载页面
-The Yocto Project Website uses a "DOWNLOADS" page from which you can locate and download tarballs of any Yocto Project release. Rather than Git repositories, these files represent snapshot tarballs similar to the tarballs located in the Index of Releases described in the "Accessing Index of Releases" section.
+[Yocto Projec网站](http://www.yoctoproject.org/)提供了下载页面，你可以定位并下载Yocto Project发布的tar包。与Git仓库不同的是，这些文件代表的是快照tar包，和[2.3.2 访问发布索引](#232-访问发布索引)介绍的类似。
 
-> **Tip**  
-> The recommended method for accessing Yocto Project components is to use Git to clone a repository and work from within that local repository. The procedure in this section exists should you desire a tarball snapshot of any given component.
+> **提示**  
+> 推荐访问Yocto Project组件的方式仍然是使用Git克隆上游仓库，并以本地克隆好的仓库进行工作。本节所介绍步骤，是为了你想用tar包的时候有所参考。
 
-1. ***访问Yocto Project页面***: Open The Yocto Project Website in your browser.
+1. ***访问Yocto Project页面***: 使用浏览器访问[http://www.yoctoproject.org/](http://www.yoctoproject.org/)
 
-2. ***找到下载区域***: Select the "DOWNLOADS" item from the pull-down "SOFTWARE" tab menu near the top of the page.
+2. ***找到下载区域***: 在页面顶部导航栏，在“SOFTWARE”下拉菜单中选择“DOWNLOAD”项。
 
-3. ***选择Yocto Project发布***: Use the menu next to "RELEASE" to display and choose a recent or past supported Yocto Project release (e.g. warrior, thud, and so forth).
+3. ***选择Yocto Project发布***: 使用"RELEASE"旁边的目录菜单选择最近的或者早期版本的Yocto Project发布（例如warrior, thud等等）。
 
-> **Tip**  
-> For a "map" of Yocto Project releases to version numbers, see the Releases wiki page.
-You can use the "RELEASE ARCHIVE" link to reveal a menu of all Yocto Project releases.
+    > **提示**  
+    > 浏览[Wiki页面](https://wiki.yoctoproject.org/wiki/Releases)找到Yocto Project发布和版本号的对照列表（译者注：例如2.7版本被称之为Warrior，3.0版本被称之为Zeus）。
+    > 你可以使用"RELEASE ARCHIVE"链接查看到所有Yocto Project的发布。
 
-4. ***下载工具或者BSP***: From the "DOWNLOADS" page, you can download tools or BSPs as well. Just scroll down the page and look for what you need.
+4. ***下载工具或者BSP***: 从“DOWNLOADS”页面，你也可以下载到工具或者BSP，你只需要向下滚动页面，寻找你想要的项目。
 
-### 2.3.4 访问Nightly Builds
-Yocto Project maintains an area for nightly builds that contains tarball releases at https://autobuilder.yocto.io//pub/nightly/. These builds include Yocto Project releases ("poky"), toolchains, and builds for supported machines.
+### 2.3.4 访问Nightly Builds（每日构建）
+Yocto Project在[https://autobuilder.yocto.io//pub/nightly/](https://autobuilder.yocto.io//pub/nightly/)（译者注：此地址暂时404） 维护了Nightly Builds，包含tar包形式的发布。这些构建包括Yocto Project发布（"poky"），工具链，和针对所支持机器的构建。
 
-Should you ever want to access a nightly build of a particular Yocto Project component, use the following procedure:
+如果你希望访问一个特定的Yocto Project组件的每日构建，使用以下步骤：
 
-1. ***定位Nightly Build索引***: Open a browser and go to https://autobuilder.yocto.io//pub/nightly/ to access the Nightly Builds.
+1. ***定位Nightly Build索引***: 打开浏览器，访问[https://autobuilder.yocto.io//pub/nightly/](https://autobuilder.yocto.io//pub/nightly/) 。
 
-2. ***选择日期***: Click on the date in which you are interested. If you want the latest builds, use "CURRENT".
+2. ***选择日期***: 选择日期。如果你想要最新构建，点击“CURRENT”。
 
-3. ***选择Build***: Choose the area in which you are interested. For example, if you are looking for the most recent toolchains, select the "toolchain" link.
+3. ***选择Build***: 选择类型。比如你在搜寻的是最近的工具链，那么就选择“toolchain”。
 
-4. ***找到Tar包***: Drill down to find the associated tarball.
+4. ***找到Tar包***: 向下浏览，找到相关tar包。
 
-5. ***下载Tar包***: Click the tarball to download and save a snapshot of the given component.
+5. ***下载Tar包***: 点击tar包，下载组件的快照。
 
 ## 2.4 克隆并切换到分支
-To use the Yocto Project for development, you need a release locally installed on your development system. This locally installed set of files is referred to as the Source Directory in the Yocto Project documentation.
+使用Yocto Project进行开发，你需要在本地用来开发的机器上，选择某个版本的Yocto Project发布并安装。在Yocto Project中，把你本地安装的文件目录称为源目录[Source Directory](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#source-directory)（即poky目录）。
 
-The preferred method of creating your Source Directory is by using Git to clone a local copy of the upstream poky repository. Working from a cloned copy of the upstream repository allows you to contribute back into the Yocto Project or to simply work with the latest software on a development branch. Because Git maintains and creates an upstream repository with a complete history of changes and you are working with a local clone of that repository, you have access to all the Yocto Project development branches and tag names used in the upstream repository.
+创建Source Directory的推荐方式是，使用Git从上游poky仓库克隆一份本地拷贝，在上游仓库的克隆版本上进行开发，使得你能向Yocto Project贡献你的代码或者仅仅是确保你正在使用的是最新的yocto项目进行开发。因为Git可以访问到上游仓库的完整改动历史（开发分支或是标签）。
 
 ### 2.4.1 克隆Poky仓库
-以下步骤为远程Poky仓库创建本地版本：
+以下是从远程[Poky](http://www.yoctoproject.org/docs/2.7.2/ref-manual/ref-manual.html#poky)仓库创建本地版本的操作步骤：
 
 1. ***设定目录***: 切换到你希望创建本地Poky仓库的工作目录
 
@@ -283,9 +284,9 @@ The preferred method of creating your Source Directory is by using Git to clone 
      Resolving deltas: 100% (323116/323116), done.
      Checking connectivity... done.
 ```                   
-Unless you specify a specific development branch or tag name, Git clones the "master" branch, which results in a snapshot of the latest development changes for "master". For information on how to check out a specific development branch or on how to check out a local branch based on a tag name, see the "Checking Out By Branch in Poky" and Checking Out By Tag in Poky" sections, respectively.
+除非你指定了开发分支或者标签名，Git默认克隆"master"分支，它是"master"分支最新开发改动的快照。关于如何切换一个开发分支或是如何使用标签名来切换本地分支，请阅读[2.4.2 切换Poky分支](#242-切换poky分支)和[2.4.3 根据Tag切换Tag分支](#243-根据tag切换tag分支)小节。
 
-Once the local repository is created, you can change to that directory and check its status. Here, the single "master" branch exists on your system and by default, it is checked out:
+本地仓库一旦创建，你可以跳转到那个目录，检查Git状态。如下示例的含义是，只有"master"分支在本地，默认地，切换的也是master分支。
 ```
      $ cd ~/poky
      $ git status
@@ -295,15 +296,15 @@ Once the local repository is created, you can change to that directory and check
      $ git branch
      * master
 ```                    
-Your local repository of poky is identical to the upstream poky repository at the time from which it was cloned. As you work with the local branch, you can periodically use the git pull ‐‐rebase command to be sure you are up-to-date with the upstream branch.
+你本地的poky仓库和克隆时的上游poky仓库文件信息是一样的，当你工作在本地分支时，你可以定期的使用`git pull --rebase`命令确保与上游分支同步更新。
 
 ### 2.4.2 切换Poky分支
-当克隆远程Poky分支时，你可以访问所有开发分支。每一个开发分支都是从master分支fork而来，各不相同。为了阅读并利用这些文件，你需要指导分支名并且用check out命令获取。
+当克隆远程Poky分支时，你可以访问到所有开发分支。每一个开发分支都是从master分支fork而来，各不相同。为了阅读或者使用某个分支的一些文件，你需要知道分支的名字然后用`check out`命令切换到这个特定的开发分支。
 
-> **Note**  
-> 根据分支名获取到开发分支可以得到这个分支的快照，当你获取后其开发分支仍有可能有新的改动。
+> **注释**  
+> 根据分支名切换到一个活跃的开发分支可以得到这个分支此时的快照，但是当你切换到这个分支后它对应的上游分支仍有可能有新的改动。
 
-1. ***切换到Poky目录***: 如果你有本地Poky仓库，切换到Poky目录。如果没有，阅读“克隆Poky仓库”章节
+1. ***切换到Poky目录***: 如果你有本地Poky仓库，切换到Poky目录。如果没有，阅读[2.4.1 克隆Poky仓库](#241-%e5%85%8b%e9%9a%86poky%e4%bb%93%e5%ba%93)章节
 
 2. ***查询分支名***:
 
@@ -335,7 +336,7 @@ Your local repository of poky is identical to the upstream poky repository at th
      Branch warrior set up to track remote branch warrior from origin.
      Switched to a new branch 'warrior'
 ```                    
-以上命令可以讲远程warrior分支去到本地
+以上命令可以将远程warrior分支取到本地。
 
 以下指令可以显示你本地Poky仓库的分支。 *号表明正在工作的分支。
 ```
@@ -345,12 +346,12 @@ Your local repository of poky is identical to the upstream poky repository at th
 ```
 
 ### 2.4.3 根据Tag切换Tag分支
-和分支类似，远程仓库会使用tag来标记一些特定的提交以表明其重要意义（发布或者即将发布）。你也许希望根据这些Tag创建本地分支。操作方法和切换分支类似。
+和分支类似，远程仓库会使用tag来标记一些特定的提交以表明其重要意义（发布或者即将发布）。根据需求，你可以用Tag名切换到这个特定的Tag分支，操作方法和[2.4.2 切换Poky分支](#242-%e5%88%87%e6%8d%a2poky%e5%88%86%e6%94%af)类似。
 
-> **Note**  
-> 切换到Tag分支使你拥有一个不会被开发分支上的提交而改动文件。
+> **注释**  
+> 基于Tag名切换的分支中的文件，不会被其他分支所影响。
 
-1. ***切换到Poky目录***: 如果有本地的Poky仓库，切换到Poky仓库，如果没有，请阅读“克隆Poky仓库”章节
+1. ***切换到Poky目录***: 如果有本地的Poky仓库，切换到Poky仓库，如果没有，请阅读[2.4.1 克隆Poky仓库](#241-%e5%85%8b%e9%9a%86poky%e4%bb%93%e5%ba%93)章节
 
 2. ***获取Tag名***: 
 ```
@@ -389,4 +390,4 @@ Your local repository of poky is identical to the upstream poky repository at th
      * my_yocto_2.7
 ```
                     
-The previous command creates and checks out a local branch named "my_yocto_2.7", which is based on the commit in the upstream poky repository that has the same tag. In this example, the files you have available locally as a result of the checkout command are a snapshot of the "warrior" development branch at the point where Yocto Project 2.7 was released.
+第一条命令`git checkout tags/yocto-2.7 -b my_yocto_2.7`会创建并切换到一个名为"my_yocto_2.7"的本地分支。这个分支和上游仓库的yocto-2.7标签对应的提交(commit)一致。
