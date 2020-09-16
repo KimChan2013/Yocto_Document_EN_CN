@@ -229,17 +229,17 @@
     - [3.34.1.2. Installing](#33412-installing)
   - [3.34.2. Running Weston](#3342-running-weston)
 
-本章将介绍例如创建layer，新加软件包，扩展/定制化镜像，移植到新硬件等基础功能。使用Yocto Project时，你会发现你会经常处理这些任务。
+本章将介绍在使用Yocto Project时，需要经常处理的任务，例如创建layer，新加软件包，扩展/定制化镜像，移植到新硬件等基础功能。
 
 ## 3.1 理解并创建Layer
 OpenEmbedded（译者注：后文以OE代替）构建系统支持管理多个layer的[元数据（Metadata）](http://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#metadata)。Layer允许你将不同类型的自定义设置独立开来。请阅读《Yocto Project Overview and Concepts Manual》的["The Yocto Project Layer Model"](http://www.yoctoproject.org/docs/2.7/overview-manual/overview-manual.html#the-yocto-project-layer-model)章节以获取Layer Model的介绍信息。
 
 ### 3.1.1 创建你自己的Layer
-使用OE构建系统来创建你自己的Layer是很容易的一件事，Yocto Project提供了工具以快速创建Layer。本节将一步步的展示如何创建Layer，如此你能够更好得理解它们。请阅读《Yocto Project Board Support Package (BSP) Developer's Guide》的["Creating a New BSP Layer Using the bitbake-layers Script"](http://www.yoctoproject.org/docs/2.7/bsp-guide/bsp-guide.html#creating-a-new-bsp-layer-using-the-bitbake-layers-script)章节和本文档的"使用bitbake-layers脚本创建通用Layer"章节以了解更多Layer创建工具。
+使用OE构建系统来创建你自己的Layer是很容易的一件事，Yocto Project还提供了工具让你更加快速地创建Layer。为了让你更好地理解Layer这个概念，本节将一步步的展示如何创建Layer。请阅读《Yocto Project Board Support Package (BSP) Developer's Guide》的["Creating a New BSP Layer Using the bitbake-layers Script"](http://www.yoctoproject.org/docs/2.7/bsp-guide/bsp-guide.html#creating-a-new-bsp-layer-using-the-bitbake-layers-script)章节和本文档的"使用bitbake-layers脚本创建通用Layer"章节以了解更多Layer创建工具。
 
-参照以下步骤，不使用工具来创建Layer:
+参照以下步骤，在不使用工具地情况下来创建Layer:
 
-1. ***查看已有Layer***: 在创建一个新Layer之前，你需要确认下你需要的元数据并没有被包含于其他人创建的Layer中。你可以查看OE社区的[OpenEmbedded MEtadata Index](http://layers.openembedded.org/layerindex/layers/)中可以被用在Yocto Project里的Layer索引。你可以找到你想要的或是差不多的一个Layer。
+1. ***查看已有Layer***: 在创建一个新Layer之前，你需要确认下元数据并没有被包含于其他人创建的Layer中。你可以查看OE社区的[OpenEmbedded MEtadata Index](http://layers.openembedded.org/layerindex/layers/)中可以被用在Yocto Project里的Layer索引。你可以找到你想要的或是差不多的一个Layer。
 
 2. ***创建新目录***: 为你的Layer创建目录。创建Layer时，确保目录和Yocto Project代码目录(例如克隆下来的poky仓库)无关。
 
